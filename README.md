@@ -20,6 +20,7 @@ Mock-up: <br/>
 ## Team members
 | Name                     |      GitHub id   |                         Email |
 | :----------------------- | :--------------: | ----------------------------: |
+Christos Karabatsos| cckarabatsos | chris.karabatsos5@gmail.com
 Diana Alexandra Merlusca|	dianaoana1|	dianamerlusca2001@gmail.com
 Matthew Beaulieu|	MatthewBeaulieu0|	matthew.beaulieu631@gmail.com
 Bogdan Podariu|	Bogdanpoda|	podariubogdan1@gmail.com
