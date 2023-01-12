@@ -12,10 +12,10 @@ Here are the objectives of the project:
 Features of the platform
 
 ## Tools and Techniques (To be discussed this saturday)
-Frontend:
-Backend: 
-Database:
-Mock-up: 
+Frontend: <br/>
+Backend: <br/>
+Database:<br/>
+Mock-up: <br/>
 
 ## Team members
 | Name                     |      GitHub id   |                         Email |
