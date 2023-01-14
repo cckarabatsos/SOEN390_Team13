@@ -28,4 +28,4 @@ Nadia Beauregard|	nadiaaab|	nadiabeauu@gmail.com
 Cédric Michaud	|cemichaud|	michaud.cedric18@gmail.com
 Olivier Langlois Medaino	| SkylineP |	olivier.medaino.98@outlook.com
 Saad Khan	| khandragon |	saaadkhan23@yahoo.ca
-Dzmitry Fiodarau | | dzm.fiodarau@gmail.com
+Dzmitry Fiodarau | dzm-fiodarau | dzm.fiodarau@gmail.com
