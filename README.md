@@ -26,3 +26,6 @@ Matthew Beaulieu|	MatthewBeaulieu0|	matthew.beaulieu631@gmail.com
 Bogdan Podariu|	Bogdanpoda|	podariubogdan1@gmail.com
 Nadia Beauregard|	nadiaaab|	nadiabeauu@gmail.com
 Cédric Michaud	|cemichaud|	michaud.cedric18@gmail.com
+Oliver Medaino	| |	olivier.medaino.98@outlook.com
+Saad Khan	| |	saaadkhan23@yahoo.ca
+Dzmitry Fiodarau | | dzm.fiodarau@gmail.com
