@@ -12,8 +12,8 @@ Here are the objectives of the project:
 Features of the platform
 
 ## Tools and Techniques (To be discussed this saturday)
-Frontend: <br/>
-Backend: <br/>
+Frontend: ReactJS (WebApp) & React Native (MobileApp) <br/>
+Backend: Firebase <br/>
 Database:<br/>
 Mock-up: <br/>
 
