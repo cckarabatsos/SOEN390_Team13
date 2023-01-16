@@ -12,10 +12,10 @@ Here are the objectives of the project:
 Features of the platform
 
 ## Tools and Techniques (To be discussed this saturday)
-Frontend: ReactJS (WebApp) & React Native (MobileApp) <br/>
-Backend: Firebase <br/>
-Database:<br/>
-Mock-up: <br/>
+Frontend: ReactJS (WebApp) & React Native (MobileApp) (https://reactjs.org/) <br/>
+Backend: Firebase (https://firebase.google.com/) <br/>
+Database: Firebase Realtime Database (https://firebase.google.com/) <br/>
+Mock-up: Figma (https://www.figma.com/) <br/>
 
 ## Team members
 | Name                     |      GitHub id   |                         Email |
@@ -28,4 +28,4 @@ Nadia Beauregard|	nadiaaab|	nadiabeauu@gmail.com
 Cédric Michaud	|cemichaud|	michaud.cedric18@gmail.com
 Olivier Langlois Medaino	| SkylineP |	olivier.medaino.98@outlook.com
 Saad Khan	| khandragon |	saaadkhan23@yahoo.ca
-Dzmitry Fiodarau | | dzm.fiodarau@gmail.com
+Dzmitry Fiodarau | dzm-fiodarau | dzm.fiodarau@gmail.com
