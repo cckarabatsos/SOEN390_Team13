@@ -1,7 +1,18 @@
 import React from "react";
-import { auth, provider } from "../firebaseConfig";
+import { auth, provider, db } from "../firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
+import { async } from "@firebase/util";
+
+async function CreateUser() {
+    console.log("hello");
+    const usersCollectionRef = collection(db, "users");
+    await addDoc(usersCollectionRef, {
+        email: auth.currentUser.email,
+        name: auth.currentUser.displayName,
+    });
+}
 
 function Login({ setIsAuth }) {
     let navigate = useNavigate();
@@ -11,7 +22,7 @@ function Login({ setIsAuth }) {
     const signInWithGoogle = () => {
         signInWithPopup(auth, provider).then((result) => {
             localStorage.setItem("isAuth", true);
-            setIsAuth(true);
+            CreateUser();
             navigate("/");
         });
     };
