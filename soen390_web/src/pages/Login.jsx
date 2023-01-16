@@ -23,7 +23,6 @@ function Login({ setIsAuth }) {
         signInWithPopup(auth, provider).then((result) => {
             localStorage.setItem("isAuth", true);
             setIsAuth(true)
-            //Add setisAuth(true) later on
             CreateUser();
             navigate("/");
         });
