@@ -22,7 +22,7 @@ const AppWrapper = () => {
                 <Routes>
                     <Route path="/" element={<MainTitle />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
                 </Routes>
             </Router>
             <button onClick={signUserOut}> Log Out</button>
