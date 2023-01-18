@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Button,ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import loginBack from './Components/Images/logInBackground.png'
 
 import Login from './Pages/Login';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -24,14 +26,23 @@ function LogoTitle2() {
   );
 }
 
+
+
 const HomeScreen = ({navigation}: {navigation: any}) => {
   return (
-    <Button
+    <View>
+      <ImageBackground source={loginBack} resizeMode="cover">
+
+      <Button
       title="Do not have an account, Create one today"
       onPress={() =>
         navigation.navigate('Register', {name: 'Jane'})
       }
     />
+    </ImageBackground>
+
+    </View>
+    
   );
 };
 
@@ -51,7 +62,7 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{headerTitle: (props:any) => <LogoTitle2 {...props} /> }}
+          options={{headerTitle: (props:any) => <LogoTitle2 {...props} />  }}
         />
         <Stack.Screen name="Register" component={()=>{return(<Login></Login>)}} />
       </Stack.Navigator>
