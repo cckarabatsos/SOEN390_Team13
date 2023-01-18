@@ -1,16 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Button,ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Button,ImageBackground,TextInput, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import loginBack from './Components/Images/logInBackground.png'
+import loginBack from '../Components/Images/logInBackground.png'
 
 import Login from './Pages/Login';
 import Icon from 'react-native-vector-icons/Entypo';
 
 
 const Stack = createNativeStackNavigator();
-
+const image = require('./Components/Images/logInBackground.png')
 
 function LogoTitle2() {
   return (
@@ -31,7 +31,7 @@ function LogoTitle2() {
 const HomeScreen = ({navigation}: {navigation: any}) => {
   return (
     <View>
-      <ImageBackground source={loginBack} resizeMode="cover">
+      <ImageBackground source={image} resizeMode="cover" style={{position:'absolute',left:0, right:0,width: Dimensions.get('window').width,height:Dimensions.get('window').height}} >
 
       <Button
       title="Do not have an account, Create one today"
@@ -39,7 +39,29 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         navigation.navigate('Register', {name: 'Jane'})
       }
     />
+     <Text>Frist name</Text>
+     <TextInput
+        style={styles.input}
+       
+        placeholder="useless placeholder"
+        keyboardType="default"
+      />
+      <Text>email</Text>
+     <TextInput
+        style={styles.input}
+       
+        placeholder="useless placeholder"
+        keyboardType="default"
+      />
+      <Text>Password</Text>
+     <TextInput
+        style={styles.input}
+       
+        placeholder="useless placeholder"
+        keyboardType="default"
+      />
     </ImageBackground>
+   
 
     </View>
     
@@ -76,5 +98,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },image: {
+    flex: 1,
+    justifyContent: 'center',
+  },input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 0,
+    padding: 10,
+    backgroundColor:'rgba(211, 211, 211, 0.8)'
   },
 });
