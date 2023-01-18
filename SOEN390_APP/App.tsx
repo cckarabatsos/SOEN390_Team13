@@ -2,16 +2,34 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import Login from './Pages/Login';
+import Icon from 'react-native-vector-icons/Entypo';
+
 
 const Stack = createNativeStackNavigator();
+
+
+function LogoTitle2() {
+  return (
+    <View
+    style={{flexDirection:'row', flexWrap:'wrap',justifyContent:'center', alignItems:'center'}}>
+      
+    <Icon name="log-out" size={50} color="black" />
+    <Text  style={{fontSize:30}}> LinkedOut</Text>
+
+
+    </View>
+    
+  );
+}
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   return (
     <Button
-      title="Go to Jane's profile"
+      title="Do not have an account, Create one today"
       onPress={() =>
-        navigation.navigate('Profile', {name: 'Jane'})
+        navigation.navigate('Register', {name: 'Jane'})
       }
     />
   );
@@ -24,13 +42,18 @@ const ProfileScreen = () => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions={{ headerStyle: { backgroundColor: '#967BB6' }  }}
+      
+      >
+        
+
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{title: 'Welcome'}}
+          options={{headerTitle: (props:any) => <LogoTitle2 {...props} /> }}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Register" component={()=>{return(<Login></Login>)}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
