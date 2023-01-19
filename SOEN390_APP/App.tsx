@@ -15,6 +15,7 @@ import Login from "./Pages/Login";
 import RegisterPage from "./Pages/Register";
 import Icon from "react-native-vector-icons/Entypo";
 import Signup from "./Pages/Register";
+import Home from "./Pages/HomePage";
 //constant Stack is use to set up the navigation between the different screen required in the application 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ const RegisterScreen = () => {
   return <Signup></Signup>;
 };
 
+const HomeScreen=()=>{
+  return<Home></Home>
+
+}
+
 ////return the whole app as a single jsx element, in here just add each page to its repective screen
 export default function App() {
   return (
@@ -62,6 +68,13 @@ export default function App() {
           name="Register"
           component={RegisterScreen}
         />
+
+        <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        />
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );
