@@ -1,111 +1,86 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Button,ImageBackground,TextInput, Dimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import loginBack from '../Components/Images/logInBackground.png'
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ImageBackground,
+  TextInput,
+  Dimensions,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Login from "./Pages/Login";
+import RegisterPage from "./Pages/Register";
+import Icon from "react-native-vector-icons/Entypo";
 
-import Login from './Pages/Login';
-import Icon from 'react-native-vector-icons/Entypo';
-
-
+//constant Stack is use to set up the navigation between the different screen required in the application 
 const Stack = createNativeStackNavigator();
-const image = require('./Components/Images/logInBackground.png')
 
-function LogoTitle2() {
+// this function return the logo and the app name in the login screen
+function LogoTitle() {
   return (
-    <View
-    style={{flexDirection:'row', flexWrap:'wrap',justifyContent:'center', alignItems:'center'}}>
-      
-    <Icon name="log-out" size={50} color="black" />
-    <Text  style={{fontSize:30}}> LinkedOut</Text>
-
-
+    <View style={styles.logoTitle}>
+      <Icon name="log-out" size={50} color="black" />
+      <Text style={{ fontSize: 30 }}> LinkedOut</Text>
     </View>
-    
   );
 }
 
+/*
+***** in the section below register all pages as const*******************************************
+***** each subsequent const will return the specific page as a jsx element that is given to the component parameter of each stack.screen ie (component = {LoginScreen)************
+*/
 
 
-const HomeScreen = ({navigation}: {navigation: any}) => {
-  return (
-    <View>
-      <ImageBackground source={image} resizeMode="cover" style={{position:'absolute',left:0, right:0,width: Dimensions.get('window').width,height:Dimensions.get('window').height}} >
-
-      <Button
-      title="Do not have an account, Create one today"
-      onPress={() =>
-        navigation.navigate('Register', {name: 'Jane'})
-      }
-    />
-     <Text>Frist name</Text>
-     <TextInput
-        style={styles.input}
-       
-        placeholder="useless placeholder"
-        keyboardType="default"
-      />
-      <Text>email</Text>
-     <TextInput
-        style={styles.input}
-       
-        placeholder="useless placeholder"
-        keyboardType="default"
-      />
-      <Text>Password</Text>
-     <TextInput
-        style={styles.input}
-       
-        placeholder="useless placeholder"
-        keyboardType="default"
-      />
-    </ImageBackground>
-   
-
-    </View>
-    
-  );
+// return the Login page 
+//param: navigation props used to navigate between Login page and register page
+const LoginScreen = ({ navigation }: { navigation: any }) => {
+  return <Login navigation={navigation}></Login>;
 };
 
-const ProfileScreen = () => {
-  return <Login></Login>;
-}
+// return the Register page (not yet implemented)
+//param: none
+const RegisterScreen = () => {
+  return <RegisterPage></RegisterPage>;
+};
 
+////return the whole app as a single jsx element, in here just add each page to its repective screen
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-      screenOptions={{ headerStyle: { backgroundColor: '#967BB6' }  }}
-      
+        screenOptions={{ headerStyle: { backgroundColor: "#967BB6" } }}
       >
-        
-
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{headerTitle: (props:any) => <LogoTitle2 {...props} />  }}
+          name="Login"
+          component={LoginScreen}
+          options={{ headerTitle: (props: any) => <LogoTitle {...props} /> }}
         />
-        <Stack.Screen name="Register" component={()=>{return(<Login></Login>)}} />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
+
+// styles for the app.tsx element 
+//add css-like styles here
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },image: {
-    flex: 1,
-    justifyContent: 'center',
-  },input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 0,
-    padding: 10,
-    backgroundColor:'rgba(211, 211, 211, 0.8)'
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logoTitle: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
