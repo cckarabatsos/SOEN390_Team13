@@ -5,7 +5,7 @@ export const post_schema = yup
     .shape({
         postID: yup.string().required(),
         ownerID: yup.string().required(),
-        timestamp: yup.timestamp().required(),
+        timestamp: yup.string().required(),
         content: yup.string().required(),
     })
     .required();
