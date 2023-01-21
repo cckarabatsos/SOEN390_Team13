@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { auth } from "../firebaseConfig"
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -7,9 +8,17 @@ const Signup = () => {
   const [firstName, setfirstname] = useState('');
   const [lastname, setlastname] = useState('');
   const [confirmpassword, setconfirmpassword] = useState('');
-  const handleSignup = () => {
-    // Make API call to sign up user with the email and password provided
-  };
+
+
+  const handleSignUp = () => {
+    /* auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials: any) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error: any) => alert(error.message)) */
+  }
 
   return (
     <View style={styles.container}>
@@ -49,7 +58,7 @@ const Signup = () => {
         placeholder="Please confirm your password"
         style={styles.input}
       />
-      <TouchableOpacity onPress={handleSignup} style={styles.button}>
+      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
         <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
     </View>

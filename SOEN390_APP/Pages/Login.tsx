@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,8 +7,11 @@ import {
   TextInput,
   Button,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from "react-native";
+import { auth } from "../firebaseConfig";
+
 
 // fecth the backGround images from Image folder
 const background_Image = require("../Components/Images/logInBackground.png");
@@ -19,8 +22,14 @@ export default function Login({ navigation }: { navigation: any }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-  
-
+/*     useEffect(() => {
+      const unsubscribe = auth.onAuthStateChange((user: any) => {
+        if(user){
+          navigation.navigate("Home")
+        }
+      })
+      return unsubscribe
+    }, []) */
 
     const handleLogIn = () => {
         // Make API call to sign up user with the email and password provided
@@ -29,12 +38,18 @@ export default function Login({ navigation }: { navigation: any }) {
             navigation.navigate("Home")
         }
 
+   /*      auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials: any) => {
+        const user = userCredentials.user;
+        console.log('signed in with:', user.email);
+      })
+      .catch((error: any) => alert(error.message)) */
       };
-
 
     
   return (
-    <View >
+    <KeyboardAvoidingView >
       <ImageBackground
         source={background_Image}
         resizeMode="cover"
@@ -50,15 +65,15 @@ export default function Login({ navigation }: { navigation: any }) {
           title="Do not have an account, Create one today"
           onPress={() => navigation.navigate("Register")}
         />
-        <View style={styles.emptyContainer}>
+        <KeyboardAvoidingView style={styles.emptyContainer}>
 
-        </View>
+        </KeyboardAvoidingView>
         
-        <View>
+        <KeyboardAvoidingView>
         <Text style={styles.label}>email</Text>
         <TextInput
           value={email}
-          onChangeText={setEmail}
+          onChangeText={text => setEmail(text)}
           style={styles.input}
           placeholder="useless placeholder"
           keyboardType="default"
@@ -66,26 +81,31 @@ export default function Login({ navigation }: { navigation: any }) {
         <Text style={styles.label}>Password</Text>
         <TextInput
           value={password}
-          onChangeText={setPassword}
+          onChangeText={text => setPassword(text)}
           style={styles.input}
+          secureTextEntry
           placeholder="useless placeholder"
           keyboardType="default"
         />
-        <TouchableOpacity onPress={handleLogIn}  style={styles.button}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
 
+        <TouchableOpacity 
+          onPress={handleLogIn}  
+          style={styles.button}>
+            
+         <Text style={styles.buttonText}>Log In</Text>
+        </TouchableOpacity>
+      
 
-        </View>
+        </KeyboardAvoidingView>
         
       </ImageBackground>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
