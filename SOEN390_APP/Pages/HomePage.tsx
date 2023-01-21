@@ -1,6 +1,6 @@
 import React, { Key, useState } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 class ajob {
@@ -27,12 +27,11 @@ class ajob {
 
   
 
-const Home = () => {
+const Home = ({ navigation }: { navigation: any }) => {
   const [jobQuery, setJobQuery] = useState('');
   const [jobs, setJobs] = useState<ajob[]>([]);
 
- 
-
+  //onst navigation = useNavigation();
   const handleSearch = async () => {
     console.log("hello")
   };
@@ -59,6 +58,7 @@ const Home = () => {
           </View>
         ))}
       </ScrollView>
+
     </View>
   );
 };
@@ -116,4 +116,20 @@ const styles = StyleSheet.create({
   jobLocation: {
     fontSize: 14,
   },
+  button: {
+    margin: 9,
+    marginLeft:20,
+    backgroundColor: '#0077B5',
+    padding: 12,
+    alignItems: 'center',
+    marginTop: 16,
+    width:'60%',
+    borderRadius:120
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize:20
+
+  }
 });
