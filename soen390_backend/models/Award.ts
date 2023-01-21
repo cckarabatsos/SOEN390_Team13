@@ -3,11 +3,11 @@ import * as yup from "yup";
 export const award_schema = yup
     .object()
     .shape({
-        awardID: yup.number().required(),
+        awardID: yup.string().required(),
         ownerID: yup.string().required(),
         name: yup.string().required(),
         description: yup.string().required(),
-        timestamp: yup.string().required(),
+        timestamp: yup.timestamp().required(),
     })
     .required();
 

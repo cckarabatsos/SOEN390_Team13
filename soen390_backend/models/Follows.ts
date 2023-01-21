@@ -3,9 +3,9 @@ import * as yup from "yup";
 export const follows_schema = yup
     .object()
     .shape({
-        followerID: yup.number().required(),
+        followerID: yup.string().required(),
         followeeID: yup.string().required(),
-        date: yup.string().required(),
+        date: yup.timestamp().required(),
         followsID: yup.string().required(),
     })
     .required();

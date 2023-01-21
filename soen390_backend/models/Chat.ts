@@ -3,11 +3,11 @@ import * as yup from "yup";
 export const chat_schema = yup
     .object()
     .shape({
-        chatID: yup.number().required(),
+        chatID: yup.string().required(),
         senderID: yup.string().required(),
         receiverID: yup.string().required(),
         content: yup.string().required(),
-        timestamp: yup.string().required(),
+        timestamp: yup.timestamp().required(),
         attachement: yup.string().required(),
     })
     .required();

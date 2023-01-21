@@ -3,10 +3,10 @@ import * as yup from "yup";
 export const experience_schema = yup
     .object()
     .shape({
-        experienceID: yup.number().required(),
+        experienceID: yup.string().required(),
         atPresent: yup.boolean().required(),
-        startDate: yup.string().required(),
-        endDate: yup.string().when("atPresent", {
+        startDate: yup.timestamp().required(),
+        endDate: yup.timestamp().when("atPresent", {
             is: false,
             then: yup
                 .string()
@@ -15,7 +15,7 @@ export const experience_schema = yup
         company: yup.string().required(),
         position: yup.string().required(),
         type: yup.string().required(),
-        ownerID: yup.number().required(),
+        ownerID: yup.string().required(),
     })
     .required();
 

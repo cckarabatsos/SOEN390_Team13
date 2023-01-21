@@ -3,15 +3,15 @@ import * as yup from "yup";
 export const user_schema = yup
     .object()
     .shape({
-        userID: yup.number().required(),
+        userID: yup.string().required(),
         name: yup.string().required(),
         password: yup.string(),
         email: yup.string().required(),
         PrivateKey: yup.string(),
         PublicKey: yup.string(),
-        picture: yup.string(), //????
+        picture: yup.string(),
         resume: yup.string(),
-        coverLetter: yup.string(), //??
+        coverLetter: yup.string(),
         bio: yup.string(),
         currentPosition: yup.string(),
         currentCompany: yup.string(),
