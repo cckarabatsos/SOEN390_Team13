@@ -11,5 +11,25 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const User = db.collection("users");
-module.exports = User;
+/*
+Connecting all of the database to the backend
+*/
+const AwardDB = db.collection("awards");
+const ChatDB = db.collection("chats");
+const ExperienceDB = db.collection("experiences");
+const FollowDB = db.collection("follows");
+const PostDB = db.collection("posts");
+const ProjectDB = db.collection("projects");
+const SkillDB = db.collection("skills");
+const UserDB = db.collection("users");
+/*
+Exporting the databases for use in the other files
+*/
+module.exports = AwardDB;
+module.exports = ChatDB;
+module.exports = ExperienceDB;
+module.exports = FollowDB;
+module.exports = PostDB;
+module.exports = ProjectDB;
+module.exports = SkillDB;
+module.exports = UserDB;
