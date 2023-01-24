@@ -6,71 +6,59 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 dotenv.config();
-
+const User = require("./firebaseconfig");
 const app: Application = express();
-const port: number = 7000;
-// const router:Router = express.Router();
+const port: number = 7000; //Port for the backend
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin: ["http;//localohost:3000"],
+        origin: ["http;//localhost:3000"],
         credentials: true,
     })
 );
-var route,
-    routes = [];
 
-app._router.stack.forEach(function (middleware: any) {
-    if (middleware.route) {
-        // routes registered directly on the app
-        routes.push(middleware.route);
-    } else if (middleware.name === "router") {
-        // router middleware
-        middleware.handle.stack.forEach(function (handler: any) {
-            route = handler.route;
-            route && routes.push(route);
-        });
-    }
-});
-console.log(route);
 //Example of route to test
-// app.get("/", async (_: Request, res: Response) => {
-//     const snapshot = await User.get();
-//     const list = snapshot.docs.map((doc: any) => ({
-//         id: doc.id,
-//         ...doc.data(),
-//     }));
-//     res.send(list);
-// });
+
+// const User = require("./firebaseconfig");
+app.get("/api", async (_: Request, res: Response) => {
+    const snapshot = await User.get();
+    const list = snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+    res.send(list);
+});
 //Requiring routes for different request types
 
-const awardRouter = require("./routes/awardRoutes");
-app.use("/award", awardRouter);
-
 // These are to be added when we add the module exports for them in due time
+//const awardRouter = require("./routes/awardRoutes");
+//app.use("/award", awardRouter);
+
 // const chat = require("./routes/chat_routes");
-// app.use("/award", chat);
+// app.use("/chat", chat);
 
 // const experience = require("./routes/experience_routes");
-// app.use("/award", experience);
+// app.use("/experience", experience);
 
 // const follows = require("./routes/follows_routes");
-// app.use("/award", follows);
+// app.use("/follows", follows);
 
 // const post = require("./routes/post_routes");
-// app.use("/award", post);
+// app.use("/post", post);
 
 // const skill = require("./routes/user_routes");
-// app.use("/user", skill);
+// app.use("/skill", skill);
 
-const userRouter = require("./routes/userRoutes");
-app.use("/user", userRouter);
+const user = require("./routes/userRoutes");
+// Logging the routes in the user router
+console.log(user.stack);
+app.use("/user", user);
 
 //Heartbeat Route
-app.get("/hi", (_: Request, res: Response) => {
-    res.send("Hello World!");
+app.get("/", (_: Request, res: Response) => {
+    res.send("Hi!");
 });
 
 app.listen(port, () => {

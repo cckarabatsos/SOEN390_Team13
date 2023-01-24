@@ -1,7 +1,8 @@
 import { findUserWithID } from "../services/userServices";
 
-export async function getUserWithID(user_id: number) {
-    let user = await findUserWithID(user_id);
+export async function getUserWithID(userID: string) {
+    let user = await findUserWithID(userID);
+    console.log(user);
     if (user) {
         return [200, user];
     } else {
