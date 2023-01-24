@@ -5,7 +5,7 @@ export const follows_schema = yup
     .shape({
         followerID: yup.string().required(),
         followeeID: yup.string().required(),
-        date: yup.timestamp().required(),
+        date: yup.string().required(),
         followsID: yup.string().required(),
     })
     .required();

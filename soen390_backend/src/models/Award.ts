@@ -7,7 +7,7 @@ export const award_schema = yup
         ownerID: yup.string().required(),
         name: yup.string().required(),
         description: yup.string().required(),
-        timestamp: yup.timestamp().required(),
+        timestamp: yup.string().required(),
     })
     .required();
 

@@ -5,8 +5,8 @@ export const experience_schema = yup
     .shape({
         experienceID: yup.string().required(),
         atPresent: yup.boolean().required(),
-        startDate: yup.timestamp().required(),
-        endDate: yup.timestamp().when("atPresent", {
+        startDate: yup.string().required(),
+        endDate: yup.string().when("atPresent", {
             is: false,
             then: yup
                 .string()

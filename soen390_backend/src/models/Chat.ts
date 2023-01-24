@@ -7,7 +7,7 @@ export const chat_schema = yup
         senderID: yup.string().required(),
         receiverID: yup.string().required(),
         content: yup.string().required(),
-        timestamp: yup.timestamp().required(),
+        timestamp: yup.string().required(),
         attachement: yup.string().required(),
     })
     .required();
