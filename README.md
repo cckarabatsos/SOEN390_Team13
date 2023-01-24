@@ -15,7 +15,7 @@ Features of the platform
 Frontend: ReactJS (WebApp) & React Native (MobileApp) (https://reactjs.org/) <br/>
 Backend: Express (https://expressjs.com/) <br/>
 Database: Firebase Firestore Database (https://firebase.google.com/) <br/>
-Language : (https://www.typescriptlang.org/) <br/>
+Language : Typescript (https://www.typescriptlang.org/) <br/>
 Mock-up: Figma (https://www.figma.com/) <br/>
 
 ## Team members
