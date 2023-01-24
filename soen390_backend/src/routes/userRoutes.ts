@@ -1,9 +1,15 @@
 import express, { Request, Response } from "express";
-import { getUserWithID } from "../controllers/userControllers";
+import error from "console";
+
+import {
+    getUserWithID,
+    getUserWithEmail,
+    comparePasswords,
+} from "../controllers/userControllers";
 const user = express.Router();
 user.use(express.json());
-
-//First example route look at postman for the route
+// import { User } from "../models/User";
+//Get complete user by their id
 user.get("/id/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     console.log(userID);
@@ -21,6 +27,35 @@ user.get("/id/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-
+// Get user by their email then verify the password
+user.get("/api/login", async (req: Request, res: Response) => {
+    let user;
+    try {
+        let email = req.body.email;
+        let pwd = req.body.password;
+        const userArr: any = await getUserWithEmail(email).then();
+        console.log(userArr);
+        const status = userArr[0];
+        const { password, ...user } = await userArr[1];
+        let match = await comparePasswords(pwd, password);
+        if (status == 404) {
+            throw error;
+        }
+        if (match) {
+            res.cookie("FrontendUser", {
+                maxAge: 28800000,
+                path: "/",
+                httpOnly: true,
+                sameSite: "none",
+                secure: true,
+            });
+            res.status(200).json(user);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+    return user;
+});
 //Exporting the user as a module
 module.exports = user;
