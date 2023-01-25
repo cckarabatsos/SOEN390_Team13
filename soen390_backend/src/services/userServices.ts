@@ -1,4 +1,5 @@
 //thx saad
+import { error } from "console";
 import firebase from "firebase";
 // import { database } from "firebase-admin";
 
@@ -21,15 +22,26 @@ export const findUserWithEmail = (
         .where("email", "==", email)
         .get()
         .then((snapshot) => {
-            let data = processData(snapshot);
-            callback(data);
+            if (!snapshot.empty) {
+                let data = processData(snapshot);
+                callback(data);
+            } else {
+                console.log("YO");
+                callback(null);
+            }
         })
         .catch((error) => {
             console.log("Error getting the document:", error);
+            throw new Error(error.message);
         });
 };
 
 function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any }) => doc.data());
-    return data[0];
+    if (data !== null) {
+        return data[0];
+    } else {
+        console.log("ERROR");
+        throw error;
+    }
 }

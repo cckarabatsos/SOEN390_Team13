@@ -12,10 +12,10 @@ export async function getUserWithID(userID: string) {
 export async function getUserWithEmail(email: string) {
     return new Promise((resolve, _) => {
         findUserWithEmail(email, (user) => {
-            if (user !== null) {
-                resolve([200, user]);
+            if (user == null) {
+                resolve([404, null]);
             } else {
-                resolve([404, { msg: "user not found" }]);
+                resolve([200, user]);
             }
         });
     });
