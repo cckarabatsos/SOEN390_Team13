@@ -12,18 +12,19 @@ export function GoogleSignin({ setIsAuth }) {
   });
 }
 
-export async function SignInUser({ setIsAuth }, reqEmail, reqPassword) {
+export async function SignInUser(reqEmail, reqPassword) {
   try {
-    console.log("called?");
     const response = await axios.get(api.BACKEND_API + "/user/api/login", {
       params: {
         email: reqEmail,
         password: reqPassword,
       },
     });
-    console.log(response);
+    console.log(response.data.name);
+    return response.data;
   } catch (error) {
-    console.error(error);
+    console.log("error", error);
+    return false;
   }
   // signInWithPopup(auth, provider).then((result) => {
   //   localStorage.setItem("isAuth", true);

@@ -8,11 +8,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleSignin, SignInUser } from "../api/loginApi";
+import { useState } from "react";
 
 function LoginDialog() {
   const [open, setOpen] = React.useState(false);
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+
+  let navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -22,12 +26,16 @@ function LoginDialog() {
     setOpen(false);
   };
 
-  const signInUser = () => {
-    const success = SignInUser(emailInput, passwordInput);
-    success ? navigate("/") : console.log("Login Fail");
+  const signInUser = async () => {
+    const success = await SignInUser(emailInput, passwordInput);
+    console.log(success);
+    setIsAuth(success);
+    if (success.email !== "") {
+      console.log("here");
+      navigate("/");
+    }
+    success.email !== "" ? navigate(-1) : console.log("Login Fail");
   };
-
-  let navigate = useNavigate();
 
   const signInWithGoogle = () => {
     const success = GoogleSignin();

@@ -12,23 +12,31 @@ const port: number = 7000; //Port for the backend
 
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(
-    cors({
-        origin: ["http;//localhost:3000"],
-        credentials: true,
-    })
+  cors({
+    origin: ["http;//localhost:3000"],
+    credentials: true,
+  })
 );
+app.use(function (_req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "*");
+  next();
+});
 
 //Example of route to test
 
 // const User = require("./firebaseconfig");
 app.get("/api", async (_: Request, res: Response) => {
-    const snapshot = await User.get();
-    const list = snapshot.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data(),
-    }));
-    res.send(list);
+  const snapshot = await User.get();
+  const list = snapshot.docs.map((doc: any) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  res.send(list);
 });
 //Requiring routes for different request types
 
@@ -60,9 +68,9 @@ app.use("/user", user);
 
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {
-    res.send("Hi!");
+  res.send("Hi!");
 });
 
 app.listen(port, () => {
-    console.log(`app listening on port ${port}`);
+  console.log(`app listening on port ${port}`);
 });

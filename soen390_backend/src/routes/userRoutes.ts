@@ -34,10 +34,9 @@ user.get("/id/:userID", async (req: Request, res: Response) => {
 user.get("/api/login", async (req: Request, res: Response) => {
   let user;
   try {
-    let email: string = req.body.email;
-    let pwd: string = req.body.password;
+    let email: string = req.query.email as string;
+    let pwd: string = req.query.password as string;
     const userArr: User = await getUserWithEmail(email).then();
-    console.log(userArr);
     const status = userArr[0];
 
     if (status == 404) {
