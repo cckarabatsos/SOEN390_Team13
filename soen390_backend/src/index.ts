@@ -52,6 +52,9 @@ app.get("/api", async (_: Request, res: Response) => {
 // app.use("/skill", skill);
 
 const user = require("./routes/userRoutes");
+// Logging the different routes in the user router
+// console.log(user.stack);
+
 // Logging the routes in the user router
 app.use("/user", user);
 
