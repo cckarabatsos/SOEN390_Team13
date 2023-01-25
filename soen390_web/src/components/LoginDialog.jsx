@@ -7,9 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider, db } from "../firebaseConfig";
-import { CreateUser } from "../api/loginApi";
+import { GoogleSignin, SignInUser } from "../api/loginApi";
 
 function LoginDialog() {
   const [open, setOpen] = React.useState(false);
@@ -25,19 +23,15 @@ function LoginDialog() {
   };
 
   const signInUser = () => {
-    console.log(emailInput);
-    console.log(passwordInput);
+    const success = SignInUser(emailInput, passwordInput);
+    success ? navigate("/") : console.log("Login Fail");
   };
 
   let navigate = useNavigate();
 
-  const signInWithGoogle = ({ setIsAuth }) => {
-    signInWithPopup(auth, provider).then((result) => {
-      localStorage.setItem("isAuth", true);
-      setIsAuth(true);
-      CreateUser();
-      navigate("/");
-    });
+  const signInWithGoogle = () => {
+    const success = GoogleSignin();
+    success ? navigate("/") : console.log("Login Fail");
   };
 
   return (
