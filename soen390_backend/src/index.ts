@@ -54,6 +54,8 @@ app.get("/api", async (_: Request, res: Response) => {
 const user = require("./routes/userRoutes");
 // Logging the different routes in the user router
 // console.log(user.stack);
+
+// Logging the routes in the user router
 app.use("/user", user);
 
 //Heartbeat Route
