@@ -53,7 +53,6 @@ app.get("/api", async (_: Request, res: Response) => {
 
 const user = require("./routes/userRoutes");
 // Logging the routes in the user router
-console.log(user.stack);
 app.use("/user", user);
 
 //Heartbeat Route
