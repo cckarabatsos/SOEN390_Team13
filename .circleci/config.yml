@@ -14,6 +14,7 @@ workflows:
     jobs:
       - node/test:
           # This is the node version to use for the `cimg/node` tag
+          working_directory: ~/SOEN390_TEAM13/soen390_web
           # Relevant tags can be found on the CircleCI Developer Hub
           app-dir: ~/SOEN390_TEAM13/soen390_web
           # https://circleci.com/developer/images/image/cimg/node
