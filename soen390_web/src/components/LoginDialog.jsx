@@ -7,14 +7,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider, db } from "../firebaseConfig";
-import { CreateUser } from "../api/loginApi";
+import { GoogleSignin, SignInUser } from "../api/loginApi";
+import { useState } from "react";
 
 function LoginDialog() {
   const [open, setOpen] = React.useState(false);
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+
+  let navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,20 +26,20 @@ function LoginDialog() {
     setOpen(false);
   };
 
-  const signInUser = () => {
-    console.log(emailInput);
-    console.log(passwordInput);
+  const signInUser = async () => {
+    const success = await SignInUser(emailInput, passwordInput);
+    console.log(success);
+    setIsAuth(success);
+    if (success.email !== "") {
+      console.log("here");
+      navigate("/");
+    }
+    success.email !== "" ? navigate(-1) : console.log("Login Fail");
   };
 
-  let navigate = useNavigate();
-
-  const signInWithGoogle = ({ setIsAuth }) => {
-    signInWithPopup(auth, provider).then((result) => {
-      localStorage.setItem("isAuth", true);
-      setIsAuth(true);
-      CreateUser();
-      navigate("/");
-    });
+  const signInWithGoogle = () => {
+    const success = GoogleSignin();
+    success ? navigate("/") : console.log("Login Fail");
   };
 
   return (
