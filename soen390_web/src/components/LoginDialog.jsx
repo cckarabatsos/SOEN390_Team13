@@ -6,10 +6,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider, db } from "../firebaseConfig";
+import { CreateUser } from "../api/loginApi";
 
 function LoginDialog() {
   const [open, setOpen] = React.useState(false);
+  const [emailInput, setEmailInput] = React.useState("");
+  const [passwordInput, setPasswordInput] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -17,6 +22,22 @@ function LoginDialog() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const signInUser = () => {
+    console.log(emailInput);
+    console.log(passwordInput);
+  };
+
+  let navigate = useNavigate();
+
+  const signInWithGoogle = ({ setIsAuth }) => {
+    signInWithPopup(auth, provider).then((result) => {
+      localStorage.setItem("isAuth", true);
+      setIsAuth(true);
+      CreateUser();
+      navigate("/");
+    });
   };
 
   return (
@@ -38,6 +59,8 @@ function LoginDialog() {
             type="email"
             fullWidth
             variant="standard"
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
           />
           <TextField
             autoFocus
@@ -47,11 +70,14 @@ function LoginDialog() {
             type="password"
             fullWidth
             variant="standard"
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={signInUser}>Sign In</Button>
+          <Button onClick={signInWithGoogle}>Google Signin</Button>
         </DialogActions>
       </Dialog>
     </div>
