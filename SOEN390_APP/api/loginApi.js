@@ -1,5 +1,5 @@
 import { auth, db } from "../firebaseConfig";
-import { addDoc, collection, query,where } from "firebase/firestore";
+import { addDoc, collection, query,where } from "../soen390_backend/firebase/firestore";
 import { ILoginUser } from "../Models/UsersModel";
 
 export async function CreateUser() {
