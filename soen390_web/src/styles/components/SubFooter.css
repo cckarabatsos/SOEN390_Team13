@@ -1,0 +1,35 @@
+.Logo{
+    display: inline-block;
+    /* flex-grow: 1; */
+    cursor: pointer;
+    height: 50px;
+    max-width: 100%;
+    margin-left: -50%;
+}
+
+.Section1{
+    margin-left: 7%;
+    padding: 30px;
+    font-size: 90%;
+    color: black;
+    padding-top: 10px;
+}
+
+.Section2{
+    padding: 30px;
+    color: black;
+    font-size: 90%;
+    padding-top: 10px;
+}
+
+.Section3{
+    padding: 30px;
+    color: black;
+    font-size: 90%;
+    padding-top: 10px;
+
+}
+
+.First{
+
+}
