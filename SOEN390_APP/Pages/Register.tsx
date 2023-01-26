@@ -18,6 +18,9 @@ const Signup = () => {
         console.log(user.email);
       })
       .catch((error: any) => alert(error.message)) */
+
+
+      
   }
 
   return (

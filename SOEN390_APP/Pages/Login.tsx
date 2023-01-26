@@ -11,10 +11,26 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import { auth } from "../firebaseConfig";
+import { LoginUser } from "../api/loginApi";
+import { ILoginUser } from "../Models/UsersModel";
 
 
 // fecth the backGround images from Image folder
 const background_Image = require("../Components/Images/logInBackground.png");
+
+class LoginUserModel implements ILoginUser{
+  email: string;
+  password: string;
+  constructor(email: string, password:string){
+    this.email=email
+    this.password=password
+
+  }
+ 
+
+}
+
+
 
 //return the Login page elements
 export default function Login({ navigation }: { navigation: any }) {
@@ -31,10 +47,14 @@ export default function Login({ navigation }: { navigation: any }) {
       return unsubscribe
     }, []) */
 
-    const handleLogIn = () => {
+    const  handleLogIn = async () => {
         // Make API call to sign up user with the email and password provided
 
-        if(email == '12345' && password=="12345"){
+        let aUser = new LoginUserModel(email,password)
+
+        const validCredential = await LoginUser(aUser)
+
+        if(validCredential){
             navigation.navigate("Home")
         }
 
