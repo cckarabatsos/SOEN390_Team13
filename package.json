@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/react-native-vector-icons": "^6.4.13"
+  },
+  "dependencies": {
+    "@types/react": "^18.0.27"
+  }
+}
