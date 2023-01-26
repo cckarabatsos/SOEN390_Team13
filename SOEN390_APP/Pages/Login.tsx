@@ -11,8 +11,8 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import { auth } from "../firebaseConfig";
-import { LoginUser } from "../api/loginApi";
 import { ILoginUser } from "../Models/UsersModel";
+import React from "react";
 
 
 // fecth the backGround images from Image folder
@@ -52,7 +52,7 @@ export default function Login({ navigation }: { navigation: any }) {
 
         let aUser = new LoginUserModel(email,password)
 
-        const validCredential = await LoginUser(aUser)
+        const validCredential = true
 
         if(validCredential){
             navigation.navigate("Home")

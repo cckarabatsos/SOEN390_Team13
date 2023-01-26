@@ -1,3 +1,1 @@
-export declare function getUserWithID(userID: string): Promise<(string | number)[] | (number | {
-    msg: string;
-})[]>;
+export declare function getUserWithID(userID: string): Promise<(number | import("firebase").default.firestore.DocumentData)[]>;

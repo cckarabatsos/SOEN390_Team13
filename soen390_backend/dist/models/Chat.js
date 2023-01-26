@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.chat_schema = void 0;
-const yup = __importStar(require("yup"));
+var yup = __importStar(require("yup"));
 //Some types are to be changed later
 exports.chat_schema = yup
     .object()
@@ -33,6 +33,7 @@ exports.chat_schema = yup
     senderID: yup.string().required(),
     receiverID: yup.string().required(),
     content: yup.string().required(),
+    timestamp: yup.string().required(),
     attachement: yup.string().required(),
 })
     .required();

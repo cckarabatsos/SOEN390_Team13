@@ -24,13 +24,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.experience_schema = void 0;
-const yup = __importStar(require("yup"));
+var yup = __importStar(require("yup"));
 //Some types are to be changed later
 exports.experience_schema = yup
     .object()
     .shape({
     experienceID: yup.string().required(),
     atPresent: yup.boolean().required(),
+    startDate: yup.string().required(),
+    endDate: yup.string().when("atPresent", {
+        is: false,
+        then: yup
+            .string()
+            .required("Must enter an end date not working there"),
+    }),
     company: yup.string().required(),
     position: yup.string().required(),
     type: yup.string().required(),
