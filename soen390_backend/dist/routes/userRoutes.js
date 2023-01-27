@@ -35,6 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -43,7 +54,7 @@ var express_1 = __importDefault(require("express"));
 var userControllers_1 = require("../controllers/userControllers");
 var user = express_1.default.Router();
 user.use(express_1.default.json());
-//First example route look at postman for the route
+//Get complete user by their id
 user.get("/id/:userID", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userID, status, data, err_1;
     return __generator(this, function (_a) {
@@ -72,6 +83,54 @@ user.get("/id/:userID", function (req, res) { return __awaiter(void 0, void 0, v
                 res.json({ errType: err_1.Name, errMsg: err_1.message });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
+        }
+    });
+}); });
+// Get user by their email then verify the password
+user.get("/api/login", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, email, pwd, userArr, status, _a, password, user_1, match, err_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 6, , 7]);
+                email = req.query.email;
+                pwd = req.query.password;
+                return [4 /*yield*/, (0, userControllers_1.getUserWithEmail)(email).then()];
+            case 1:
+                userArr = _b.sent();
+                status = userArr[0];
+                if (!(status == 404)) return [3 /*break*/, 2];
+                res.status(404).json("User not found");
+                return [2 /*return*/];
+            case 2: return [4 /*yield*/, userArr[1]];
+            case 3:
+                _a = _b.sent(), password = _a.password, user_1 = __rest(_a, ["password"]);
+                return [4 /*yield*/, (0, userControllers_1.comparePasswords)(pwd, password)];
+            case 4:
+                match = _b.sent();
+                if (match) {
+                    res.cookie("FrontendUser", {
+                        maxAge: 28800000,
+                        path: "/",
+                        httpOnly: true,
+                        sameSite: "none",
+                        secure: true,
+                    });
+                    res.status(200).json(user_1);
+                }
+                else {
+                    res
+                        .status(401)
+                        .json("A user with such password email config does not exist");
+                }
+                _b.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                err_2 = _b.sent();
+                res.status(400);
+                res.json({ errType: err_2.name, errMsg: err_2.message });
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/, user];
         }
     });
 }); });

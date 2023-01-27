@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserWithID = void 0;
+exports.comparePasswords = exports.getUserWithEmail = exports.getUserWithID = void 0;
 var userServices_1 = require("../services/userServices");
 function getUserWithID(userID) {
     return __awaiter(this, void 0, void 0, function () {
@@ -59,3 +59,32 @@ function getUserWithID(userID) {
     });
 }
 exports.getUserWithID = getUserWithID;
+function getUserWithEmail(email) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, new Promise(function (resolve, _) {
+                    (0, userServices_1.findUserWithEmail)(email, function (user) {
+                        if (user == null) {
+                            resolve([404, null]);
+                        }
+                        else {
+                            resolve([200, user]);
+                        }
+                    });
+                })];
+        });
+    });
+}
+exports.getUserWithEmail = getUserWithEmail;
+//This is to be later updated to have the compare encrypted passwords
+function comparePasswords(pwd, password) {
+    return __awaiter(this, void 0, void 0, function () {
+        var match;
+        return __generator(this, function (_a) {
+            match = password == pwd;
+            console.log(match);
+            return [2 /*return*/, match];
+        });
+    });
+}
+exports.comparePasswords = comparePasswords;

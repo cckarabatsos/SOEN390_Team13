@@ -67,6 +67,13 @@ app.use((0, cors_1.default)({
     origin: ["http;//localhost:3000"],
     credentials: true,
 }));
+app.use(function (_req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Credentials", "*");
+    next();
+});
 //Example of route to test
 // const User = require("./firebaseconfig");
 app.get("/api", function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -97,6 +104,8 @@ app.get("/api", function (_, res) { return __awaiter(void 0, void 0, void 0, fun
 // const skill = require("./routes/user_routes");
 // app.use("/skill", skill);
 var user = require("./routes/userRoutes");
+// Logging the different routes in the user router
+// console.log(user.stack);
 // Logging the routes in the user router
 app.use("/user", user);
 //Heartbeat Route

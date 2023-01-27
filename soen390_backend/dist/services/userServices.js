@@ -39,19 +39,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findUserWithID = void 0;
+exports.findUserWithEmail = exports.findUserWithID = void 0;
 //thx saad
+var console_1 = require("console");
 var firebase_1 = __importDefault(require("firebase"));
+// import { database } from "firebase-admin";
 var db = firebase_1.default.firestore();
 var findUserWithID = function (userID) { return __awaiter(void 0, void 0, void 0, function () {
-    var snapShot;
+    var snapShot, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, db.collection("users").doc(userID).get()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, db.collection("users").doc(userID).get()];
             case 1:
                 snapShot = _a.sent();
-                return [2 /*return*/, snapShot.data()];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                console.log(error_1);
+                throw error_1;
+            case 3: return [2 /*return*/, snapShot.data()];
         }
     });
 }); };
 exports.findUserWithID = findUserWithID;
+var findUserWithEmail = function (email, callback) {
+    db.collection("users")
+        .where("email", "==", email)
+        .get()
+        .then(function (snapshot) {
+        if (!snapshot.empty) {
+            var data = processData(snapshot);
+            callback(data);
+        }
+        else {
+            console.log("YO");
+            callback(null);
+        }
+    })
+        .catch(function (error) {
+        console.log("Error getting the document:", error);
+        throw new Error(error.message);
+    });
+};
+exports.findUserWithEmail = findUserWithEmail;
+function processData(snapshot) {
+    var data = snapshot.docs.map(function (doc) { return doc.data(); });
+    if (data !== null) {
+        return data[0];
+    }
+    else {
+        console.log("ERROR");
+        throw console_1.error;
+    }
+}
