@@ -5,9 +5,11 @@ import SubFooter from "../components/SubFooter"
 import background from "../assets/profile_background.svg"
 import "../styles/components/UserProfile.css"
 import picture from "../assets/default_picture.jpg"
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import Concordia from "../assets/UserProfileImages/Concordia.png"
 import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg"
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 function UserProfile(props) {
 
@@ -30,7 +32,7 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Education
+                                    Education <AddIcon className="profile-icon"/> <EditIcon className="profile-icon"/>
                                 </div>
                                 <hr className="line"></hr>
                                 <Grid
@@ -47,24 +49,22 @@ function UserProfile(props) {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={10}>
-                                    <Grid container spacing={3}>
-                                        <Grid className="institute-name" item xs={12}>
-                                            Concordia University
-                                        </Grid>
-                                        <Grid className="program-name" item xs={12}>
-                                            Bachelor of Engineering - BE, Software Engineering
-                                        </Grid>
-                                        <Grid className="year" item xs={12}>
-                                            2020 - 2024
-                                        </Grid>
-                                    </Grid>
+                                    <Typography style={{textAlign:"left", fontWeight:"Bold", fontSize: "large"}}>
+                                        Concordia University
+                                    </Typography>
+                                    <Typography style={{textAlign:"left"}}>
+                                        Bachelor of Engineering - BE, Software Engineering
+                                    </Typography>
+                                    <Typography style={{textAlign:"left", fontSize:"small"}}>
+                                        2020 - 2024
+                                    </Typography>
                                 </Grid>
                                 </Grid>
 
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Experience
+                                    Experience <AddIcon className="profile-icon"/> <EditIcon className="profile-icon"/>
                                 </div>
                                 <hr className="line"></hr>
                                 <Grid
@@ -82,41 +82,42 @@ function UserProfile(props) {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={10}>
-                                    <Grid container spacing={2}>
-                                        <Grid className="position-name" item xs={12}>
-                                            Software Development Engineer Intern
-                                        </Grid>
-                                        <Grid className="company-name" item xs={12}>
-                                            Amazon
-                                        </Grid>
-                                        <Grid className="year" item xs={12}>
-                                            May 2022 - August 2022
-                                        </Grid>
-                                        <Grid className="location" item xs={12}>
-                                            Vancouver, BC, Canada
-                                        </Grid>
-                                    </Grid>
+                                    <Typography style={{textAlign:"left", fontWeight:"Bold", fontSize: "large"}}>
+                                        Software Development Engineer Intern
+                                    </Typography>
+                                    <Typography style={{textAlign:"left"}}>
+                                        Amazon
+                                    </Typography>
+                                    <Typography style={{textAlign:"left"}}>
+                                        Vancouver, BC, Canada
+                                    </Typography>
+                                    <Typography style={{textAlign:"left", fontSize:"small"}}>
+                                        May 2022 - August 2022
+                                    </Typography>
                                 </Grid>
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Skills
+                                    Skills <AddIcon className="profile-icon"/> <EditIcon className="profile-icon"/>
                                 </div>
                                 <hr className="line"></hr>
-                                <Grid item xs={12}>
+                                <Typography style={{marginLeft:"5%"}} className="skill">
                                     Java
-                                    <hr className="sub-line"></hr>
-                                </Grid>
-                                <Grid item xs={12}>
+                                </Typography>
+                                <hr className="sub-line"></hr>
+                                <Typography style={{marginLeft:"5%"}} className="skill">
                                     Python
-                                    <hr className="sub-line"></hr>
-                                </Grid>
-                                <Grid item xs={12}>
+                                </Typography>
+                                <hr className="sub-line"></hr>
+                                <Typography style={{marginLeft:"5%"}} className="skill">
                                     JavaScript
-                                    <hr className="sub-line"></hr>
-                                </Grid>
-                                
+                                </Typography>
+                                <hr className="sub-line"></hr>
+                                <Typography style={{marginLeft:"5%"}} className="skill">
+                                    Software Testing
+                                </Typography>
+                                <hr className="sub-line"></hr>
                             </Grid>
                         </Grid>
                     </div>
