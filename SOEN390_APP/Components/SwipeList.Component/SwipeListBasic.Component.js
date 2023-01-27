@@ -9,20 +9,30 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   KeyboardAvoidingView,
+  Modal,
 } from "react-native";
 import React, { Key, useState } from "react";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { SwipeListView } from "react-native-swipe-list-view";
+import PopUPForm from "../PopUPForm.Component";
 
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
+  console.log(data);
   const { key, text } = data;
+  const [name, setName] = useState(text);
+  const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
       .fill("")
-      .map((_, i) => ({ key: `${i}`, text: `item #${text}` }))
+      .map((_, i) => ({ key: `${i}`, text: `item #${setName}` }))
   );
+
+  const handleNameChange = (newName) => {
+    setName(newName);
+    // code to send new name to the database server
+  };
 
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
@@ -32,6 +42,8 @@ export default function Basic({ data }) {
 
   const editRow = (rowMap, rowKey) => {
     console.log("Edit Data");
+    setModalVisible(true);
+    console.log(text);
   };
 
   const deleteRow = (rowMap, rowKey) => {
@@ -44,9 +56,6 @@ export default function Basic({ data }) {
 
   const copyToClipBoard = () => {
     console.log("Copied To Clipboard");
-    setTimeout(() => {
-      alert("Copied To Clipboard");
-    }, 10);
     //Clipboard.setString(text)}
   };
 
@@ -57,7 +66,7 @@ export default function Basic({ data }) {
       underlayColor={"#AAA"}
     >
       <View>
-        <Text>{text}</Text>
+        <Text>{name}</Text>
       </View>
     </TouchableHighlight>
   );
@@ -71,6 +80,25 @@ export default function Basic({ data }) {
       >
         <Text style={styles.backTextWhite}>Edit</Text>
       </TouchableOpacity>
+      <Modal animationType="slide" transparent={false} visible={modalVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TextInput
+              style={styles.input}
+              placeholder={"Enter new " + text}
+              onChangeText={handleNameChange}
+            />
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.backTextWhite}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 
@@ -94,14 +122,13 @@ export default function Basic({ data }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex: 1,
   },
   backTextWhite: {
     color: "#FFF",
   },
   rowFront: {
     alignItems: "center",
-    backgroundColor: "#CCC",
+    backgroundColor: "white",
     borderBottomColor: "black",
     borderBottomWidth: 1,
     justifyContent: "center",
@@ -130,5 +157,37 @@ const styles = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: "blue",
     right: 0,
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    width: "80%",
+    height: "30%",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    margin: 9,
+    marginLeft: 20,
+    backgroundColor: "#0077B5",
+    padding: 12,
+    alignItems: "center",
+    marginTop: 16,
+    width: 200,
+    height: 50,
+    borderRadius: 120,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 10,
+    margin: 10,
   },
 });
