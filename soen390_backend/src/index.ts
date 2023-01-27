@@ -38,6 +38,7 @@ app.get("/api", async (_: Request, res: Response) => {
   }));
   res.send(list);
 });
+
 //Requiring routes for different request types
 
 // These are to be added when we add the module exports for them in due time

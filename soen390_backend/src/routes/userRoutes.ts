@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
 
 import {
-  getUserWithID,
-  getUserWithEmail,
-  comparePasswords,
+    getUserWithID,
+    getUserWithEmail,
+    registerUser,
+    comparePasswords,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -65,6 +66,24 @@ user.get("/api/login", async (req: Request, res: Response) => {
     res.json({ errType: err.name, errMsg: err.message });
   }
   return user;
+});
+user.post("/api/register", async (req: Request, res: Response) => {
+    try {
+        let status;
+        const registeredUser = await registerUser(req.body);
+        res.json({
+            "Response": "Success",
+            registeredUser
+        });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
 });
 //Exporting the user as a module
 module.exports = user;
