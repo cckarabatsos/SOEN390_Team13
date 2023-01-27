@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import {
     getUserWithID,
     getUserWithEmail,
+    registerUser,
     comparePasswords,
 } from "../controllers/userControllers";
 import { User } from "../models/User";
@@ -62,6 +63,35 @@ user.get("/api/login", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
     return user;
+});
+user.post("/api/register", async (req: Request, res: Response) => {
+    try {
+        let status,
+            passedUser: User = {
+                name: req.body.name,
+                password: req.body.password,
+                email: req.body.email,
+                PrivateKey: req.body.privateKey,
+                PublicKey: req.body.publicKey,
+                picture: req.body.picture,
+                resume: req.body.resume,
+                coverLetter: req.body.coverLetter,
+                bio: req.body.bio,
+                currentPosition: req.body.currentPosition,
+                currentCompany: req.body.currentCompany,
+                isRecruiter: req.body.isRecruiter,
+            };
+        const registeredUserId = registerUser(passedUser);
+        res.json({ registeredUserId });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
 });
 //Exporting the user as a module
 module.exports = user;

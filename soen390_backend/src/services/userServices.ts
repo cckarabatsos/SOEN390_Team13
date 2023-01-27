@@ -1,7 +1,6 @@
 //thx saad
 import { error } from "console";
 import firebase from "firebase";
-import { createDocumentRegistry } from "typescript";
 import { User } from "../models/User";
 // import { database } from "firebase-admin";
 
