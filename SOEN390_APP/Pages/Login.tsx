@@ -60,13 +60,13 @@ export default function Login({ navigation }: { navigation: any }) {
   const handleLogIn = async () => {
     let aUser = new LoginUserModel(email, password);
 
-    const validCredential = await UserLogin(aUser);
+    const userProfile = await UserLogin(aUser);
 
-    if (validCredential) {
+    if (userProfile) {
       
       navigation.navigate({
         name: "Home",
-        params:{username : validCredential.name, user_email: validCredential.email},
+        params:{username : userProfile.name, user_email: userProfile.email, user_password:userProfile.password},
         merge: true,
       });
       

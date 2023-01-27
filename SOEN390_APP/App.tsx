@@ -105,7 +105,7 @@ function BottomNav({route}:{route:any}){
           }}/>
         <Tab.Screen name="Messages" component={Messages} options={{ title: 'Messages', tabBarBadge: messagesCount }}/>
         <Tab.Screen name="Inbox" component={Inbox} options={{ title: 'Inbox' }}/>
-        <Tab.Screen name="Profile" initialParams={{username: route.params.username}} component={UserProfile} options={{
+        <Tab.Screen name="Profile" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password}} component={UserProfile} options={{
             title:'profile'
           
           }}/>

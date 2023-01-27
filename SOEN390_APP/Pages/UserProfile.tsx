@@ -64,6 +64,7 @@ const UserProfile = ({route}:{route:any}) => {
     
         console.log(route.params.username)
         let Name = route.params.username
+        
         const firstName = {key: 1, text: 'John'}
         const lastName = {key: 1, text: {Name}}
         const email = {key: 1, text: 'John.Smith@Gmail.com'}
