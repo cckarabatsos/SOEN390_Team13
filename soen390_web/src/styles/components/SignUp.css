@@ -1,10 +1,10 @@
 .signup{
     background-repeat: no-repeat;
     background-position: center;
-    height: 65vh;
+    height: 70vh;
     background-color: white;
     border-radius: 235px;
-    background-size: 47%;
+    background-size: 55%;
 }
 
 .signup-color{
@@ -33,11 +33,9 @@
   }
 
   .form-group{
-    display: flex;
-    align-items: center;
+    position: fixed;
+    top: 10%;
     
   }
 
-  .form-group b{
-    margin-right: 50px;
-  }
+  
