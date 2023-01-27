@@ -67,7 +67,7 @@ user.get("/api/login", async (req: Request, res: Response) => {
 user.post("/api/register", async (req: Request, res: Response) => {
     try {
         let status;
-        const registeredUser = registerUser(req.body);
+        const registeredUser = await registerUser(req.body);
         res.json({
             "Response": "Success",
             registeredUser
