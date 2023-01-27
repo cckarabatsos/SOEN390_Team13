@@ -44,8 +44,8 @@ export const storeUser = async (user: User) => {
                 name: user.name,
                 password: user.password,
                 email: user.email,
-                privateKey: user.PrivateKey,
-                publicKey: user.PublicKey,
+                privateKey: user.privateKey,
+                publicKey: user.publicKey,
                 picture: user.picture,
                 resume: user.resume,
                 coverLetter: user.coverLetter,
@@ -56,12 +56,12 @@ export const storeUser = async (user: User) => {
             }
         );
 
-        console.log("User successfulle registered with id#" + document.id);
+        console.log("User successfulle registered with id: " + document.id);
     } catch (error) {
         console.log(error);
         throw error;
     }
-    return document.id;
+    return document;
 }
 
 function processData(snapshot: any) {

@@ -23,9 +23,9 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: User) {
-    let userId = await storeUser(user);
-    if (userId) {
-        return [200, userId];
+    let registeredUser = await storeUser(user);
+    if (registeredUser) {
+        return [200, registeredUser];
     } else {
         return [404, { msg: "User not registered." }];
     }

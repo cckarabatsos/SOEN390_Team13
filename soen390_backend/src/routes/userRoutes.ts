@@ -66,23 +66,12 @@ user.get("/api/login", async (req: Request, res: Response) => {
 });
 user.post("/api/register", async (req: Request, res: Response) => {
     try {
-        let status,
-            passedUser: User = {
-                name: req.body.name,
-                password: req.body.password,
-                email: req.body.email,
-                PrivateKey: req.body.privateKey,
-                PublicKey: req.body.publicKey,
-                picture: req.body.picture,
-                resume: req.body.resume,
-                coverLetter: req.body.coverLetter,
-                bio: req.body.bio,
-                currentPosition: req.body.currentPosition,
-                currentCompany: req.body.currentCompany,
-                isRecruiter: req.body.isRecruiter,
-            };
-        const registeredUserId = registerUser(passedUser);
-        res.json({ registeredUserId });
+        let status;
+        const registeredUser = registerUser(req.body);
+        res.json({
+            "Response": "Success",
+            registeredUser
+        });
         if (status == 200) {
             res.sendStatus(200);
         } else if (status == 404) {
