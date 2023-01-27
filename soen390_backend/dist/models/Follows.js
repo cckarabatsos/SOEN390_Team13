@@ -24,13 +24,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.follows_schema = void 0;
-const yup = __importStar(require("yup"));
+var yup = __importStar(require("yup"));
 //Some types are to be changed later
 exports.follows_schema = yup
     .object()
     .shape({
     followerID: yup.string().required(),
     followeeID: yup.string().required(),
+    date: yup.string().required(),
     followsID: yup.string().required(),
 })
     .required();

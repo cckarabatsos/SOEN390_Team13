@@ -1,2 +1,1 @@
-/// <reference lib="dom" />
 export {};
