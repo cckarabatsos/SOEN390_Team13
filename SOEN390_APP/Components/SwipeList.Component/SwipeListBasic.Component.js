@@ -73,14 +73,13 @@ export default function Basic({ data }) {
 
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
-      <Text></Text>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         onPress={() => editRow(rowMap, data.item.key)}
       >
         <Text style={styles.backTextWhite}>Edit</Text>
       </TouchableOpacity>
-      <Modal animationType="slide" transparent={false} visible={modalVisible}>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <TextInput
@@ -127,12 +126,12 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   rowFront: {
-    alignItems: "center",
     backgroundColor: "white",
     borderBottomColor: "black",
     borderBottomWidth: 1,
     justifyContent: "center",
     height: 50,
+    paddingStart: 20,
   },
   rowBack: {
     alignItems: "center",

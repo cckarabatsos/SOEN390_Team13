@@ -32,6 +32,7 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
       }
     }, [item.isExpanded]);
   
+    if(item.category_name == "Profile" || item.category_name == "Skills"){
     return (
       <View>
         {/*Header of the Expandable List Item*/}
@@ -50,12 +51,39 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
             overflow: 'hidden',
           }}>
           {/*Content under the header of the Expandable List Item*/}
-          {item.subcategory.map((item:any, key:any) => (
+          {item.subcategory.map((item:any, key:any) =>(
             <Basic data = {item}/>
           ))}
         </View>
       </View>
     );
+          }
+          else{
+             return (
+      <View>
+        {/*Header of the Expandable List Item*/}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onClickFunction}
+          style={styles.header}>
+            <Ionicons size={20} name="add-circle"/>
+          <Text style={styles.headerText}>
+            {item.category_name}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: layoutHeight,
+            overflow: 'hidden',
+          }}>
+          {/*Content under the header of the Expandable List Item*/}
+          {item.subcategory.map((item:any, key:any) =>(
+            <StandaloneRow data = {item}/>
+          ))}
+        </View>
+      </View>
+    );
+          }
   };
   
 const UserProfile = ({route}:{route:any}) => {
@@ -152,6 +180,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         padding: 20,
         flexDirection: 'row-reverse',
+        borderBottomColor: "black",
+        borderBottomWidth: 1,
       },
       headerText: {
         paddingRight: 20,
@@ -178,7 +208,7 @@ const styles = StyleSheet.create({
       content: {
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: '#fff',
+        backgroundColor: '#fff',  
       },
         logo: {
         paddingLeft: 20,
