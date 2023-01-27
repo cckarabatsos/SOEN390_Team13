@@ -1,6 +1,7 @@
 //thx saad
 import { error } from "console";
 import firebase from "firebase";
+import { createDocumentRegistry } from "typescript";
 import { User } from "../models/User";
 // import { database } from "firebase-admin";
 
@@ -37,9 +38,9 @@ export const findUserWithEmail = (
         });
 };
 
-export const registerUser = async (user: User) => {
+export const storeUser = async (user: User) => {
     try {
-        const document = await db.collection("users").add(
+        var document = await db.collection("users").add(
             {
                 name: user.name,
                 password: user.password,
@@ -61,6 +62,7 @@ export const registerUser = async (user: User) => {
         console.log(error);
         throw error;
     }
+    return document.id;
 }
 
 function processData(snapshot: any) {
