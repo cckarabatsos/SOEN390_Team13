@@ -38,7 +38,7 @@ function Navbar() {
             <Link to="/Jobs" className="link">
               Jobs <WorkIcon className="icon" sx={{ color: '#9606D9'}} />
             </Link>
-            <Link to="/Login" className="link">
+            <Link to="/UserProfile" className="link">
               Login <EastIcon className="icon" sx={{ color: '#9606D9'}} />
             </Link>
             <Link to="/Signup" className="link">
