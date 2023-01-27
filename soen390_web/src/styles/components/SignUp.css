@@ -1,0 +1,41 @@
+.signup{
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 70vh;
+    background-color: white;
+    border-radius: 235px;
+    background-size: 55%;
+}
+
+.signup-color{
+    background-color: #D9D9D9;
+}
+
+.form-field{
+    background: rgba(217, 217, 217, 0.75);
+    border-radius: 27px;
+}
+
+.form{
+    border-radius: 27px;
+}
+
+.Roundedinput .MuiOutlinedInput-root {
+    background: rgba(217, 217, 217, 0.75);
+    border-radius: 27px;
+    width: 30em;
+    
+  }
+
+  .First{
+    position: fixed;
+       
+  }
+
+  .form-group{
+    position: fixed;
+    top: 10%;
+    
+  }
+
+  
