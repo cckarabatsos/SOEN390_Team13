@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
+//import { user_email } from "./Login";
 
 class ajob {
   title: String;
@@ -34,6 +35,7 @@ list.push(job3);
 
 function Home({ navigation, route }: { navigation: any; route: any }) {
   // error when using route to pass parameter between screen
+  //console.log(route.params)
   const [jobQuery, setJobQuery] = useState("");
   const [jobs, setJobs] = useState<ajob[]>([]);
 

@@ -11,7 +11,7 @@ import {
   Dimensions,
 } from "react-native";
 import {
-  NavigationContainer
+  NavigationContainer,useRoute
 } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -69,9 +69,12 @@ const HomeScreen = ({ navigation, route}: { navigation: any, route:any }) => {
 };
 
 
-function BottomNav(){
+function BottomNav({route}:{route:any}){
+
+  console.log(route.params)
   return(
     <Tab.Navigator screenOptions={({ route }) => ({
+      
       tabBarIcon: ({ focused, color}) => {
         let iconName;
 
@@ -95,10 +98,17 @@ function BottomNav(){
     }
     })}>
       
-        <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home' }}/>
+        <Tab.Screen name="HomeScreen" component={HomeScreen} options={{
+            title:"profile"
+            
+                
+          }}/>
         <Tab.Screen name="Messages" component={Messages} options={{ title: 'Messages', tabBarBadge: messagesCount }}/>
         <Tab.Screen name="Inbox" component={Inbox} options={{ title: 'Inbox' }}/>
-        <Tab.Screen name="Profile" component={UserProfile} options={{ title: 'My Profile' }}/>
+        <Tab.Screen name="Profile" initialParams={{username: route.params.username}} component={UserProfile} options={{
+            title:'profile'
+          
+          }}/>
       </Tab.Navigator>
   )
 }
@@ -116,9 +126,12 @@ export default function App() {
           options={{ headerTitle: (props: any) => <LogoTitle {...props} /> }}
         />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Home" component={BottomNav} options={({ route }) => ({
+        <Stack.Screen name="Home"  component={BottomNav} options={({ route }) => ({
             headerLargeTitle: true,
-            title: route.params.named,
+            title: route.params.username,
+            
+
+            
           })}/>       
       </Stack.Navigator>
     </NavigationContainer>

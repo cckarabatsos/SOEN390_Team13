@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -30,12 +30,15 @@ class LoginUserModel implements ILoginUser {
   }
 }
 
+
+
 //return the Login page elements
 export default function Login({ navigation }: { navigation: any }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [isVisible, setIsVisible] = useState(false);
+  
 
   const handleOpenModal = () => {
     setIsVisible(true);
@@ -60,9 +63,14 @@ export default function Login({ navigation }: { navigation: any }) {
     const validCredential = await UserLogin(aUser);
 
     if (validCredential) {
-      navigation.navigate("Home", {
-        named: "Welcome " + validCredential.name + "!",
+      
+      navigation.navigate({
+        name: "Home",
+        params:{username : validCredential.name, user_email: validCredential.email},
+        merge: true,
       });
+      
+      
     } else {
       handleOpenModal();
     }

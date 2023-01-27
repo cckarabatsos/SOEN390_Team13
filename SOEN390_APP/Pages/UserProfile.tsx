@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import Basic from '../Components/SwipeList.Component/SwipeListBasic.Component';
 import StandaloneRow from '../Components/SwipeList.Component/SwipeListEdit.Component';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 
 
 const ExpandableComponent = ({item, onClickFunction}:any) => {
@@ -56,11 +58,14 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
     );
   };
   
-const UserProfile = () => {
+const UserProfile = ({route}:{route:any}) => {
     //const [email, setEmail] = useState("");
     //const [password, setPassword] = useState("");
+    
+        console.log(route.params.username)
+        let Name = route.params.username
         const firstName = {key: 1, text: 'John'}
-        const lastName = {key: 1, text: 'Smith'}
+        const lastName = {key: 1, text: {Name}}
         const email = {key: 1, text: 'John.Smith@Gmail.com'}
         const password = {key: 1, text: 'Password'}
         const file = {key: 1, text: 'Saved File'}
@@ -96,7 +101,7 @@ const UserProfile = () => {
                 style={styles.logo}
                 source={require('../Components/Images/logInBackground.png')}
                 />
-                <Text style={styles.titleText}> Sophie Stewart </Text>
+                <Text style={styles.titleText}> {Name} </Text>
                 <Text style={styles.textSmall}> Software Engineering Student </Text>
                 <Text style={styles.textSmall}> Montreal, Quebec </Text>
             </View>
