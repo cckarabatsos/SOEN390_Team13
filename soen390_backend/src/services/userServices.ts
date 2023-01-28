@@ -58,7 +58,7 @@ export const storeUser = async (user: User) => {
         console.log(error);
         throw error;
     }
-    return document;
+    return document.id;
 };
 export const deleteUserWithId = async (userID: string) => {
     try {

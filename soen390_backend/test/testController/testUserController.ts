@@ -1,11 +1,11 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
-import { detectBufferEncoding } from "tslint/lib/utils";
 
 import {
     getUserWithID,
     getUserWithEmail,
     registerUser,
+    deleteUser
 } from "../../src/controllers/userControllers";
 
 const expect = chai.expect;
@@ -108,5 +108,16 @@ describe("User Controllers", function () {
             expect(data[0]).to.equal(200);
         }
         );
+    });
+    describe("# deleteUser", function () {
+        it("return a 200 response code if succesful", async function () {
+            let user: any = await registerUser(testRegisterUser);
+            let data: any = await deleteUser(user[1]);
+            expect(data[0]).to.equal(200);
+        });
+        it("return a 404 response code if not found", async function () {
+            let data: any = await deleteUser("5");
+            expect(data[0]).to.equal(404);
+        })
     });
 });
