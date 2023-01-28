@@ -46,15 +46,6 @@ export default function Login({ navigation }: { navigation: any }) {
     setIsVisible(false);
   };
 
-  /*     useEffect(() => {
-      const unsubscribe = auth.onAuthStateChange((user: any) => {
-        if(user){
-          navigation.navigate("Home")
-        }
-      })
-      return unsubscribe
-    }, []) */
-
   const handleLogIn = async () => {
     let aUser = new LoginUserModel(email, password);
 
@@ -67,14 +58,6 @@ export default function Login({ navigation }: { navigation: any }) {
     } else {
       handleOpenModal();
     }
-
-    /*      auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredentials: any) => {
-        const user = userCredentials.user;
-        console.log('signed in with:', user.email);
-      })
-      .catch((error: any) => alert(error.message)) */
   };
 
   return (
