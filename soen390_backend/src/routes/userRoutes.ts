@@ -72,6 +72,7 @@ user.post("/api/register", async (req: Request, res: Response) => {
     try {
         const registeredUser: User = await registerUser(req.body);
         const status: number = registeredUser[0];
+        console.log("user registration")
         if (status == 200) {
             res.status(200);
             res.json({

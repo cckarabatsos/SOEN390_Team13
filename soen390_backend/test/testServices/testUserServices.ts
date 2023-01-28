@@ -1,66 +1,73 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
+import { getUserWithEmail } from "../../src/controllers/userControllers";
+import { findUserWithID } from "../../src/services/userServices";
 
-import {
-    findUserWithEmail,
-    // findUserWithID,
-    // storeUser,
-    // deleteUserWithId,
-} from "../../src/services/userServices";
-let testEmail = "test@test.com";
-let testUser: any = {
-    name: "Jake",
-    password: "123",
-    email: "mat@gmail.ca",
-    privateKey: "",
-    publicKey: "",
-    picture: "",
-    resume: "",
-    coverLetter: "",
-    bio: "",
-    currentPosition: "",
-    currentCompany: "",
-    isRecruiter: false,
-};
+// let testEmail = "test@test.com";
+// let testUser: any = {
+//     name: "Jake",
+//     password: "123",
+//     email: "mat@gmail.ca",
+//     privateKey: "",
+//     publicKey: "",
+//     picture: "",
+//     resume: "",
+//     coverLetter: "",
+//     bio: "",
+//     currentPosition: "",
+//     currentCompany: "",
+//     isRecruiter: false,
+// };
 const expect = chai.expect;
 const describe = mocha.describe;
 const it = mocha.it;
+
+const id: string = "18JRHKkLE2t50nE17SHc";
+let testUserFrontend: any = {
+  name: "Jake",
+  password: "",
+  email: "mat@gmail.ca",
+  privateKey: "",
+  publicKey: "",
+  picture: "",
+  resume: "",
+  coverLetter: "",
+  bio: "",
+  currentPosition: "",
+  currentCompany: "",
+  isRecruiter: false,
+};
 describe("# User Services", function () {
-    describe("# Find User With Email", async function () {
-        const result = new Promise((resolve, _) => {
-            findUserWithEmail(testEmail, (user) => {
-                if (user == null) {
-                    resolve([404, null]);
-                } else {
-                    resolve([200, user]);
-                }
-            });
-        }).then();
-        const badResult = new Promise((resolve, _) => {
-            findUserWithEmail(testEmail, (user) => {
-                if (user == null) {
-                    resolve([404, null]);
-                } else {
-                    resolve([200, user]);
-                }
-            });
-        }).then();
-        it("return 200 and a user object if successful", async function () {
-            let resolved: any = await badResult;
-            let status = resolved[0];
-            let user = resolved[1];
-            expect(status.to.equal(200));
-            Object.entries(testUser).forEach(([field, value]) => {
-                expect(user).to.have.property(field);
-                expect(user[field]).to.be.a(typeof value);
-            });
-        });
-        it("return 404 and null if unsucessful", async function () {
-            let badresolved: any = await result;
-            let badStatus = badresolved[0];
-            let badUser = badresolved[1];
-            expect(badStatus.to.equal(404));
-            expect(badUser.to.equal(null));
-        });
+  describe("# FindUserWithEmail", function () {
+    it("return a user with most fields except password and return a 200 status", async function () {
+      let data: any = await getUserWithEmail("matthew.beaulieu631@gmail.com");
+      let user: any = data[1];
+      let status: any = data[0];
+      Object.entries(testUserFrontend).forEach(([field, value]) => {
+        expect(user).to.have.property(field);
+        expect(user[field]).to.be.a(typeof value);
+        expect(status).to.equal(200);
+      });
     });
+    it("return a 404 response if not found", async function () {
+      let data: any = await getUserWithEmail("5");
+      expect(data[0]).to.equal(404);
+    });
+  });
+
+  describe("# FindUserWithID", function () {
+    it("return a snapshot of the user with the ID specified", async function () {
+      let user: any = await findUserWithID(id);
+
+      Object.entries(testUserFrontend).forEach(([field, value]) => {
+        expect(user).to.have.property(field);
+        expect(user[field]).to.be.a(typeof value);
+      });
+    });
+    it("return a 404 response if not found", async function () {
+      let user: any = await findUserWithID("5");
+      console.log(user);
+      expect(user).to.equal(undefined);
+    });
+  });
 });
