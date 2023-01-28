@@ -83,7 +83,6 @@ var describe = mocha.describe;
 var it = mocha.it;
 var id = "18JRHKkLE2t50nE17SHc";
 var testUser = {
-    userId: 1,
     name: "Jake",
     password: "123",
     email: "mat@gmail.ca",
@@ -98,9 +97,8 @@ var testUser = {
     isRecruiter: false,
 };
 var testUserFrontend = {
-    userId: 1,
     name: "Jake",
-    password: "123",
+    password: "",
     email: "mat@gmail.ca",
     privateKey: "",
     publicKey: "",
@@ -211,5 +209,56 @@ describe("User Controllers", function () {
             });
         });
     });
-    describe("# registerUser", function () { });
+    describe("# registerUser", function () {
+        it("return a 401 response code if user with same email already exists", function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var data;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, (0, userControllers_1.registerUser)(testUser)];
+                        case 1:
+                            _a.sent();
+                            return [4 /*yield*/, (0, userControllers_1.registerUser)(testUser)];
+                        case 2:
+                            data = _a.sent();
+                            expect(data[0]).to.equal(401);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        });
+    });
+    describe("# deleteUser", function () {
+        it("return a 200 response code if succesful", function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var user, data;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, (0, userControllers_1.registerUser)(testUser)];
+                        case 1:
+                            user = _a.sent();
+                            return [4 /*yield*/, (0, userControllers_1.deleteUser)(user[1])];
+                        case 2:
+                            data = _a.sent();
+                            expect(data[0]).to.equal(200);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        });
+        it("return a 404 response code if not found", function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var data;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, (0, userControllers_1.deleteUser)("5")];
+                        case 1:
+                            data = _a.sent();
+                            expect(data[0]).to.equal(404);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        });
+    });
 });
