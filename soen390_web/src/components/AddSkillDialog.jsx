@@ -7,9 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
-import {
-    IconButton
-  } from "@material-ui/core";
+import {IconButton} from "@material-ui/core";
 import AddIcon from '@mui/icons-material/Add';
 
 function AddEducationDialog() {
@@ -46,8 +44,16 @@ function AddEducationDialog() {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Save and Apply</Button>
+                    <Button className="button" variant="contained"
+                    style={{
+                        borderRadius: 27,
+                        backgroundColor: "rgba(100, 69, 227, 0.85)"
+                    }} onClick={handleClose}>Cancel</Button>
+                    <Button className="button" variant="contained"
+                    style={{
+                        borderRadius: 27,
+                        backgroundColor: "rgba(100, 69, 227, 0.85)"
+                    }} onClick={handleClose}>Save and Apply</Button>
                 </DialogActions>
             </Dialog>
         </>

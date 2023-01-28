@@ -112,8 +112,16 @@ function AddEducationDialog() {
                 </Select>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Save and Apply</Button>
+                    <Button className="button" variant="contained"
+                    style={{
+                        borderRadius: 27,
+                        backgroundColor: "rgba(100, 69, 227, 0.85)"
+                    }} onClick={handleClose}>Cancel</Button>
+                    <Button className="button" variant="contained"
+                    style={{
+                        borderRadius: 27,
+                        backgroundColor: "rgba(100, 69, 227, 0.85)"
+                    }} onClick={handleClose}>Save and Apply</Button>
                 </DialogActions>
             </Dialog>
         </>

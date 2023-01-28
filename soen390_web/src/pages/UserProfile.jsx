@@ -13,10 +13,19 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
 import AddSkillDialog from "../components/AddSkillDialog"
+import {IconButton} from "@material-ui/core";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {Button} from "@material-ui/core";
 
 function UserProfile(props) {
-
-  
+    const [enable, setEnable] = React.useState(false);
+    const handleClickEnableEdit = () => {
+        setEnable(true);
+      };
+    
+      const handleDisableEdit = () => {
+        setEnable(false);
+      };
     return (
         <>
             <NavBar/>
@@ -35,7 +44,11 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Education <AddEducationDialog/> <EditIcon className="profile-icon"/>
+                                    Education 
+                                    <AddEducationDialog/> 
+                                    <IconButton onClick={handleClickEnableEdit}>
+                                        <EditIcon className="profile-icon"/>
+                                    </IconButton>
                                 </div>
                                 <hr className="line"></hr>
                                 <Grid
@@ -52,8 +65,13 @@ function UserProfile(props) {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={10}>
+
                                     <Typography style={{textAlign:"left", fontWeight:"Bold", fontSize: "large"}}>
                                         Concordia University
+                                        {enable && (
+                                        <IconButton>
+                                            <DeleteIcon className="profile-icon"/>
+                                        </IconButton>)}
                                     </Typography>
                                     <Typography style={{textAlign:"left"}}>
                                         Bachelor of Engineering - BE, Software Engineering
@@ -67,7 +85,12 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Experience <AddExperienceDialog/> <EditIcon className="profile-icon"/>
+                                    Experience 
+                                    <AddExperienceDialog/> 
+                                    <IconButton onClick={handleClickEnableEdit}>
+                                        <EditIcon className="profile-icon"/>
+                                    </IconButton>
+                                    
                                 </div>
                                 <hr className="line"></hr>
                                 <Grid
@@ -85,8 +108,14 @@ function UserProfile(props) {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={10}>
+                                    
+                                    
                                     <Typography style={{textAlign:"left", fontWeight:"Bold", fontSize: "large"}}>
                                         Software Development Engineer Intern
+                                        {enable && (
+                                        <IconButton>
+                                            <DeleteIcon className="profile-icon"/>
+                                        </IconButton>)}
                                     </Typography>
                                     <Typography style={{textAlign:"left"}}>
                                         Amazon
@@ -102,25 +131,66 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Skills <AddSkillDialog/> <EditIcon className="profile-icon"/>
+                                    Skills 
+                                    <AddSkillDialog/> 
+                                    <IconButton onClick={handleClickEnableEdit}>
+                                        <EditIcon className="profile-icon"/>
+                                    </IconButton>
                                 </div>
                                 <hr className="line"></hr>
                                 <Typography style={{marginLeft:"5%"}} className="skill">
                                     Java
+                                    {enable && (
+                                    <span classname="profile-item">
+                                        <IconButton>
+                                        <DeleteIcon className="profile-icon"/>
+                                        </IconButton>
+                                    </span>
+                                    )}
                                 </Typography>
                                 <hr className="sub-line"></hr>
                                 <Typography style={{marginLeft:"5%"}} className="skill">
                                     Python
+                                    {enable && (
+                                    <span classname="profile-item">
+                                        <IconButton>
+                                        <DeleteIcon className="profile-icon"/>
+                                        </IconButton>
+                                    </span>
+                                    )}
                                 </Typography>
                                 <hr className="sub-line"></hr>
                                 <Typography style={{marginLeft:"5%"}} className="skill">
                                     JavaScript
+                                    {enable && (
+                                    <span classname="profile-item">
+                                        <IconButton>
+                                        <DeleteIcon className="profile-icon"/>
+                                        </IconButton>
+                                    </span>
+                                    )}
                                 </Typography>
                                 <hr className="sub-line"></hr>
                                 <Typography style={{marginLeft:"5%"}} className="skill">
                                     Software Testing
+                                    {enable && (
+                                    <span classname="profile-item">
+                                        <IconButton>
+                                        <DeleteIcon className="profile-icon"/>
+                                        </IconButton>
+                                    </span>
+                                    )}
                                 </Typography>
                                 <hr className="sub-line"></hr>
+                            </Grid>
+                            <Grid item xs={6}>
+                            {enable && (
+                            <Button className="button" variant="contained"
+                            style={{
+                                borderRadius: 27,
+                                backgroundColor: "rgba(100, 69, 227, 0.85)"
+                            }} onClick={handleDisableEdit}>Save Changes</Button>
+                            )}
                             </Grid>
                         </Grid>
                     </div>
