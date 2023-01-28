@@ -27,7 +27,6 @@ export const findUserWithEmail = (
                 let data = processData(snapshot);
                 callback(data);
             } else {
-                console.log("YO");
                 callback(null);
             }
         })
@@ -39,22 +38,20 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        var document = await db.collection("users").add(
-            {
-                name: user.name,
-                password: user.password,
-                email: user.email,
-                privateKey: user.privateKey,
-                publicKey: user.publicKey,
-                picture: user.picture,
-                resume: user.resume,
-                coverLetter: user.coverLetter,
-                bio: user.bio,
-                currentPosition: user.currentPosition,
-                currentCompany: user.currentCompany,
-                isRecruiter: user.isRecruiter
-            }
-        );
+        var document = await db.collection("users").add({
+            name: user.name,
+            password: user.password,
+            email: user.email,
+            privateKey: user.privateKey,
+            publicKey: user.publicKey,
+            picture: user.picture,
+            resume: user.resume,
+            coverLetter: user.coverLetter,
+            bio: user.bio,
+            currentPosition: user.currentPosition,
+            currentCompany: user.currentCompany,
+            isRecruiter: user.isRecruiter,
+        });
 
         console.log("User successfulle registered with id: " + document.id);
     } catch (error) {
@@ -62,7 +59,7 @@ export const storeUser = async (user: User) => {
         throw error;
     }
     return document;
-}
+};
 
 function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any }) => doc.data());
