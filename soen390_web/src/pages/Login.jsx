@@ -1,5 +1,7 @@
 import React from "react";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer"
+import SubFooter from "../components/SubFooter"
 import background from "../assets/undraw_login_re_4vu2.svg"
 import "../styles/components/Login.css"
 import TextField from "@mui/material/TextField";
@@ -82,6 +84,8 @@ function MainTitle(props) {
           </div>
         </div>
       </div>
+      <SubFooter/>
+      <Footer/>
     </>
   );
 }
