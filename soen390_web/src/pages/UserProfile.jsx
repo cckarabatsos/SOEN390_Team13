@@ -11,6 +11,8 @@ import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg"
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import AddEducationDialog from "../components/AddEducationDialog";
+import AddExperienceDialog from "../components/AddExperienceDialog";
+import AddSkillDialog from "../components/AddSkillDialog"
 
 function UserProfile(props) {
 
@@ -65,7 +67,7 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Experience <AddIcon className="profile-icon"/> <EditIcon className="profile-icon"/>
+                                    Experience <AddExperienceDialog/> <EditIcon className="profile-icon"/>
                                 </div>
                                 <hr className="line"></hr>
                                 <Grid
@@ -100,7 +102,7 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Skills <AddIcon className="profile-icon"/> <EditIcon className="profile-icon"/>
+                                    Skills <AddSkillDialog/> <EditIcon className="profile-icon"/>
                                 </div>
                                 <hr className="line"></hr>
                                 <Typography style={{marginLeft:"5%"}} className="skill">
