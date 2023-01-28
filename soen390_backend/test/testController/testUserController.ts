@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
-const myFunctions = require("index.ts");
-console.log(myFunctions);
+import { db } from "../../src/firebaseconfig";
+console.log(db);
 import {
     getUserWithID,
     getUserWithEmail,
@@ -41,6 +41,20 @@ let testUserFrontend: any = {
     currentCompany: "",
     isRecruiter: false,
 };
+let testUserRegister: any = {
+    name: "John Doe The tester",
+    password: "123",
+    email: "test123@test.test",
+    privateKey: "",
+    publicKey: "",
+    picture: "",
+    resume: "",
+    coverLetter: "",
+    bio: "",
+    currentPosition: "",
+    currentCompany: "",
+    isRecruiter: false,
+};
 
 describe("User Controllers", function () {
     describe("# getUserWithID", function () {
@@ -62,23 +76,21 @@ describe("User Controllers", function () {
         });
     });
     describe("# getUserWithEmail", function () {
-        it("return a user with most fields except password", async function () {
+        it("return a user with most fields except password and return a 200 status", async function () {
             let data: any = await getUserWithEmail(
                 "matthew.beaulieu631@gmail.com"
             );
             let user: any = data[1];
+            let status: any = data[0];
             Object.entries(testUserFrontend).forEach(([field, value]) => {
                 expect(user).to.have.property(field);
                 expect(user[field]).to.be.a(typeof value);
+                expect(status).to.equal(200);
             });
         });
         it("return a 404 response if not found", async function () {
             let data: any = await getUserWithEmail("5");
             expect(data[0]).to.equal(404);
-        });
-        it("return a 200 response code if succesful", async function () {
-            let data: any = await getUserWithEmail(id);
-            expect(data[0]).to.equal(200);
         });
     });
     describe("# registerUser", function () {
@@ -90,8 +102,10 @@ describe("User Controllers", function () {
     });
     describe("# deleteUser", function () {
         it("return a 200 response code if succesful", async function () {
-            let user: any = await registerUser(testUser);
+            let user: any = await registerUser(testUserRegister);
             let data: any = await deleteUser(user[1]);
+            console.log("USER 1");
+            console.log(user[1]);
             expect(data[0]).to.equal(200);
         });
         it("return a 404 response code if not found", async function () {
