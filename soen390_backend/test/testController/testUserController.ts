@@ -1,11 +1,12 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
-
+const myFunctions = require("index.ts");
+console.log(myFunctions);
 import {
     getUserWithID,
     getUserWithEmail,
     registerUser,
-    deleteUser
+    deleteUser,
 } from "../../src/controllers/userControllers";
 
 const expect = chai.expect;
@@ -96,6 +97,6 @@ describe("User Controllers", function () {
         it("return a 404 response code if not found", async function () {
             let data: any = await deleteUser("5");
             expect(data[0]).to.equal(404);
-        })
+        });
     });
 });
