@@ -81,12 +81,11 @@ describe("User Controllers", function () {
         });
     });
     describe("# registerUser", function () {
-        it("store and return the stored user", async function () {
+        it("return a 401 response code if user with same email already exists", async function () {
             await registerUser(testUser);
             let data: any = await registerUser(testUser);
             expect(data[0]).to.equal(401);
-        }
-        );
+        });
     });
     describe("# deleteUser", function () {
         it("return a 200 response code if succesful", async function () {

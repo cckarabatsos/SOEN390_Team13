@@ -63,7 +63,6 @@ export const storeUser = async (user: User) => {
 export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
-        console.log(data);
         if (data !== undefined) {
             db.collection("users").doc(userID).delete().then(() => {
                 console.log("User with ID " + userID + "successfully deleted.");
