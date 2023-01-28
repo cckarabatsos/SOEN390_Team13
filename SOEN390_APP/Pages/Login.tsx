@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Modal,
+  Image
 } from "react-native";
 import { auth } from "../firebaseConfig";
 import { ILoginUser } from "../Models/UsersModel";
@@ -56,6 +57,14 @@ export default function Login({ navigation }: { navigation: any }) {
       })
       return unsubscribe
     }, []) */
+
+    const handleGoogleLogIn = () => {
+
+    }
+
+    const handleSignUp = () => {
+
+    }
 
   const handleLogIn = async () => {
     let aUser = new LoginUserModel(email, password);
@@ -115,17 +124,12 @@ export default function Login({ navigation }: { navigation: any }) {
             </View>
           </View>
         </Modal>
-
-        <Button
-          title="Do not have an account, Create one today"
-          onPress={() => navigation.navigate("Register")}
-        />
         <KeyboardAvoidingView
           style={styles.emptyContainer}
         ></KeyboardAvoidingView>
 
-        <KeyboardAvoidingView>
-          <Text style={styles.label}>email</Text>
+        <KeyboardAvoidingView style={styles.containerOuter}>
+          <Text style={styles.label}>Email: </Text>
           <TextInput
             value={email}
             onChangeText={(text) => setEmail(text)}
@@ -133,7 +137,7 @@ export default function Login({ navigation }: { navigation: any }) {
             placeholder="useless placeholder"
             keyboardType="default"
           />
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>Password: </Text>
           <TextInput
             value={password}
             onChangeText={(text) => setPassword(text)}
@@ -142,11 +146,30 @@ export default function Login({ navigation }: { navigation: any }) {
             placeholder="useless placeholder"
             keyboardType="default"
           />
-
+          </KeyboardAvoidingView>
+          <KeyboardAvoidingView style={styles.containerLower}>
+          <TouchableOpacity onPress={handleGoogleLogIn} style={styles.buttonGoogle}>
+            <Image
+                style={styles.logo}
+                source={require('../Components/Images/google-icon.png')}
+                />
+            <Text style={styles.buttonText}>  Sign up with Google</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+        
+        <View style={styles.buttonRow}>
+          <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+            <Text 
+            style={styles.buttonText}
+            onPress={() => navigation.navigate("Register")}
+            >Sign Up</Text>
+          </TouchableOpacity>
+          <Text>       </Text>
           <TouchableOpacity onPress={handleLogIn} style={styles.button}>
             <Text style={styles.buttonText}>Log In</Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+        </View>
+
       </ImageBackground>
     </KeyboardAvoidingView>
   );
@@ -157,6 +180,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  containerOuter: {
+    width: "65%",
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+  },
+  containerLower: {
+    justifyContent: 'center',
+    width: "65%",
+    alignItems: 'center',
   },
   emptyContainer: {
     height: Dimensions.get("window").height / 3,
@@ -182,20 +215,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     fontSize: 20,
-    left: 85,
+    marginLeft: 20
   },
   button: {
-    margin: 9,
-    marginLeft: 20,
-    backgroundColor: "#0077B5",
+    backgroundColor: '#d4d4d4',
     padding: 12,
-    alignItems: "center",
+    width: '35%',
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 16,
-    width: "60%",
-    borderRadius: 120,
+    borderRadius: 30,
   },
   buttonText: {
-    color: "#fff",
+    color: "black",
     fontWeight: "bold",
     fontSize: 20,
   },
@@ -225,5 +258,30 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -10,
     right: -10,
+  },
+  buttonGoogle: {
+    flexDirection: 'row',
+    backgroundColor: '#d4d4d4',
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+    borderRadius: 30,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    marginTop: 16,
+    borderRadius: 30,
+    gap: 100,
+  },
+  logo: {
+    paddingLeft: 20,
+    alignSelf: 'flex-start',
+    width: 30,
+    height: 30,
+    borderRadius: 50
   },
 });

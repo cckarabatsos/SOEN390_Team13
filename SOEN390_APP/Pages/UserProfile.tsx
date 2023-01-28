@@ -87,17 +87,48 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
   };
   
 const UserProfile = ({route}:{route:any}) => {
-    //const [email, setEmail] = useState("");
-    //const [password, setPassword] = useState("");
-    
-        console.log(route.params.username)
-        let Name = route.params.username
-        
-        const firstName = {key: 1, text: 'John'}
-        const lastName = {key: 1, text: {Name}}
-        const email = {key: 1, text: 'John.Smith@Gmail.com'}
-        const password = {key: 1, text: 'Password'}
-        const file = {key: 1, text: 'Saved File'}
+
+        let name = route.params.username
+        let password = route.params.password
+        if(password==null)
+          password="<EMPTY>"
+        let email = route.params.email
+      
+        const CONTENT = [
+          {
+              isExpanded: false,
+              category_name: 'Profile',
+              subcategory: [
+                {key: 1, text: name},
+                {key: 3, text: email},
+                {key: 4, text: password},
+              ],
+            },
+          {
+            isExpanded: false,
+            category_name: 'Experience',
+            subcategory: [
+              {key: 5, text: 'Software Development Engineer'},
+              {key: 6, text: 'Backend Engineer Intern'},
+            ],
+          },
+          {
+            isExpanded: false,
+            category_name: 'Education',
+            subcategory: [
+              {key: 7, text: 'Concordia University'},
+              {key: 8, text: 'Dawson College'},
+            ],
+          },
+          {
+              isExpanded: false,
+              category_name: 'Skills',
+              subcategory: [
+                {key: 9, text: 'Java'},
+                {key: 10, text: 'Python'},
+              ],
+            },
+        ];
 
         const [listDataSource, setListDataSource] = useState(CONTENT);
       
@@ -120,7 +151,7 @@ const UserProfile = ({route}:{route:any}) => {
         <Basic data = {password}/>
         <StandaloneRow data = {file} />
     </View> */}
-       
+    
   return (
       <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -130,7 +161,7 @@ const UserProfile = ({route}:{route:any}) => {
                 style={styles.logo}
                 source={require('../Components/Images/logInBackground.png')}
                 />
-                <Text style={styles.titleText}> {Name} </Text>
+                <Text style={styles.titleText}> {name} </Text>
                 <Text style={styles.textSmall}> Software Engineering Student </Text>
                 <Text style={styles.textSmall}> Montreal, Quebec </Text>
             </View>
@@ -151,6 +182,7 @@ const UserProfile = ({route}:{route:any}) => {
     </SafeAreaView>
   );
 }
+
 
 export default UserProfile
 
@@ -223,39 +255,3 @@ const styles = StyleSheet.create({
       },
 })
 
-const CONTENT = [
-    {
-        isExpanded: false,
-        category_name: 'Profile',
-        subcategory: [
-          {key: 1, text: 'Name'},
-          {key: 2, text: 'Last Name'},
-          {key: 3, text: 'Email'},
-          {key: 4, text: 'Password'},
-        ],
-      },
-    {
-      isExpanded: false,
-      category_name: 'Experience',
-      subcategory: [
-        {key: 5, text: 'Software Development Engineer'},
-        {key: 6, text: 'Backend Engineer Intern'},
-      ],
-    },
-    {
-      isExpanded: false,
-      category_name: 'Education',
-      subcategory: [
-        {key: 7, text: 'Concordia University'},
-        {key: 8, text: 'Dawson College'},
-      ],
-    },
-    {
-        isExpanded: false,
-        category_name: 'Skills',
-        subcategory: [
-          {key: 9, text: 'Java'},
-          {key: 10, text: 'Python'},
-        ],
-      },
-  ];
