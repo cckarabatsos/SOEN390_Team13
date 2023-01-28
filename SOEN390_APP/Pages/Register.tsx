@@ -30,7 +30,6 @@ const Signup = ({ navigation, route }: { navigation: any; route: any }) => {
   const [confirmpassword, setconfirmpassword] = useState("");
 
   const handleSignUp = async () => {
-    console.log("in sign up press button");
     if (password == confirmpassword) {
       let aUser: ISignUpUser = new SignUpUserModel(
         email,
