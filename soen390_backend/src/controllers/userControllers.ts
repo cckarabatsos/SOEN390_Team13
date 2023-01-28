@@ -7,9 +7,10 @@ import { user_schema } from "../models/User";
 
 export async function getUserWithID(userID: string) {
     let user = await findUserWithID(userID);
-    console.log(user);
+    let casted_user = await user_schema.cast(user);
+    console.log(casted_user);
     if (user) {
-        return [200, user];
+        return [200, casted_user];
     } else {
         return [404, { msg: "User not found" }];
     }

@@ -53,7 +53,7 @@ export const storeUser = async (user: User) => {
             isRecruiter: user.isRecruiter,
         });
 
-        console.log("User successfulle registered with id: " + document.id);
+        console.log("User successfully registered with id: " + document.id);
     } catch (error) {
         console.log(error);
         throw error;
