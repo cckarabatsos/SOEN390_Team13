@@ -1,22 +1,39 @@
 import { Button, Grid } from "@material-ui/core";
-import Icon from "@material-ui/core/Icon";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { GoogleLogin } from "react-google-login";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import background from "../assets/undraw_online_resume_re_ru7s.png";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
+import { CreateUser } from "../api/loginApi";
 
 function SignUp(props) {
-  const svgIcon = (
-    <Icon>
-      <img alt="Google" src="../assets/google-icon.svg" />
-    </Icon>
-  );
+  const [fNameInput, setfNameInput] = React.useState("");
+  const [lNameInput, setlNameInput] = React.useState("");
+  const [emailInput, setEmailInput] = React.useState("");
+  const [passwordInput, setPasswordInput] = React.useState("");
+  const [confirmPasswordInput, setConfirmPasswordInput] = React.useState("");
+
+  let navigate = useNavigate();
+
+  const registerUser = async () => {
+    console.log("clicked?");
+    if (confirmPasswordInput === passwordInput) {
+      const success = await CreateUser(
+        fNameInput,
+        lNameInput,
+        emailInput,
+        passwordInput
+      );
+      success.response === "Success"
+        ? navigate("/")
+        : console.log("Register Fail");
+    }
+  };
 
   return (
     <>
@@ -45,6 +62,8 @@ function SignUp(props) {
                       type="name"
                       variant="outlined"
                       size="small"
+                      value={fNameInput}
+                      onChange={(e) => setfNameInput(e.target.value)}
                     />
                   </div>
                 </Grid>
@@ -61,6 +80,8 @@ function SignUp(props) {
                       type="name"
                       variant="outlined"
                       size="small"
+                      value={lNameInput}
+                      onChange={(e) => setlNameInput(e.target.value)}
                     />
                   </div>
                 </Grid>
@@ -77,6 +98,8 @@ function SignUp(props) {
                       type="email"
                       variant="outlined"
                       size="small"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
                     />
                   </div>
                 </Grid>
@@ -93,6 +116,8 @@ function SignUp(props) {
                       type="password"
                       variant="outlined"
                       size="small"
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
                     />
                   </div>
                 </Grid>
@@ -109,6 +134,8 @@ function SignUp(props) {
                       type="password"
                       variant="outlined"
                       size="small"
+                      value={confirmPasswordInput}
+                      onChange={(e) => setConfirmPasswordInput(e.target.value)}
                     />
                   </div>
                 </Grid>
@@ -132,6 +159,7 @@ function SignUp(props) {
                       borderRadius: 27,
                       backgroundColor: "rgba(100, 69, 227, 0.85)",
                     }}
+                    onClick={registerUser}
                   >
                     Sign Up
                   </Button>

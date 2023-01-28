@@ -1,9 +1,9 @@
 import { Button, Grid } from "@material-ui/core";
-import Icon from "@material-ui/core/Icon";
 import TextField from "@mui/material/TextField";
-import React from "react";
+import React, { useState } from "react";
 import { GoogleLogin } from "react-google-login";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SignInUser } from "../api/loginApi";
 import background from "../assets/undraw_login_re_4vu2.svg";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
@@ -11,11 +11,18 @@ import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 
 function MainTitle(props) {
-  const svgIcon = (
-    <Icon>
-      <img alt="Google" src="../assets/google-icon.svg" />
-    </Icon>
-  );
+  const [emailInput, setEmailInput] = React.useState("");
+  const [passwordInput, setPasswordInput] = React.useState("");
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+
+  const navigate = useNavigate();
+
+  const signInUser = async () => {
+    const success = await SignInUser(emailInput, passwordInput);
+    console.log(success);
+    setIsAuth(success);
+    success.email !== "" ? navigate(-1) : console.log("Login Fail");
+  };
 
   return (
     <>
@@ -42,6 +49,8 @@ function MainTitle(props) {
                     type="email"
                     variant="outlined"
                     size="small"
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
                   />
                 </div>
               </Grid>
@@ -58,6 +67,8 @@ function MainTitle(props) {
                     type="password"
                     variant="outlined"
                     size="small"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
                   />
                 </div>
               </Grid>
@@ -77,6 +88,7 @@ function MainTitle(props) {
                 <Button
                   className="button"
                   variant="contained"
+                  onClick={signInUser}
                   style={{
                     borderRadius: 27,
                     backgroundColor: "rgba(100, 69, 227, 0.85)",
