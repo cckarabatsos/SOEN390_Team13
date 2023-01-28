@@ -10,8 +10,15 @@ export async function UserSignUp(user: ISignUpUser) {
       password: user.password,
       name: user.name,
     });
-    console.log(response.data.name);
-    return response.data;
+    
+    if(response.data.registeredUser){
+      return response.data;
+
+    }else
+    {
+      return false
+    }
+      
   } catch (error) {
     console.log("error", error);
     return false;
