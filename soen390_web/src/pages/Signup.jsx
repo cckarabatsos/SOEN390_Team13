@@ -30,8 +30,6 @@ function SignUp(props) {
         emailInput,
         passwordInput
       );
-      console.log(success[0]);
-      console.log(success[0] === 200);
       success[0] === 200 ? navigate("/") : setRegisterError(true);
     } else {
       setPasswordMismatch(true);
@@ -164,6 +162,7 @@ function SignUp(props) {
                       borderRadius: 27,
                       backgroundColor: "rgba(100, 69, 227, 0.85)",
                     }}
+                    onClick={() => navigate("/")}
                   >
                     Cancel
                   </Button>

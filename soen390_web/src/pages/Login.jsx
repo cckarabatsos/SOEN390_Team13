@@ -1,6 +1,6 @@
 import { Button, Grid } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInUser } from "../api/loginApi";
@@ -13,15 +13,22 @@ import "../styles/components/Login.css";
 function MainTitle(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
 
   const navigate = useNavigate();
 
   const signInUser = async () => {
+    console.log("yo?");
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
-    setIsAuth(success);
-    success.email !== "" ? navigate(-1) : console.log("Login Fail");
+    setIsAuth(success.data);
+    success.status === 200
+      ? navigate("/UserProfile")
+      : console.log("Login Fail");
+  };
+
+  const setIsAuth = (data) => {
+    console.log(data);
+    localStorage.setItem("isAuth", JSON.stringify(data));
   };
 
   return (
@@ -80,6 +87,7 @@ function MainTitle(props) {
                     borderRadius: 27,
                     backgroundColor: "rgba(100, 69, 227, 0.85)",
                   }}
+                  onClick={() => navigate("/")}
                 >
                   Cancel
                 </Button>

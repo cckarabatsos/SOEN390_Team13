@@ -13,14 +13,17 @@ export function GoogleSignin({ setIsAuth }) {
 
 export async function SignInUser(reqEmail, reqPassword) {
   try {
-    const response = await axios.get(api.BACKEND_API + "/user/api/login", {
-      params: {
-        email: reqEmail,
-        password: reqPassword,
-      },
-    });
-    console.log(response.data.name);
-    return response.data.registeredUser;
+    const response = await axios
+      .get(api.BACKEND_API + "/user/api/login", {
+        params: {
+          email: reqEmail,
+          password: reqPassword,
+        },
+      })
+      .then((res) => {
+        return res;
+      });
+    return response;
   } catch (error) {
     console.log("error", error);
     return false;

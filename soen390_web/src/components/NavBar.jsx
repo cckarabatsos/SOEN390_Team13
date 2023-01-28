@@ -8,8 +8,10 @@ import {
 import EastIcon from "@mui/icons-material/East";
 import HomeIcon from "@mui/icons-material/Home";
 import NorthIcon from "@mui/icons-material/North";
+import OutputIcon from "@mui/icons-material/Output";
 import WorkIcon from "@mui/icons-material/Work";
 import React from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
@@ -18,6 +20,21 @@ import DrawerComponent from "./Drawer";
 function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [userData, setUseData] = React.useState({});
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    if (data != null) {
+      setUseData(JSON.parse(localStorage.getItem("isAuth")));
+    } else {
+      setUseData({});
+    }
+    console.log(data);
+  }, []);
+
+  const signout = () => {
+    localStorage.setItem("isAuth", null);
+  };
 
   return (
     <AppBar position="static" style={{ background: "#BDBABA" }}>
@@ -34,12 +51,23 @@ function Navbar() {
             <Link to="/Jobs" className="link">
               Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
             </Link>
-            <Link to="/UserProfile" className="link">
-              Login <EastIcon className="icon" sx={{ color: "#9606D9" }} />
-            </Link>
-            <Link to="/Signup" className="link">
-              Signup <NorthIcon className="icon" sx={{ color: "#9606D9" }} />
-            </Link>
+
+            {!userData ? (
+              <>
+                <Link to="/UserProfile" className="link">
+                  Login <EastIcon className="icon" sx={{ color: "#9606D9" }} />
+                </Link>
+                <Link to="/Signup" className="link">
+                  Signup
+                  <NorthIcon className="icon" sx={{ color: "#9606D9" }} />
+                </Link>
+              </>
+            ) : (
+              <Link to="/" className="link" onClick={signout}>
+                Signout
+                <OutputIcon className="icon" sx={{ color: "#9606D9" }} />
+              </Link>
+            )}
           </span>
         )}
       </Toolbar>
