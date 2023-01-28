@@ -104,8 +104,6 @@ describe("User Controllers", function () {
         it("return a 200 response code if succesful", async function () {
             let user: any = await registerUser(testUserRegister);
             let data: any = await deleteUser(user[1]);
-            console.log("USER 1");
-            console.log(user[1]);
             expect(data[0]).to.equal(200);
         });
         it("return a 404 response code if not found", async function () {
