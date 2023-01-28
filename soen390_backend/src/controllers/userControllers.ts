@@ -2,7 +2,7 @@ import {
     findUserWithID,
     findUserWithEmail,
     storeUser,
-    deleteUserWithId
+    deleteUserWithId,
 } from "../services/userServices";
 import { user_schema } from "../models/User";
 
