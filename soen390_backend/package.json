@@ -4,7 +4,7 @@
     "description": "",
     "main": "./lib/index.js",
     "scripts": {
-        "test": "set TS_NODE_COMPILER_OPTIONS={\"module\": \"commonjs\"} & mocha --require ts-node/register --parallel --timeout 15000 test/**/*.ts",
+        "test": "set TS_NODE_COMPILER_OPTIONS={\"module\": \"commonjs\"} & mocha --require ts-node/register  --timeout 15000 test/**/*.ts",
         "build": "tsc",
         "lint": "tslint -c tslint.json src/**/*.ts",
         "prepublish": "npm run build",
