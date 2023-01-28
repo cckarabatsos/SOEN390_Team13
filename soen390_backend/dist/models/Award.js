@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.award_schema = void 0;
-const yup = __importStar(require("yup"));
+var yup = __importStar(require("yup"));
 //Some types are to be changed later
 exports.award_schema = yup
     .object()
@@ -33,5 +33,6 @@ exports.award_schema = yup
     ownerID: yup.string().required(),
     name: yup.string().required(),
     description: yup.string().required(),
+    timestamp: yup.string().required(),
 })
     .required();

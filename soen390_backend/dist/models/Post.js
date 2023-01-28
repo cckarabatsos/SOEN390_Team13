@@ -24,13 +24,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.post_schema = void 0;
-const yup = __importStar(require("yup"));
+var yup = __importStar(require("yup"));
 //Some types are to be changed later
 exports.post_schema = yup
     .object()
     .shape({
     postID: yup.string().required(),
     ownerID: yup.string().required(),
+    timestamp: yup.string().required(),
     content: yup.string().required(),
 })
     .required();

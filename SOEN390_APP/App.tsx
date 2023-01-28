@@ -64,8 +64,8 @@ const RegisterScreen = () => {
   return <Signup></Signup>;
 };
 
-const HomeScreen = ({ navigation }: { navigation: any }) => {
-  return <Home navigation={navigation}></Home>;
+const HomeScreen = ({ navigation, route}: { navigation: any, route:any }) => {
+  return <Home navigation={navigation} route={route}></Home>;
 };
 
 
@@ -107,6 +107,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="Login"
         screenOptions={{headerStyle: { backgroundColor: "#967BB6" }, }}
       >
         <Stack.Screen
@@ -115,7 +116,10 @@ export default function App() {
           options={{ headerTitle: (props: any) => <LogoTitle {...props} /> }}
         />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Home" component={BottomNav} options={{ title: 'Sign Out' }}/>       
+        <Stack.Screen name="Home" component={BottomNav} options={({ route }) => ({
+            headerLargeTitle: true,
+            title: route.params.named,
+          })}/>       
       </Stack.Navigator>
     </NavigationContainer>
   );
