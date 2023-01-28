@@ -5,3 +5,9 @@ export interface ILoginUser{
     password:string
 }
 
+export interface ISignUpUser{
+    email:string
+    password:string
+    name:string
+}
+

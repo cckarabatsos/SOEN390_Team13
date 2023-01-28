@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
+//import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 
 import {
-    getUserWithID,
-    getUserWithEmail,
-    registerUser,
-    comparePasswords,
+  getUserWithID,
+  getUserWithEmail,
+  registerUser,
+  comparePasswords,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -68,22 +69,48 @@ user.get("/api/login", async (req: Request, res: Response) => {
     return user;
 });
 user.post("/api/register", async (req: Request, res: Response) => {
-    try {
-        const registeredUser: User = await registerUser(req.body);
-        const status: number = registeredUser[0];
-        if (status == 200) {
-            res.status(200);
-            res.json({
-                Response: "Success",
-                registeredUser,
-            });
-        } else if (status !== 404) {
-            res.sendStatus(status);
-        }
-    } catch (err: any) {
-        res.status(400);
-        res.json({ errType: err.Name, errMsg: err.message });
+  console.log(req.body);
+  let email: string = req.body.email as string;
+  let pwd: string = req.body.password as string;
+  let name: string = req.body.name as string;
+
+  if (!(email && pwd && name)) {
+    res.status(400);
+    res.json({ errMsg: "email name or pasword field are not filled out" });
+    return;
+  }
+
+  let userObj: User = {
+    name: name,
+    password: pwd,
+    email: email,
+    privateKey: "",
+    publicKey: "",
+    picture: "",
+    resume: "",
+    coverLetter: "",
+    bio: "I am Liam and I want to be an engineer...... lol poor kid",
+    currentPosition: "Student",
+    currentCompany: "Concordia University",
+    isRecruiter: "false",
+  };
+
+  try {
+    let status;
+    const registeredUser = await registerUser(userObj);
+    res.json({
+      Response: "Success",
+      registeredUser,
+    });
+    if (status == 200) {
+      res.sendStatus(200);
+    } else if (status == 404) {
+      res.sendStatus(404);
     }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.Name, errMsg: err.message });
+  }
 });
 //Exporting the user as a module
 module.exports = user;
