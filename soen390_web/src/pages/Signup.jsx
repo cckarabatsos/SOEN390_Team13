@@ -17,11 +17,12 @@ function SignUp(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [confirmPasswordInput, setConfirmPasswordInput] = React.useState("");
+  const [registerError, setRegisterError] = React.useState(false);
+  const [passwordMismatch, setPasswordMismatch] = React.useState(false);
 
   let navigate = useNavigate();
 
   const registerUser = async () => {
-    console.log("clicked?");
     if (confirmPasswordInput === passwordInput) {
       const success = await CreateUser(
         fNameInput,
@@ -29,9 +30,11 @@ function SignUp(props) {
         emailInput,
         passwordInput
       );
-      success.response === "Success"
-        ? navigate("/")
-        : console.log("Register Fail");
+      console.log(success[0]);
+      console.log(success[0] === 200);
+      success[0] === 200 ? navigate("/") : setRegisterError(true);
+    } else {
+      setPasswordMismatch(true);
     }
   };
 
@@ -139,6 +142,20 @@ function SignUp(props) {
                     />
                   </div>
                 </Grid>
+                {passwordMismatch ? (
+                  <Grid item xs={12} style={{ color: "red" }}>
+                    Passwords do not Match
+                  </Grid>
+                ) : (
+                  <></>
+                )}
+                {registerError ? (
+                  <Grid item xs={12} style={{ color: "red" }}>
+                    User already has an account
+                  </Grid>
+                ) : (
+                  <></>
+                )}
                 <Grid className="cancel" item xs={6}>
                   <Button
                     className="button"

@@ -20,7 +20,7 @@ export async function SignInUser(reqEmail, reqPassword) {
       },
     });
     console.log(response.data.name);
-    return response.data;
+    return response.data.registeredUser;
   } catch (error) {
     console.log("error", error);
     return false;

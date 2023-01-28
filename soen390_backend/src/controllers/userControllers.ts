@@ -29,6 +29,7 @@ export async function registerUser(user: any) {
   let casted_user = await user_schema.cast(user, { stripUnknown: false });
   user = await new Promise((resolve, _) => {
     findUserWithEmail(casted_user.email, (user) => {
+      console.log(user);
       if (user == null) {
         resolve(null);
       } else {
