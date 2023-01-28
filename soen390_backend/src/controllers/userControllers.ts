@@ -2,6 +2,7 @@ import {
     findUserWithID,
     findUserWithEmail,
     storeUser,
+    deleteUserWithId
 } from "../services/userServices";
 import { user_schema } from "../models/User";
 
@@ -47,6 +48,16 @@ export async function registerUser(user: any) {
         }
     } else {
         return [401, { msg: "Email was already found in the database" }];
+    }
+}
+export async function deleteUser(userID: string) {
+    let user = await deleteUserWithId(userID);
+    let casted_user = await user_schema.cast(user);
+    console.log(user);
+    if (user) {
+        return [200, casted_user];
+    } else {
+        return [404, { msg: "User not found" }];
     }
 }
 //This is to be later updated to have the compare encrypted passwords

@@ -4,6 +4,7 @@ import {
     getUserWithID,
     getUserWithEmail,
     registerUser,
+    deleteUser,
     comparePasswords,
 } from "../controllers/userControllers";
 
@@ -79,6 +80,23 @@ user.post("/api/register", async (req: Request, res: Response) => {
             });
         } else if (status !== 404) {
             res.sendStatus(status);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+user.post("/delete/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    console.log(userID);
+    try {
+        let status,
+            data = await deleteUser(userID);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
         }
     } catch (err: any) {
         res.status(400);

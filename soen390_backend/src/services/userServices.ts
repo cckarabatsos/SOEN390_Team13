@@ -60,6 +60,21 @@ export const storeUser = async (user: User) => {
     }
     return document;
 };
+export const deleteUserWithId = async (userID: string) => {
+    try {
+        var data: any = await findUserWithID(userID);
+        console.log(data);
+        if (data !== undefined) {
+            db.collection("users").doc(userID).delete().then(() => {
+                console.log("User with ID " + userID + "successfully deleted.");
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return data;
+};
 
 function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any }) => doc.data());
