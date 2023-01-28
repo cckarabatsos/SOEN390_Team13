@@ -13,7 +13,6 @@ const describe = mocha.describe;
 const it = mocha.it;
 const id: string = "18JRHKkLE2t50nE17SHc";
 let testUser: any = {
-    userId: 1,
     name: "Jake",
     password: "123",
     email: "mat@gmail.ca",
@@ -28,23 +27,8 @@ let testUser: any = {
     isRecruiter: false,
 };
 let testUserFrontend: any = {
-    userId: 1,
     name: "Jake",
-    password: "123",
-    email: "mat@gmail.ca",
-    privateKey: "",
-    publicKey: "",
-    picture: "",
-    resume: "",
-    coverLetter: "",
-    bio: "",
-    currentPosition: "",
-    currentCompany: "",
-    isRecruiter: false,
-};
-let testRegisterUser: any = {
-    name: "Jake",
-    password: "123",
+    password: "",
     email: "mat@gmail.ca",
     privateKey: "",
     publicKey: "",
@@ -98,20 +82,15 @@ describe("User Controllers", function () {
     });
     describe("# registerUser", function () {
         it("store and return the stored user", async function () {
-            let data: any = await getUserWithEmail(
-                "matthew.beaulieu631@gmail.com"
-            );
-            if (data[0].equal(200)) {
-
-            }
-            let document: any = await registerUser(testRegisterUser);
-            expect(data[0]).to.equal(200);
+            await registerUser(testUser);
+            let data: any = await registerUser(testUser);
+            expect(data[0]).to.equal(401);
         }
         );
     });
     describe("# deleteUser", function () {
         it("return a 200 response code if succesful", async function () {
-            let user: any = await registerUser(testRegisterUser);
+            let user: any = await registerUser(testUser);
             let data: any = await deleteUser(user[1]);
             expect(data[0]).to.equal(200);
         });
