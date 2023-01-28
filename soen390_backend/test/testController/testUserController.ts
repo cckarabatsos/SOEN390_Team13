@@ -1,5 +1,6 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
+import { detectBufferEncoding } from "tslint/lib/utils";
 
 import {
     getUserWithID,
@@ -28,6 +29,20 @@ let testUser: any = {
 };
 let testUserFrontend: any = {
     userId: 1,
+    name: "Jake",
+    password: "123",
+    email: "mat@gmail.ca",
+    privateKey: "",
+    publicKey: "",
+    picture: "",
+    resume: "",
+    coverLetter: "",
+    bio: "",
+    currentPosition: "",
+    currentCompany: "",
+    isRecruiter: false,
+};
+let testRegisterUser: any = {
     name: "Jake",
     password: "123",
     email: "mat@gmail.ca",
@@ -81,5 +96,17 @@ describe("User Controllers", function () {
             expect(data[0]).to.equal(200);
         });
     });
-    describe("# registerUser", function () {});
+    describe("# registerUser", function () {
+        it("store and return the stored user", async function () {
+            let data: any = await getUserWithEmail(
+                "matthew.beaulieu631@gmail.com"
+            );
+            if (data[0].equal(200)) {
+
+            }
+            let document: any = await registerUser(testRegisterUser);
+            expect(data[0]).to.equal(200);
+        }
+        );
+    });
 });
