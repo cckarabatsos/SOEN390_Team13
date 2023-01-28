@@ -9,6 +9,7 @@ import {
 import { auth } from "../firebaseConfig";
 import { UserSignUp } from "../api/SignUpApi";
 import { ISignUpUser } from "../Models/UsersModel";
+import ErrorModal from "../Components/ErrorModal";
 
 class SignUpUserModel implements ISignUpUser {
   email: string;
@@ -21,7 +22,7 @@ class SignUpUserModel implements ISignUpUser {
   }
 }
 
-const Signup = ({ navigation }: { navigation: any }) => {
+const Signup = ({ navigation, route }: { navigation: any; route: any }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setfirstname] = useState("");
@@ -29,14 +30,7 @@ const Signup = ({ navigation }: { navigation: any }) => {
   const [confirmpassword, setconfirmpassword] = useState("");
 
   const handleSignUp = async () => {
-    /* auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials: any) => {
-        const user = userCredentials.user;
-        console.log(user.email);
-      })
-      .catch((error: any) => alert(error.message)) */
-      console.log("in sign up press button")
+    console.log("in sign up press button");
     if (password == confirmpassword) {
       let aUser: ISignUpUser = new SignUpUserModel(
         email,
@@ -50,12 +44,31 @@ const Signup = ({ navigation }: { navigation: any }) => {
         navigation.navigate("Home", {
           named: "Welcome " + validUser.name + "!",
         });
+      } else {
+        handleOpenModal();
       }
+    } else {
+      handleOpenModal();
     }
+  };
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsVisible(false);
   };
 
   return (
     <View style={styles.container}>
+      <ErrorModal
+        isVisible={isVisible}
+        handleCloseModal={handleCloseModal}
+        screen={2}
+      ></ErrorModal>
       <Text style={styles.label}>First name</Text>
       <TextInput
         value={firstName}

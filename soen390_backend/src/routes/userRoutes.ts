@@ -69,10 +69,18 @@ user.get("/api/login", async (req: Request, res: Response) => {
   return user;
 });
 user.post("/api/register", async (req: Request, res: Response) => {
-  let email: string = req.body.data.email as string;
-  let pwd: string = req.body.data.password as string;
-  let name: string = req.body.data.name as string;
-  console.log(req.body.data);
+  console.log(req.body);
+  let email: string = req.body.email as string;
+  let pwd: string = req.body.password as string;
+  let name: string = req.body.name as string;
+
+  if (!(email && pwd && name)) {
+    res.status(400);
+    res.json({errMsg: "email name or pasword field are not filled out" });
+    //throw new Error("email name or pasword field are not filled out");
+    return;
+  }
+  console.log("why lol")
 
   let userObj: User = {
     name: name,

@@ -60,8 +60,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
 // return the Register page (not yet implemented)
 //param: none
-const RegisterScreen = () => {
-  return <Signup></Signup>;
+const RegisterScreen = ({ navigation, route}: { navigation: any, route:any }) => {
+  return <Signup navigation={navigation} route={route} ></Signup>;
 };
 
 const HomeScreen = ({ navigation, route}: { navigation: any, route:any }) => {
