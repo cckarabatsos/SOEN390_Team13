@@ -64,9 +64,14 @@ export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
         if (data !== undefined) {
-            db.collection("users").doc(userID).delete().then(() => {
-                console.log("User with ID " + userID + "successfully deleted.");
-            })
+            db.collection("users")
+                .doc(userID)
+                .delete()
+                .then(() => {
+                    console.log(
+                        "User with ID " + userID + "successfully deleted."
+                    );
+                });
         }
     } catch (error) {
         console.log(error);
