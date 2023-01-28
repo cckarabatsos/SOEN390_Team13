@@ -39,6 +39,7 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
+        console.log(user.name)
         var document = await db.collection("users").add(
             {
                 name: user.name,

@@ -1,16 +1,34 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { auth } from "../firebaseConfig"
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { auth } from "../firebaseConfig";
+import { UserSignUp } from "../api/SignUpApi";
+import { ISignUpUser } from "../Models/UsersModel";
 
-const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setfirstname] = useState('');
-  const [lastname, setlastname] = useState('');
-  const [confirmpassword, setconfirmpassword] = useState('');
+class SignUpUserModel implements ISignUpUser {
+  email: string;
+  password: string;
+  name: string;
+  constructor(email: string, password: string, name: string) {
+    this.email = email;
+    this.password = password;
+    this.name = name;
+  }
+}
 
+const Signup = ({ navigation }: { navigation: any }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setfirstname] = useState("");
+  const [lastname, setlastname] = useState("");
+  const [confirmpassword, setconfirmpassword] = useState("");
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     /* auth
       .createUserWithEmailAndPassword(email, password)
       .then((userCredentials: any) => {
@@ -18,10 +36,23 @@ const Signup = () => {
         console.log(user.email);
       })
       .catch((error: any) => alert(error.message)) */
+      console.log("in sign up press button")
+    if (password == confirmpassword) {
+      let aUser: ISignUpUser = new SignUpUserModel(
+        email,
+        password,
+        firstName + " " + lastname
+      );
+      const validUser = await UserSignUp(aUser);
+      console.log(validUser);
 
-
-      
-  }
+      if (validUser) {
+        navigation.navigate("Home", {
+          named: "Welcome " + validUser.name + "!",
+        });
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -71,32 +102,32 @@ const Signup = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5'
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
   },
   label: {
-    fontWeight: 'bold',
-    marginBottom: 8
+    fontWeight: "bold",
+    marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 8,
     marginBottom: 16,
-    width: '90%'
+    width: "90%",
   },
   button: {
-    backgroundColor: '#0077B5',
+    backgroundColor: "#0077B5",
     padding: 12,
-    width: '90%',
-    alignItems: 'center',
-    marginTop: 16
+    width: "90%",
+    alignItems: "center",
+    marginTop: 16,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold'
-  }
+    color: "#fff",
+    fontWeight: "bold",
+  },
 });
 
 export default Signup;
