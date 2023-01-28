@@ -10,6 +10,7 @@ import Concordia from "../assets/UserProfileImages/Concordia.png"
 import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg"
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import AddEducationDialog from "../components/AddEducationDialog";
 
 function UserProfile(props) {
 
@@ -32,7 +33,7 @@ function UserProfile(props) {
                             </Grid>
                             <Grid item xs={6}>
                                 <div className="header">
-                                    Education <AddIcon className="profile-icon"/> <EditIcon className="profile-icon"/>
+                                    Education <AddEducationDialog/> <EditIcon className="profile-icon"/>
                                 </div>
                                 <hr className="line"></hr>
                                 <Grid
