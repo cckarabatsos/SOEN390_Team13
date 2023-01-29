@@ -27,7 +27,7 @@ function Navbar() {
     if (data != null) {
       setUseData(JSON.parse(localStorage.getItem("isAuth")));
     } else {
-      setUseData({});
+      setUseData(false);
     }
     console.log(data);
   }, []);
