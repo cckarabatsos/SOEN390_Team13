@@ -2,6 +2,8 @@ import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import picture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
 import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
@@ -16,6 +18,10 @@ import "../styles/components/UserProfile.css";
 
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
+  const [userData, setUseData] = React.useState({});
+
+  const navigate = useNavigate();
+
   const handleClickEnableEdit = () => {
     setEnable(true);
   };
@@ -23,6 +29,17 @@ function UserProfile(props) {
   const handleDisableEdit = () => {
     setEnable(false);
   };
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    if (data != null) {
+      setUseData(JSON.parse(localStorage.getItem("isAuth")));
+    } else {
+      navigate("/");
+    }
+    console.log(data);
+  }, [navigate]);
+
   return (
     <>
       <NavBar />
@@ -37,7 +54,7 @@ function UserProfile(props) {
             <img className="profile-pic" alt="profile-pic" src={picture}></img>
             <Grid container spacing={2}>
               <Grid className="name" item xs={12}>
-                FIRST NAME LAST NAME
+                {userData.name}
               </Grid>
               <Grid className="bio" item xs={12}>
                 Software Engineering Student at Concordia University
@@ -162,7 +179,7 @@ function UserProfile(props) {
                 <Typography style={{ marginLeft: "5%" }} className="skill">
                   Java
                   {enable && (
-                    <span classname="profile-item">
+                    <span className="profile-item">
                       <IconButton>
                         <DeleteIcon className="profile-icon" />
                       </IconButton>
@@ -173,7 +190,7 @@ function UserProfile(props) {
                 <Typography style={{ marginLeft: "5%" }} className="skill">
                   Python
                   {enable && (
-                    <span classname="profile-item">
+                    <span className="profile-item">
                       <IconButton>
                         <DeleteIcon className="profile-icon" />
                       </IconButton>
@@ -184,7 +201,7 @@ function UserProfile(props) {
                 <Typography style={{ marginLeft: "5%" }} className="skill">
                   JavaScript
                   {enable && (
-                    <span classname="profile-item">
+                    <span className="profile-item">
                       <IconButton>
                         <DeleteIcon className="profile-icon" />
                       </IconButton>
@@ -195,7 +212,7 @@ function UserProfile(props) {
                 <Typography style={{ marginLeft: "5%" }} className="skill">
                   Software Testing
                   {enable && (
-                    <span classname="profile-item">
+                    <span className="profile-item">
                       <IconButton>
                         <DeleteIcon className="profile-icon" />
                       </IconButton>

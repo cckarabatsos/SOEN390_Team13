@@ -58,7 +58,26 @@ export const storeUser = async (user: User) => {
         console.log(error);
         throw error;
     }
-    return document;
+    return document.id;
+};
+export const deleteUserWithId = async (userID: string) => {
+    try {
+        var data: any = await findUserWithID(userID);
+        if (data !== undefined) {
+            db.collection("users")
+                .doc(userID)
+                .delete()
+                .then(() => {
+                    console.log(
+                        "User with ID " + userID + "successfully deleted."
+                    );
+                });
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return data;
 };
 
 function processData(snapshot: any) {
