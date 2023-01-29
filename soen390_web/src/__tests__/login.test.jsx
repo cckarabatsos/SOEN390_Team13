@@ -20,3 +20,10 @@ test('should render Login page', () => {
     const LoginElement = screen.getByTestId('login-1');
     expect(LoginElement).toBeInTheDocument();
 })
+
+// test('should display text when you write in textbox', async () => {
+//     render(<Login/>, { wrapper: RouterWrapper });
+//     const input = await screen.getByTestId('email-1');
+//     userEvent.type(input, "test@test.com");
+//     expect(mockedOnChange).toHaveBeenCalledWith("test@test.com");
+// })

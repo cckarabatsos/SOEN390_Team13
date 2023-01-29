@@ -49,6 +49,7 @@ function SignUp(props) {
   };
 
   return (
+    <div data-testid='signup-1'>
     <>
       <NavBar />
       <div className="background-color">
@@ -60,7 +61,7 @@ function SignUp(props) {
         >
           <div className="form-group">
             <div>
-              <h1>Sign Up</h1>
+              <h1 data-testid='signuptitle-1'>Sign Up</h1>
               <Grid container spacing={2}>
                 <Grid className="field-name" item xs={4}>
                   First Name
@@ -207,6 +208,7 @@ function SignUp(props) {
       <SubFooter />
       <Footer />
     </>
+    </div>
   );
 }
 

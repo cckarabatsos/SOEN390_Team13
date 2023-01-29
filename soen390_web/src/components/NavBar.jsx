@@ -48,19 +48,19 @@ function Navbar({}) {
           <DrawerComponent />
         ) : (
           <span className="navlinks">
-            <Link to="/" className="link">
+            <Link data-testid='home-1' to="/" className="link">
               Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
             </Link>
-            <Link to="/Jobs" className="link">
+            <Link data-testid='job-1' to="/Jobs" className="link">
               Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
             </Link>
 
             {!userData ? (
               <>
-                <Link to="/UserProfile" className="link">
+                <Link data-testid='login-1' to="/UserProfile" className="link">
                   Login <EastIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
-                <Link to="/Signup" className="link">
+                <Link data-testid='signup-1' to="/Signup" className="link">
                   Signup
                   <NorthIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
