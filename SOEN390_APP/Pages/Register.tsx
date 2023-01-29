@@ -42,10 +42,10 @@ const Signup = ({ navigation, route }: { navigation: any; route: any }) => {
         firstName + " " + lastname
       );
       const validUser = await UserSignUp(aUser);
-      console.log("hello")
-      console.log(validUser.registeredUser[0]);
+      //console.log("hello")
+      console.log(validUser);
 
-      if (validUser.registeredUser[0]!=401) {
+      if (validUser.registeredUser) {
         navigation.navigate("Home", {
           named: "Welcome " + validUser.name + "!",
         });

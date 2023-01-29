@@ -34,9 +34,18 @@ export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
   try {
     const response = await axios
       .post(api.BACKEND_API + "/user/api/register", {
+        isRecruiter: false,
+        currentCompany: "Concordia University",
+        currentPosition: "Student",
+        bio: "I am Liam and I want to be an engineer.",
+        coverLetter: "",
+        resume: "",
+        picture: "",
+        publicKey: "",
+        privateKey: "",
         email: emailIn,
         password: passwordIn,
-        name: firstNameIn + " " + lastNameIn,
+        name: firstNameIn+" "+ lastNameIn,
       })
       .then((res) => {
         return res.data;
