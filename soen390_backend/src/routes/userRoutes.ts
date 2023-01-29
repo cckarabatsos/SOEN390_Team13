@@ -5,6 +5,7 @@ import {
   getUserWithID,
   getUserWithEmail,
   registerUser,
+  deleteUser,
   comparePasswords,
 } from "../controllers/userControllers";
 
@@ -36,8 +37,8 @@ user.get("/id/:userID", async (req: Request, res: Response) => {
 user.get("/api/login", async (req: Request, res: Response) => {
   let user;
   try {
-    let email: string = req.query.email as string;
-    let pwd: string = req.query.password as string;
+    let email: string = req.body.email as string;
+    let pwd: string = req.body.password as string;
     const userArr: User = await getUserWithEmail(email).then();
     const status = userArr[0];
 
@@ -69,39 +70,31 @@ user.get("/api/login", async (req: Request, res: Response) => {
   return user;
 });
 user.post("/api/register", async (req: Request, res: Response) => {
-  console.log(req.body);
-  let email: string = req.body.email as string;
-  let pwd: string = req.body.password as string;
-  let name: string = req.body.name as string;
-
-  if (!(email && pwd && name)) {
-    res.status(400);
-    res.json({ errMsg: "email name or pasword field are not filled out" });
-    return;
-  }
-
-  let userObj: User = {
-    name: name,
-    password: pwd,
-    email: email,
-    privateKey: "",
-    publicKey: "",
-    picture: "",
-    resume: "",
-    coverLetter: "",
-    bio: "I am Liam and I want to be an engineer...... lol poor kid",
-    currentPosition: "Student",
-    currentCompany: "Concordia University",
-    isRecruiter: "false",
-  };
-
   try {
-    let status;
-    const registeredUser = await registerUser(userObj);
-    res.json({
-      response: "Success",
-      registeredUser,
-    });
+    const registeredUser: User = await registerUser(req.body);
+    const status: number = registeredUser[0];
+    console.log("user registration");
+    if (status == 200) {
+      res.status(200);
+      res.json({
+        Response: "Success",
+        registeredUser,
+      });
+    } else if (status !== 404) {
+      res.sendStatus(status);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.Name, errMsg: err.message });
+  }
+});
+user.post("/delete/:userID", async (req: Request, res: Response) => {
+  let userID = req.params.userID;
+  console.log(userID);
+  try {
+    let status,
+      data = await deleteUser(userID);
+    res.json({ data });
     if (status == 200) {
       res.sendStatus(200);
     } else if (status == 404) {
