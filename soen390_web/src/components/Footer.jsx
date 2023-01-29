@@ -16,6 +16,7 @@ const Footer = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
+    <div data-testid='footer-1'>
     <AppBar
       className="border"
       position="static"
@@ -27,6 +28,7 @@ const Footer = () => {
         <h2>Linked Out @ 2023 </h2>
       </Toolbar>
     </AppBar>
+    </div>
   );
 };
 

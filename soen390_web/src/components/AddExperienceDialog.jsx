@@ -27,6 +27,7 @@ function AddEducationDialog() {
     
     const [selectedYear, setSelectedYear] = useState(null);
     return(
+        <div data-testid='experience-1'>
         <>
             <IconButton onClick={handleClickOpen}>
                 <AddIcon className="add-icon" />
@@ -139,6 +140,7 @@ function AddEducationDialog() {
                 </DialogActions>
             </Dialog>
         </>
+        </div>
     )
 }
 

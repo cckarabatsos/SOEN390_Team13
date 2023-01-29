@@ -21,6 +21,7 @@ function AddEducationDialog() {
   };
 
   return (
+    <div data-testid='skill-1'>
     <>
       <IconButton onClick={handleClickOpen}>
         <AddIcon className="add-icon" />
@@ -67,6 +68,7 @@ function AddEducationDialog() {
         </DialogActions>
       </Dialog>
     </>
+    </div>
   );
 }
 
