@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   KeyboardAvoidingView,
+  Modal,
+  Image,
 } from "react-native";
 import React, { Key, useState } from "react";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -16,17 +18,21 @@ import { SwipeListView } from "react-native-swipe-list-view";
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
-  const { key, text } = data;
-  //console.log(id);
-  console.log(text);
   console.log(data);
-  //console.log(listData);
+  const { key, text } = data;
+  const [name, setName] = useState(text);
+  const [program, setProgram] = useState("Insert Program");
+  const [year, setYear] = useState("Insert Year");
+  const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
       .fill("")
-      .map((_, i) => ({ key: `${i}`, text: `item #${text}` }))
+      .map((_, i) => ({ key: `${i}`, text: `item #${setName}` }))
   );
-
+  const handleNameChange = (newName) => {
+    setName(newName);
+    // code to send new name to the database server
+  };
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
@@ -34,8 +40,9 @@ export default function Basic({ data }) {
   };
 
   const editRow = (rowMap, rowKey) => {
-    console.log(data);
     console.log("Edit Data");
+    setModalVisible(true);
+    console.log(text);
   };
 
   const deleteRow = (rowMap, rowKey) => {
@@ -46,21 +53,33 @@ export default function Basic({ data }) {
     console.log("This row opened", rowKey);
   };
 
+  const copyToClipBoard = () => {
+    console.log("Copied To Clipboard");
+    //Clipboard.setString(text)}
+  };
+
   const renderItem = (data) => (
     <TouchableHighlight
-      onPress={() => console.log("You touched me")}
+      onPress={copyToClipBoard}
       style={styles.rowFront}
       underlayColor={"#AAA"}
     >
-      <View>
-        <Text>{text}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <Image
+          style={styles.logo}
+          source={require("../Images/logInBackground.png")}
+        />
+        <View>
+          <Text style={styles.titleText}>{name}</Text>
+          <Text style={styles.smallText}>{program}</Text>
+          <Text style={styles.smallText}>{year}</Text>
+        </View>
       </View>
     </TouchableHighlight>
   );
 
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
-      <Text></Text>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => editRow(rowMap, data.item.key)}
@@ -73,9 +92,27 @@ export default function Basic({ data }) {
       >
         <Text style={styles.backTextWhite}>Delete</Text>
       </TouchableOpacity>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TextInput
+              style={styles.input}
+              placeholder={"Enter new " + text}
+              onChangeText={handleNameChange}
+            />
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.buttonModal}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.backTextWhite}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
-
   return (
     <View style={styles.container}>
       <SwipeListView
@@ -102,12 +139,12 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   rowFront: {
-    alignItems: "center",
-    backgroundColor: "#CCC",
+    backgroundColor: "white",
     borderBottomColor: "black",
     borderBottomWidth: 1,
     justifyContent: "center",
-    height: 50,
+    height: 80,
+    paddingStart: 20,
   },
   rowBack: {
     alignItems: "center",
@@ -132,5 +169,63 @@ const styles = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: "red",
     right: 0,
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    width: "80%",
+    height: "30%",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    margin: 9,
+    marginLeft: 20,
+    backgroundColor: "#0077B5",
+    padding: 12,
+    alignItems: "center",
+    marginTop: 16,
+    width: 200,
+    height: 80,
+    borderRadius: 120,
+  },
+  buttonModal: {
+    margin: 9,
+    marginLeft: 20,
+    backgroundColor: "#0077B5",
+    padding: 12,
+    alignItems: "center",
+    marginTop: 16,
+    width: 200,
+    height: 50,
+    borderRadius: 120,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 10,
+    margin: 10,
+  },
+  logo: {
+    paddingLeft: 20,
+    alignSelf: "flex-start",
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
+  titleText: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  textSmall: {
+    fontSize: 10,
+    color: "black",
   },
 });
