@@ -21,6 +21,7 @@ function DrawerComponent() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const classes = useStyles();
   return (
+    <div data-testid='drawer-1'>
     <>
       <Drawer
         open={openDrawer}
@@ -54,6 +55,7 @@ function DrawerComponent() {
         <MenuIcon className="icon" />
       </IconButton>
     </>
+    </div>
   );
 }
 export default DrawerComponent;

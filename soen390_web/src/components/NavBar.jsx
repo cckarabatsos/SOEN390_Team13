@@ -15,11 +15,14 @@ import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 
-function Navbar() {
+
+
+function Navbar({}) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
+    <div data-testid='navbar-1'>
     <AppBar position="static" style={{ background: "#BDBABA" }}>
       <CssBaseline />
       <Toolbar>
@@ -44,6 +47,7 @@ function Navbar() {
         )}
       </Toolbar>
     </AppBar>
+    </div>
   );
 }
 export default Navbar;

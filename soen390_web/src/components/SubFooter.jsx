@@ -16,6 +16,7 @@ function SubFooter() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
+    <div data-testid='subfooter-1'>
     <AppBar
       className="border"
       position="static"
@@ -50,6 +51,7 @@ function SubFooter() {
         </h5>
       </Toolbar>
     </AppBar>
+    </div>
   );
 }
 export default SubFooter;
