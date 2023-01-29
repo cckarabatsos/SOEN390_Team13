@@ -13,12 +13,7 @@ const port: number = 7000; //Port for the backend
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: ["http;//localhost:3000"],
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(function (_req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");

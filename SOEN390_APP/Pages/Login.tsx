@@ -17,6 +17,7 @@ import React from "react";
 import { UserLogin } from "../api/LoginApi";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import ErrorModal from "../Components/ErrorModal";
 
 // fecth the backGround images from Image folder
 const background_Image = require("../Components/Images/logInBackground.png");
@@ -45,15 +46,6 @@ export default function Login({ navigation }: { navigation: any }) {
     setIsVisible(false);
   };
 
-  /*     useEffect(() => {
-      const unsubscribe = auth.onAuthStateChange((user: any) => {
-        if(user){
-          navigation.navigate("Home")
-        }
-      })
-      return unsubscribe
-    }, []) */
-
   const handleLogIn = async () => {
     let aUser = new LoginUserModel(email, password);
 
@@ -66,14 +58,6 @@ export default function Login({ navigation }: { navigation: any }) {
     } else {
       handleOpenModal();
     }
-
-    /*      auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredentials: any) => {
-        const user = userCredentials.user;
-        console.log('signed in with:', user.email);
-      })
-      .catch((error: any) => alert(error.message)) */
   };
 
   return (
@@ -89,24 +73,11 @@ export default function Login({ navigation }: { navigation: any }) {
           height: Dimensions.get("window").height,
         }}
       >
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={isVisible}
-          onRequestClose={handleCloseModal}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalInnerContainer}>
-              <Text style={styles.errorText}>Invalid username or password</Text>
-              <TouchableOpacity
-                onPress={handleCloseModal}
-                style={styles.closeButtonContainer}
-              >
-                <MaterialCommunityIcons name="close" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+        <ErrorModal
+          isVisible={isVisible}
+          handleCloseModal={handleCloseModal}
+          screen={1}
+        ></ErrorModal>
 
         <Button
           title="Do not have an account, Create one today"
@@ -190,32 +161,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 20,
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  modalInnerContainer: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  errorText: {
-    fontSize: 28,
-    marginBottom: 10,
-    marginTop: 40,
-    color: "slategrey",
-  },
-  closeButtonContainer: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 20,
-    position: "absolute",
-    top: -10,
-    right: -10,
   },
 });
