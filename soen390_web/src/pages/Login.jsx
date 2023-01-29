@@ -18,6 +18,7 @@ function MainTitle(props) {
   );
 
   return (
+    <div data-testid='login-1'>
     <>
       <NavBar />
       <div className="background-color">
@@ -98,6 +99,7 @@ function MainTitle(props) {
       <SubFooter />
       <Footer />
     </>
+    </div>
   );
 }
 
