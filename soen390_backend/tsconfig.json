@@ -29,5 +29,7 @@
 
         "pretty": true,
         "typeRoots": ["@types", "./node_modules/@types"]
-    }
+    },
+    "exclude": ["node_modules", "**/*.test.ts"],
+    "include": ["src"]
 }
