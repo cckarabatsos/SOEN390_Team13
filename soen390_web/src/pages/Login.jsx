@@ -17,7 +17,6 @@ function MainTitle(props) {
   const navigate = useNavigate();
 
   const signInUser = async () => {
-    console.log("yo?");
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
     setIsAuth(success.data);

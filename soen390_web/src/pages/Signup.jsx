@@ -30,10 +30,22 @@ function SignUp(props) {
         emailInput,
         passwordInput
       );
-      success[0] === 200 ? navigate("/") : setRegisterError(true);
+      success.registeredUser[0] === 200
+        ? navigate("/")
+        : setRegisterError(true);
     } else {
       setPasswordMismatch(true);
     }
+  };
+
+  const fieldsEmpty = () => {
+    return (
+      fNameInput.length <= 0 ||
+      lNameInput.length <= 0 ||
+      emailInput.length <= 0 ||
+      passwordInput.length <= 0 ||
+      confirmPasswordInput.length <= 0
+    );
   };
 
   return (
@@ -171,6 +183,7 @@ function SignUp(props) {
                   <Button
                     className="button"
                     variant="contained"
+                    disabled={fieldsEmpty()}
                     style={{
                       borderRadius: 27,
                       backgroundColor: "rgba(100, 69, 227, 0.85)",

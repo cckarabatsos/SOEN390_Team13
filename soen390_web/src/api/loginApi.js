@@ -25,19 +25,23 @@ export async function SignInUser(reqEmail, reqPassword) {
       });
     return response;
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
     return false;
   }
 }
 
 export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
   try {
-    const response = await axios.post(api.BACKEND_API + "/user/api/register", {
-      email: emailIn,
-      password: passwordIn,
-      name: firstNameIn + " " + lastNameIn,
-    });
-    return response.data;
+    const response = await axios
+      .post(api.BACKEND_API + "/user/api/register", {
+        email: emailIn,
+        password: passwordIn,
+        name: firstNameIn + " " + lastNameIn,
+      })
+      .then((res) => {
+        return res.data;
+      });
+    return response;
   } catch (err) {
     console.error("yo", err);
   }
