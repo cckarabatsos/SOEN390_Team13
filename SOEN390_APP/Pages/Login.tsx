@@ -109,6 +109,7 @@ export default function Login({ navigation }: { navigation: any }) {
             <View style={styles.modalInnerContainer}>
               <Text style={styles.errorText}>Invalid username or password</Text>
               <Text style={styles.errorText}>youre so smart</Text>
+              <Text style={styles.errorText}>just kidding</Text>
               <TouchableOpacity
                 onPress={handleCloseModal}
                 style={styles.closeButtonContainer}
