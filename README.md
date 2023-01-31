@@ -13,7 +13,7 @@ Features of the platform
 
 ## Tools and Techniques (To be discussed this saturday)
 Frontend: ReactJS (WebApp) & React Native (MobileApp) (https://reactjs.org/) <br/>
-Backend: Firebase (https://firebase.google.com/) <br/>
+Backend: Express.js (https://expressjs.com/) <br/>
 Database: Firebase Realtime Database (https://firebase.google.com/) <br/>
 Mock-up: Figma (https://www.figma.com/) <br/>
 
