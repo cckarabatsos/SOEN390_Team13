@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'Inter-regular';
+    src: url(../../assets/Inter-Regular.ttf);
+}
+
+.background{
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 70vh;
+    background-color: white;
+    border-radius: 229px;
+}
+
+.background-color{
+    background-color: #D9D9D9;
+    padding-bottom: 10%;
+}
+
+.form-field{
+    background: rgba(217, 217, 217, 0.75);
+    border-radius: 27px;
+}
+
+.form{
+    border-radius: 27px;
+}
+
+.inputRounded .MuiOutlinedInput-root {
+    background: rgba(217, 217, 217, 0.75);
+    border-radius: 27px;
+    width: 30em;
+  }
+
+.field-name{
+    text-align: right;
+    font-family: 'Inter-regular';
+    font-weight: bold;
+    font-size: large;
+    line-height: 50px;
+}
+
+.field-input{
+    text-align: left;
+}
+
+.input-margin{
+    margin-left: 5em;
+}
+
+.login-form{
+    position: relative;
+    top: 35%;
+}
+
+.cancel{
+    text-align: right;
+    
+}
+
+.login{
+    text-align: left;
+}
+
+.button{
+    box-shadow: none;
+    background-color: dodgerblue;
+}

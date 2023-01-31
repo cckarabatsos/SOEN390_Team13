@@ -1,39 +1,46 @@
-import React, { Key, useState } from 'react';
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { Key, useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
+import { useRoute } from "@react-navigation/native";
+//import { user_email } from "./Login";
 
 class ajob {
-    title: String;
-    location: String;
-    company: String;
-    id: number;
+  title: String;
+  location: String;
+  company: String;
+  id: number;
 
-    constructor(title: String, company: String,location: String,id:number) {
-      this.title = title;
-      this.location = location;
-      this.company = company;
-      this.id = id;
-    }
+  constructor(title: String, company: String, location: String, id: number) {
+    this.title = title;
+    this.location = location;
+    this.company = company;
+    this.id = id;
   }
-  var job1= new ajob("softdev",'google','california',0)
-  var job2= new ajob("softdev",'microsoft','california',1)
-  var job3= new ajob("softdev",'Discord','california',2)
+}
+var job1 = new ajob("softdev", "google", "california", 0);
+var job2 = new ajob("softdev", "microsoft", "california", 1);
+var job3 = new ajob("softdev", "Discord", "california", 2);
 
-  var list:ajob[] =[]
-  list.push(job1)
-  list.push(job2)
-  list.push(job3)
+var list: ajob[] = [];
+list.push(job1);
+list.push(job2);
+list.push(job3);
 
-  
-
-const Home = ({ navigation }: { navigation: any }) => {
-  const [jobQuery, setJobQuery] = useState('');
+function Home({ navigation, route }: { navigation: any; route: any }) {
+  // error when using route to pass parameter between screen
+  //console.log(route.params)
+  const [jobQuery, setJobQuery] = useState("");
   const [jobs, setJobs] = useState<ajob[]>([]);
 
-  //onst navigation = useNavigation();
   const handleSearch = async () => {
-    console.log("hello")
+    console.log("hello");
   };
 
   return (
@@ -50,7 +57,7 @@ const Home = ({ navigation }: { navigation: any }) => {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.resultsContainer}>
-        {list.map(job => (
+        {list.map((job) => (
           <View key={job.id} style={styles.jobContainer}>
             <Text style={styles.jobTitle}>{job.title}</Text>
             <Text style={styles.jobCompany}>{job.company}</Text>
@@ -58,27 +65,23 @@ const Home = ({ navigation }: { navigation: any }) => {
           </View>
         ))}
       </ScrollView>
-
     </View>
   );
-};
+}
 
 export default Home;
-
-
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f2f2f2',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f2f2f2",
     padding: 10,
     borderRadius: 5,
     margin: 10,
@@ -97,39 +100,38 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     margin: 10,
   },
   jobContainer: {
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
   },
   jobTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   jobCompany: {
     fontSize: 16,
-    color: 'grey',
+    color: "grey",
   },
   jobLocation: {
     fontSize: 14,
   },
   button: {
     margin: 9,
-    marginLeft:20,
-    backgroundColor: '#0077B5',
+    marginLeft: 20,
+    backgroundColor: "#0077B5",
     padding: 12,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
-    width:'60%',
-    borderRadius:120
+    width: "60%",
+    borderRadius: 120,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize:20
-
-  }
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
 });

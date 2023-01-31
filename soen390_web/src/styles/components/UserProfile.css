@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'Inter-regular';
+    src: url(../../assets/Inter-Regular.ttf);
+}
+
+.foreground-colour{
+    background-color: rgba(217, 217, 217, 0.7);
+    height: 100%;
+    width: 80%;
+    margin: auto;
+}
+
+.background-image{
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    background-color: white;
+    border-radius: 229px;
+}
+
+.profile-pic{
+    width: 10em;
+    height: auto;
+    border-radius: 100px;
+}
+
+.education-picture{
+    width:7em;
+    height: auto;
+}
+
+.line{
+    width: 90%;
+    height: 3px;
+    background-color: black;
+    margin-left: 2%;
+}
+
+.sub-line{
+    width: 80%;
+    margin-left: 2%;
+}
+
+.name{
+    font-family: "Inter-Regular";
+    font-size: large;
+}
+
+.bio{
+    font-family: "Inter-Regular";
+}
+
+.header{
+    font-family: "Inter-Regular";
+    font-size: large;
+    font-weight: bold;
+    text-align: left;
+    margin-left: 5%;
+    margin-right: 10%;
+}
+
+.skill{
+    text-align: left;
+    margin: 5%;
+}
+
+.profile-icon{
+    display: inline-flex;
+    vertical-align: middle;
+    float: right;
+    margin-left: 5px;
+}
+
+.profile-item{
+    float: right;
+}
