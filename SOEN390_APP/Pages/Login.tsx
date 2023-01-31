@@ -99,16 +99,25 @@ export default function Login({ navigation }: { navigation: any }) {
           height: Dimensions.get("window").height,
         }}
       >
-        <ErrorModal
-          isVisible={isVisible}
-          handleCloseModal={handleCloseModal}
-          screen={1}
-        ></ErrorModal>
-
-        <Button
-          title="Do not have an account, Create one today"
-          onPress={() => navigation.navigate("Register")}
-        />
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={isVisible}
+          onRequestClose={handleCloseModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalInnerContainer}>
+              <Text style={styles.errorText}>Invalid username or password</Text>
+              <Text style={styles.errorText}>youre so smart</Text>
+              <TouchableOpacity
+                onPress={handleCloseModal}
+                style={styles.closeButtonContainer}
+              >
+                <MaterialCommunityIcons name="close" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <KeyboardAvoidingView
           style={styles.emptyContainer}
         ></KeyboardAvoidingView>
