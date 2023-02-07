@@ -7,6 +7,7 @@ import {
     registerUser,
     deleteUser,
     comparePasswords,
+    editAccount,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -115,6 +116,28 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(400);
         res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+user.post("/edit/:email", async (req: Request, res: Response) => {
+    try {
+        let email: string = req.params.email;
+        let newProfile: any = req.body.newProfile;
+        const userArr: User = await getUserWithEmail(email).then();
+        const status = userArr[0];
+        if (status == 404) {
+            res.status(404).json("ERROR");
+        } else {
+            const oldProfile = await userArr[1];
+            const newSettings: User = editAccount(
+                oldProfile,
+                newProfile
+            ).then();
+            const { password, ...newUser } = await newSettings[1];
+            res.status(200).json(newUser);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
     }
 });
 //Exporting the user as a module
