@@ -8,6 +8,7 @@ import {
   deleteUser,
   comparePasswords,
   sendInvite,
+  uploadAccountFile,
   manageInvite,
   editAccount,
   getInvitationsOrContacts,
@@ -113,6 +114,25 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
     res.json({ data });
     if (status == 200) {
       res.sendStatus(200);
+    } else if (status == 404) {
+      res.sendStatus(404);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.Name, errMsg: err.message });
+  }
+});
+user.post("/uploadResume/:userID", async (req: Request, res: Response) => {
+  console.log(req.body);
+
+  try {
+    let status, data = await uploadAccountFile(req.body);
+    if (status == 200) {
+      res.status(200);
+      res.json({
+        Response: "Successful file storage",
+        data
+      });
     } else if (status == 404) {
       res.sendStatus(404);
     }
