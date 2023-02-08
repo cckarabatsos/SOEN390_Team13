@@ -109,10 +109,11 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
   }
 });
 user.post("/uploadResume/:userID", async (req: Request, res: Response) => {
+  let userID = req.params.userID;
   console.log(req.body);
 
   try {
-    let status, data = await uploadAccountFile(req.body);
+    let status, data = await uploadAccountFile(userID, req.body);
     if (status == 200) {
       res.status(200);
       res.json({
