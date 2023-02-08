@@ -1,10 +1,12 @@
 //thx saad
 import { error } from "console";
 import firebase from "firebase";
+import "firebase/storage";
 import { User } from "../models/User";
 // import { database } from "firebase-admin";
 
 const db = firebase.firestore();
+const ref = firebase.storage().ref();
 
 export const findUserWithID = async (userID: string) => {
     try {
@@ -78,6 +80,19 @@ export const deleteUserWithId = async (userID: string) => {
         throw error;
     }
     return data;
+};
+
+export const storeAccountFile = async (/*userId: string, */file: Uint8Array) => {
+    try {
+        ref.put(file).then((snapshot) => {
+            console.log("Saved file in firebase storage!");
+            return snapshot;
+        });
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
 };
 
 function processData(snapshot: any) {
