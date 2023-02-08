@@ -3,6 +3,7 @@ import {
   findUserWithEmail,
   storeUser,
   deleteUserWithId,
+  storeAccountFile
 } from "../services/userServices";
 import { User, user_schema } from "../models/User";
 
@@ -30,7 +31,6 @@ export async function getUserWithEmail(email: string) {
 export async function registerUser(user: any) {
   console.log(user);
 
-  
   let casted_user: User = await user_schema.cast(user, { stripUnknown: false });
   console.log(casted_user);
   user = await new Promise((resolve, _) => {
@@ -62,6 +62,14 @@ export async function deleteUser(userID: string) {
     return [200, casted_user];
   } else {
     return [404, { msg: "User not found" }];
+  }
+}
+export async function uploadAccountFile(/*userId: string, */file: Uint8Array) {
+  let snapshot = await storeAccountFile(file);
+  if (snapshot == null) {
+    return [404, { msg: "File storage failed." }];
+  } else {
+    return [200, snapshot];
   }
 }
 //This is to be later updated to have the compare encrypted passwords
