@@ -96,17 +96,22 @@ export const storeAccountFile = async (userID: string, file: Uint8Array) => {
 };
 
 export const findAccountFile = async (userID: string, type: string) => {
-    let user = await findUserWithID(userID);
-    if (user) {
-        let casted_user = await user_schema.cast(user);
-        if (type.toUpperCase() === "RESUME") {
-            console.log(casted_user.resume);
-            return casted_user.resume;
+    try {
+        var user: any = await findUserWithID(userID);
+        if (user) {
+            let casted_user = await user_schema.cast(user);
+            if (type.toUpperCase() === "RESUME") {
+                console.log(casted_user.resume);
+                return casted_user.resume;
+            }
+            else if (type.toUpperCase() === "COVERLETTER") {
+                console.log(casted_user.coverLetter);
+                return casted_user.coverLetter;
+            }
         }
-        else if (type.toUpperCase() === "COVERLETTER") {
-            console.log(casted_user.coverLetter);
-            return casted_user.coverLetter;
-        }
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
     return null;
 }
