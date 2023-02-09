@@ -8,6 +8,7 @@ import {
   deleteUser,
   comparePasswords,
   uploadAccountFile,
+  getAccountFile,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -70,9 +71,27 @@ user.get("/api/login", async (req: Request, res: Response) => {
   }
   return user;
 });
+
+user.get("/accountfile/:userID", async (req: Request, res: Response) => {
+  let userID = req.params.userID;
+  let type: string = req.query.type as string;
+  try {
+    let status,
+      data = await getAccountFile(userID, type);
+    res.json({ data });
+    if (status == 200) {
+      res.sendStatus(200);
+    } else if (status == 404) {
+      res.sendStatus(404);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.Name, errMsg: err.message });
+  }
+});
+
 user.post("/api/register", async (req: Request, res: Response) => {
   console.log(req.body);
-
   try {
     const registeredUser: User = await registerUser(req.body);
     const status: number = registeredUser[0];
