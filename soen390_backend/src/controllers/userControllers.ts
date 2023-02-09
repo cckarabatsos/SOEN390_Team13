@@ -4,7 +4,8 @@ import {
   storeUser,
   deleteUserWithId,
   sendUserInvitation,
-  storeAccountFile
+  storeAccountFile,
+  findAccountFile
   updateUser,
   manageUserInvitation,
   getUserInvitationsOrContacts,
@@ -76,6 +77,14 @@ export async function uploadAccountFile(userID: string, file: Uint8Array) {
     return [404, { msg: "File storage failed." }];
   } else {
     return [200, snapshot];
+  }
+}
+export async function getAccountFile(userID: string, type: string) {
+  let downloadUrl = await findAccountFile(userID, type);
+  if (downloadUrl == null) {
+    return [404, { msg: "File retrieval failed." }];
+  } else {
+    return [200, downloadUrl];
   }
 }
 //This is to be later updated to have the compare encrypted passwords
