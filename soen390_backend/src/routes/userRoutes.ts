@@ -16,7 +16,8 @@ import {
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
-
+const multer = require('multer');
+var upload = multer({ dest: 'uploads/' });
 const user = express.Router();
 user.use(express.json());
 
@@ -142,9 +143,12 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
     res.json({ errType: err.Name, errMsg: err.message });
   }
 });
-user.post("/uploadResume/:userID", async (req: Request, res: Response) => {
+user.post("/uploadResume/:userID", upload.single('file'), async (req: Request, res: Response) => {
   let userID = req.params.userID;
-  console.log(req.body);
+  if (req.file !== undefined)
+    console.log(req.file.mimetype);
+  else
+    console.log("File undefined");
 
   try {
     let status, data = await uploadAccountFile(userID, req.body);
