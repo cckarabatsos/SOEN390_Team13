@@ -2,7 +2,7 @@
 import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
-import { User } from "../models/User";
+import { User, user_schema } from "../models/User";
 // import { database } from "firebase-admin";
 
 const db = firebase.firestore();
@@ -94,6 +94,22 @@ export const storeAccountFile = async (userID: string, file: Uint8Array) => {
     }
     return null;
 };
+
+export const findAccountFile = async (userID: string, type: string) => {
+    let user = await findUserWithID(userID);
+    if (user) {
+        let casted_user = await user_schema.cast(user);
+        if (type.toUpperCase() === "RESUME") {
+            console.log(casted_user.resume);
+            return casted_user.resume;
+        }
+        else if (type.toUpperCase() === "COVERLETTER") {
+            console.log(casted_user.coverLetter);
+            return casted_user.coverLetter;
+        }
+    }
+    return null;
+}
 
 function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any }) => doc.data());
