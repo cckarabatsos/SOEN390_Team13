@@ -47,7 +47,7 @@ user.get("/api/login", async (req: Request, res: Response) => {
             res.status(404).json("User not found");
             return;
         } else {
-            const { password, ...user } = await userArr[1];
+            const { password, ...user } = await userArr[1].data;
             let match = await comparePasswords(pwd, password);
             if (match) {
                 res.cookie("FrontendUser", {
@@ -121,18 +121,22 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
 user.post("/edit/:email", async (req: Request, res: Response) => {
     try {
         let email: string = req.params.email;
-        let newProfile: any = req.body.newProfile;
+        let newProfile: any = await req.body;
+        //Find the account of the current email address
         const userArr: User = await getUserWithEmail(email).then();
         const status = userArr[0];
         if (status == 404) {
             res.status(404).json("ERROR");
         } else {
-            const oldProfile = await userArr[1];
-            const newSettings: User = editAccount(
+            const oldProfile = await userArr[1].data;
+            const ID = await userArr[1].id;
+            const newSettings: User = await editAccount(
                 oldProfile,
-                newProfile
+                newProfile,
+                ID
             ).then();
             const { password, ...newUser } = await newSettings[1];
+            console.log(newSettings);
             res.status(200).json(newUser);
         }
     } catch (err: any) {

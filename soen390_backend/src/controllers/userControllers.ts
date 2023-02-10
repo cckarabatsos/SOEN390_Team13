@@ -3,6 +3,7 @@ import {
     findUserWithEmail,
     storeUser,
     deleteUserWithId,
+    updateUser,
 } from "../services/userServices";
 import { User, user_schema } from "../models/User";
 
@@ -71,14 +72,33 @@ export async function comparePasswords(pwd: string, password: string) {
     // console.log(match);
     return match;
 }
-export async function editAccount(currProfile: User, newProfile: any) {
+export async function editAccount(
+    currProfile: User,
+    newProfile: any,
+    id: string
+) {
+    // let email = currProfile.email;
     try {
+        if (currProfile.email != newProfile.email) {
+            const userArr: User = await getUserWithEmail(
+                newProfile.email
+            ).then();
+            if (userArr[1] == null) {
+                currProfile.email = newProfile.email;
+            } else {
+                return [
+                    404,
+                    { msg: "Email is already affiliated to an account" },
+                ];
+            }
+        }
         currProfile.email = newProfile.email;
         currProfile.password = newProfile.password;
         currProfile.bio = newProfile.bio;
         currProfile.currentCompany = newProfile.currentCompany;
         currProfile.currentPosition = newProfile.currentPosition;
         currProfile.name = newProfile.name;
+        updateUser(currProfile, id);
     } catch (err: any) {
         return [400, { msg: "missing field" }];
     }
