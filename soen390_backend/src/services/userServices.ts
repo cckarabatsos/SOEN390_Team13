@@ -87,11 +87,15 @@ export const deleteUserWithId = async (userID: string) => {
   return data;
 };
 
-export const storeAccountFile = async (userID: string, file: Uint8Array) => {
+export const storeAccountFile = async (userID: string, file: any) => {
     try {
-        ref.child(userID + " - Resume.pdf").put(file).then((snapshot) => {
-            console.log("Saved file in firebase storage!");
-            return snapshot;
+        console.log(userID);
+        const metadata = {
+            contentType: file.mimetype
+        }
+        ref.child("Resumes/" + Date.now() + "-" + file.filename).put(file, metadata).then((snapshot) => {
+            console.log("Saved file in firebase storage!" + snapshot.ref.getDownloadURL());
+            return snapshot.ref.getDownloadURL();
         });
     } catch (error) {
         console.log(error);

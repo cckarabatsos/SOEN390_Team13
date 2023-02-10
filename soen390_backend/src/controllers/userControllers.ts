@@ -71,7 +71,7 @@ export async function deleteUser(userID: string) {
     return [404, { msg: "User not found" }];
   }
 }
-export async function uploadAccountFile(userID: string, file: Uint8Array) {
+export async function uploadAccountFile(userID: string, file: any) {
   let snapshot = await storeAccountFile(userID, file);
   if (snapshot == null) {
     return [404, { msg: "File storage failed." }];

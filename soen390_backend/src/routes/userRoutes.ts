@@ -17,7 +17,7 @@ import {
 
 import { User } from "../models/User";
 const multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
+var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
 user.use(express.json());
 
@@ -151,7 +151,8 @@ user.post("/uploadResume/:userID", upload.single('file'), async (req: Request, r
     console.log("File undefined");
 
   try {
-    let status, data = await uploadAccountFile(userID, req.body);
+    let status, data = await uploadAccountFile(userID, req.file);
+
     if (status == 200) {
       res.status(200);
       res.json({
