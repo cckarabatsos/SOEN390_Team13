@@ -5,6 +5,7 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+(global as any).XMLHttpRequest = require('xhr2');
 dotenv.config();
 const User = require("./firebaseconfig");
 const app: Application = express();
