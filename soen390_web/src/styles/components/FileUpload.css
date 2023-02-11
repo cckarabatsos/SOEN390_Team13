@@ -3,3 +3,26 @@
     border-radius: 16px;
     padding: 2em;
 }
+
+.file-inputs{
+    border: 2px dashed #9606D9;
+    height: 300px;
+}
+
+.file-button{
+    height: 5rem;
+    width: 5rem;
+    outline: 5px solid #9606D9;
+    top: 25%;
+}
+
+.outer-button{
+    height: 5em;
+    width: 5em;
+    padding: 5px;
+    background-color: #9606D9;
+}
+
+.main {
+    margin-top: 16px;
+}

@@ -35,11 +35,20 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
       <div className="file-card">
         <div className="file-inputs">
           <Button
-            variant="contained"
+            variant="text"
             component="label"
             onChange={uploadHandler}
+            className="file-button"
+            style={{
+              outline: "5px solid #EEEEEE",
+              margin: "2em",
+              borderRadius: "none",
+              backgroundColor: "#D9D9D9",
+              color: "#9606D9",
+            }}
           >
-            Upload
+            <FontAwesomeIcon icon={faPlus} />
+            <div>&nbsp;CV</div>
             <input
               hidden
               accept="image/png, image/jpeg, .pdf"
@@ -47,14 +56,52 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               type="file"
             />
           </Button>
-          <Button>
-            <i>
-              <FontAwesomeIcon icon={faPlus} />
-            </i>
-            <div>Other</div>
+
+          <Button
+            variant="text"
+            component="label"
+            onChange={uploadHandler}
+            className="file-button"
+            style={{
+              outline: "5px solid #EEEEEE",
+              margin: "2em",
+              borderRadius: "none",
+              backgroundColor: "#D9D9D9",
+              color: "#9606D9",
+            }}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            <div>&nbsp;Cover Letter</div>
+            <input
+              hidden
+              accept="image/png, image/jpeg, .pdf"
+              multiple
+              type="file"
+            />
+          </Button>
+          <Button
+            variant="text"
+            component="label"
+            onChange={uploadHandler}
+            className="file-button"
+            style={{
+              outline: "5px solid #EEEEEE",
+              margin: "2em",
+              borderRadius: "none",
+              backgroundColor: "#D9D9D9",
+              color: "#9606D9",
+            }}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+            <div>&nbsp;Other</div>
+            <input
+              hidden
+              accept="image/png, image/jpeg, .pdf"
+              multiple
+              type="file"
+            />
           </Button>
         </div>
-
         <Typography className="main">Supported files</Typography>
         <Typography className="info">PDF, JPG, PNG</Typography>
       </div>
