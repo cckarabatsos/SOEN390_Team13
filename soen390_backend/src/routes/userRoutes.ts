@@ -7,6 +7,8 @@ import {
   registerUser,
   deleteUser,
   comparePasswords,
+  sendInvite,
+  manageInvite,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -109,3 +111,46 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
 });
 //Exporting the user as a module
 module.exports = user;
+
+//***********User invitation routes section***********************
+user.get("/api/sendInvite", async (req: Request, res: Response) => {
+  let receiverEmail = req.query.receiverEmail as string;
+  let senderEmail = req.query.senderEmail as string;
+
+  console.log(receiverEmail);
+  console.log(senderEmail);
+
+  let data = await sendInvite(receiverEmail, senderEmail);
+
+  console.log(data);
+
+  if (data[0] == 200) {
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+user.get("/api/acceptInvite", async (req: Request, res: Response) => {
+
+  let senderEmail = req.query.senderEmail;
+  let receiverEmail = req.query.receiverEmail;
+  let isAccept = req.query.isAccept;
+  
+
+  let data = await manageInvite( receiverEmail, senderEmail,isAccept)
+
+  // first fetch
+
+})
+
+// user.get("/declineInvite/:userEmail", async (req: Request, res: Response) => {
+
+// let userEmail = req.params.userEmail;
+//   console.log(userEmail)
+
+//   // first fetch
+
+// })
+
+//****************End User invitation route section ***********88

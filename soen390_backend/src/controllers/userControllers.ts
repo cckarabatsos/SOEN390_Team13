@@ -3,6 +3,7 @@ import {
   findUserWithEmail,
   storeUser,
   deleteUserWithId,
+  sendUserInvitation,
 } from "../services/userServices";
 import { User, user_schema } from "../models/User";
 
@@ -30,7 +31,6 @@ export async function getUserWithEmail(email: string) {
 export async function registerUser(user: any) {
   console.log(user);
 
-  
   let casted_user: User = await user_schema.cast(user, { stripUnknown: false });
   console.log(casted_user);
   user = await new Promise((resolve, _) => {
@@ -69,4 +69,24 @@ export async function comparePasswords(pwd: string, password: string) {
   let match: boolean = password == pwd;
   // console.log(match);
   return match;
+}
+
+export async function sendInvite(receiverEmail: string, senderEmail: string) {
+  try {
+    await sendUserInvitation(receiverEmail, senderEmail);
+  } catch (error) {
+    return [404, { msg: (error as Error).message }];
+  }
+
+  return [200, { msg: "Invitation sent" }];
+}
+
+export async function manageInvite(receiverEmail: string, senderEmail: string, isAccept:boolean) {
+  try {
+    await sendUserInvitation(receiverEmail, senderEmail);
+  } catch (error) {
+    return [404, { msg: (error as Error).message }];
+  }
+
+  return [200, { msg: "Invitation sent" }];
 }
