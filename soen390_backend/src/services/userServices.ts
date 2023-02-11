@@ -85,7 +85,10 @@ export const deleteUserWithId = async (userID: string) => {
 };
 
 function processData(snapshot: any) {
-  let data = snapshot.docs.map((doc: { data: () => any }) => doc.data());
+  let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
+    data: doc.data(),
+    id: doc.id,
+  }));
   if (data !== null) {
     return data[0];
   } else {
@@ -179,40 +182,17 @@ export async function sendUserInvitation(
   }
 }
 
+export async function manageUserInvitation(
+  receiverEmail: string,
+  senderEmail: string,
+  isAccept: boolean
+) {
+  try {
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-export async function manageUserInvitation(receiverEmail: string,
-    senderEmail: string, isAccept: boolean){
-
-
-        try{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          
-
-
-
-        }catch(error){
-            console.log(error)
-        }
-
-
-
-
-
-
+export function updateUser(newProfile: User, id: string) {
+  db.collection("users").doc(id).update(newProfile);
 }
