@@ -17,6 +17,8 @@ import Basic from '../Components/SwipeList.Component/SwipeListBasic.Component';
 import StandaloneRow from '../Components/SwipeList.Component/SwipeListEdit.Component';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { LogBox } from 'react-native';
+
 
 
 
@@ -24,6 +26,10 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
     //Custom Component for the Expandable List
     const [layoutHeight, setLayoutHeight] = useState(0);
   
+    useEffect(() => {
+      LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
+
     useEffect(() => {
       if (item.isExpanded) {
         setLayoutHeight(null);
