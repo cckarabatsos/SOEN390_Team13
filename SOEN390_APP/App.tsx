@@ -25,6 +25,9 @@ import Messages from "./Pages/Messages";
 import Inbox from "./Pages/Inbox";
 import UserProfile from "./Pages/UserProfile";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import {
+  AlertNotificationRoot,
+} from "react-native-alert-notification";
 
 
 
@@ -102,7 +105,8 @@ function BottomNav({route}:{route:any}){
             title:"Home"
           }}/>
         <Tab.Screen name="Messages" component={Messages} options={{ title: 'Messages', tabBarBadge: messagesCount }}/>
-        <Tab.Screen name="Inbox" component={Inbox} options={{ title: 'Inbox' }}/>
+        <Tab.Screen name="Inbox" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password}} component={Inbox} options={{
+            title:'Inbox'}}/>
         <Tab.Screen name="Profile" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password}} component={UserProfile} options={{
             title:'profile'
           
@@ -114,6 +118,7 @@ function BottomNav({route}:{route:any}){
 export default function App() {
   return (
     <NavigationContainer>
+      <AlertNotificationRoot>
       <Stack.Navigator
         initialRouteName="Login"
         screenOptions={{headerStyle: { backgroundColor: "#967BB6" }, }}
@@ -132,6 +137,7 @@ export default function App() {
             
           })}/>       
       </Stack.Navigator>
+      </AlertNotificationRoot>
     </NavigationContainer>
   );
 }

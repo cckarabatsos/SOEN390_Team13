@@ -10,31 +10,29 @@ import {
   TouchableHighlight,
   KeyboardAvoidingView,
   Modal,
+  Image,
 } from "react-native";
 import React, { Key, useState } from "react";
-import Clipboard from "@react-native-clipboard/clipboard";
 import { SwipeListView } from "react-native-swipe-list-view";
-import PopUPForm from "../PopUPForm.Component";
-import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
   console.log(data);
-  const { key, text } = data;
+  const { key, text, image, userID, message } = data;
   const [name, setName] = useState(text);
+  const [program, setProgram] = useState("Insert Program");
+  const [year, setYear] = useState("Insert Year");
   const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
       .fill("")
       .map((_, i) => ({ key: `${i}`, text: `item #${setName}` }))
   );
-
   const handleNameChange = (newName) => {
     setName(newName);
     // code to send new name to the database server
   };
-
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
@@ -56,10 +54,7 @@ export default function Basic({ data }) {
   };
 
   const copyToClipBoard = () => {
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      textBody: "Copied To Clipboard",
-    });
+    console.log("Copied To Clipboard");
     //Clipboard.setString(text)}
   };
 
@@ -69,8 +64,13 @@ export default function Basic({ data }) {
       style={styles.rowFront}
       underlayColor={"#AAA"}
     >
-      <View>
-        <Text>{name}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <Image style={styles.logo} source={image} />
+        <View>
+          <Text style={styles.titleText}>{name}</Text>
+          <Text style={styles.smallText}>{program}</Text>
+          <Text style={styles.smallText}>{year}</Text>
+        </View>
       </View>
     </TouchableHighlight>
   );
@@ -78,10 +78,16 @@ export default function Basic({ data }) {
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => editRow(rowMap, data.item.key)}
       >
         <Text style={styles.backTextWhite}>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        onPress={() => deleteRow(rowMap, data.item.key)}
+      >
+        <Text style={styles.backTextWhite}>Delete</Text>
       </TouchableOpacity>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
@@ -93,7 +99,7 @@ export default function Basic({ data }) {
             />
             <View style={styles.modalContent}>
               <TouchableOpacity
-                style={styles.button}
+                style={styles.buttonModal}
                 onPress={() => setModalVisible(false)}
               >
                 <Text style={styles.backTextWhite}>Submit</Text>
@@ -104,7 +110,6 @@ export default function Basic({ data }) {
       </Modal>
     </View>
   );
-
   return (
     <View style={styles.container}>
       <SwipeListView
@@ -112,7 +117,7 @@ export default function Basic({ data }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-75}
+        rightOpenValue={-150}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
@@ -125,6 +130,7 @@ export default function Basic({ data }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
+    flex: 1,
   },
   backTextWhite: {
     color: "#FFF",
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "black",
     borderBottomWidth: 1,
     justifyContent: "center",
-    height: 50,
+    height: 80,
     paddingStart: 20,
   },
   rowBack: {
@@ -158,7 +164,7 @@ const styles = StyleSheet.create({
     right: 75,
   },
   backRightBtnRight: {
-    backgroundColor: "blue",
+    backgroundColor: "red",
     right: 0,
   },
   modalContainer: {
@@ -184,6 +190,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
     width: 200,
+    height: 80,
+    borderRadius: 120,
+  },
+  buttonModal: {
+    margin: 9,
+    marginLeft: 20,
+    backgroundColor: "#0077B5",
+    padding: 12,
+    alignItems: "center",
+    marginTop: 16,
+    width: 200,
     height: 50,
     borderRadius: 120,
   },
@@ -192,5 +209,20 @@ const styles = StyleSheet.create({
     borderColor: "black",
     padding: 10,
     margin: 10,
+  },
+  logo: {
+    paddingLeft: 20,
+    alignSelf: "flex-start",
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+  },
+  titleText: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  textSmall: {
+    fontSize: 10,
+    color: "black",
   },
 });
