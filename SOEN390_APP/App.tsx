@@ -99,9 +99,7 @@ function BottomNav({route}:{route:any}){
     })}>
       
         <Tab.Screen name="HomeScreen" component={HomeScreen} options={{
-            title:"profile"
-            
-                
+            title:"Home"
           }}/>
         <Tab.Screen name="Messages" component={Messages} options={{ title: 'Messages', tabBarBadge: messagesCount }}/>
         <Tab.Screen name="Inbox" component={Inbox} options={{ title: 'Inbox' }}/>

@@ -1,4 +1,4 @@
-import React, { Key, useState } from "react";
+import React, { Key, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,77 +7,105 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  SafeAreaView,
+  FlatList,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-//import { user_email } from "./Login";
+import axios from "axios";
+import Article from "../Components/Article";
+import SearchBox from "./../Components/SearchBox";
 
-class ajob {
-  title: String;
-  location: String;
-  company: String;
-  id: number;
-
-  constructor(title: String, company: String, location: String, id: number) {
-    this.title = title;
-    this.location = location;
-    this.company = company;
-    this.id = id;
-  }
+interface IArticle {
+  urlToImage: string;
+  title: string;
+  description: string;
+  author: string;
+  publishedAt: string;
+  source: {
+    name: string;
+  };
+  url: string;
 }
-var job1 = new ajob("softdev", "google", "california", 0);
-var job2 = new ajob("softdev", "microsoft", "california", 1);
-var job3 = new ajob("softdev", "Discord", "california", 2);
 
-var list: ajob[] = [];
-list.push(job1);
-list.push(job2);
-list.push(job3);
+interface INewsResponse {
+  articles: IArticle[];
+}
 
-function Home({ navigation, route }: { navigation: any; route: any }) {
-  // error when using route to pass parameter between screen
-  //console.log(route.params)
-  const [jobQuery, setJobQuery] = useState("");
-  const [jobs, setJobs] = useState<ajob[]>([]);
+interface IProps {
+  navigation: any;
+  route: any;
+}
 
-  const handleSearch = async () => {
-    console.log("hello");
+const Home: React.FC<IProps> = ({ navigation, route }) => {
+  const [articles, setArticles] = useState<IArticle[]>([]);
+  const [search, setSearchField] = useState("");
+  const [filteredArticles, setfilteredArticles] = useState(articles);
+
+  const getNews = () => {
+    axios
+      .get<INewsResponse>(
+        "https://newsapi.org/v2/everything?q=jobs&apiKey=2ddd6cf7107f41b59e325fdebe07d04c",
+        {
+
+        }
+      )
+      .then((response) => {
+        setArticles(response.data.articles);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
+  useEffect(() => {
+    const newFilteredArticles = articles.filter((articles) => {
+      return articles.title.toLowerCase().includes(search);
+    });
+    setfilteredArticles(newFilteredArticles);
+  }, [articles, search]);
+
+  const onSearchChange = (event: any) => {
+    const searchFieldString = event.nativeEvent.text.toLowerCase();
+    setSearchField(searchFieldString);
+  };
+
+  useEffect(() => {
+    getNews();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search for jobs"
-          value={jobQuery}
-          onChangeText={setJobQuery}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Text>Search!</Text>
-        </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      <View>
+      <SearchBox
+        onChangeHandler={onSearchChange}
+        placeholder="Search Articles"
+      />
       </View>
-      <ScrollView style={styles.resultsContainer}>
-        {list.map((job) => (
-          <View key={job.id} style={styles.jobContainer}>
-            <Text style={styles.jobTitle}>{job.title}</Text>
-            <Text style={styles.jobCompany}>{job.company}</Text>
-            <Text style={styles.jobLocation}>{job.location}</Text>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+      <FlatList
+        data={filteredArticles}
+        renderItem={({ item }) => (
+          <Article
+            urlToImage={item.urlToImage}
+            title={item.title}
+            description={item.description}
+            author={item.author}
+            publishedAt={item.publishedAt}
+            sourceName={item.source.name}
+          />
+        )}
+        keyExtractor={(item) => item.title}
+      />
+    </SafeAreaView>
   );
-}
+};
 
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    backgroundColor: '#fff',
+},
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
