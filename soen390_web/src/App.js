@@ -3,16 +3,20 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import UserProfile from "./pages/UserProfile"
+import UserProfile from "./pages/UserProfile";
+import UserNetworking from "./pages/UserNetworking";
+import Navbar from "./components/NavBar";
 
 const AppWrapper = () => {
   return (
     <div className="App">
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/Signup" element={<Signup/>} />
-          <Route path="/UserProfile" element={<UserProfile/>} />
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/UserProfile" element={<UserProfile />} />
+          <Route path="/UserNetworking" element={<UserNetworking />} />
         </Routes>
       </Router>
     </div>
