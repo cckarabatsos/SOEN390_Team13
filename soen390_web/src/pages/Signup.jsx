@@ -3,13 +3,12 @@ import TextField from "@mui/material/TextField";
 import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { Link, useNavigate } from "react-router-dom";
+import { CreateUser } from "../api/loginApi";
 import background from "../assets/undraw_online_resume_re_ru7s.png";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
-import { CreateUser } from "../api/loginApi";
 
 function SignUp(props) {
   const [fNameInput, setfNameInput] = React.useState("");

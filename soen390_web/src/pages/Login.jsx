@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignInUser } from "../api/loginApi";
 import background from "../assets/undraw_login_re_4vu2.svg";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 
