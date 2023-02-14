@@ -8,7 +8,7 @@ import { User, user_schema } from "../models/User";
 
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
-
+import { Buffer } from "buffer";
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -78,7 +78,9 @@ export const deleteUserWithId = async (userID: string) => {
                 .doc(userID)
                 .delete()
                 .then(() => {
-                    console.log("User with ID " + userID + "successfully deleted.");
+                    console.log(
+                        "User with ID " + userID + "successfully deleted."
+                    );
                 });
         }
     } catch (error) {
@@ -87,22 +89,47 @@ export const deleteUserWithId = async (userID: string) => {
     }
     return data;
 };
+export const storeAccountFile = async (_: string, file: any) => {
+    const buffer = Buffer.from(file.buffer);
+    const metadata = {
+        contentType: file.mimetype,
+    };
 
-export const storeAccountFile = async (userID: string, file: any) => {
-    try {
-        console.log(userID);
-        const metadata = {
-            contentType: file.mimetype
+    const uploadTask = ref
+        .child("Resumes/" + file.originalname)
+        .put(buffer, metadata);
+
+    uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        (snapshot) => {
+            const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+                case firebase.storage.TaskState.PAUSED:
+                    console.log("Upload is paused");
+                    break;
+                case firebase.storage.TaskState.RUNNING:
+                    console.log("Upload is running");
+                    break;
+            }
+        },
+        (error) => {
+            switch (error.code) {
+                case "storage/unauthorized":
+                    break;
+                case "storage/canceled":
+                    break;
+                case "storage/unknown":
+                    break;
+            }
+        },
+        () => {
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                console.log("File available at", downloadURL);
+            });
         }
-        ref.child("Resumes/" + Date.now() + "-" + file.filename).put(file, metadata).then((snapshot) => {
-            console.log("Saved file in firebase storage!" + snapshot.ref.getDownloadURL());
-            return snapshot.ref.getDownloadURL();
-        });
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-    return null;
+    );
 };
 
 export const findAccountFile = async (userID: string, type: string) => {
@@ -113,12 +140,10 @@ export const findAccountFile = async (userID: string, type: string) => {
             if (type.toUpperCase() === "RESUME") {
                 console.log(casted_user.resume);
                 return casted_user.resume;
-            }
-            else if (type.toUpperCase() === "COVERLETTER") {
+            } else if (type.toUpperCase() === "COVERLETTER") {
                 console.log(casted_user.coverLetter);
                 return casted_user.coverLetter;
-            }
-            else if (type.toUpperCase() === "PICTURE") {
+            } else if (type.toUpperCase() === "PICTURE") {
                 console.log(casted_user.picture);
                 return casted_user.picture;
             }
@@ -128,7 +153,7 @@ export const findAccountFile = async (userID: string, type: string) => {
         throw error;
     }
     return null;
-}
+};
 
 function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
@@ -200,7 +225,9 @@ export async function sendUserInvitation(
         }
 
         //check 1: check is receiver is not already in the pendings of sender
-        if ((senderUser.data as User).pendingInvitations.includes(receiverEmail)) {
+        if (
+            (senderUser.data as User).pendingInvitations.includes(receiverEmail)
+        ) {
             //console.log("error sender already invited by receiver");
             throw error("error sender already invited by receiver");
         } else {
@@ -208,7 +235,9 @@ export async function sendUserInvitation(
         }
 
         //check 2: check if sendter is not already in the pendings of receiver
-        if ((receiverUser.data as User).pendingInvitations.includes(senderEmail)) {
+        if (
+            (receiverUser.data as User).pendingInvitations.includes(senderEmail)
+        ) {
             //console.log("error receiver already invited by sender");
             throw error("error receiver already invited by sender");
         } else {
@@ -282,7 +311,9 @@ export async function manageUserInvitation(
         console.log(invitedUser);
         console.log(senderUser);
         // check 1: check if enderEmail is in invitedUser pendingInvitation list
-        if (!(invitedUser.data as User).pendingInvitations.includes(senderEmail)) {
+        if (
+            !(invitedUser.data as User).pendingInvitations.includes(senderEmail)
+        ) {
             //console.log("error receiver already invited by sender");
             throw error("error sender user email not int he invided user list");
         } else {
@@ -304,14 +335,16 @@ export async function manageUserInvitation(
                 .collection("users")
                 .doc(invitedUser.data.userID)
                 .update({
-                    contacts: firebase.firestore.FieldValue.arrayUnion(senderEmail),
+                    contacts:
+                        firebase.firestore.FieldValue.arrayUnion(senderEmail),
                 });
 
             await db
                 .collection("users")
                 .doc(senderUser.data.userID)
                 .update({
-                    contacts: firebase.firestore.FieldValue.arrayUnion(invitedEmail),
+                    contacts:
+                        firebase.firestore.FieldValue.arrayUnion(invitedEmail),
                 });
         }
     } catch (error) {
