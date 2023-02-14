@@ -5,7 +5,7 @@ import {
   deleteUserWithId,
   sendUserInvitation,
   storeAccountFile,
-  findAccountFile
+  findAccountFile,
   updateUser,
   manageUserInvitation,
   getUserInvitationsOrContacts,
@@ -149,11 +149,11 @@ export async function manageInvite(
   }
 }
 
-export async function getInvitationsOrContacts(userEmail: string, contact:boolean) {
+export async function getInvitationsOrContacts(userEmail: string, contact: boolean) {
   let userList: User[];
 
   try {
-    userList = await getUserInvitationsOrContacts(userEmail,contact);
+    userList = await getUserInvitationsOrContacts(userEmail, contact);
   } catch (error) {
     console.log((error as Error).message)
     return [404, { msg: (error as Error).message }];
