@@ -25,7 +25,7 @@ import Messages from "./Pages/Messages";
 import Inbox from "./Pages/Inbox";
 import UserProfile from "./Pages/UserProfile";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-
+import ChatPage from "./Pages/chatpage";
 
 
 //constant Stack is use to set up the navigation between the different screen required in the application
@@ -55,7 +55,7 @@ const messagesCount = 13
 // return the Login page
 //param: navigation props used to navigate between Login page and register page
 const LoginScreen = ({ navigation }: { navigation: any }) => {
-  return <Login navigation={navigation}></Login>;
+  return <ChatPage ></ChatPage>;
 };
 
 // return the Register page (not yet implemented)
@@ -121,7 +121,7 @@ export default function App() {
         screenOptions={{headerStyle: { backgroundColor: "#967BB6" }, }}
       >
         <Stack.Screen
-          name="Login"
+          name="chatpage"
           component={LoginScreen}
           options={{ headerTitle: (props: any) => <LogoTitle {...props} /> }}
         />
