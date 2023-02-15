@@ -1,8 +1,7 @@
 import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import picture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
@@ -12,7 +11,6 @@ import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
 import AddSkillDialog from "../components/AddSkillDialog";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
 
@@ -42,7 +40,6 @@ function UserProfile(props) {
 
   return (
     <>
-      <NavBar />
       <div className="background-color">
         <div
           className="background-image"

@@ -16,7 +16,7 @@ import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 
-function Navbar({}) {
+function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [userData, setUseData] = React.useState({});
@@ -28,7 +28,6 @@ function Navbar({}) {
     } else {
       setUseData(false);
     }
-    console.log(data);
   }, []);
 
   const signout = () => {
@@ -51,7 +50,10 @@ function Navbar({}) {
               <Link data-testid="job-1" to="/JobSearch" className="link">
                 Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
-
+              <Link data-testid="job-1" to="/UserNetworking" className="link">
+                Networking
+                <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
+              </Link>
               {!userData ? (
                 <>
                   <Link
