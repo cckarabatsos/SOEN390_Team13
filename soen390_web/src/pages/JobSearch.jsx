@@ -41,16 +41,7 @@ export default function JobSearch(){
 console.log("job array" + jobArray.length);
     return(
 
-<div>
-<button
-        onClick={() => {
-          setModalOpen(true);
-          
-        }}
-      >Open
-</button>
-      
-
+<div> 
 <div>
 <h2>Start your job searching journey here. Browse available jobs down below.</h2>
 <SearchBar/>
