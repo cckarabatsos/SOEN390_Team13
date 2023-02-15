@@ -1,16 +1,14 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { Button, Typography } from "@mui/material";
 import "../styles/components/FileUpload.css";
 
 const FileUpload = ({ files, setFiles, removeFile }) => {
   const uploadHandler = (event) => {
-    // const file = event.target.files[0];
-    // if(!file) return;
-    // file.isUploading = true;
-    // setFiles([...files, file])
+    const file = event.target.files[0];
+    if(!file) return;
+    file.isUploading = true;
+    setFiles([...files, file])
     // // upload file
     // const formData = new FormData();
     // formData.append(
@@ -47,7 +45,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               color: "#9606D9",
             }}
           >
-            <FontAwesomeIcon icon={faPlus} />
             <div>&nbsp;CV</div>
             <input
               hidden
@@ -70,7 +67,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               color: "#9606D9",
             }}
           >
-            <FontAwesomeIcon icon={faPlus} />
             <div>&nbsp;Cover Letter</div>
             <input
               hidden
@@ -92,7 +88,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               color: "#9606D9",
             }}
           >
-            <FontAwesomeIcon icon={faPlus} />
             <div>&nbsp;Other</div>
             <input
               hidden

@@ -10,8 +10,6 @@ import { DialogContentText } from "@mui/material";
 import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import { Select, MenuItem } from "@material-ui/core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import FileUpload from "./FileUpload";
 import FileList from "./FileList";
@@ -34,10 +32,10 @@ function AddEducationDialog() {
 
   return (
     <>
-      <IconButton style={{ display: "inline-block" }} onClick={handleClickOpen}>
+      <IconButton data-testid="document-dialog-button" style={{ display: "inline-block" }} onClick={handleClickOpen}>
         <AddIcon className="add-icon" />
       </IconButton>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog data-testid="dialog-box" open={open} onClose={handleClose}>
         <DialogTitle>Upload Personal Documents</DialogTitle>
         <DialogContentText style={{ marginLeft: "5%" }}>
           Upload your CV, Cover letter, or anything else you wish your
