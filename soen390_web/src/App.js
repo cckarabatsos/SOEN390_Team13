@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import UserProfile from "./pages/UserProfile"
+import JobSearch from "./pages/JobSearch";
 
 const AppWrapper = () => {
   return (
@@ -13,6 +14,7 @@ const AppWrapper = () => {
           <Route path="/" element={<Login />} />
           <Route path="/Signup" element={<Signup/>} />
           <Route path="/UserProfile" element={<UserProfile/>} />
+          <Route path="/JobSearch" element={<JobSearch/>} />
         </Routes>
       </Router>
     </div>
