@@ -1,28 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import "../styles/components/JobPostingComponent.css"
-import {Link, useNavigate } from "react-router-dom";
-import { Button} from "@material-ui/core"; 
+import {useNavigate } from "react-router-dom";
+import { Button} from "@material-ui/core";
 
-function JobPostingComponent(){
 
+function JobPostingComponent(props){
 
     const navigate = useNavigate();
+    const position = props.position;
+    const location = props.location;
+    const company = props.company;
+    const contract = props.contract;
+
+
+
     return( 
+
 <div class="container">
     <div>
 
-  <div class="button-apply-position"><Button
-                    className="button-apply"
-                    variant="contained"
-                    onClick={() => navigate("")
-                    }
-                    style={{
-                        borderRadius: 27,
-                        backgroundColor: "#a640f4b9",
-                      }}>
-                    Apply 
-                    </Button>
-                    </div>
                     
                 <div class="button-moreinfo-position">  
                   <Button
@@ -38,23 +34,24 @@ function JobPostingComponent(){
                       }}>
                     More Info
                   </Button></div> 
-              
-                 
-
+                  
     <div class="position">
-    <Link class="job-link" to="">Position</Link>   
-    </div><br></br>
-    <div class="company">Company name
+   <h3> {position} </h3>
+    </div>
+    <div class="company">{company}
                   </div><br></br>
                   
                   <div class="location">
-                    Location
+                    {location}
                     </div>
+<div>
+  {contract}
+</div>
+
+
                     </div>
                     
                     </div>
-        
-    
     );
          
 }
