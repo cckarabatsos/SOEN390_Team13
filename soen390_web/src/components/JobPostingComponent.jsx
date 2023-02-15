@@ -12,7 +12,8 @@ function JobPostingComponent(props){
     const company = props.company;
     const contract = props.contract;
     const viewDesc = props.viewDesc;
-
+    const jobPosterID = props.jobPosterID;
+    const setJob= props.setJob;
 
 
     return( 
@@ -27,8 +28,7 @@ function JobPostingComponent(props){
                     variant="contained"
                    
                     
-                    onClick={()=>viewDesc(true)
-                    }
+                    onClick={()=>{setJob(jobPosterID); viewDesc(true);}}
                     style={{
                         borderRadius: 27,
                         backgroundColor: "#a640f4b9",

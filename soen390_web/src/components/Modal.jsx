@@ -1,7 +1,9 @@
 import React from "react";
 import "../styles/components/Modal.css";
 
-function Modal({ setOpenModal }) {
+function Modal({ setOpenModal,viewDesc, viewPosition, viewLocation, viewSalary, viewContract, viewEmail, viewCompany }){
+
+
     return (
     <div className="modalBackground">
       <div className="modalContainer">
@@ -15,10 +17,15 @@ function Modal({ setOpenModal }) {
           </button>
         </div>
         <div className="title">
-          <h1>Are You Sure You Want to Continue?</h1>
+          <h1>{viewPosition}</h1>
         </div>
         <div className="body">
-          <p>The next page looks amazing. Hope you want to go there!</p>
+            <h3>{viewLocation}</h3>
+            <h3>{viewCompany}</h3>
+            <h3>{viewContract}</h3>
+            <h3>{viewSalary}</h3>
+          <h3>{viewDesc}</h3>
+          <h4>{viewEmail}</h4><br></br><br></br><br></br><br></br>
         </div>
         <div className="footer">
           <button
@@ -29,7 +36,7 @@ function Modal({ setOpenModal }) {
           >
             Cancel
           </button>
-          <button>Continue</button>
+          <button>Apply</button>
         </div>
       </div>
     </div>
