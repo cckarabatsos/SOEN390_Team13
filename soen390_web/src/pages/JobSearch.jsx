@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import JobPostingComponent from "../components/JobPostingComponent";
@@ -19,23 +19,33 @@ jobArray.push(job3);
 jobArray.push(job4);
 
 export default function JobSearch(){
+    const [modalOpen, setModalOpen] = useState(false);  
 
-const [modalOpen, setModalOpen] = useState(false);    
+    useEffect(()=>{
+
+        console.log("description");
+        console.log(modalOpen)
+
+    },[modalOpen]);
+
+  
 console.log("job array" + jobArray.length);
     return(
-<>
+
+<div>
 <button
         onClick={() => {
           setModalOpen(true);
         }}
       >Open
-      </button>
-      {modalOpen && <Modal setOpenModal={setModalOpen} />}
+</button>
+      
 
 <div>
 <h2>Start your job searching journey here. Browse available jobs down below.</h2>
 <SearchBar/>
 <h1>Please search for your desired job.</h1>
+{modalOpen && <Modal setOpenModal={setModalOpen} />}
 
 {
     jobArray.map((job) =>
@@ -45,22 +55,26 @@ console.log("job array" + jobArray.length);
     location = {job.location}
     company = {job.company}
     contract = {job.contract}
+    viewDesc ={setModalOpen}
     
     >
-<h1>hii</h1>
+
 
     </JobPostingComponent>
+   
 
     
     )
 }
+
 
 </div>
 
 <SubFooter/>
 <Footer/>
 
-          </>
+
+          </div>
     );
 
 }

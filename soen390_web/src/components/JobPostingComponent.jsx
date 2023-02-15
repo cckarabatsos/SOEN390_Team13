@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import "../styles/components/JobPostingComponent.css"
 import {useNavigate } from "react-router-dom";
 import { Button} from "@material-ui/core";
@@ -11,6 +11,7 @@ function JobPostingComponent(props){
     const location = props.location;
     const company = props.company;
     const contract = props.contract;
+    const viewDesc = props.viewDesc;
 
 
 
@@ -25,8 +26,8 @@ function JobPostingComponent(props){
                     className="button-moreinfo"
                     variant="contained"
                    
-                    /* link to where clicking more info goes */
-                    onClick={() => navigate("")
+                    
+                    onClick={()=>viewDesc(true)
                     }
                     style={{
                         borderRadius: 27,
