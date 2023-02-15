@@ -10,7 +10,7 @@ export default function JobSearch(){
 
     return(
 <>
-<NavBar />
+
 <div>
 <h2>Start your job searching journey here. Browse available jobs down below.</h2>
 <SearchBar/>
