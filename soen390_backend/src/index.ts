@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, Request, Response, Router } from "express";
 //imports needed later for the encryption
 //import jsonwebtoken from "jsonwebtoken";
 //import { hash, compare } from "bcrypt";
@@ -15,23 +15,23 @@ app.use(cookieParser());
 
 app.use(cors());
 app.use(function (_req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Access-Control-Allow-Credentials", "*");
-  next();
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Credentials", "*");
+    next();
 });
 
 //Example of route to test
 
 // const User = require("./firebaseconfig");
 app.get("/api", async (_: Request, res: Response) => {
-  const snapshot = await User.get();
-  const list = snapshot.docs.map((doc: any) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  res.send(list);
+    const snapshot = await User.get();
+    const list = snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+    res.send(list);
 });
 
 //Requiring routes for different request types
@@ -55,18 +55,20 @@ app.get("/api", async (_: Request, res: Response) => {
 // const skill = require("./routes/user_routes");
 // app.use("/skill", skill);
 
+//Adding jobposting routes
+const jobposting = require("./routes/jobPostingRoutes");
+app.use("/jobposting", jobposting);
+// Adding user routes
 const user = require("./routes/userRoutes");
-// Logging the different routes in the user router
-// console.log(user.stack);
-
-// Logging the routes in the user router
 app.use("/user", user);
 
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {
-  res.send("Hi!");
+    res.send("Hi!");
 });
 
 app.listen(port, () => {
-  console.log(`app listening on port ${port}`);
+    console.log(`app listening on port ${port}`);
 });
+
+module.exports = Router;
