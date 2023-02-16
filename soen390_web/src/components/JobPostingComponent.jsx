@@ -6,7 +6,6 @@ import { Button} from "@material-ui/core";
 
 function JobPostingComponent(props){
 
-    const navigate = useNavigate();
     const position = props.position;
     const location = props.location;
     const company = props.company;
@@ -20,14 +19,10 @@ function JobPostingComponent(props){
 
 <div class="container">
     <div>
-
-                    
                 <div class="button-moreinfo-position">  
                   <Button
                     className="button-moreinfo"
                     variant="contained"
-                   
-                    
                     onClick={()=>{setJob(jobPosterID); viewDesc(true);}}
                     style={{
                         borderRadius: 27,
@@ -37,15 +32,16 @@ function JobPostingComponent(props){
                   </Button></div> 
                   
     <div class="position">
-   <h3> {position} </h3>
+  {position}
     </div>
-    <div class="company">{company}
-                  </div><br></br>
+    <div class="company">
+      {company}
+                  </div>
                   
                   <div class="location">
                     {location}
                     </div>
-<div>
+<div class="contract">
   {contract}
 </div>
 
