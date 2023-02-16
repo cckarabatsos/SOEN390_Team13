@@ -89,47 +89,75 @@ export const deleteUserWithId = async (userID: string) => {
     }
     return data;
 };
-export const storeAccountFile = async (_: string, file: any) => {
-    const buffer = Buffer.from(file.buffer);
-    const metadata = {
-        contentType: file.mimetype,
-    };
-
-    const uploadTask = ref
-        .child("Resumes/" + file.originalname)
-        .put(buffer, metadata);
-
-    uploadTask.on(
-        firebase.storage.TaskEvent.STATE_CHANGED,
-        (snapshot) => {
-            const progress =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-                case firebase.storage.TaskState.PAUSED:
-                    console.log("Upload is paused");
-                    break;
-                case firebase.storage.TaskState.RUNNING:
-                    console.log("Upload is running");
-                    break;
+export const storeAccountFile = async (userID: string, type: string, file: any) => {
+    try {
+        var user: any = await findUserWithID(userID);
+        if (user) {
+            let casted_user = await user_schema.cast(user);
+            const buffer = Buffer.from(file.buffer);
+            const metadata = {
+                contentType: file.mimetype,
+            };
+            let folder: string;
+            if (type.toUpperCase() == "RESUME") {
+                folder = "Resumes/";
+            } else if (type.toUpperCase() == "COVERLETTER") {
+                folder = "Cover Letters/";
+            } else if (type.toUpperCase() == "PROFILEPIC") {
+                folder = "Profile Pictures/";
+            } else {
+                return null;
             }
-        },
-        (error) => {
-            switch (error.code) {
-                case "storage/unauthorized":
-                    break;
-                case "storage/canceled":
-                    break;
-                case "storage/unknown":
-                    break;
-            }
-        },
-        () => {
-            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                console.log("File available at", downloadURL);
-            });
+            const uploadTask = ref
+                .child(folder + userID + " - " + file.originalname)
+                .put(buffer, metadata);
+
+            uploadTask.on(
+                firebase.storage.TaskEvent.STATE_CHANGED,
+                (snapshot) => {
+                    const progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log("Upload is " + progress + "% done");
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED:
+                            console.log("Upload is paused");
+                            break;
+                        case firebase.storage.TaskState.RUNNING:
+                            console.log("Upload is running");
+                            break;
+                    }
+                },
+                (error) => {
+                    switch (error.code) {
+                        case "storage/unauthorized":
+                            break;
+                        case "storage/canceled":
+                            break;
+                        case "storage/unknown":
+                            break;
+                    }
+                },
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        if (type.toUpperCase() == "RESUME") {
+                            casted_user.resume = downloadURL;
+                        } else if (type.toUpperCase() == "COVERLETTER") {
+                            casted_user.coverLetter = downloadURL;
+                        } else {
+                            casted_user.picture = downloadURL;
+                        }
+                        updateUser(casted_user, userID);
+                        console.log("File available at", downloadURL);
+                        return downloadURL;
+                    });
+                }
+            );
         }
-    );
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
 };
 
 export const findAccountFile = async (userID: string, type: string) => {
