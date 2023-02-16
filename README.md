@@ -24,7 +24,7 @@ Christos Karabatsos| cckarabatsos | chris.karabatsos5@gmail.com | Web Applicatio
 Diana Alexandra Merlusca|	dianaoana1|	dianamerlusca2001@gmail.com | Web Application |
 Matthew Beaulieu|	MatthewBeaulieu0|	matthew.beaulieu631@gmail.com | Backend + Project Management|
 Bogdan Podariu|	Bogdanpoda|	podariubogdan1@gmail.com | Mobile Application + Backend|
-Nadia Beauregard|	nadiaaab|	nadiabeauu@gmail.com | Mobile Application |
+Nadia Beauregard|	nadiaaab|	nadiabeauu@gmail.com | Web Application |
 Cédric Michaud	|cemichaud|	michaud.cedric18@gmail.com | Mobile Application|
 Olivier Langlois Medaino	| SkylineP |	olivier.medaino.98@outlook.com | Mobile Application |
 Saad Khan	| khandragon |	saaadkhan23@yahoo.ca | Web Application + Team Lead |
