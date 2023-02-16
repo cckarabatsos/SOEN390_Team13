@@ -148,10 +148,9 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                         }
                         updateUser(casted_user, userID);
                         console.log("File available at", downloadURL);
-                        return downloadURL;
-                    });
-                }
-            );
+                    })
+                });
+            return uploadTask;
         }
     } catch (error) {
         console.log(error);

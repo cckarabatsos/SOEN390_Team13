@@ -71,12 +71,13 @@ export async function deleteUser(userID: string) {
     return [404, { msg: "User not found" }];
   }
 }
-export async function uploadAccountFile(userID: string, file: any) {
-  let snapshot = await storeAccountFile(userID, file);
-  if (snapshot == null) {
+export async function uploadAccountFile(userID: string, type: string, file: any) {
+  let url = await storeAccountFile(userID, type, file);
+  console.log("The service has finished.");
+  if (url == null) {
     return [404, { msg: "File storage failed." }];
   } else {
-    return [200, snapshot];
+    return [200, url];
   }
 }
 export async function getAccountFile(userID: string, type: string) {

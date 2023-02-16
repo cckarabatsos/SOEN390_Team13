@@ -142,18 +142,16 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-user.post(
-    "/uploadResume/:userID",
-    upload.single("file"),
+user.post("/uploadAccountFile/:userID", upload.single("file"),
     async (req: Request, res: Response) => {
         let userID = req.params.userID;
+        let type: string = req.query.type as string;
         if (req.file !== undefined) console.log(req.file.mimetype);
         else console.log("File undefined");
 
         try {
             let status,
-                data = await uploadAccountFile(userID, req.file);
-
+                data = await uploadAccountFile(userID, type, req.file);
             if (status == 200) {
                 res.status(200);
                 res.json({
