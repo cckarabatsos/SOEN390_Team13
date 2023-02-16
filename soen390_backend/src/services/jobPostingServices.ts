@@ -1,4 +1,4 @@
-import { Jobposting } from "../models/jobPosting";
+import { Filter, Jobposting } from "../models/jobPosting";
 import firebase from "firebase";
 
 const db = firebase.firestore();
@@ -52,4 +52,29 @@ export const deleteJobPostingWithId = async (postingID: string) => {
         throw error;
     }
     return data;
+};
+export const filterJobPostings = async (filter: Filter) => {
+    let jobPostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+        db.collection("jobpostings");
+
+    if (filter.category) {
+        jobPostingsRef = jobPostingsRef.where(
+            "category",
+            "==",
+            filter.category
+        );
+    }
+    if (filter.limit) {
+        jobPostingsRef = jobPostingsRef.limit(filter.limit);
+    }
+    if (filter.skip) {
+        jobPostingsRef = jobPostingsRef.startAfter(filter.skip);
+    }
+
+    const snapshot = await jobPostingsRef.get();
+    const jobPostings = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+    return jobPostings;
 };

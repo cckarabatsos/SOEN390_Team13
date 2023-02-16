@@ -15,4 +15,12 @@ export const jobposting_schema = yup
     })
     .required();
 
+export const filter_schema = yup.object().shape({
+    // name: yup.string(),
+    category: yup.string(),
+    limit: yup.number().positive().integer().default(20),
+    skip: yup.number().integer().default(0),
+});
+
+export type Filter = yup.InferType<typeof filter_schema>;
 export type Jobposting = yup.InferType<typeof jobposting_schema>;
