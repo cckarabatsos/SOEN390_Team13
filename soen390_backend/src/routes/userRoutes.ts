@@ -131,7 +131,7 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
         const userArr: User = await getUserWithEmail(email).then();
         const status = userArr[0];
         if (status == 404) {
-            res.status(404).json("ERROR");
+            res.status(404).json("User not found");
         } else {
             const oldProfile = await userArr[1].data;
             const ID = await userArr[1].id;
