@@ -73,7 +73,7 @@ export async function deleteUser(userID: string) {
 }
 export async function uploadAccountFile(userID: string, type: string, file: any) {
   let url = await storeAccountFile(userID, type, file);
-  console.log("The service has finished.");
+  console.log("File upload finished.");
   if (url == null) {
     return [404, { msg: "File storage failed." }];
   } else {

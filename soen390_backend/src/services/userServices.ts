@@ -103,54 +103,27 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {
                 folder = "Cover Letters/";
-            } else if (type.toUpperCase() == "PROFILEPIC") {
+            } else if (type.toUpperCase() == "PICTURE") {
                 folder = "Profile Pictures/";
             } else {
                 return null;
             }
-            const uploadTask = ref
+            const uploadTask = await ref
                 .child(folder + userID + " - " + file.originalname)
                 .put(buffer, metadata);
-
-            uploadTask.on(
-                firebase.storage.TaskEvent.STATE_CHANGED,
-                (snapshot) => {
-                    const progress =
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log("Upload is " + progress + "% done");
-                    switch (snapshot.state) {
-                        case firebase.storage.TaskState.PAUSED:
-                            console.log("Upload is paused");
-                            break;
-                        case firebase.storage.TaskState.RUNNING:
-                            console.log("Upload is running");
-                            break;
-                    }
-                },
-                (error) => {
-                    switch (error.code) {
-                        case "storage/unauthorized":
-                            break;
-                        case "storage/canceled":
-                            break;
-                        case "storage/unknown":
-                            break;
-                    }
-                },
-                () => {
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        if (type.toUpperCase() == "RESUME") {
-                            casted_user.resume = downloadURL;
-                        } else if (type.toUpperCase() == "COVERLETTER") {
-                            casted_user.coverLetter = downloadURL;
-                        } else {
-                            casted_user.picture = downloadURL;
-                        }
-                        updateUser(casted_user, userID);
-                        console.log("File available at", downloadURL);
-                    })
-                });
-            return uploadTask;
+            const downloadURL = await uploadTask.ref.getDownloadURL();
+            if (downloadURL) {
+                if (type.toUpperCase() == "RESUME") {
+                    casted_user.resume = downloadURL;
+                } else if (type.toUpperCase() == "COVERLETTER") {
+                    casted_user.coverLetter = downloadURL;
+                } else {
+                    casted_user.picture = downloadURL;
+                }
+                updateUser(casted_user, userID);
+                return downloadURL;
+            }
+            return null;
         }
     } catch (error) {
         console.log(error);

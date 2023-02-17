@@ -142,31 +142,23 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-user.post("/uploadAccountFile/:userID", upload.single("file"),
-    async (req: Request, res: Response) => {
-        let userID = req.params.userID;
-        let type: string = req.query.type as string;
-        if (req.file !== undefined) console.log(req.file.mimetype);
-        else console.log("File undefined");
-
-        try {
-            let status,
-                data = await uploadAccountFile(userID, type, req.file);
-            if (status == 200) {
-                res.status(200);
-                res.json({
-                    Response: "Successful file storage",
-                    data,
-                });
-            } else if (status == 404) {
-                res.sendStatus(404);
-            }
-        } catch (err: any) {
-            res.status(400);
-            res.json({ errType: err.Name, errMsg: err.message });
+user.post("/uploadAccountFile/:userID", upload.single('file'), async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let status,
+            data = await uploadAccountFile(userID, type, req.file);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
         }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
     }
-);
+});
 
 user.post("/edit/:email", async (req: Request, res: Response) => {
     try {
