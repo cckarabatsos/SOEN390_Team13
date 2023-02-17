@@ -1,56 +1,89 @@
-import { Grid, Paper } from "@mui/material";
-import ButtonBase from "@mui/material/ButtonBase";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Typography, Button, Avatar } from "@material-ui/core";
 
-const SearchResultCard = () => {
-  const Img = styled("img")({
-    margin: "auto",
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
-  });
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    margin: "2%",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "left",
+    color: theme.palette.text.secondary,
+  },
+  avatar: {
+    width: theme.spacing(30),
+    height: theme.spacing(30),
+    marginRight: theme.spacing(2),
+    borderRadius: "50%",
+    border: "2px solid white",
+  },
+  connectButton: {
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  viewProfileButton: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+const SearchResultCard = ({ data }) => {
+  const classes = useStyles();
 
   return (
-    <Paper
-      sx={{
-        p: 2,
-        margin: "auto",
-        flexGrow: 1,
-        backgroundColor: (theme) =>
-          theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-      }}
-    >
-      <Grid container spacing={2}>
-        <Grid item>
-          <ButtonBase sx={{ width: 128, height: 128 }}>
-            <Img alt="complex" src="/static/images/grid/complex.jpg" />
-          </ButtonBase>
-        </Grid>
-        <Grid item xs={12} sm container>
-          <Grid item xs container direction="column" spacing={2}>
-            <Grid item xs>
-              <Typography gutterBottom variant="subtitle1" component="div">
-                Standard license
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Full resolution 1920x1080 • JPEG
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                ID: 1030114
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography sx={{ cursor: "pointer" }} variant="body2">
-                Remove
-              </Typography>
-            </Grid>
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={4}>
+            <Avatar
+              alt="Profile Picture"
+              src={data.imageUrl}
+              className={classes.avatar}
+            />
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <Typography variant="h6" gutterBottom>
+              {data.name}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {`Work Position: ${data.workPosition}`}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {`Address: ${data.address}`}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {`Connections (like LinkedIn): ${data.connections}`}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.connectButton}
+            >
+              Connect
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.viewProfileButton}
+            >
+              View Profile
+            </Button>
           </Grid>
         </Grid>
-      </Grid>
-    </Paper>
+      </Paper>
+    </div>
   );
+};
+
+SearchResultCard.defaultProps = {
+  data: {
+    imageUrl: "",
+    name: "",
+    workPosition: "",
+    address: "",
+    connections: "",
+  },
 };
 
 export default SearchResultCard;

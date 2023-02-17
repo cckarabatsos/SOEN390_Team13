@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import React from "react";
 import FilterSelection from "../components/FilterSelection";
 import SearchBar from "../components/SearchBar";
-import SearchResultCard from "../components/SearchResultCard";
+import SearchResultPagination from "../components/SearchResultPagination";
 const UserNetworking = () => {
   return (
     <div data-testid="login-1">
@@ -19,10 +19,7 @@ const UserNetworking = () => {
           </Grid>
 
           <Grid item xs={6} md={9} style={{ marginRight: "1%" }}>
-            <SearchResultCard />
-            <SearchResultCard />
-            <SearchResultCard />
-            <SearchResultCard />
+            <SearchResultPagination />
           </Grid>
         </Grid>
       </Box>
