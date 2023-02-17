@@ -122,6 +122,14 @@
 					"response": []
 				},
 				{
+					"name": "userSearch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
 					"name": "Upload Account File",
 					"request": {
 						"method": "POST",
@@ -284,6 +292,41 @@
 			"name": "JobPostings",
 			"item": [
 				{
+					"name": "Filter Job posting",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/jobposting/filter/products?category&skip=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"jobposting",
+								"filter",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": null
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Post jobposting",
 					"request": {
 						"method": "POST",
@@ -341,41 +384,6 @@
 								{
 									"key": "docID",
 									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Filter Job posting",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7000/jobposting/filter/products?category&skip=0&limit=10",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7000",
-							"path": [
-								"jobposting",
-								"filter",
-								"products"
-							],
-							"query": [
-								{
-									"key": "category",
-									"value": null
-								},
-								{
-									"key": "skip",
-									"value": "0"
-								},
-								{
-									"key": "limit",
-									"value": "10"
 								}
 							]
 						}
