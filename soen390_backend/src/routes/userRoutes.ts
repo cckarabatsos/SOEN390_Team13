@@ -257,7 +257,8 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
             );
             if (data[0] == 200) {
                 console.log(data[1]);
-                res.sendStatus(200);
+                res.status(data[0]);
+                res.json(data[1]);
             } else {
                 res.status(data[0]);
                 res.json(data[1]);
