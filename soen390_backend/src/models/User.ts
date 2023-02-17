@@ -21,4 +21,13 @@ export const user_schema = yup
   })
   .required();
 
+
+  export const user_filter_schema = yup.object().shape({
+    name: yup.string(),
+    email: yup.string(),
+    limit: yup.number().positive().integer().default(20),
+    skip: yup.number().integer().default(0),
+});
+
+export type UserFilter = yup.InferType<typeof user_filter_schema>;
 export type User = yup.InferType<typeof user_schema>;

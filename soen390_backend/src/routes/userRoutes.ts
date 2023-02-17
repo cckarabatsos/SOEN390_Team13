@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 
 import {
@@ -13,6 +14,7 @@ import {
     getAccountFile,
     editAccount,
     getInvitationsOrContacts,
+  getFilteredUsersController,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -47,6 +49,7 @@ user.get("/api/login", async (req: Request, res: Response) => {
         let email: string = req.query.email as string;
         let pwd: string = req.query.password as string;
         const userArr: User = await getUserWithEmail(email).then();
+
         const status = userArr[0];
 
         if (status == 404) {
@@ -168,7 +171,7 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
         const userArr: User = await getUserWithEmail(email).then();
         const status = userArr[0];
         if (status == 404) {
-            res.status(404).json("ERROR");
+            res.status(404).json("User not found");
         } else {
             const oldProfile = await userArr[1].data;
             const ID = await userArr[1].id;
@@ -186,8 +189,6 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
-//Exporting the user as a module
-module.exports = user;
 
 //***********User invitation routes section***********************
 user.get("/api/sendInvite", async (req: Request, res: Response) => {
@@ -259,4 +260,80 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
     }
 });
 
+//****************End User invitation route section *************//
+
+//****************Start Job Posting route ********************//
+user.post("/api/posting/:email", async (req: Request, res: Response) => {
+    let email: string = req.params.email;
+    let location: string = req.body.location;
+    let position: string = req.body.position;
+    let salary: string = req.body.salary;
+    let company: string = req.body.company;
+    let contract: string = req.body.contract;
+    let description: string = req.body.description;
+    let category: string = req.body.category;
+    console.log(email);
+    const userArr: User = await getUserWithEmail(email).then();
+    const status = userArr[0];
+    if (status == 404) {
+        res.status(404).json({ errMsg: "That user doesnt exists" });
+    } else if (!userArr[1].data.isRecruiter) {
+        console.log(userArr[1].isRecruiter);
+        console.log("That user is not even a recruiter");
+        res.status(400);
+        res.json({ errMsg: "That user is not a recruiter" });
+    } else {
+        try {
+            let data: any = await createJobPosting(
+                location,
+                position,
+                salary,
+                company,
+                contract,
+                description,
+                email,
+                category,
+                userArr[1].data.userID
+            );
+            if (data[0] == 200) {
+                console.log(data[1]);
+                res.status(data[0]);
+                res.json(data[1]);
+            } else {
+                res.status(data[0]);
+                res.json(data[1]);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.name, errMsg: err.message });
+        }
+    }
+});
+//Exporting the user as a module
+module.exports = user;
 //****************End User invitation route section ***********88
+
+user.get("/api/search", async (req: Request, res: Response) => {
+  var filter: any = {};
+
+  for (const [key, value] of Object.entries(req.query)) {
+    filter[key] = value;
+  }
+
+  console.log(req.query);
+  try {
+    let status,
+      data = await getFilteredUsersController(filter);
+    res.json(data);
+    res.status(200);
+    if (status == 200) {
+      res.sendStatus(200);
+    }
+    if (status == 404) {
+      res.sendStatus(404);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.name, errMsg: err.message });
+  }
+});
