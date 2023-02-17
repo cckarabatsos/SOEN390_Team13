@@ -2,9 +2,8 @@
 import { error } from "console";
 import firebase from "firebase";
 //import { string } from "yup";
-import { User, UserFilter } from "../models/User";
 import "firebase/storage";
-import { User, user_schema } from "../models/User";
+import { User, user_schema, UserFilter } from "../models/User";
 // import { database } from "firebase-admin";
 
 const db = firebase.firestore();
@@ -410,29 +409,29 @@ export function updateUser(newProfile: User, id: string) {
 }
 
 export async function getFilteredUsers(filter: UserFilter) {
-  let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-    db.collection("users");
+    let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+        db.collection("users");
 
-  if (filter.name) {
-    userRef = userRef.where("name", "==", filter.name);
-  }
+    if (filter.name) {
+        userRef = userRef.where("name", "==", filter.name);
+    }
 
-  if(filter.email){
-    userRef = userRef.where("email", "==", filter.email);
+    if (filter.email) {
+        userRef = userRef.where("email", "==", filter.email);
 
-  }
-  if (filter.limit) {
-    userRef = userRef.limit(filter.limit);
-  }
-  if (filter.skip) {
-    userRef = userRef.startAfter(filter.skip);
-  }
+    }
+    if (filter.limit) {
+        userRef = userRef.limit(filter.limit);
+    }
+    if (filter.skip) {
+        userRef = userRef.startAfter(filter.skip);
+    }
 
-  const snapshot = await userRef.get();
+    const snapshot = await userRef.get();
 
-  const users = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  return users;
+    const users = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+    return users;
 }
