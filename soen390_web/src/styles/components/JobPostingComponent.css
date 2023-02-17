@@ -1,0 +1,94 @@
+.container {
+  background: #BDBABA;
+  border: 2px solid #d7e2e9;
+  -webkit-border-radius: 0.4rem;
+  -moz-border-radius: 0.4rem;
+  border-radius: 2rem;
+  padding: 0.4rem 2rem;
+  margin-bottom: 1rem;
+  -webkit-transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  margin-left: 15rem;
+  margin-right: 15rem;
+  position: relative;
+}
+
+.position{
+  margin-top: 0.2rem;
+  text-align: left;
+  font-size: 20px;
+}
+
+.company {
+  text-align: left;
+  font-size: 17px;
+  font-weight: normal;
+}
+.location{
+  text-align: left;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.button-apply {
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background-color: transparent;
+  padding: 0.6rem 2rem;
+  border-radius: 2rem;
+}
+.button-moreinfo{
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background-color: transparent;
+  padding: 0.6rem 2rem;
+  border-radius: 2rem;
+
+}
+
+.button-apply:hover {
+  color:  #fff;
+}
+
+.button-moreinfo:hover{
+  color:  #fff;
+
+}
+
+.job-link {
+  color: black;
+  text-decoration:none;
+}
+
+.job-link:hover{
+text-decoration: underline;
+}
+
+.job-link:active {
+  text-decoration: underline;
+}
+
+.button-apply-position{
+position: absolute;
+right: 10px;
+display: block;
+}
+
+.button-moreinfo-position{
+  position: absolute;
+  right: 10px;
+  top: 60px;
+}
+
+.job-Content{
+  float: left;
+  position:inherit;
+margin-left: 20rem;
+margin-right: 20rem;
+  border: 2px solid #d7e2e9;
+}

@@ -47,7 +47,7 @@ function Navbar() {
               <Link data-testid="home-1" to="/" className="link">
                 Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
-              <Link data-testid="job-1" to="/" className="link">
+              <Link data-testid="job-1" to="/JobSearch" className="link">
                 Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
               <Link data-testid="job-1" to="/UserNetworking" className="link">

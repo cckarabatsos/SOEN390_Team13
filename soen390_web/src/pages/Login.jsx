@@ -107,7 +107,7 @@ function MainTitle(props) {
                   <GoogleLogin />
                 </Grid>
                 <Grid item xs={12}>
-                  Don't have an account? Sign up <Link to="/Signup">here!</Link>
+                  Don't have an account? Sign up <Link to="/UserConnection">here!</Link>
                 </Grid>
               </Grid>
             </div>
