@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import UserProfile from "./pages/UserProfile";
 import UserNetworking from "./pages/UserNetworking";
 import Navbar from "./components/NavBar";
+import UserConnection from "./pages/UserConnection";
 
 const AppWrapper = () => {
   return (
@@ -17,6 +18,7 @@ const AppWrapper = () => {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/UserProfile" element={<UserProfile />} />
           <Route path="/UserNetworking" element={<UserNetworking />} />
+          <Route path="/UserConnection" element={<UserConnection />} />
         </Routes>
       </Router>
     </div>
