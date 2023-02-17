@@ -3,15 +3,16 @@ import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 
 import {
-    getUserWithID,
-    getUserWithEmail,
-    registerUser,
-    deleteUser,
-    comparePasswords,
-    sendInvite,
-    manageInvite,
-    editAccount,
-    getInvitationsOrContacts,
+  getUserWithID,
+  getUserWithEmail,
+  registerUser,
+  deleteUser,
+  comparePasswords,
+  sendInvite,
+  manageInvite,
+  editAccount,
+  getInvitationsOrContacts,
+  getFilteredUsersController,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
@@ -257,7 +258,8 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
             );
             if (data[0] == 200) {
                 console.log(data[1]);
-                res.sendStatus(200);
+                res.status(data[0]);
+                res.json(data[1]);
             } else {
                 res.status(data[0]);
                 res.json(data[1]);
@@ -270,3 +272,29 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
 });
 //Exporting the user as a module
 module.exports = user;
+//****************End User invitation route section ***********88
+
+user.get("/api/search", async (req: Request, res: Response) => {
+  var filter: any = {};
+
+  for (const [key, value] of Object.entries(req.query)) {
+    filter[key] = value;
+  }
+
+  console.log(req.query);
+  try {
+    let status,
+      data = await getFilteredUsersController(filter);
+    res.json(data);
+    res.status(200);
+    if (status == 200) {
+      res.sendStatus(200);
+    }
+    if (status == 404) {
+      res.sendStatus(404);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.name, errMsg: err.message });
+  }
+});

@@ -1,14 +1,20 @@
 import {
-    findUserWithID,
-    findUserWithEmail,
-    storeUser,
-    deleteUserWithId,
-    sendUserInvitation,
-    updateUser,
-    manageUserInvitation,
-    getUserInvitationsOrContacts,
+  findUserWithID,
+  findUserWithEmail,
+  storeUser,
+  deleteUserWithId,
+  sendUserInvitation,
+  updateUser,
+  manageUserInvitation,
+  getUserInvitationsOrContacts,
+  getFilteredUsers,
 } from "../services/userServices";
-import { User, user_schema } from "../models/User";
+import {
+  User,
+  UserFilter,
+  user_filter_schema,
+  user_schema,
+} from "../models/User";
 
 export async function getUserWithID(userID: string) {
     let user = await findUserWithID(userID);
@@ -137,17 +143,45 @@ export async function manageInvite(
 }
 
 export async function getInvitationsOrContacts(
-    userEmail: string,
-    contact: boolean
+  userEmail: string,
+  contact: boolean
 ) {
-    let userList: User[];
+  let userList: User[];
 
-    try {
-        userList = await getUserInvitationsOrContacts(userEmail, contact);
-    } catch (error) {
-        console.log((error as Error).message);
-        return [404, { msg: (error as Error).message }];
-    }
+  try {
+    userList = await getUserInvitationsOrContacts(userEmail, contact);
+  } catch (error) {
+    console.log((error as Error).message);
+    return [404, { msg: (error as Error).message }];
+  }
 
     return [200, userList];
+}
+
+function validateUserFilter(filter: UserFilter) {
+  let error_data: any = { errMsg: "", errType: "" };
+  try {
+    user_filter_schema.validateSync(filter);
+  } catch (err: any) {
+    error_data.errType = err.name;
+    error_data.errMsg = err.errors;
+    return [true, error_data];
+  }
+  return [false, {}];
+}
+
+export async function getFilteredUsersController(filter: UserFilter) {
+  let stripped_filer = user_filter_schema.cast(filter, {
+    stripUnknown: true,
+  });
+
+  let [err, error_data] = validateUserFilter(stripped_filer);
+  if (err) {
+    return [400, error_data];
+  } else {
+    let users = await getFilteredUsers(stripped_filer);
+
+    // parse_links(products);
+    return [200, users];
+  }
 }
