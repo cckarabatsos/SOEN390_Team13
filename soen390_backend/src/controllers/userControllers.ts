@@ -4,6 +4,8 @@ import {
   storeUser,
   deleteUserWithId,
   sendUserInvitation,
+  storeAccountFile,
+  findAccountFile,
   updateUser,
   manageUserInvitation,
   getUserInvitationsOrContacts,
@@ -74,6 +76,23 @@ export async function deleteUser(userID: string) {
     } else {
         return [404, { msg: "User not found" }];
     }
+}
+export async function uploadAccountFile(userID: string, type: string, file: any) {
+  let url = await storeAccountFile(userID, type, file);
+  console.log("File upload finished.");
+  if (url == null) {
+    return [404, { msg: "File storage failed." }];
+  } else {
+    return [200, url];
+  }
+}
+export async function getAccountFile(userID: string, type: string) {
+  let downloadUrl = await findAccountFile(userID, type);
+  if (downloadUrl == null) {
+    return [404, { msg: "File retrieval failed." }];
+  } else {
+    return [200, downloadUrl];
+  }
 }
 //This is to be later updated to have the compare encrypted passwords
 export async function comparePasswords(pwd: string, password: string) {

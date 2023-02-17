@@ -3,20 +3,23 @@ import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 
 import {
-  getUserWithID,
-  getUserWithEmail,
-  registerUser,
-  deleteUser,
-  comparePasswords,
-  sendInvite,
-  manageInvite,
-  editAccount,
-  getInvitationsOrContacts,
+    getUserWithID,
+    getUserWithEmail,
+    registerUser,
+    deleteUser,
+    comparePasswords,
+    sendInvite,
+    uploadAccountFile,
+    manageInvite,
+    getAccountFile,
+    editAccount,
+    getInvitationsOrContacts,
   getFilteredUsersController,
 } from "../controllers/userControllers";
 
 import { User } from "../models/User";
-
+const multer = require("multer");
+var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
 user.use(express.json());
 
@@ -76,6 +79,24 @@ user.get("/api/login", async (req: Request, res: Response) => {
     }
     return user;
 });
+user.get("/accountFile/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let status,
+            data = await getAccountFile(userID, type);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+
 user.post("/api/register", async (req: Request, res: Response) => {
     try {
         const registeredUser: User = await registerUser(req.body);
@@ -124,6 +145,24 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+user.post("/uploadAccountFile/:userID", upload.single('file'), async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let status,
+            data = await uploadAccountFile(userID, type, req.file);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+
 user.post("/edit/:email", async (req: Request, res: Response) => {
     try {
         let email: string = req.params.email;
