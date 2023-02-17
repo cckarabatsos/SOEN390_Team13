@@ -10,6 +10,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[200],
     borderRadius: 25,
     width: "40%",
+    height: "3rem",
+    paddingTop: "5px",
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
     },
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchBar(props) {
+function SearchBar(props, ref) {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");
   const inputRef = useRef(null);
@@ -43,12 +45,10 @@ function SearchBar(props) {
   };
 
   const handleSearchClick = () => {
-    // handle search button click here
-    console.log("Search button clicked!");
+    props.onSearchBtnClick(searchText);
   };
 
-  // Expose input value to parent component
-  React.useImperativeHandle(props.innerRef, () => ({
+  React.useImperativeHandle(ref, () => ({
     getInputValue: () => inputRef.current.value,
   }));
 
@@ -77,9 +77,10 @@ function SearchBar(props) {
         ),
         style: { justifyContent: "center" },
       }}
-      {...props}
     />
   );
 }
 
-export default SearchBar;
+const ForwardedSearchBar = React.forwardRef(SearchBar);
+
+export default ForwardedSearchBar;
