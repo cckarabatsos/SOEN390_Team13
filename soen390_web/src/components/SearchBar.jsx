@@ -1,32 +1,85 @@
-import { Button } from "@material-ui/core";
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/components/SearchBar.css";
+import React, { useState, useRef } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { grey, purple } from "@material-ui/core/colors";
 
-function SearchBar() {
-  const navigate = useNavigate();
+const useStyles = makeStyles((theme) => ({
+  searchInput: {
+    backgroundColor: grey[200],
+    borderRadius: 25,
+    width: "40%",
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+  },
+  searchButton: {
+    backgroundColor: purple[500],
+    color: "black",
+    "&:hover": {
+      backgroundColor: purple[700],
+    },
+    textTransform: "none",
+    borderRadius: 5,
+    width: "40%",
+    fontSize: "1rem",
+  },
+}));
+
+function SearchBar(props) {
+  const classes = useStyles();
+  const [searchText, setSearchText] = useState("");
+  const inputRef = useRef(null);
+
+  const handleInputChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const handleSearchClick = () => {
+    // handle search button click here
+    console.log("Search button clicked!");
+  };
+
+  // Expose input value to parent component
+  React.useImperativeHandle(props.innerRef, () => ({
+    getInputValue: () => inputRef.current.value,
+  }));
 
   return (
-    <div className="input-box">
-      <i className="uil uil-search"></i>
-      <div>
-        <input type="text" placeholder="Search for jobs here..." />
-        <Button
-          className="button"
-          variant="contained"
-          /* need database to be completed for search to be able to 
-                    search a list of items... wait for that*/
-          /* link to where clicking search goes */
-          onClick={() => navigate("")}
-          style={{
-            borderRadius: 27,
-            backgroundColor: "#a640f4b9",
-          }}
-        >
-          Search
-        </Button>
-      </div>
-    </div>
+    <TextField
+      className={classes.searchInput}
+      placeholder="Search"
+      variant="outlined"
+      size="small"
+      fullWidth
+      inputRef={inputRef}
+      value={searchText}
+      onChange={handleInputChange}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <Button
+              className={classes.searchButton}
+              variant="contained"
+              size="small"
+              onClick={handleSearchClick}
+            >
+              Search
+            </Button>
+          </InputAdornment>
+        ),
+        style: { justifyContent: "center" },
+      }}
+      {...props}
+    />
   );
 }
+
 export default SearchBar;
