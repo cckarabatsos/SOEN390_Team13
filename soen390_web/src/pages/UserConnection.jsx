@@ -19,20 +19,12 @@ import Person11 from "../assets/UserConnectionImages/image (11).jpg"
 import UserConnectionComponent from '../components/UserConectionComponent'
 import { GetPendingInvitation } from '../api/userConectionApi'
 
-function handleDecline() {
-  // Do something when the decline button is clicked
-  console.log('Decline button clicked');
-}
 
-function handleConfirm() {
-  // Do something when the confirm button is clicked
-  console.log('Confirm button clicked');
-}
 
 
 const users = [
   {
-    name: 'Margeret Thatcher',
+    name: 'Harry Thatcher',
     job: 'Software Engineer',
     location: 'Montreal, QC',
     image: Person,
@@ -46,21 +38,77 @@ const users = [
     id:2
   },
   {
-    name: 'Helena Thomby',
+    name: 'Julian Bory',
     job: 'Software Engineer',
     location: 'Montreal, QC',
-    image: Person1,
+    image: Person2,
     id:3
+  },
+  {
+    name: 'Harold Figma',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person3,
+    id:4
+  },
+  {
+    name: 'Mary Johnson',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person4,
+    id:5
+  },
+  {
+    name: 'Leon Martie',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person5,
+    id:6
+  },
+  {
+    name: 'Sheldon Helere',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person6,
+    id:7
+  },
+  {
+    name: 'Lilly Liones',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person7,
+    id:8
+  },
+  {
+    name: 'Rino Caldin',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person8,
+    id:9
+  },
+  {
+    name: 'Lisa Lysa',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person9,
+    id:10
+  },
+  {
+    name: 'Kurt Mennan',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person10,
+    id:11
+  },
+  {
+    name: 'Hilary Lee',
+    job: 'Software Engineer',
+    location: 'Montreal, QC',
+    image: Person11,
+    id:12
   },
   // Add more users here
 ];
-
-
-
-
-
-
-
 
 
 
@@ -73,13 +121,14 @@ const UserConnection =() => {
       <div className='userconnection'>
         <b className='fontsize'>Requests</b>
         <div className='request-section'>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
           
 
             {
             users.map((aUser)=>(
               
               <UserConnectionComponent
+              image={aUser.image}
               key={aUser.id}
               name={aUser.name}
               job ={aUser.job}
@@ -87,14 +136,6 @@ const UserConnection =() => {
 
 
               </UserConnectionComponent>
-
-
-
-
-
-
-
-
 
             ))}
           

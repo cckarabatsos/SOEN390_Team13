@@ -1,6 +1,6 @@
 .userconnection{
     background-position: center;
-    height: 150vh;    
+    height: 145vh;    
     background-color: white;
     position: relative;
     padding-top: 20px;
@@ -15,7 +15,7 @@
 .request-section{
   background-position: center;
   width: 170vh;
-  height: 130vh;
+  height: 120vh;
   background-color: rgb(197, 196, 196);
   position: absolute;
   top: 50%;
@@ -25,10 +25,11 @@
 }
 
 .rectangle {    
-    width: 785px;
+    width: 710px;
     height: 120px;
     position: absolute;
-    margin: 10px;   
+    margin: 10px;  
+     
   }
 
 .rectangle-1 {
@@ -98,7 +99,7 @@
     border-radius: 27px;
   }
   .confirm-button {
-    
+    position: absolute;
     
   }
   
@@ -109,11 +110,10 @@
   }
 
   .field{
-    text-align: right;
-    font-family: 'Inter-regular';
-    font-weight: bold;
-    font-size: large;
-    line-height: 50px;
+    padding-right: 150px;
+    padding-top: 5px;
+    
+    
   }
 
   .image{
@@ -122,7 +122,11 @@
     height: 120px;
     float: left;
     margin-left: 50px;
-    margin-top: 10px;
+    margin-top: 0px;
   }
 
+  .view{
+    height: 17px;
+    
+  }
   
