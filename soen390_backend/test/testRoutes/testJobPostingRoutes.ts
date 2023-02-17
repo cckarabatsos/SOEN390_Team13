@@ -5,23 +5,17 @@ const it = mocha.it;
 
 const app = express();
 
-describe("Test User Routes", function () {
-    describe("Get jobposting/filter", function () {
+describe("Test Job Posting Routes", function () {
+    describe("Get jobposting/filter/products", function () {
         it("responds with 400 when the filter is not good", async function () {
-            await request(app)
-                .get("/jobposting/filter")
-                .send({ email: "test@example.com", password: "password" })
-                .expect(400);
+            await request(app).get("/jobposting/filter/products?").expect(400);
         });
 
         it("responds with a 200 and return job postings", async function () {
             await request(app)
-                .get("/user/api/login")
-                .send({
-                    category: "",
-                    skip: "0",
-                    limit: "10",
-                })
+                .get(
+                    "/jobposting/filter/products?category=Big boss&skip=0&limit=10"
+                )
                 .expect(200);
         });
     });
@@ -37,28 +31,28 @@ describe("Test User Routes", function () {
                 "Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing",
             category: "Big boss",
         };
-        const badEmail = "lamoutre24@gmail.123124141";
+        // const badEmail = "lamoutre24@gmail.123124141";
         it("responds with 404 if the email does not exist", async function () {
             await request(app)
-                .post("user/api/posting/${badEmail}")
+                .post("/user/api/posting/lamoutre24@gmail.123124141")
                 .send(payload)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .expect(404);
         });
-        const notRecruiterEmail = "poda4@gmail.com";
+        // const notRecruiterEmail = "poda4@gmail.com";
         it("responds with 400 if the user is not a recruiter", async function () {
             await request(app)
-                .post("user/api/posting/${notRecruiterEmail}")
+                .post("/user/api/posting/poda4@gmail.com")
                 .send(payload)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .expect(400);
         });
-        const goodEmail = "LinkedOutInc@gmail.com";
+        // const goodEmail = "LinkedOutInc@gmail.com";
         it("responds with 200 if the user is a recruiter", async function () {
             const response = await request(app)
-                .post("user/api/posting/${goodEmail}")
+                .post("/user/api/posting/LinkedOutInc@gmail.com")
                 .send(payload)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")

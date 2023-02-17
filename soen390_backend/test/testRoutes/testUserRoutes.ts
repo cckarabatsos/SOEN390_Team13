@@ -33,7 +33,7 @@ describe("Test User Routes", function () {
     });
     describe("Post user/api/logout", function () {
         it("responds with 200 and logouts user if no error", async function () {
-            await request(app).post("user/api/logout").send().expect(200);
+            await request(app).post("/user/api/logout").send().expect(200);
         });
     });
     describe("Get user/api/register", function () {
