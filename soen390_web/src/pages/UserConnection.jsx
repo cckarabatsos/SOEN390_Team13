@@ -58,6 +58,7 @@ const UserConnection = () => {
 
   console.log(users.length);
   return (
+    <div data-testid="userconnection-1">
     <>
       <h1 className="center">Request Center</h1>
       <div className="request-section">
@@ -82,6 +83,7 @@ const UserConnection = () => {
       <SubFooter />
       <Footer />
     </>
+    </div>
   );
 };
 
