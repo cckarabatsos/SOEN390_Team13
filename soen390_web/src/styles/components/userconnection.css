@@ -1,0 +1,132 @@
+.userconnection{
+    background-position: center;
+    height: 145vh;    
+    background-color: white;
+    position: relative;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.fontsize{
+    font-size: xx-large;
+    
+}
+
+.request-section{
+  background-position: center;
+  width: 170vh;
+  height: 120vh;
+  background-color: rgb(197, 196, 196);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+
+.rectangle {    
+    width: 710px;
+    height: 120px;
+    position: absolute;
+    margin: 10px;  
+     
+  }
+
+.rectangle-1 {
+    position: static;
+    background-color: rgba(117, 115, 115, 0.495);   
+    border-radius: 27px;
+    
+  }
+  
+  .rectangle-2 {  
+    position: static;     
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  
+  .rectangle-3 {   
+    position: static;
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+
+  .rectangle-4 {    
+    position: relative;
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  
+  .rectangle-5 { 
+    position: relative;       
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  
+  .rectangle-6 {  
+    position: relative;  
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .rectangle-7 {   
+    position: relative; 
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .rectangle-8 {  
+    position: relative;  
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .rectangle-9 {  
+    position: relative;  
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .rectangle-10 {  
+    position: relative;  
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .rectangle-11 {  
+    position: relative;  
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .rectangle-12 {  
+    position: relative;  
+    background-color: rgba(117, 115, 115, 0.495);
+    border-radius: 27px;
+  }
+  .confirm-button {
+    position: absolute;
+    
+  }
+  
+  .decline-button {
+    
+    
+    
+  }
+
+  .field{
+    padding-right: 150px;
+    padding-top: 5px;
+    
+    
+  }
+
+  .image{
+    border-radius: 50px;
+    width: 150px;
+    height: 120px;
+    float: left;
+    margin-left: 50px;
+    margin-top: 0px;
+  }
+
+  .view{
+    height: 17px;
+    
+  }
+  
