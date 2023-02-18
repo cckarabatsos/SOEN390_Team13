@@ -1,48 +1,65 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
-import '../styles/components/userconnection.css'
-
-import {Button} from '@material-ui/core'
-import {Grid } from "@material-ui/core";
+import "../styles/components/userconnection.css";
+import Person from "../assets/UserConnectionImages/image (1).jpg"
+import { Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 function handleDecline() {
-    // Do something when the decline button is clicked
-    console.log('Decline button clicked');
-  }
-  
-  function handleConfirm() {
-    // Do something when the confirm button is clicked
-    console.log('Confirm button clicked');
-  }
+  // Do something when the decline button is clicked
+  console.log("Decline button clicked");
+}
 
+function handleConfirm() {
+  // Do something when the confirm button is clicked
+  console.log("Confirm button clicked");
+}
 
-export default function UserConnectionComponent(props){
-    const image = props.image
+export default function UserConnectionComponent(props) {
+  const image = props.image;
 
-    const name=props.name
+  const name = props.name;
 
-    const job = props.job
+  const job = props.job;
 
-    const location = props.location
+  const location = props.location;
 
+  const currentEmail = props.currentEmail;
+  const senderEmail = props.senderEmail;
 
-    return(
-        <Grid item xs={12} sm={6} md={6}>
-        <div className="rectangle rectangle-1"> 
-            <img className='image' src={image}></img>              
-            <h3 className="field">{name}</h3>
-            <p className="field">{job}</p>
-            <p className="field">{location}</p>
-            <Button className='decline-button' style={{ borderRadius: 40, backgroundColor: "rgb(255,0,0)", fontSize: 10, marginLeft: 500, marginTop: -150}} onClick={handleDecline} > Decline </Button>
-            <Button className='confirm-button' style={{ borderRadius: 40, backgroundColor: "rgb(0, 181, 0)", fontSize: 10, marginTop: -150}} onClick={handleConfirm} > Confirm </Button>
-            <Button className="view" style={{borderRadius: 40, backgroundColor: "rgb(165, 55, 253)", fontSize: 8, marginLeft: 500, marginTop: -90}}>View Profile</Button>              
-        </div>
-        </Grid>
+  const accept = props.accept;
+  const decline = props.decline;
 
-
-
-
-    )
-
-
-
+  return (
+    <div className="friend-request">
+      <div className="friend-request-header">
+        <img
+          src={Person}
+          alt="Profile Picture"
+          class="friend-request-avatar"
+        ></img>
+        <h2 className="friend-request-name">{name}</h2>
+        <p class="friend-request-job">{job}</p>
+        <p class="friend-request-mutual">2 mutual friends</p>
+      </div>
+      <div className="friend-request-actions">
+        <Button
+          style={{
+            backgroundColor: "#21b6ae",
+          }}
+          color="success"
+          onClick={() => accept(currentEmail, senderEmail)}
+        >
+          Accept
+        </Button>
+        <Button
+          style={{
+            backgroundColor: "#ff5252",
+          }}
+          onClick={() => decline(currentEmail, senderEmail)}
+        >
+          Decline
+        </Button>
+      </div>
+    </div>
+  );
 }

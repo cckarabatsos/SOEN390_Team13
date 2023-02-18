@@ -2,85 +2,84 @@ import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import JobPostingComponent from "../components/JobPostingComponent";
-import SearchBar from "../components/SearchBar";
+import JobSearchBar from "../components/JobSearchBar";
 import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
 import { useState } from "react";
 
+export default function JobSearch() {
+ 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [jobPosterID, setjobPosterID] = useState(false);
+  const [position, setPosition] = useState(false);
+  const [location, setLocation] = useState(false);
+  const [company, setCompany] = useState(false);
+  const [contract, setContract] = useState(false);
+  const [salary, setSalary] = useState(false);
+  const [description, setDescription] = useState(false);
+  const [email, setEmail] = useState(false);
+  const [jobs, setJobs] = useState([]);
 
-const jobArray = []
-var job1 = new JobsOverview("Position1", "Location1", "Company1", "Contract1", 1, 25,"Description1", "123@yay.com");
-var job2 = new JobsOverview("Position2", "Location2", "Company2", "Contract2", 2, 33,"Description2", "122223@yay.com");
-var job3 = new JobsOverview("Position3", "Location3", "Company3", "Contract3", 3, 30,"Description3", "12344444@yay.com");
-var job4 = new JobsOverview("Position4", "Location4", "mcdonaldssss", "Contract4", 4, 20,"Description4", "1111111111123@yay.com");
-jobArray.push(job1);
-jobArray.push(job2);
-jobArray.push(job3);
-jobArray.push(job4);
+  const [jobDisplay, setJobDisplay] = useState([]);
 
-export default function JobSearch(){
-    const [modalOpen, setModalOpen] = useState(false);  
-    const [jobPosterID, setjobPosterID] = useState(false);
-    const [position, setPosition] = useState(false);
-    const [location, setLocation] = useState(false);
-    const [company, setCompany] = useState(false);
-    const [contract, setContract] = useState(false);
-    const [salary, setSalary] = useState(false);
-    const [description, setDescription] = useState(false);
-    const [email, setEmail] = useState(false);
 
-    useEffect(()=>{
-
-        console.log("description");
-        console.log(modalOpen)
-        console.log(jobPosterID)
-
-    },[modalOpen]);
-
-  
-console.log("job array" + jobArray.length);
-    return(
-
-<div> 
-<div>
-<h2>Start your job searching journey here. Browse available jobs down below.</h2>
-<SearchBar/>
-<h1>Please search for your desired job.</h1>
-{modalOpen && <Modal setOpenModal={setModalOpen} viewDesc={jobArray[jobPosterID-1].description} viewPosition={jobArray[jobPosterID-1].position} 
-viewLocation={jobArray[jobPosterID-1].location} viewCompany={jobArray[jobPosterID-1].company} viewEmail={jobArray[jobPosterID-1].email}
-viewContract={jobArray[jobPosterID-1].contract} viewSalary={jobArray[jobPosterID-1].salary}/>}
-
-{
-    jobArray.map((job) =>
-    <JobPostingComponent
-    key={job.jobPosterID}
-    position = {job.position}
-    location = {job.location}
-    company = {job.company}
-    contract = {job.contract}
-    viewDesc ={setModalOpen}
-    jobPosterID={job.jobPosterID}
-    setJob ={setjobPosterID}
-
+useEffect(() => {
+    console.log(jobs);
+    var jobArray=[]
     
-    >
+
+    for( var i =0; i<jobs.length;i++){
+        jobArray.push(new JobsOverview(jobs[i].position,jobs[i].location,jobs[i].company,jobs[i].contract,i,20,jobs[i].description,jobs[i].email))
 
 
-    </JobPostingComponent>
-   
+    }
 
+    console.log(jobArray)
+
+    setJobDisplay(jobArray)
     
-    )
-}
+    
+  }, [jobs]);
 
+  return (
+    <div>
+      <div>
+        <h2>
+          Start your job searching journey here. Browse available jobs down
+          below.
+        </h2>
+        <JobSearchBar 
+        setJobs={setJobs}/>
+        <h1>Please search for your desired job.</h1>
+        {modalOpen && (
+          <Modal
+            setOpenModal={setModalOpen}
+            viewDesc={jobDisplay[jobPosterID ].description}
+            viewPosition={jobDisplay[jobPosterID].position}
+            viewLocation={jobDisplay[jobPosterID].location}
+            viewCompany={jobDisplay[jobPosterID].company}
+            viewEmail={jobDisplay[jobPosterID].email}
+            viewContract={jobDisplay[jobPosterID].contract}
+            viewSalary={jobDisplay[jobPosterID ].salary}
+          />
+        )}
 
-</div>
+        {jobDisplay.map((job) => (
+          <JobPostingComponent
+            key={job.jobPosterID}
+            position={job.position}
+            location={job.location}
+            company={job.company}
+            contract={job.contract}
+            viewDesc={setModalOpen}
+            jobPosterID={job.jobPosterID}
+            setJob={setjobPosterID}
+          ></JobPostingComponent>
+        ))}
+      </div>
 
-<SubFooter/>
-<Footer/>
-
-
-          </div>
-    );
-
+      <SubFooter />
+      <Footer />
+    </div>
+  );
 }
