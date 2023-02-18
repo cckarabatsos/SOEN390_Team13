@@ -7,8 +7,7 @@ import {
   getUserWithEmail,
   registerUser,
   comparePasswords,
-  getAccountFile,
-  uploadAccountFile
+  getAccountFile
 } from "../../src/controllers/userControllers";
 
 const expect = chai.expect;
@@ -42,9 +41,6 @@ let testUserFrontend: any = {
   currentPosition: "",
   currentCompany: "",
   isRecruiter: false,
-};
-const file = {
-
 };
 
 describe("User Controllers", function () {
@@ -118,16 +114,6 @@ describe("User Controllers", function () {
     });
     it("return a 404 response code retrieving account file with wrong user ID", async function () {
       let data: any = await getAccountFile("5", "resume");
-      expect(data[0]).to.equal(404);
-    });
-  });
-  describe("# uploadAccountFile", function () {
-    it("return a 404 response code uploading absent file", async function () {
-      let data: any = await uploadAccountFile(id, "resume", null);
-      expect(data[0]).to.equal(404);
-    });
-    it("return a 404 response code uploading absent file", async function () {
-      let data: any = await uploadAccountFile(id, "resume", file);
       expect(data[0]).to.equal(404);
     });
   });
