@@ -4,11 +4,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import React from "react";
 
-const FilterSelection = () => {
-  const [value, setValue] = React.useState("name");
-
+const FilterSelection = (props) => {
   const handleChange = (event) => {
-    setValue(event.target.value);
+    props.onRadioChange(event.target.value);
   };
 
   return (
@@ -30,7 +28,7 @@ const FilterSelection = () => {
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="controlled-radio-buttons-group"
-              value={value}
+              value={props.radioValue}
               onChange={handleChange}
             >
               <FormControlLabel
