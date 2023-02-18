@@ -1,132 +1,150 @@
-.userconnection{
-    background-position: center;
-    height: 145vh;    
-    background-color: white;
-    position: relative;
-    padding-top: 20px;
-    text-align: center;
-}
-
-.fontsize{
-    font-size: xx-large;
-    
-}
-
-.request-section{
+.userconnection  {
   background-position: center;
-  width: 170vh;
-  height: 120vh;
-  background-color: rgb(197, 196, 196);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
+  height: 100vh;
+  background-color: #f8f8f8;
+  padding-top: 20px;
+  text-align: center;
 }
 
-.rectangle {    
-    width: 710px;
-    height: 120px;
-    position: absolute;
-    margin: 10px;  
-     
-  }
+.gridCenter{
 
-.rectangle-1 {
-    position: static;
-    background-color: rgba(117, 115, 115, 0.495);   
-    border-radius: 27px;
-    
-  }
-  
-  .rectangle-2 {  
-    position: static;     
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  
-  .rectangle-3 {   
-    position: static;
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
 
-  .rectangle-4 {    
-    position: relative;
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  
-  .rectangle-5 { 
-    position: relative;       
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  
-  .rectangle-6 {  
-    position: relative;  
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .rectangle-7 {   
-    position: relative; 
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .rectangle-8 {  
-    position: relative;  
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .rectangle-9 {  
-    position: relative;  
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .rectangle-10 {  
-    position: relative;  
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .rectangle-11 {  
-    position: relative;  
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .rectangle-12 {  
-    position: relative;  
-    background-color: rgba(117, 115, 115, 0.495);
-    border-radius: 27px;
-  }
-  .confirm-button {
-    position: absolute;
-    
-  }
-  
-  .decline-button {
-    
-    
-    
-  }
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  .field{
-    padding-right: 150px;
-    padding-top: 5px;
-    
-    
-  }
+.request-section {
+  margin: auto;
+  width: 80%;
 
-  .image{
-    border-radius: 50px;
-    width: 150px;
-    height: 120px;
-    float: left;
-    margin-left: 50px;
-    margin-top: 0px;
-  }
-
-  .view{
-    height: 17px;
-    
-  }
+  margin-top: 5vh;
+  margin-bottom: 5vh;
   
+ 
+  background-color: #CBC3E3;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+  padding: 20px;
+}
+
+.request-section .image {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.request-section .info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.request-section .info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.request-section .info p {
+  margin: 5px 0;
+  font-size: 1.2rem;
+}
+
+.request-section .buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.request-section .buttons button {
+  border-radius: 50px;
+  font-size: 1rem;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.request-section .buttons .accept {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+.request-section .buttons .decline {
+  background-color: #f44336;
+  color: #ffffff;
+}
+
+.request-section .buttons .view {
+  background-color: #7d8bff;
+  color: #ffffff;
+}
+
+
+.friend-request {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  padding: 20px;
+ 
+  margin: 20px;
+}
+
+.friend-request-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.friend-request-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.friend-request-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.friend-request-mutual {
+  font-size: 14px;
+  color: #999;
+  margin: 0;
+}
+
+.friend-request-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.friend-request-button {
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.friend-request-accept {
+  background-color: #007bff;
+}
+
+.friend-request-decline {
+  background-color: #dc3545;
+}
+.friend-request-job {
+  font-size: 14px;
+  margin: 4px 0;
+}
