@@ -22,11 +22,16 @@ import {
   AlertNotificationRoot,
   Toast,
 } from "react-native-alert-notification";
+import {
+  AcceptInvitations,
+  DeclineInvitations,
+} from "../../api/UserRequestAPI";
 
 //import { auth } from '../firebaseConfig'
 
-export default function Basic({ data }) {
-  console.log(data);
+export default function Basic({ data, email }) {
+  //console.log(data);
+  //console.log(email);
   const { key, text, image, userID, job, loc } = data;
   const [name, setName] = useState(text);
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,31 +50,34 @@ export default function Basic({ data }) {
     }
   };
 
-  const acceptRequest = (rowMap, rowKey) => {
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: "ACCEPTED",
-      textBody: "Friend request accetped",
-    });
+  const acceptRequest = (rowMap, rowKey, user_email, email) => {
+    let responce = AcceptInvitations(email, user_email);
+    if (responce)
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: "ACCEPTED",
+        textBody: "Friend request accetped",
+      });
     //ACCEPT IN BACKEND
 
-    closeRow(rowMap, rowKey);
+    closeRow(rowMap, rowKey, user_email, email);
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     newData.splice(prevIndex, 1);
     setListData(newData);
   };
 
-  const denyRequest = (rowMap, rowKey) => {
-    console.log("Deny Request");
-    //DENY IN BACKEND
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: "REFUSED",
-      textBody: "Friend request not accetped",
-    });
+  const denyRequest = (rowMap, rowKey, user_email, email) => {
+    let responce = DeclineInvitations(email, user_email);
+    if (responce)
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: "REFUSED",
+        textBody: "Friend request not accetped",
+      });
+    //ACCEPT IN BACKEND
 
-    closeRow(rowMap, rowKey);
+    closeRow(rowMap, rowKey, user_email, email);
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     newData.splice(prevIndex, 1);
@@ -77,7 +85,7 @@ export default function Basic({ data }) {
   };
 
   const onRowDidOpen = (rowKey) => {
-    console.log("This row opened", rowKey);
+    //console.log("This row opened", rowKey);
   };
 
   const copyToClipBoard = () => {
@@ -106,14 +114,14 @@ export default function Basic({ data }) {
     <View style={styles.rowBack}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
-        onPress={() => acceptRequest(rowMap, data.item.key)}
+        onPress={() => acceptRequest(rowMap, data.item.key, email, job)}
       >
         <Ionicons size={30} name="person-add-sharp" color={"green"} />
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         title={"toast notification"}
-        onPress={() => denyRequest(rowMap, data.item.key)}
+        onPress={() => denyRequest(rowMap, data.item.key, email, job)}
       >
         <Ionicons size={30} name="md-person-remove-sharp" color={"red"} />
       </TouchableOpacity>

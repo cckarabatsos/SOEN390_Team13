@@ -21,7 +21,7 @@ import { LogBox } from 'react-native';
 import { UserRequest } from '../api/UserRequestAPI';
 
 
-const ExpandableComponent = ({item, onClickFunction}:any) => {
+const ExpandableComponent = ({item, onClickFunction, email}:any) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
 
@@ -58,7 +58,7 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
         }}>
         {/*Content under the header of the Expandable List Item*/}
         {item.subcategory.map((item:any, key:any) =>(
-          <FriendRequestRow data = {item}/>
+          <FriendRequestRow data = {item} email={email}/>
         ))}
       </View>
     </View>
@@ -183,6 +183,7 @@ const buildObject = (jsonObject:any) => {
                   updateLayout(key);
                 }}
                 item={item}
+                email={email}
               />
             ))}
           </ScrollView>
