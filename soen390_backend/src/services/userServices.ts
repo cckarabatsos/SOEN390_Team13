@@ -93,6 +93,10 @@ export const deleteUserWithId = async (userID: string) => {
 };
 export const storeAccountFile = async (userID: string, type: string, file: any) => {
     try {
+        if (!file) {
+            return null;
+        }
+
         var user: any = await findUserWithID(userID);
         if (user) {
             let casted_user = await user_schema.cast(user);
@@ -148,6 +152,9 @@ export const findAccountFile = async (userID: string, type: string) => {
             } else if (type.toUpperCase() === "PICTURE") {
                 console.log(casted_user.picture);
                 return casted_user.picture;
+            }
+            else {
+                return null;
             }
         }
     } catch (error) {

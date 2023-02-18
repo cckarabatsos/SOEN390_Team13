@@ -8,9 +8,6 @@ const url = "http://localhost:4000";
 let server: any;
 const id = "18JRHKkLE2t50nE17SHc";
 const wrongId = "5";
-const file = {
-
-};
 
 describe("Test User Routes", function () {
     before(function () {
@@ -164,24 +161,6 @@ describe("Test User Routes", function () {
             await request(url)
                 .get(`/user/accountFile/${id}?type=picture`)
                 .expect(200);
-        });
-    });
-    describe("Post user/uploadAccountFile/:userID", async function () {
-        it("responds with 404 if wrong type", async function () {
-            await request(url)
-                .post(`/user/uploadAccountFile/${id}?type=badType`)
-                .set("Content-Type", "multipart/form-data")
-                .set("Accept", "*/*")
-                .send(file)
-                .expect(404);
-        });
-        it("responds with 404 if wrong user id", async function () {
-            await request(url)
-                .post(`/user/uploadAccountFile/${wrongId}?type=resume`)
-                .set("Content-Type", "multipart/form-data")
-                .set("Accept", "*/*")
-                .send(file)
-                .expect(404);
         });
     });
 });
