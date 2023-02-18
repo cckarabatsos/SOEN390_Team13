@@ -1,23 +1,29 @@
 import {
-  findUserWithID,
-  findUserWithEmail,
-  storeUser,
-  deleteUserWithId,
-  sendUserInvitation,
-  storeAccountFile,
-  findAccountFile,
-  updateUser,
-  manageUserInvitation,
-  getUserInvitationsOrContacts,
-  getFilteredUsers,
+    findUserWithID,
+    findUserWithEmail,
+    storeUser,
+    deleteUserWithId,
+    sendUserInvitation,
+    storeAccountFile,
+    findAccountFile,
+    updateUser,
+    manageUserInvitation,
+    getUserInvitationsOrContacts,
+    getFilteredUsers,
 } from "../services/userServices";
+import dotenv from "dotenv";
 import {
-  User,
-  UserFilter,
-  user_filter_schema,
-  user_schema,
+    User,
+    UserFilter,
+    user_filter_schema,
+    user_schema,
 } from "../models/User";
-
+import { hash } from "bcrypt";
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+const { sign } = jwt;
+const saltRounds = 4;
+dotenv.config();
 export async function getUserWithID(userID: string) {
     let user = await findUserWithID(userID);
     let casted_user = await user_schema.cast(user);
@@ -45,6 +51,7 @@ export async function registerUser(user: any) {
     let casted_user: User = await user_schema.cast(user, {
         stripUnknown: false,
     });
+    casted_user.password = await hash(casted_user.password, saltRounds);
     console.log(casted_user);
     user = await new Promise((resolve, _) => {
         findUserWithEmail(casted_user.email, (user) => {
@@ -77,22 +84,26 @@ export async function deleteUser(userID: string) {
         return [404, { msg: "User not found" }];
     }
 }
-export async function uploadAccountFile(userID: string, type: string, file: any) {
-  let url = await storeAccountFile(userID, type, file);
-  console.log("File upload finished.");
-  if (url == null) {
-    return [404, { msg: "File storage failed." }];
-  } else {
-    return [200, url];
-  }
+export async function uploadAccountFile(
+    userID: string,
+    type: string,
+    file: any
+) {
+    let url = await storeAccountFile(userID, type, file);
+    console.log("File upload finished.");
+    if (url == null) {
+        return [404, { msg: "File storage failed." }];
+    } else {
+        return [200, url];
+    }
 }
 export async function getAccountFile(userID: string, type: string) {
-  let downloadUrl = await findAccountFile(userID, type);
-  if (downloadUrl == null) {
-    return [404, { msg: "File retrieval failed." }];
-  } else {
-    return [200, downloadUrl];
-  }
+    let downloadUrl = await findAccountFile(userID, type);
+    if (downloadUrl == null) {
+        return [404, { msg: "File retrieval failed." }];
+    } else {
+        return [200, downloadUrl];
+    }
 }
 //This is to be later updated to have the compare encrypted passwords
 export async function comparePasswords(pwd: string, password: string) {
@@ -162,45 +173,70 @@ export async function manageInvite(
 }
 
 export async function getInvitationsOrContacts(
-  userEmail: string,
-  contact: boolean
+    userEmail: string,
+    contact: boolean
 ) {
-  let userList: User[];
+    let userList: User[];
 
-  try {
-    userList = await getUserInvitationsOrContacts(userEmail, contact);
-  } catch (error) {
-    console.log((error as Error).message);
-    return [404, { msg: (error as Error).message }];
-  }
+    try {
+        userList = await getUserInvitationsOrContacts(userEmail, contact);
+    } catch (error) {
+        console.log((error as Error).message);
+        return [404, { msg: (error as Error).message }];
+    }
 
     return [200, userList];
 }
 
 function validateUserFilter(filter: UserFilter) {
-  let error_data: any = { errMsg: "", errType: "" };
-  try {
-    user_filter_schema.validateSync(filter);
-  } catch (err: any) {
-    error_data.errType = err.name;
-    error_data.errMsg = err.errors;
-    return [true, error_data];
-  }
-  return [false, {}];
+    let error_data: any = { errMsg: "", errType: "" };
+    try {
+        user_filter_schema.validateSync(filter);
+    } catch (err: any) {
+        error_data.errType = err.name;
+        error_data.errMsg = err.errors;
+        return [true, error_data];
+    }
+    return [false, {}];
 }
 
 export async function getFilteredUsersController(filter: UserFilter) {
-  let stripped_filer = user_filter_schema.cast(filter, {
-    stripUnknown: true,
-  });
+    let stripped_filer = user_filter_schema.cast(filter, {
+        stripUnknown: true,
+    });
 
-  let [err, error_data] = validateUserFilter(stripped_filer);
-  if (err) {
-    return [400, error_data];
-  } else {
-    let users = await getFilteredUsers(stripped_filer);
+    let [err, error_data] = validateUserFilter(stripped_filer);
+    if (err) {
+        return [400, error_data];
+    } else {
+        let users = await getFilteredUsers(stripped_filer);
 
-    // parse_links(products);
-    return [200, users];
-  }
+        // parse_links(products);
+        return [200, users];
+    }
+}
+export async function generateAccessToken(username: any) {
+    console.log(await process.env.TOKEN_SECRET);
+    //console.log(process.env.TOKEN_SECRET!);
+    return sign(username, process.env.TOKEN_SECRET!, { expiresIn: "28800000" });
+}
+export function verifyJWT(req: Request, res: Response, next: NextFunction) {
+    console.log(req.cookies);
+    const { FrontendUser } = req.cookies;
+    try {
+        const { iat, exp, ...payload } = jwt.verify(
+            FrontendUser,
+            process.env.TOKEN_SECRET!
+        ) as User;
+        req.cookies.user = payload; //Maybe not good will need to recheck
+        next();
+    } catch (err: any) {
+        res.status(401).json("Invalid Session");
+    }
+}
+export function hasUser(request: Request): request is Request & { user: any } {
+    return "user" in request;
+}
+export function hasFile(request: Request): request is Request & { file: any } {
+    return "file" in request;
 }
