@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import React, { useRef, useState } from "react";
+import { searchInfo } from "../api/userNetworkingApi";
 import FilterSelection from "../components/FilterSelection";
 import SearchBar from "../components/SearchBar";
 import SearchResultPagination from "../components/SearchResultPagination";
@@ -14,10 +15,12 @@ const UserNetworking = () => {
     setRadioValue(value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const searchText = searchBarRef.current.getInputValue();
     console.log(searchText);
     console.log(radioValue);
+    const temp = await searchInfo(searchText, radioValue);
+    console.log(temp);
     const TEMP_SEARCH_RESULTS = [
       {
         name: "John Doe",
