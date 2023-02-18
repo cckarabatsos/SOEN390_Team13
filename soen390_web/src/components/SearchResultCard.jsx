@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchResultCard = ({ data }) => {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -47,13 +46,13 @@ const SearchResultCard = ({ data }) => {
               {data.name}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {`Work Position: ${data.workPosition}`}
+              {`${data.currentPosition}`}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {`Address: ${data.address}`}
+              {`${data.bio}`}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {`Connections (like LinkedIn): ${data.connections}`}
+              {`${data.contacts ? data.contacts.length : "No"} Connections`}
             </Typography>
             <Button
               variant="contained"

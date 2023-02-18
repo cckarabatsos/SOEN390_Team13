@@ -4,10 +4,10 @@ import api from "../config.json";
 export async function searchInfo(reqType, reqTerm) {
   try {
     const response = await axios
-      .get(api.BACKEND_API + "/api/search", {
+      .get(api.BACKEND_API + "/user/api/search", {
         params: {
-          type: reqType,
-          term: reqTerm,
+          name: reqType == "name" ? reqTerm : "",
+          email: reqType == "email" ? reqTerm : "",
         },
       })
       .then((res) => {

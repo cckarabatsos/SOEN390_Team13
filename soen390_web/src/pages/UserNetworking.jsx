@@ -1,11 +1,10 @@
 import { Grid } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import React, { useRef, useState } from "react";
-import { searchInfo } from "../api/userNetworkingApi";
 import FilterSelection from "../components/FilterSelection";
-
+import SearchBar from "../components/SearchBar";
 import SearchResultPagination from "../components/SearchResultPagination";
-
+import { searchInfo } from "../api/userNetworkingApi";
 const UserNetworking = () => {
   const searchBarRef = useRef(null);
   const [radioValue, setRadioValue] = useState("name");
@@ -17,10 +16,7 @@ const UserNetworking = () => {
 
   const handleSearch = async () => {
     const searchText = searchBarRef.current.getInputValue();
-    console.log(searchText);
-    console.log(radioValue);
-    const temp = await searchInfo(searchText, radioValue);
-    console.log(temp);
+    const temp = await searchInfo(radioValue, searchText);
     const TEMP_SEARCH_RESULTS = [
       {
         name: "John Doe",
@@ -59,7 +55,7 @@ const UserNetworking = () => {
         connections: 8,
       },
     ];
-    setSearchResults(TEMP_SEARCH_RESULTS);
+    setSearchResults(temp.data[1]);
   };
 
   return (
@@ -68,7 +64,7 @@ const UserNetworking = () => {
       <Box sx={{ flexGrow: 2 }}>
         <Grid container spacing={4}>
           <Grid item xs={6} md={12}>
-           
+            <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
           </Grid>
 
           <Grid item xs={6} md={2} style={{ marginLeft: "1%" }}>
