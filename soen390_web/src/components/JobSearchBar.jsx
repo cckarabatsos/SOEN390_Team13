@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/components/SearchBar.css";
+import "../styles/components/JobSearchBar.css";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";

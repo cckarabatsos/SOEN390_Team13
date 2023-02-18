@@ -1,7 +1,6 @@
 import { Grid } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import React from "react";
-import SearchBar from "../components/SearchBar";
 import SearchResultCard from "../components/SearchResultCard";
 const UserNetworking = () => {
   return (
@@ -10,7 +9,7 @@ const UserNetworking = () => {
       <Box sx={{ flexGrow: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={6} md={12}>
-            <SearchBar />
+            
           </Grid>
           <Grid item xs={6} md={4}>
             Filter Area

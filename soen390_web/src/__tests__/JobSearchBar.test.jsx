@@ -4,7 +4,7 @@ import React from 'react';
 import { render, fireEvent} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import SearchBar from '../components/SearchBar';
+import SearchBar from '../components/JobSearchBar';
 
 
 describe('SearchBar', () => {
