@@ -21,7 +21,7 @@
     "chai": "^4.3.6",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.3",
     "express": "^4.17.2",
     "firebase": "^8.6.8",
     "firebase-admin": "^11.5.0",

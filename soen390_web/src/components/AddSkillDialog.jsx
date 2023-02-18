@@ -21,54 +21,54 @@ function AddEducationDialog() {
   };
 
   return (
-    <div data-testid='skill-1'>
-    <>
-      <IconButton onClick={handleClickOpen}>
-        <AddIcon className="add-icon" />
-      </IconButton>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add a Skill</DialogTitle>
-        <DialogContentText style={{ marginLeft: "5%" }}>
-          What are your skills?
-        </DialogContentText>
-        <DialogContent>
-          <TextField
-            autoFocus
-            className="inputRounded"
-            margin="dense"
-            label="Skill"
-            type="skill"
-            variant="outlined"
-            size="small"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            className="button"
-            variant="contained"
-            style={{
-              borderRadius: 27,
-              backgroundColor: "rgba(100, 69, 227, 0.85)",
-            }}
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-          <Button
-            className="button"
-            variant="contained"
-            style={{
-              borderRadius: 27,
-              backgroundColor: "rgba(100, 69, 227, 0.85)",
-            }}
-            onClick={handleClose}
-          >
-            Save and Apply
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
-    </div>
+    <span data-testid="skill-1">
+      <>
+        <IconButton onClick={handleClickOpen}>
+          <AddIcon className="add-icon" />
+        </IconButton>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Add a Skill</DialogTitle>
+          <DialogContentText style={{ marginLeft: "5%" }}>
+            What are your skills?
+          </DialogContentText>
+          <DialogContent>
+            <TextField
+              autoFocus
+              className="inputRounded"
+              margin="dense"
+              label="Skill"
+              type="skill"
+              variant="outlined"
+              size="small"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              className="button"
+              variant="contained"
+              style={{
+                borderRadius: 27,
+                backgroundColor: "rgba(100, 69, 227, 0.85)",
+              }}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="button"
+              variant="contained"
+              style={{
+                borderRadius: 27,
+                backgroundColor: "rgba(100, 69, 227, 0.85)",
+              }}
+              onClick={handleClose}
+            >
+              Save and Apply
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    </span>
   );
 }
 

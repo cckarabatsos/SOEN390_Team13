@@ -53,3 +53,19 @@
     font-size: 14px;
     padding: 8px 18px;
   }
+  .buttonfilter {
+    right: 12px;
+    font-size: 14px;
+    padding: 8px 18px;
+  }
+
+  .input-box i,
+.input-box .buttonfilter {
+  position: absolute;
+  top: 50%;
+  margin-right: 110px;
+  transform: translateY(-50%);
+}
+.input-box .buttonfilter:active {
+  transform: translateY(-50%) scale(0.98);
+}
