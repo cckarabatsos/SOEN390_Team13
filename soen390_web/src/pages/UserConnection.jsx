@@ -55,7 +55,6 @@ const UserConnection = () => {
       console.log("error processing invitation decline");
     }
   };
-
   console.log(users.length);
   return (
     <div data-testid="userconnection-1">

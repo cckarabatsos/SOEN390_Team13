@@ -10,14 +10,16 @@ const SearchResultPagination = ({ searchResults, resultsPerPage = 10 }) => {
   const endIndex = startIndex + resultsPerPage;
 
   // Slice the search results array to show only the current page's results
-  const currentResults = searchResults.slice(startIndex, endIndex);
+  const currentResults = searchResults
+    ? searchResults.slice(startIndex, endIndex)
+    : [];
 
   // Function to handle page change
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
-  if (searchResults.length === 0) {
+  if (!searchResults || searchResults.length === 0) {
     return <div>No search results found</div>;
   }
 
@@ -31,6 +33,7 @@ const SearchResultPagination = ({ searchResults, resultsPerPage = 10 }) => {
           count={Math.ceil(searchResults.length / resultsPerPage)}
           page={currentPage}
           onChange={(event, newPage) => handlePageChange(newPage)}
+          data-testid="pagination"
         />
       )}
     </>
