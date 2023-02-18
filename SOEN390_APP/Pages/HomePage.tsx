@@ -12,24 +12,24 @@ import JobOfferScreen from './JobOfferScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
-function HomeTabs() {
+function HomeTabs({route}:{route:any}) {
   const navigation = useNavigation();
 
   return (
     <Tab.Navigator>
       <Tab.Screen name="News"component={NewsScreen}/>
       <Tab.Screen name="Company" component={CompanyScreen}/>
-      <Tab.Screen name="People" component={PeopleScreen} />
+      <Tab.Screen name="People" initialParams={{username: route.params.username, email:route.params.email, password:route.params.password}} component={PeopleScreen} />
       <Tab.Screen name="Jobs" component={JobOfferScreen} />
     </Tab.Navigator>
   );
 }
 
-const Home = ({ navigation, route }:any) => {
+const Home = ({ navigation, route}: { navigation: any, route:any }) => {
  
   return (
     <SafeAreaView style={styles.container}>
-      <HomeTabs />
+      <HomeTabs route={route} />
     </SafeAreaView>
 
   );

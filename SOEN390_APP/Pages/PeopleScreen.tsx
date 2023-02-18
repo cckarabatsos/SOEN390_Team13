@@ -32,6 +32,8 @@ const PeopleScreen = ({route}:{route:any}) => {
   const [data, setData] = useState([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
+  let email:String = route.params.email
+
   let empty = {}
 
   const handleGetUser = async () => {
@@ -49,30 +51,37 @@ const PeopleScreen = ({route}:{route:any}) => {
     handleSearch();
   }, []);
 
+  const { v4: uuidv4 } = require('uuid');
+
   const buildObject = (jsonObject:any) => {
     const { name, currentPosition, currentCompany, email } = jsonObject;
     const obj = {
-      id: 1,
+      id: uuidv4(),
       name: name,
       occupation: currentPosition,
       location: "New York",
       company: currentCompany,
-      image: 'https://randomuser.me/api/portraits/men/1.jpg',
-      email: email
+      email: email,
       //image: jsonObject.picture
+      image: 'https://randomuser.me/api/portraits/men/1.jpg'
     }
     return obj;
   }
 
   const connectWithUser = async (user_name: String, user_email: String) => {
     setModalVisible(false);
-    //let responce = UserConnectAPI(user_email, )
-    //console.log(responce)
 
+    let responce = UserConnectAPI(user_email, email)
+    if(await responce)
     Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: "CONNECTED",
         textBody: "Followed "+ user_name,
+      });
+      else 
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: "ALREADY CONNECTED",
       });
     }
 
@@ -164,7 +173,7 @@ return(
           <Text style={styles.userCompany}>{item.company}</Text>
         </View>
         <TouchableOpacity style={styles.followButton} onPress={() => {
-                connectWithUser(item.name)}}>
+                connectWithUser(item.name, item.email)}}>
       <Text style={styles.followButtonText}>Connect</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
