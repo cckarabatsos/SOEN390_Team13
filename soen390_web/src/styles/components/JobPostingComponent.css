@@ -1,67 +1,66 @@
 .container {
-  background: #BDBABA;
+  background: #F4F4F4;
   border: 2px solid #d7e2e9;
-  -webkit-border-radius: 0.4rem;
-  -moz-border-radius: 0.4rem;
-  border-radius: 2rem;
-  padding: 0.4rem 2rem;
-  margin-bottom: 1rem;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-bottom: 2rem;
+  
   transition: all 0.3s ease 0s;
-  margin-left: 15rem;
-  margin-right: 15rem;
   position: relative;
-}
-
-.position{
-  margin-top: 0.2rem;
-  margin-bottom: 0.3rem;
-  text-align: left;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.company {
-  text-align: left;
-  font-size: 17px;
-  font-weight: normal;
-  margin-bottom: 0.3rem;
-}
-
-.contract{
-  text-align: left;
-  font-size: 15px;
-  margin-bottom: 0.3rem;
-}
-
-.location{
-  text-align: left;
-  font-size: 15px;
-  font-weight: normal;
-  margin-bottom: 0.3rem;
-}
-
-.button-moreinfo{
-  text-transform: uppercase;
+  }
+  
+  .position {
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3E3E3E;
+  }
+  
+  .company {
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contract {
+    text-align: left;
+    font-size: 1.1rem;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+  }
+  
+  .location {
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+  }
+  
+  .button-moreinfo {
   font-size: 0.875rem;
-  font-weight: 800;
+  font-weight: bold;
   letter-spacing: 1px;
-  background-color: transparent;
+  background-color: #3C64B1;
+  color: #fff;
   padding: 0.6rem 2rem;
   border-radius: 2rem;
-
-}
-
-.button-moreinfo:hover{
-  color:  #fff;
-
-}
-
-.button-moreinfo-position{
-  right: 10px;
+  border: none;
+  cursor: pointer;
+  
+  }
+  
+  .button-moreinfo:hover {
+  background-color: #1A3365;
+  }
+  
+  .button-moreinfo-position {
+  right: 1.5rem;
+  top: 1.5rem;
   position: absolute;
-  margin-top: 4%;
-
-}
-
+  }
