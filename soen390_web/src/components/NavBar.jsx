@@ -39,7 +39,9 @@ function Navbar() {
       <AppBar position="static" style={{ background: "#BDBABA" }}>
         <CssBaseline />
         <Toolbar>
-          <img className="logo" src={navlogo} alt="LinkedOut" />
+          <Link data-testid="home-1" to="/" className="logo">
+            <img className="logo" src={navlogo} alt="LinkedOut" />
+          </Link>
           {isMobile ? (
             <DrawerComponent />
           ) : (

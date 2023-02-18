@@ -1,17 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
-import SubFooter from "../components/SubFooter";
 import JobPostingComponent from "../components/JobPostingComponent";
-import SearchBar from "../components/SearchBar";
-import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
-import { useState } from "react";
-
-
-
+import SearchBar from "../components/SearchBar";
+import SubFooter from "../components/SubFooter";
+import JobsOverview from "../models/JobsOverview.ts";
 
 export default function JobSearch() {
-  
+ 
   const [modalOpen, setModalOpen] = useState(false);
   const [jobPosterID, setjobPosterID] = useState(false);
   const [position, setPosition] = useState(false);
@@ -55,7 +51,6 @@ useEffect(() => {
         </h2>
         <SearchBar 
         setJobs={setJobs}/>
-        
         <h1>Please search for your desired job.</h1>
         {modalOpen && (
           <Modal
