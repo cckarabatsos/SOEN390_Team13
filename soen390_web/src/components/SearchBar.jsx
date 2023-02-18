@@ -1,38 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/components/SearchBar.css";
 import { useNavigate } from "react-router-dom";
-import {Grid, Button} from "@material-ui/core";
+import { Button } from "@material-ui/core";
+import { JobSearch } from "../api/JobPostingApi";
 
-function SearchBar(){
-
+function SearchBar({ setJobs }) {
   const navigate = useNavigate();
 
-return(
+  const [category, setCategory] = useState("location");
+  const [text, setText] = useState("");
 
+  const handleTextChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    setCategory(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleSearch = async () => {
+    console.log("text: " + text + " category " + category);
+
+    var jobs = await JobSearch(text);
+
+    console.log(jobs);
+    setJobs(jobs)
+  };
+
+  return (
     <div class="input-box">
       <i class="uil uil-search"></i>
       <div>
-      
-      <input type="text" placeholder="Search for jobs here..." />
-                  <Button
-                    className="button"
-                    variant="contained"
-                    
-                    /* need database to be completed for search to be able to 
-                    search a list of items... wait for that*/
-                    /* link to where clicking search goes */
-                    onClick={() => navigate("")}
-                    style={{
-                      borderRadius: 27,
-                      backgroundColor: "#a640f4b9",
-                    }}
-                  >
-                    Search
-                  </Button>
-                  
-                </div>
-    </div>
+        <input
+          type="text"
+          placeholder="Search here..."
+          value={text}
+          onChange={handleTextChange}
+        />
+        <Button
+          className="button"
+          variant="contained"
+          onClick={handleSearch}
+          style={{
+            borderRadius: 27,
+            backgroundColor: "#a640f4b9",
+          }}
+        >
+          Search
+        </Button>
 
-);
+        <select
+          category="category"
+          id="category"
+          className="buttonfilter"
+          style={{
+            borderRadius: 27,
+            backgroundColor: "#a640f4b9",
+          }}
+          value={category}
+          onChange={handleChange}
+        >
+          <option value="Location">Location</option>
+          <option value="Company">Company</option>
+          <option value="Position">Position</option>
+          <option value="Contract">Contract</option>
+        </select>
+      </div>
+    </div>
+  );
 }
 export default SearchBar;
