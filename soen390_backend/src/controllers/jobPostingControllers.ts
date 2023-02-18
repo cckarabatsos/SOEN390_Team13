@@ -56,7 +56,6 @@ export async function getFilteredJobPostings(filter: Filter) {
     let stripped_filer = filter_schema.cast(filter, {
         stripUnknown: true,
     });
-
     let [err, error_data] = validateFilterData(stripped_filer);
     if (err) {
         return [400, error_data];
