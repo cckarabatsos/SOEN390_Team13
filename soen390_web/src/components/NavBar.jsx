@@ -10,7 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import NorthIcon from "@mui/icons-material/North";
 import OutputIcon from "@mui/icons-material/Output";
 import WorkIcon from "@mui/icons-material/Work";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
@@ -19,7 +19,7 @@ import DrawerComponent from "./Drawer";
 function Navbar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [userData, setUseData] = React.useState({});
+  const [userData, setUseData] = useState({});
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
@@ -28,11 +28,31 @@ function Navbar() {
     } else {
       setUseData(false);
     }
+
+    
   }, []);
 
   const signout = () => {
     localStorage.setItem("isAuth", null);
   };
+
+  useEffect(()=>{
+
+    if(userData){
+
+    console.log("hurray")
+
+
+
+    }
+    else{
+
+      console.log("ohhhh")
+    }
+
+
+
+  },[userData])
 
   return (
     <div data-testid="navbar-1">
@@ -55,7 +75,7 @@ function Navbar() {
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
 
-              {Object.keys(userData).length!=0 &&(
+              {userData &&(
                 <Link data-testid="job-1" to="/UserConnection" className="link">
                 User Connection
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
