@@ -237,3 +237,6 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
 export function hasUser(request: Request): request is Request & { user: any } {
     return "user" in request;
 }
+export function hasFile(request: Request): request is Request & { file: any } {
+    return "file" in request;
+}

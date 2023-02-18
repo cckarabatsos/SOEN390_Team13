@@ -19,6 +19,7 @@ import {
     hasUser,
     getAccountFile,
     uploadAccountFile,
+    hasFile,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -173,9 +174,11 @@ user.post(
         let userID = req.params.userID;
         let type: string = req.query.type as string;
         try {
-            let status,
-                data = await uploadAccountFile(userID, type);
-            res.json({ data });
+            let status, data: any;
+            if (hasFile(req)) {
+                data = await uploadAccountFile(userID, type, req.file);
+            }
+            status = data[0];
             if (status == 200) {
                 res.sendStatus(200);
             } else if (status == 404) {
