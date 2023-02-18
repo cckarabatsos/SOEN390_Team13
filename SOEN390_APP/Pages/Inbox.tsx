@@ -18,7 +18,7 @@ import JobRequestRow from '../Components/SwipeList.Component/SwipeListJobRequest
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LogBox } from 'react-native';
-
+import { UserRequest } from '../api/UserRequestAPI';
 
 
 const ExpandableComponent = ({item, onClickFunction}:any) => {
@@ -94,6 +94,7 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
 };
 
 const Inbox = ({route}:{route:any}) => {
+  const [data, setData] = useState([]);
 
   let name = route.params.username
   let password = route.params.password
@@ -104,15 +105,39 @@ const Inbox = ({route}:{route:any}) => {
   let userID = 1234
   let text = "Work here now! A robot is a machine—especially one programmable by a computer—capable of carrying out a complex series of actions automatically.[2] A robot can be guided by an external control device, or the control may be embedded within. Robots may be constructed to evoke human form, but most robots are task-performing machines, designed with an emphasis on stark functionality, rather than expressive aesthetics. Robots can be autonomous or semi-autonomous and range from humanoids such as Honda's Advanced Step in Innovative Mobility (ASIMO) and TOSY's TOSY Ping Pong Playing Robot (TOPIO) to industrial robots, medical operating robots, patient assist robots, dog therapy robots, collectively programmed swarm robots, UAV drones such as General Atomics MQ-1 Predator, and even microscopic nano robots. By mimicking a lifelike appearance or automating movements, a robot may convey a sense of intelligence or thought of its own. Autonomous things are expected to proliferate in the future, with home robotics and the autonomous car as some of the main drivers.[3]"
 
+  const handleGetUser = async () => {
+  const user = await UserRequest(email)
+  const newObjectsArray = user.map(buildObject);
+  setData(newObjectsArray);
+
+  // Update the subcategory in CONTENT with the fetched data
+  const updatedContent = [...CONTENT];
+  updatedContent[0].subcategory = newObjectsArray;
+  setListDataSource(updatedContent);
+}
+
+useEffect(() => {
+  handleGetUser();
+}, []);
+
+const buildObject = (jsonObject:any) => {
+  const { name, email, userID, currentCompany } = jsonObject;
+  const obj = {
+    key: 1,
+    text: name,
+    image: jsonObject.picture,
+    userID: userID,
+    job: email,
+    loc: currentCompany
+  }
+  return obj;
+}
+
   const CONTENT = [
     {
         isExpanded: true,
         category_name: 'Friend Requests',
-        subcategory: [
-          {key: 1, text: "Jonny", image: image, userID: userID, job: "Software Engineer", loc: "Montreal"},
-          {key: 2, text: "Mike", image: image, userID: userID, job: "Civil Engineer", loc: "Laval"},
-          {key: 3, text: "Henry", image: image, userID: userID, job: "Civil Engineer", loc: "Laval"},
-        ],
+        subcategory: []
       },
     {
       isExpanded: false,
@@ -125,7 +150,7 @@ const Inbox = ({route}:{route:any}) => {
       ],
     },
   ];
-
+  
   const [listDataSource, setListDataSource] = useState(CONTENT);
 
   if (Platform.OS === 'android') {
