@@ -7,6 +7,8 @@ import {
   getUserWithEmail,
   registerUser,
   comparePasswords,
+  getAccountFile,
+  uploadAccountFile
 } from "../../src/controllers/userControllers";
 
 const expect = chai.expect;
@@ -40,6 +42,9 @@ let testUserFrontend: any = {
   currentPosition: "",
   currentCompany: "",
   isRecruiter: false,
+};
+const file = {
+
 };
 
 describe("User Controllers", function () {
@@ -92,6 +97,38 @@ describe("User Controllers", function () {
     it("return false when password are different", async function () {
       let match: any = await comparePasswords("123", "1234");
       expect(match).to.equal(false);
+    });
+  });
+  describe("# accountFile", function () {
+    it("return a 200 response code retrieving resume", async function () {
+      let data: any = await getAccountFile(id, "resume");
+      expect(data[0]).to.equal(200);
+    });
+    it("return a 200 response code retrieving cover letter", async function () {
+      let data: any = await getAccountFile(id, "coverLetter");
+      expect(data[0]).to.equal(200);
+    });
+    it("return a 200 response code retrieving profile picture", async function () {
+      let data: any = await getAccountFile(id, "picture");
+      expect(data[0]).to.equal(200);
+    });
+    it("return a 404 response code retrieving account file with wrong type", async function () {
+      let data: any = await getAccountFile(id, "badType");
+      expect(data[0]).to.equal(404);
+    });
+    it("return a 404 response code retrieving account file with wrong user ID", async function () {
+      let data: any = await getAccountFile("5", "resume");
+      expect(data[0]).to.equal(404);
+    });
+  });
+  describe("# uploadAccountFile", function () {
+    it("return a 404 response code uploading absent file", async function () {
+      let data: any = await uploadAccountFile(id, "resume", null);
+      expect(data[0]).to.equal(404);
+    });
+    it("return a 404 response code uploading absent file", async function () {
+      let data: any = await uploadAccountFile(id, "resume", file);
+      expect(data[0]).to.equal(404);
     });
   });
 });
