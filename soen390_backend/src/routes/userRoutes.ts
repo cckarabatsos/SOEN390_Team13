@@ -172,10 +172,14 @@ user.post(
     upload.single("file"),
     async (req: Request, res: Response) => {
         let userID = req.params.userID;
+        console.log(userID);
         let type: string = req.query.type as string;
+        console.log(type);
         try {
             let status, data: any;
+            console.log(req);
             if (hasFile(req)) {
+                console.log(req.file);
                 data = await uploadAccountFile(userID, type, req.file);
             }
             status = data[0];
