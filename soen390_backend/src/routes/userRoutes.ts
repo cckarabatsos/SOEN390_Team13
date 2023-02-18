@@ -170,27 +170,28 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
   }
 });
 user.post(
-  "/uploadAccountFile/:userID",
-  upload.single("file"),
-  async (req: Request, res: Response) => {
-    let userID = req.params.userID;
-    let type: string = req.query.type as string;
-    try {
-      let status, data: any;
-      if (hasFile(req)) {
-        data = await uploadAccountFile(userID, type, req.file);
-      }
-      status = data[0];
-      if (status == 200) {
-        res.sendStatus(200);
-      } else if (status == 404) {
-        res.sendStatus(404);
-      }
-    } catch (err: any) {
-      res.status(400);
-      res.json({ errType: err.Name, errMsg: err.message });
+    "/uploadAccountFile/:userID",
+    upload.single("file"),
+    async (req: Request, res: Response) => {
+        let userID = req.params.userID;
+        let type: string = req.query.type as string;
+        try {
+            let status, data: any;
+            if (hasFile(req)) {
+                data = await uploadAccountFile(userID, type, req.file);
+            }
+            console.log(data);
+            status = data[0];
+            if (status == 200) {
+                res.sendStatus(200);
+            } else if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.Name, errMsg: err.message });
+        }
     }
-  }
 );
 
 user.post("/edit/:email", async (req: Request, res: Response) => {
