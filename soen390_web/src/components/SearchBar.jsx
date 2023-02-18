@@ -29,8 +29,8 @@ function SearchBar({ setJobs }) {
   };
 
   return (
-    <div class="input-box">
-      <i class="uil uil-search"></i>
+    <div className="input-box">
+      <i className="uil uil-search"></i>
       <div>
         <input
           type="text"
