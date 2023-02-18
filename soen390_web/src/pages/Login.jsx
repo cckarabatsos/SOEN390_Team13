@@ -17,6 +17,7 @@ function MainTitle(props) {
 
   const signInUser = async () => {
     const success = await SignInUser(emailInput, passwordInput);
+    console.log(success);
     setIsAuth(success.data);
     success.status === 200
       ? navigate("/UserProfile")
@@ -106,7 +107,7 @@ function MainTitle(props) {
                   <GoogleLogin />
                 </Grid>
                 <Grid item xs={12}>
-                  Don't have an account? Sign up <Link to="/UserConnection">here!</Link>
+                  Don't have an account? Sign up <Link to="/Signup">here!</Link>
                 </Grid>
               </Grid>
             </div>

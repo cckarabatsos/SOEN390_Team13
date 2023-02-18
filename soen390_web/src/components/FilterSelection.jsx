@@ -37,9 +37,9 @@ const FilterSelection = (props) => {
                 label="By Name"
               />
               <FormControlLabel
-                value="org"
+                value="email"
                 control={<Radio />}
-                label="By Organization"
+                label="By Email"
               />
             </RadioGroup>
           </FormControl>
