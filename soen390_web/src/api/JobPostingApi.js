@@ -8,7 +8,7 @@ export async function JobSearch(text, category){
         const response = await axios
           .get(api.BACKEND_API + "/jobposting/filter", {
             params: {
-              category: category
+              category: text
             },
           })
           .then((res) => {
