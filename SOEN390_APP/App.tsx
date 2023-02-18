@@ -132,10 +132,8 @@ export default function App() {
         <Stack.Screen name="Home"  component={BottomNav} options={({ route }) => ({
             headerLargeTitle: true,
             title: route.params.username,
-            
-
-            
-          })}/>       
+})}/>      
+ 
       </Stack.Navigator>
       </AlertNotificationRoot>
     </NavigationContainer>

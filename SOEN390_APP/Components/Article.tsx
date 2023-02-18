@@ -11,7 +11,7 @@ const Article = (props:any) => {
     }
 
     const handleConnect = () =>{
-        
+       
     }
 
     return(
@@ -36,7 +36,7 @@ const Article = (props:any) => {
             </Text>
 
             <View style={styles.data}>
-                <Text style={styles.heading}>Company: <Text style={styles.author}>{props.author}</Text></Text>
+                <Text style={styles.heading}>Author: <Text style={styles.author}>{props.author}</Text></Text>
                 <Text style={styles.date}>{moment(props.publishedAt).format("MMM Do YY") }</Text>
             </View>
 
@@ -44,11 +44,6 @@ const Article = (props:any) => {
             </View>
                 
         </Pressable>
-        <View style={{padding: 20,  alignItems: "center",}}>
-        <TouchableOpacity onPress={handleConnect} style={styles.button}>
-            <Text style={styles.buttonText}>Connect</Text>
-          </TouchableOpacity>
-        </View>
         </View>
     )
 }
