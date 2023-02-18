@@ -20,23 +20,23 @@ function Modal({ setOpenModal,viewDesc, viewPosition, viewLocation, viewSalary, 
           <h1>{viewPosition}</h1>
         </div>
         <div className="body">
+        <h3>{viewCompany}</h3>
             <h3>{viewLocation}</h3>
-            <h3>{viewCompany}</h3>
             <h3>{viewContract}</h3>
             <h3>{viewSalary}</h3>
-          <h3>{viewDesc}</h3>
-          <h4>{viewEmail}</h4><br></br><br></br><br></br><br></br>
+          <p>{viewDesc}</p>
+          <h4>{viewEmail}</h4>
         </div>
-        <div className="footer">
+        <div>
           <button
             onClick={() => {
               setOpenModal(false);
             }}
-            id="cancelBtn"
-          >
+            id="cancelBtn">
             Cancel
           </button>
-          <button>Apply</button>
+          <button id="applyBtn">Apply</button>
+        
         </div>
       </div>
     </div>
