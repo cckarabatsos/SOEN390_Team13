@@ -75,13 +75,13 @@ const PeopleScreen = ({route}:{route:any}) => {
     if(await responce)
     Toast.show({
         type: ALERT_TYPE.SUCCESS,
-        title: "CONNECTED",
-        textBody: "Followed "+ user_name,
+        title: "REQUEST SENT",
+        textBody: "Connection request to: "+ user_name,
       });
       else 
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: "ALREADY CONNECTED",
+        title: "REQUEST PENDING",
       });
     }
 

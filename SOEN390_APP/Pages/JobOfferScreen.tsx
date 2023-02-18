@@ -8,6 +8,7 @@ import {
     Toast,
   } from "react-native-alert-notification";
   import Ionicons from "react-native-vector-icons/Ionicons";
+  import { JobSearch } from '../api/JobPostingAPI';
 
   interface JobOffer {
     key: number;
@@ -24,85 +25,57 @@ import {
     title: string;
   }
   
-  const mockJobOffers: JobOffer[] = [
-    {
-      key: 1,
-      text: "Amazon Inc",
-      title: 'CEO Position at Amazon.co',
-      image: 'https://picsum.photos/id/2/200/200',
-      userID: 'amazon_ceo',
-      message: 'We are seeking a highly skilled and experienced CEO to lead our company. The ideal candidate will have a proven track record of success in a leadership role, as well as excellent communication, organizational, and problem-solving skills. The CEO will be responsible for managing all aspects of the company, including operations, sales, and finance.',
-      loc: 'MTL',
-      email: 'ceo@amazon.co',
-      contract: '4 years',
-      category: 'Big Boss',
-      position: 'CEO',
-      salary: '$200k/yr',
-    },
-    {
-      key: 2,
-      text: "Apple Inc",
-      title: 'Marketing Specialist at Apple',
-      image: 'https://picsum.photos/id/66/200/200',
-      userID: 'apple_marketing',
-      message: 'We are looking for a talented and experienced Marketing Specialist to join our team. The ideal candidate will have a strong background in marketing and a proven track record of success in developing and executing marketing strategies. The Marketing Specialist will be responsible for creating and executing campaigns across multiple channels, as well as analyzing and reporting on the effectiveness of those campaigns.',
-      loc: 'SF',
-      email: 'marketing@apple.com',
-      contract: '3 years',
-      category: 'Marketing',
-      position: 'Marketing Specialist',
-      salary: '$120k/yr',
-    },
-    {
-      key: 3,
-      text: "Google Inc",
-      title: 'Senior Software Engineer at Google',
-      image: 'https://picsum.photos/id/34/200/200',
-      userID: 'google_engineer',
-      message: 'We are looking for an experienced Senior Software Engineer to join our team. The ideal candidate will have a strong background in software development and a proven track record of success in building complex applications. The Senior Software Engineer will be responsible for leading the development of new features and functionality, as well as maintaining and improving existing code.',
-      loc: 'NYC',
-      email: 'engineer@google.com',
-      contract: '2 years',
-      category: 'Software Development',
-      position: 'Senior Software Engineer',
-      salary: '$150k/yr',
-    },
-    {
-      key: 4,
-      text: "Apple",
-      image: 'https://picsum.photos/id/4/200/200',
-      userID: 'apple_123',
-      message: 'We are hiring a Mobile App Developer.',
-      loc: "CUP",
-      email: "LinkedOutInc@gmail.com",
-      contract: "3 years",
-      category: "Engineering",
-      position: "Mobile App Developer",
-      salary: "120k/yr",
-      title: "Civil Engineer estimation"
-    },
-    {
-      key: 5,
-      text: "Netflix",
-      image: 'https://picsum.photos/id/5/200/200',
-      userID: 'netflix_123',
-      message: 'We are hiring a Content Strategist.',
-      loc: "LA",
-      email: "LinkedOutInc@gmail.com",
-      contract: "2 years",
-      category: "Marketing",
-      position: "Content Strategist",
-      salary: "80k/yr",
-      title: "General Manager"
-    }
-  ];
+  
   const JobOfferScreen = ({route}:{route:any}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-    const [jobOffers, setJobOffers] = useState(mockJobOffers);
+    const [jobOffers, setJobOffers] = useState<JobOffer[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [job, setJob] = useState({});
+    const [data, setData] = useState([]);
+    const [allUsers, setAllUsers] = useState<JobOffer[]>([]);
+
+
+    let empty = ""
+
+    const handleGetUser = async () => {
+      const user = await JobSearch(empty)
+      const newObjectsArray = user.map(buildObject);
+      setData(newObjectsArray);
+    
+      // Update the subcategory in CONTENT with the fetched data
+      const updatedContent = [...allUsers, ...newObjectsArray];
+      setAllUsers(updatedContent);
+    }
+    
+    useEffect(() => {
+      handleGetUser();
+      handleSearch();
+    }, []);
+  
+    const { v4: uuidv4 } = require('uuid');
+  
+    const buildObject = (jsonObject:any) => {
+      const { category, company, contract, description, email, jobPosterID, location, position, PostingID, salary } = jsonObject;
+      const obj = {
+        key: uuidv4(),
+        text: company,
+        image: 'https://picsum.photos/id/5/200/200',
+        userID: jobPosterID,
+        message: description,
+        loc: location,
+        email: email,
+        contract: contract,
+        category: category,
+        position: position,
+        salary: salary,
+        title: category
+      }
+      return obj;
+    }
+
+
 
   const sendJobOffer = (event: any) => {
     setModalVisible(false);
@@ -121,10 +94,10 @@ import {
 
   useEffect(() => {
     handleSearch();
-  }, [searchTerm]);
+  }, [searchTerm, allUsers]);
 
   const handleSearch = () => {
-    const filteredUsers = mockJobOffers.filter(user => {
+    const filteredUsers = allUsers.filter(user => {
       const name = user.text.toLowerCase();
       const occupation = user.category.toLowerCase();
       const location = user.loc.toLowerCase();
@@ -199,7 +172,7 @@ return(
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{item.title}</Text>
           <Text style={styles.userOccupation}>{item.text}</Text>
-          <Text style={styles.userLocation}>{item.category}</Text>
+          <Text style={styles.userLocation}>{item.position}</Text>
           <Text style={styles.userCompany}>{item.salary}</Text>
         </View>
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
