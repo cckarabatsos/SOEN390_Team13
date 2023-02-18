@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 const User = require("./firebaseconfig");
 const app: Application = express();
-const port: number = 7001; //Port for the backend
+const port: number = 7000; //Port for the backend
 
 app.use(express.json());
 app.use(cookieParser());
