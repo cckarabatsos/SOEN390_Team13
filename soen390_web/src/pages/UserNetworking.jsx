@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import React, { useRef, useState } from "react";
 import { searchInfo } from "../api/userNetworkingApi";
 import FilterSelection from "../components/FilterSelection";
-import SearchBar from "../components/SearchBar";
+
 import SearchResultPagination from "../components/SearchResultPagination";
 
 const UserNetworking = () => {
@@ -68,7 +68,7 @@ const UserNetworking = () => {
       <Box sx={{ flexGrow: 2 }}>
         <Grid container spacing={4}>
           <Grid item xs={6} md={12}>
-            <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
+           
           </Grid>
 
           <Grid item xs={6} md={2} style={{ marginLeft: "1%" }}>
