@@ -27,6 +27,7 @@ function MainTitle(props) {
   const setIsAuth = (data) => {
     console.log(data);
     localStorage.setItem("isAuth", JSON.stringify(data));
+    window.dispatchEvent(new Event("storage"));
   };
 
   return (
