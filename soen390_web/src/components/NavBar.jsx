@@ -54,6 +54,16 @@ function Navbar() {
                 Networking
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
+
+              {Object.keys(userData).length!=0 &&(
+                <Link data-testid="job-1" to="/UserConnection" className="link">
+                User Connection
+                <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
+              </Link>
+              )
+              
+              }
+              
               {!userData ? (
                 <>
                   <Link
