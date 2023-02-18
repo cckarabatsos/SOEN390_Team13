@@ -21,8 +21,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
-  console.log("THIS");
-  console.log(data);
   const { key, text, input } = data;
   const [name, setName] = useState(text);
   const [newName, setNewName] = useState("");

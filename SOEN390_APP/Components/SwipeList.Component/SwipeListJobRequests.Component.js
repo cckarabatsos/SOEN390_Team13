@@ -27,8 +27,6 @@ import { ScrollView } from "react-native-gesture-handler";
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
-  console.log("HELOOOOOOOOOOOOOOOOOOOOOOOOOO");
-  console.log(data);
   const {
     key,
     text,
