@@ -102,11 +102,14 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
             };
             let folder: string;
             console.log(type);
-            if (type[0].toUpperCase() == "RESUME") {
+            if (type[0]){
+                type = type[0];
+            }
+            if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
-            } else if (type[0].toUpperCase() == "COVERLETTER") {
+            } else if (type.toUpperCase() == "COVERLETTER") {
                 folder = "Cover Letters/";
-            } else if (type[0].toUpperCase() == "PICTURE") {
+            } else if (type.toUpperCase() == "PICTURE") {
                 folder = "Profile Pictures/";
             } else {
                 return null;
@@ -116,9 +119,9 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                 .put(buffer, metadata);
             const downloadURL = await uploadTask.ref.getDownloadURL();
             if (downloadURL) {
-                if (type[0].toUpperCase() == "RESUME") {
+                if (type.toUpperCase() == "RESUME") {
                     casted_user.resume = downloadURL;
-                } else if (type[0].toUpperCase() == "COVERLETTER") {
+                } else if (type.toUpperCase() == "COVERLETTER") {
                     casted_user.coverLetter = downloadURL;
                 } else {
                     casted_user.picture = downloadURL;
