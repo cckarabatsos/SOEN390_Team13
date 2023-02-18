@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
 
-function SearchBar({ setJobs }) {
+function JobSearchBar({ setJobs }) {
   const navigate = useNavigate();
 
   const [category, setCategory] = useState("location");
@@ -70,4 +70,4 @@ function SearchBar({ setJobs }) {
     </div>
   );
 }
-export default SearchBar;
+export default JobSearchBar;
