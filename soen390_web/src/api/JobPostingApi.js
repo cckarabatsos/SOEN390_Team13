@@ -6,7 +6,7 @@ import { auth, provider } from "../firebaseConfig";
 export async function JobSearch(text, category){
     try {
         const response = await axios
-          .get(api.BACKEND_API + "/user/api/login", {
+          .get(api.BACKEND_API + "/jobposting/filter", {
             params: {
               category: category
             },
