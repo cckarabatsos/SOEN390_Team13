@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, Image, Modal, ScrollView } from 'react-native';
 import {Picker} from '@react-native-picker/picker'
+import { GetUsersAPI } from '../api/GetUsersAPI';
+import { UserConnectAPI } from '../api/UserConnectAPI';
 import {
     ALERT_TYPE,
     Dialog,
@@ -16,67 +18,61 @@ interface User {
   location: string;
   company: string;
   image: string;
+  email: string
 }
 
-
-
-const mockUsers: User[] = [
-  {
-    id: 1,
-    name: 'John Doe',
-    occupation: 'Software Engineer',
-    location: 'New York, NY',
-    company: 'Google',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    occupation: 'Graphic Designer',
-    location: 'Los Angeles, CA',
-    company: 'Facebook',
-    image: 'https://randomuser.me/api/portraits/women/1.jpg'
-  },
-  {
-    id: 3,
-    name: 'Bob Johnson',
-    occupation: 'Project Manager',
-    location: 'Chicago, IL',
-    company: 'Amazon',
-    image: 'https://randomuser.me/api/portraits/men/2.jpg'
-  },
-  {
-    id: 4,
-    name: 'Bob Johnson',
-    occupation: 'Project Manager',
-    location: 'Chicago, IL',
-    company: 'Amazon',
-    image: 'https://randomuser.me/api/portraits/men/5.jpg'
-  },
-  {
-    id: 5,
-    name: 'Bob Johnson',
-    occupation: 'Project Manager',
-    location: 'Chicago, IL',
-    company: 'Amazon',
-    image: 'https://randomuser.me/api/portraits/men/6.jpg'
-  }
-];
 
 const PeopleScreen = ({route}:{route:any}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOccupation, setSelectedOccupation] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [user, setUser] = useState({});
+  const [data, setData] = useState([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
 
-  const connectWithUser = (event: any) => {
+  let empty = {}
+
+  const handleGetUser = async () => {
+    const user = await GetUsersAPI(empty)
+    const newObjectsArray = user.map(buildObject);
+    setData(newObjectsArray);
+  
+    // Update the subcategory in CONTENT with the fetched data
+    const updatedContent = [...allUsers, ...newObjectsArray];
+    setAllUsers(updatedContent);
+  }
+  
+  useEffect(() => {
+    handleGetUser();
+    handleSearch();
+  }, []);
+
+  const buildObject = (jsonObject:any) => {
+    const { name, currentPosition, currentCompany, email } = jsonObject;
+    const obj = {
+      id: 1,
+      name: name,
+      occupation: currentPosition,
+      location: "New York",
+      company: currentCompany,
+      image: 'https://randomuser.me/api/portraits/men/1.jpg',
+      email: email
+      //image: jsonObject.picture
+    }
+    return obj;
+  }
+
+  const connectWithUser = async (user_name: String, user_email: String) => {
     setModalVisible(false);
+    //let responce = UserConnectAPI(user_email, )
+    //console.log(responce)
+
     Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: "CONNECTED",
-        textBody: "Followed "+ event,
+        textBody: "Followed "+ user_name,
       });
     }
 
@@ -88,10 +84,10 @@ const PeopleScreen = ({route}:{route:any}) => {
 
   useEffect(() => {
     handleSearch();
-  }, [searchTerm]);
+  }, [searchTerm, allUsers]);
 
   const handleSearch = () => {
-    const filteredUsers = mockUsers.filter(user => {
+    const filteredUsers = allUsers.filter(user => {
       const name = user.name.toLowerCase();
       const occupation = user.occupation.toLowerCase();
       const location = user.location.toLowerCase();
@@ -127,7 +123,7 @@ return(
               <Text style={styles.modalBodyMessage}>{user.location}</Text>
             </View>
             <View style={styles.modalBody}>
-              <Text style={styles.modalBodyText}>Email: {"Email"}</Text>
+              <Text style={styles.modalBodyText}>Email: {user.email}</Text>
             </View>
             <ScrollView style={styles.scrollview}>
               <Text style={styles.modalBodyText}>Bio: </Text>
@@ -145,7 +141,7 @@ return(
             <View style={styles.modalFooterButton}>
               <TouchableOpacity
                 style={styles.buttonModal}
-                onPress={() => connectWithUser(user.name)}
+                onPress={() => connectWithUser(user.name, user.email)}
               >
                 <Text style={styles.backTextWhite}>Connect</Text>
               </TouchableOpacity>
