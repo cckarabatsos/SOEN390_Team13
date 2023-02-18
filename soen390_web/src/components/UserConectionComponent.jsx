@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
 import "../styles/components/userconnection.css";
-
+import Person from "../assets/UserConnectionImages/image (1).jpg"
 import { Button } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 function handleDecline() {
@@ -33,7 +33,7 @@ export default function UserConnectionComponent(props) {
     <div className="friend-request">
       <div className="friend-request-header">
         <img
-          src="profile-pic.jpg"
+          src={Person}
           alt="Profile Picture"
           class="friend-request-avatar"
         ></img>
