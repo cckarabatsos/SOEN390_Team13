@@ -2,11 +2,13 @@
 import { error } from "console";
 import firebase from "firebase";
 //import { string } from "yup";
-import { User, UserFilter } from "../models/User";
+import "firebase/storage";
+import { User, user_schema, UserFilter } from "../models/User";
 // import { database } from "firebase-admin";
 
 const db = firebase.firestore();
-
+const ref = firebase.storage().ref();
+import { Buffer } from "buffer";
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -66,6 +68,7 @@ export const storeUser = async (user: User) => {
     }
     return document.id;
 };
+
 export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
@@ -84,6 +87,71 @@ export const deleteUserWithId = async (userID: string) => {
         throw error;
     }
     return data;
+};
+export const storeAccountFile = async (userID: string, type: string, file: any) => {
+    try {
+        var user: any = await findUserWithID(userID);
+        if (user) {
+            let casted_user = await user_schema.cast(user);
+            const buffer = Buffer.from(file.buffer);
+            const metadata = {
+                contentType: file.mimetype,
+            };
+            let folder: string;
+            if (type.toUpperCase() == "RESUME") {
+                folder = "Resumes/";
+            } else if (type.toUpperCase() == "COVERLETTER") {
+                folder = "Cover Letters/";
+            } else if (type.toUpperCase() == "PICTURE") {
+                folder = "Profile Pictures/";
+            } else {
+                return null;
+            }
+            const uploadTask = await ref
+                .child(folder + userID + " - " + file.originalname)
+                .put(buffer, metadata);
+            const downloadURL = await uploadTask.ref.getDownloadURL();
+            if (downloadURL) {
+                if (type.toUpperCase() == "RESUME") {
+                    casted_user.resume = downloadURL;
+                } else if (type.toUpperCase() == "COVERLETTER") {
+                    casted_user.coverLetter = downloadURL;
+                } else {
+                    casted_user.picture = downloadURL;
+                }
+                updateUser(casted_user, userID);
+                return downloadURL;
+            }
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
+};
+
+export const findAccountFile = async (userID: string, type: string) => {
+    try {
+        var user: any = await findUserWithID(userID);
+        if (user) {
+            let casted_user = await user_schema.cast(user);
+            if (type.toUpperCase() === "RESUME") {
+                console.log(casted_user.resume);
+                return casted_user.resume;
+            } else if (type.toUpperCase() === "COVERLETTER") {
+                console.log(casted_user.coverLetter);
+                return casted_user.coverLetter;
+            } else if (type.toUpperCase() === "PICTURE") {
+                console.log(casted_user.picture);
+                return casted_user.picture;
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
 };
 
 function processData(snapshot: any) {
@@ -341,29 +409,29 @@ export function updateUser(newProfile: User, id: string) {
 }
 
 export async function getFilteredUsers(filter: UserFilter) {
-  let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-    db.collection("users");
+    let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+        db.collection("users");
 
-  if (filter.name) {
-    userRef = userRef.where("name", "==", filter.name);
-  }
+    if (filter.name) {
+        userRef = userRef.where("name", "==", filter.name);
+    }
 
-  if(filter.email){
-    userRef = userRef.where("email", "==", filter.email);
+    if (filter.email) {
+        userRef = userRef.where("email", "==", filter.email);
 
-  }
-  if (filter.limit) {
-    userRef = userRef.limit(filter.limit);
-  }
-  if (filter.skip) {
-    userRef = userRef.startAfter(filter.skip);
-  }
+    }
+    if (filter.limit) {
+        userRef = userRef.limit(filter.limit);
+    }
+    if (filter.skip) {
+        userRef = userRef.startAfter(filter.skip);
+    }
 
-  const snapshot = await userRef.get();
+    const snapshot = await userRef.get();
 
-  const users = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  return users;
+    const users = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+    return users;
 }

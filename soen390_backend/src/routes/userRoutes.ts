@@ -1,25 +1,34 @@
 import express, { Request, Response } from "express";
 import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
-
+export interface IGetUserAuthInfoRequest extends Request {
+    user: string; // or any other type
+}
 import {
-  getUserWithID,
-  getUserWithEmail,
-  registerUser,
-  deleteUser,
-  comparePasswords,
-  sendInvite,
-  manageInvite,
-  editAccount,
-  getInvitationsOrContacts,
-  getFilteredUsersController,
+    getUserWithID,
+    getUserWithEmail,
+    registerUser,
+    deleteUser,
+    sendInvite,
+    manageInvite,
+    editAccount,
+    getInvitationsOrContacts,
+    getFilteredUsersController,
+    generateAccessToken,
+    verifyJWT,
+    hasUser,
+    getAccountFile,
+    uploadAccountFile,
+    hasFile,
 } from "../controllers/userControllers";
-
+import dotenv from "dotenv";
 import { User } from "../models/User";
-
+import { compare } from "bcrypt";
+const multer = require("multer");
+var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
 user.use(express.json());
-
+dotenv.config();
 //Get complete user by their id
 user.get("/id/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
@@ -54,9 +63,10 @@ user.get("/api/login", async (req: Request, res: Response) => {
             return;
         } else {
             const { password, ...user } = await userArr[1].data;
-            let match = await comparePasswords(pwd, password);
+            let match = await compare(pwd, password);
+            const token = generateAccessToken(user);
             if (match) {
-                res.cookie("FrontendUser", {
+                res.cookie("FrontendUser", token, {
                     maxAge: 28800000,
                     path: "/",
                     httpOnly: true,
@@ -76,6 +86,36 @@ user.get("/api/login", async (req: Request, res: Response) => {
     }
     return user;
 });
+user.post("/api/session", [verifyJWT], async (req: Request, res: Response) => {
+    try {
+        if (hasUser(req)) {
+            console.log(req.user);
+            return res.status(200).json(req.user);
+        } else {
+            throw { msg: "no user" };
+        }
+    } catch (err: any) {
+        return res.status(400).json({ errType: err.name, errMsg: err.message });
+    }
+});
+user.get("/accountFile/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let status,
+            data = await getAccountFile(userID, type);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+
 user.post("/api/register", async (req: Request, res: Response) => {
     try {
         const registeredUser: User = await registerUser(req.body);
@@ -95,13 +135,16 @@ user.post("/api/register", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-user.post("/api/logout", async (_: Request, res: Response) => {
+user.post("/api/logout", async (req: Request, res: Response) => {
+    console.log("We are in ");
+    console.log(await req.cookies.FrontendUser);
     try {
         res.cookie("FrontendUser", "", {
             expires: new Date(Date.now()),
             path: "/",
             httpOnly: true,
         });
+        console.log(req.cookies.FrontendUser);
         return res.status(200).json(true);
     } catch (err: any) {
         return res.status(400).json({ errType: err.Name, errMsg: err.message });
@@ -124,6 +167,30 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+user.post(
+    "/uploadAccountFile/:userID",
+    upload.single("file"),
+    async (req: Request, res: Response) => {
+        let userID = req.params.userID;
+        let type: string = req.query.type as string;
+        try {
+            let status, data: any;
+            if (hasFile(req)) {
+                data = await uploadAccountFile(userID, type, req.file);
+            }
+            status = data[0];
+            if (status == 200) {
+                res.sendStatus(200);
+            } else if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.Name, errMsg: err.message });
+        }
+    }
+);
+
 user.post("/edit/:email", async (req: Request, res: Response) => {
     try {
         let email: string = req.params.email;
@@ -225,6 +292,7 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
 
 //****************Start Job Posting route ********************//
 user.post("/api/posting/:email", async (req: Request, res: Response) => {
+    console.log("I AM IN");
     let email: string = req.params.email;
     let location: string = req.body.location;
     let position: string = req.body.position;
@@ -235,6 +303,7 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     let category: string = req.body.category;
     console.log(email);
     const userArr: User = await getUserWithEmail(email).then();
+    console.log(userArr);
     const status = userArr[0];
     if (status == 404) {
         res.status(404).json({ errMsg: "That user doesnt exists" });
@@ -275,26 +344,26 @@ module.exports = user;
 //****************End User invitation route section ***********88
 
 user.get("/api/search", async (req: Request, res: Response) => {
-  var filter: any = {};
+    var filter: any = {};
 
-  for (const [key, value] of Object.entries(req.query)) {
-    filter[key] = value;
-  }
+    for (const [key, value] of Object.entries(req.query)) {
+        filter[key] = value;
+    }
 
-  console.log(req.query);
-  try {
-    let status,
-      data = await getFilteredUsersController(filter);
-    res.json(data);
-    res.status(200);
-    if (status == 200) {
-      res.sendStatus(200);
+    console.log(req.query);
+    try {
+        let status,
+            data = await getFilteredUsersController(filter);
+        res.json(data);
+        res.status(200);
+        if (status == 200) {
+            res.sendStatus(200);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
     }
-    if (status == 404) {
-      res.sendStatus(404);
-    }
-  } catch (err: any) {
-    res.status(400);
-    res.json({ errType: err.name, errMsg: err.message });
-  }
 });
