@@ -17,10 +17,14 @@ import {
     generateAccessToken,
     verifyJWT,
     hasUser,
+    getAccountFile,
+    uploadAccountFile,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
 import { compare } from "bcrypt";
+const multer = require("multer");
+var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
 user.use(express.json());
 dotenv.config();
@@ -93,6 +97,23 @@ user.post("/api/session", [verifyJWT], async (req: Request, res: Response) => {
         return res.status(400).json({ errType: err.name, errMsg: err.message });
     }
 });
+user.get("/accountFile/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let status,
+            data = await getAccountFile(userID, type);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
 
 user.post("/api/register", async (req: Request, res: Response) => {
     try {
@@ -145,6 +166,28 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+user.post(
+    "/uploadAccountFile/:userID",
+    upload.single("file"),
+    async (req: Request, res: Response) => {
+        let userID = req.params.userID;
+        let type: string = req.query.type as string;
+        try {
+            let status,
+                data = await uploadAccountFile(userID, type);
+            res.json({ data });
+            if (status == 200) {
+                res.sendStatus(200);
+            } else if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.Name, errMsg: err.message });
+        }
+    }
+);
+
 user.post("/edit/:email", async (req: Request, res: Response) => {
     try {
         let email: string = req.params.email;
