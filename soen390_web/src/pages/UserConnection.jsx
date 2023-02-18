@@ -20,8 +20,6 @@ const UserConnection = () => {
   const [currentEmail, setCurrentEmail] = useState("");
 
   const getInvitations = async (email) => {
-    console.log("text: ");
-
     var responce = await GetPendingInvitations(email);
     console.log(responce);
     setUsers(responce);
@@ -39,8 +37,6 @@ const UserConnection = () => {
   }, []);
 
   const handleAccept = async (curr, senderEmail) => {
-    console.log("sender : " + senderEmail + " receiver " + curr);
-
     var success = await AcceptInvitations(senderEmail, curr);
 
     if (success) {
@@ -51,7 +47,6 @@ const UserConnection = () => {
   };
 
   const handleDecline = async (curr, senderEmail) => {
-    console.log("sender : " + senderEmail + " receiver " + curr);
     var success = await DeclineInvitations(senderEmail, curr);
 
     if (success) {
