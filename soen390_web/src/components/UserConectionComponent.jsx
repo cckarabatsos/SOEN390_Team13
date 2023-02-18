@@ -26,9 +26,12 @@ export default function UserConnectionComponent(props) {
   const currentEmail = props.currentEmail;
   const senderEmail = props.senderEmail;
 
-  const handleAccept = () => {
-    console.log("sender : " + senderEmail + " receiver " + currentEmail);
-  };
+  const accept = props.accept
+  const decline = props.decline
+
+  // const handleAccept = () => {
+  //   console.log("sender : " + senderEmail + " receiver " + currentEmail);
+  // };
 
   return (
     <div className="friend-request">
@@ -48,7 +51,7 @@ export default function UserConnectionComponent(props) {
             backgroundColor: "#21b6ae",
           }}
           color="success"
-          onClick={handleAccept}
+          onClick={()=>accept(currentEmail,senderEmail)}
         >
           Accept
         </Button>
@@ -56,6 +59,7 @@ export default function UserConnectionComponent(props) {
           style={{
             backgroundColor: "#ff5252",
           }}
+          onClick={()=>decline(currentEmail,senderEmail)}
         >
           Decline
         </Button>

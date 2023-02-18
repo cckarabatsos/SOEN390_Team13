@@ -17,7 +17,11 @@ import Person9 from "../assets/UserConnectionImages/image (9).jpg";
 import Person10 from "../assets/UserConnectionImages/image (10).jpg";
 import Person11 from "../assets/UserConnectionImages/image (11).jpg";
 import UserConnectionComponent from "../components/UserConectionComponent";
-import { GetPendingInvitations } from "../api/userConectionApi";
+import {
+  GetPendingInvitations,
+  AcceptInvitations,
+  DeclineInvitations,
+} from "../api/userConectionApi";
 import { useEffect, useState } from "react";
 
 const UserConnection = () => {
@@ -25,7 +29,7 @@ const UserConnection = () => {
 
   const [users, setUsers] = useState([]);
 
-  const[currentEmail, setCurrentEmail]= useState("")
+  const [currentEmail, setCurrentEmail] = useState("");
 
   const getInvitations = async (email) => {
     console.log("text: ");
@@ -39,22 +43,42 @@ const UserConnection = () => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
       setUseData(JSON.parse(localStorage.getItem("isAuth")));
-      setCurrentEmail(data.email)
+      setCurrentEmail(data.email);
     } else {
       setUseData(false);
     }
     getInvitations(data.email);
   }, []);
 
-  
-  
+  const handleAccept = async (curr, senderEmail) => {
+    console.log("sender : " + senderEmail + " receiver " + curr);
+
+    var success = await AcceptInvitations(senderEmail, curr);
+
+    if (success) {
+      getInvitations(currentEmail);
+    } else {
+      console.log("error processing invitation accept");
+    }
+  };
+
+  const handleDecline = async (curr, senderEmail) => {
+    console.log("sender : " + senderEmail + " receiver " + curr);
+    var success = await DeclineInvitations(senderEmail, curr);
+
+    if (success) {
+      getInvitations(currentEmail);
+    } else {
+      console.log("error processing invitation decline");
+    }
+  };
+
   console.log(users.length);
   return (
     <>
-    <h1 className="center">Request Center</h1>
+      <h1 className="center">Request Center</h1>
       <div className="request-section">
-        
-        <Grid  container spacing={2}>
+        <Grid container spacing={2}>
           {users.map((aUser) => (
             <Grid item xs={6}>
               <UserConnectionComponent
@@ -64,11 +88,12 @@ const UserConnection = () => {
                 location={aUser.location}
                 currentEmail={currentEmail}
                 senderEmail={aUser.email}
+                accept={handleAccept}
+                decline={handleDecline}
               ></UserConnectionComponent>
             </Grid>
           ))}
         </Grid>
-
       </div>
 
       <SubFooter />
