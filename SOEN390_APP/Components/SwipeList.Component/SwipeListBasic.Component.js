@@ -16,13 +16,17 @@ import Clipboard from "@react-native-clipboard/clipboard";
 import { SwipeListView } from "react-native-swipe-list-view";
 import PopUPForm from "../PopUPForm.Component";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
+  console.log("THIS");
   console.log(data);
-  const { key, text } = data;
+  const { key, text, input } = data;
   const [name, setName] = useState(text);
+  const [newName, setNewName] = useState("");
+  const [input1, setInput1] = useState(input);
   const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
@@ -31,7 +35,7 @@ export default function Basic({ data }) {
   );
 
   const handleNameChange = (newName) => {
-    setName(newName);
+    setNewName(newName);
     // code to send new name to the database server
   };
 
@@ -44,11 +48,17 @@ export default function Basic({ data }) {
   const editRow = (rowMap, rowKey) => {
     console.log("Edit Data");
     setModalVisible(true);
-    console.log(text);
   };
 
-  const deleteRow = (rowMap, rowKey) => {
-    console.log("delete Data");
+  const handleSubmit = () => {
+    setModalVisible(false);
+    if (newName !== "") {
+      setName(newName);
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        textBody: input1 + " changed",
+      });
+    }
   };
 
   const onRowDidOpen = (rowKey) => {
@@ -70,7 +80,9 @@ export default function Basic({ data }) {
       underlayColor={"#AAA"}
     >
       <View>
-        <Text>{name}</Text>
+        <Text>
+          {input1}: {name}
+        </Text>
       </View>
     </TouchableHighlight>
   );
@@ -86,15 +98,24 @@ export default function Basic({ data }) {
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
+            <View>
+              <TouchableOpacity
+                style={styles.buttonModalClose}
+                onPress={() => setModalVisible(false)}
+              >
+                <Ionicons size={30} name="close-outline" color={"red"} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.textBold}>{input1}</Text>
             <TextInput
               style={styles.input}
-              placeholder={"Enter new " + text}
+              placeholder={"Enter new " + input1}
               onChangeText={handleNameChange}
             />
             <View style={styles.modalContent}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => setModalVisible(false)}
+                onPress={() => handleSubmit()}
               >
                 <Text style={styles.backTextWhite}>Submit</Text>
               </TouchableOpacity>
@@ -157,6 +178,12 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     right: 75,
   },
+  buttonModalClose: {
+    position: "absolute",
+    top: -35,
+    right: -150,
+    marginBottom: 5,
+  },
   backRightBtnRight: {
     backgroundColor: "blue",
     right: 0,
@@ -171,7 +198,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 20,
     width: "80%",
-    height: "30%",
+    height: "40%",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -192,5 +219,9 @@ const styles = StyleSheet.create({
     borderColor: "black",
     padding: 10,
     margin: 10,
+  },
+  textBold: {
+    fontWeight: "bold",
+    fontSize: 17,
   },
 });

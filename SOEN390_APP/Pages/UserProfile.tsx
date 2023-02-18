@@ -97,7 +97,7 @@ const UserProfile = ({route}:{route:any}) => {
         let name = route.params.username
         let password = route.params.password
         if(password==null)
-          password="<EMPTY>"
+          password="--hidden--"
         let email = route.params.email
       
         const CONTENT = [
@@ -105,9 +105,9 @@ const UserProfile = ({route}:{route:any}) => {
               isExpanded: false,
               category_name: 'Profile',
               subcategory: [
-                {key: 1, text: name},
-                {key: 3, text: email},
-                {key: 4, text: password},
+                {key: 1, input: "Name",text: name},
+                {key: 3, input: "Email",text: email},
+                {key: 4, input: "Password",text: password},
               ],
             },
           {
@@ -130,8 +130,8 @@ const UserProfile = ({route}:{route:any}) => {
               isExpanded: false,
               category_name: 'Skills',
               subcategory: [
-                {key: 9, text: 'Java'},
-                {key: 10, text: 'Python'},
+                {key: 9, input: "Skills", text: 'Java'},
+                {key: 10, input: "Skills", text: 'Python'},
               ],
             },
         ];
