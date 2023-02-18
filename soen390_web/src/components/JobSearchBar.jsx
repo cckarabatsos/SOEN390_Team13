@@ -6,7 +6,7 @@ import { JobSearch } from "../api/JobPostingApi";
 
 function JobSearchBar({ setJobs }) {
   const navigate = useNavigate();
-
+  
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
 
