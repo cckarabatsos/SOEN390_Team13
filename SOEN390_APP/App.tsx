@@ -29,6 +29,7 @@ import {
   AlertNotificationRoot,
 } from "react-native-alert-notification";
 
+//import Login from "./Pages/Login";
 
 
 //constant Stack is use to set up the navigation between the different screen required in the application
@@ -58,7 +59,7 @@ const messagesCount = 13
 // return the Login page
 //param: navigation props used to navigate between Login page and register page
 const LoginScreen = ({ navigation }: { navigation: any }) => {
-  return <Login navigation={navigation}></Login>;
+  return <Login navigation= {navigation}> </Login>;
 };
 
 // return the Register page (not yet implemented)
