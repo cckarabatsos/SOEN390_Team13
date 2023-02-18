@@ -47,8 +47,10 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           file.isUploading = false;
           setFiles([...files, file]);
           console.log("success");
+          return res.data;
         });
-      if (response.status == 200) {
+      console.log(response);
+      if (response == 200) {
         return true;
       } else {
         return false;
