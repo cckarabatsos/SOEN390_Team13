@@ -13,6 +13,7 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
+import AddDocumentsDialog from "../components/AddDocumentsDialog";
 
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
@@ -165,13 +166,25 @@ function UserProfile(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6}>
-                <div className="header">
-                  Skills
-                  <AddSkillDialog />
-                  <IconButton onClick={handleClickEnableEdit}>
-                    <EditIcon className="profile-icon" />
-                  </IconButton>
-                </div>
+                <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  className="grid-container"
+                  style={{ marginLeft: "1em" }}
+                >
+                  <Grid iten xs={6}>
+                    <div className="header">Skills</div>
+                  </Grid>
+                  <Grid iten xs={6}>
+                    <AddSkillDialog />
+                    <IconButton onClick={handleClickEnableEdit}>
+                      <EditIcon className="profile-icon" />
+                    </IconButton>
+                  </Grid>
+                </Grid>
                 <hr className="line"></hr>
                 <Typography style={{ marginLeft: "5%" }} className="skill">
                   Java
@@ -218,6 +231,29 @@ function UserProfile(props) {
                 </Typography>
                 <hr className="sub-line"></hr>
               </Grid>
+              <Grid item xs={6}>
+                <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  className="grid-container"
+                  style={{ marginLeft: "1em" }}
+                >
+                  <Grid iten xs={6}>
+                    <div className="header">Personal Documents</div>
+                  </Grid>
+                  <Grid iten xs={6}>
+                    <AddDocumentsDialog />
+                    <IconButton onClick={handleClickEnableEdit}>
+                      <EditIcon className="profile-icon" />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+                <hr className="line"></hr>
+              </Grid>
+
               <Grid item xs={6}>
                 {enable && (
                   <Button
