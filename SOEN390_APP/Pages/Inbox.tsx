@@ -102,7 +102,7 @@ const Inbox = ({route}:{route:any}) => {
   let email = route.params.email
   let image = require("../Components/Images/google-icon.png")
   let userID = 1234
-  let text = "Work here now!"
+  let text = "Work here now! A robot is a machine—especially one programmable by a computer—capable of carrying out a complex series of actions automatically.[2] A robot can be guided by an external control device, or the control may be embedded within. Robots may be constructed to evoke human form, but most robots are task-performing machines, designed with an emphasis on stark functionality, rather than expressive aesthetics. Robots can be autonomous or semi-autonomous and range from humanoids such as Honda's Advanced Step in Innovative Mobility (ASIMO) and TOSY's TOSY Ping Pong Playing Robot (TOPIO) to industrial robots, medical operating robots, patient assist robots, dog therapy robots, collectively programmed swarm robots, UAV drones such as General Atomics MQ-1 Predator, and even microscopic nano robots. By mimicking a lifelike appearance or automating movements, a robot may convey a sense of intelligence or thought of its own. Autonomous things are expected to proliferate in the future, with home robotics and the autonomous car as some of the main drivers.[3]"
 
   const CONTENT = [
     {
@@ -118,8 +118,10 @@ const Inbox = ({route}:{route:any}) => {
       isExpanded: false,
       category_name: 'Job Requests',
       subcategory: [
-        {key: 1, text: name, image: image, userID: userID, message: text},
-        {key: 2, text: name, image: image, userID: userID, message: text},
+        {key: 1, text: "Amazon.co", image: image, userID: userID, message: text, loc: "MTL", email: "LinkedOutInc@gmail.com"
+        , contract: "4 years", category: "Big Boss", position: "CEO", salary: "200k/yr"},
+        {key: 2, text: "Microsoft.co", image: image, userID: userID, message: text,loc: "QC", email: "LinkedInInc@gmail.com"
+        , contract: "1 years", category: "Small Boss", position: "CEO", salary: "300k/yr"},
       ],
     },
   ];
