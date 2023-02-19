@@ -19,3 +19,20 @@ export async function searchInfo(reqType, reqTerm) {
     return false;
   }
 }
+export async function sendInvite(userEmail, targetEmail) {
+  try {
+    const response = await axios
+      .get(api.BACKEND_API + "/user/api/sendInvite", {
+        params: {
+          receiverEmail: targetEmail,
+          senderEmail: userEmail,
+        },
+      })
+      .then((res) => {
+        return true;
+      });
+    return response;
+  } catch (error) {
+    return false;
+  }
+}
