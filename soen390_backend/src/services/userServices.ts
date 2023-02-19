@@ -105,6 +105,10 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                 contentType: file.mimetype,
             };
             let folder: string;
+            console.log(type);
+            if (type[0]){
+                type = type[0];
+            }
             if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {

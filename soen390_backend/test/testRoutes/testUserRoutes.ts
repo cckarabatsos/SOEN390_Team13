@@ -9,6 +9,21 @@ let server: any;
 const id = "18JRHKkLE2t50nE17SHc";
 const wrongId = "5";
 
+function makeid(length: number) {
+    let result = "";
+    const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+        );
+        counter += 1;
+    }
+    return result;
+}
+
 describe("Test User Routes", function () {
     before(function () {
         server = app.listen(4000);
@@ -139,7 +154,7 @@ describe("Test User Routes", function () {
     describe("Post user/accountFile/:userID", async function () {
         it("responds with 404 if wrong type", async function () {
             await request(url)
-                .get(`/user/accountFile/${id}?type=badType`)
+                .get(`/user/accountFile/${id}?type=${"badtype"}`)
                 .expect(404);
         });
         it("responds with 404 if wrong user id", async function () {
@@ -160,6 +175,70 @@ describe("Test User Routes", function () {
         it("responds with 200 for profile picture retrieval", async function () {
             await request(url)
                 .get(`/user/accountFile/${id}?type=picture`)
+                .expect(200);
+        });
+    });
+
+    describe("Get userser/api/sendInvite", async function () {
+        const randomEmail1 = makeid(10);
+        const randomEmail2 = makeid(10);
+
+        const payload = {
+            isRecruiter: false,
+            currentCompany: "Concordia University",
+            currentPosition: "Student",
+            bio: "I am Liam and I want to be an engineer.",
+            coverLetter: "",
+            resume: "",
+            picture: "",
+            publicKey: "",
+            privateKey: "",
+            email: randomEmail1,
+            password: "123",
+            name: "bog test",
+        };
+
+        const payload2 = {
+            isRecruiter: false,
+            currentCompany: "Concordia University",
+            currentPosition: "Student",
+            bio: "I am Liam and I want to be an engineer.",
+            coverLetter: "",
+            resume: "",
+            picture: "",
+            publicKey: "",
+            privateKey: "",
+            email: randomEmail2,
+            password: "123",
+            name: "bog test",
+        };
+
+        it("responds with 404 if user already invited", async function () {
+            await request(url)
+                .get(
+                    `/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=bog5@test.com`
+                )
+                .expect(404);
+        });
+        it("responds with 200 for 2 non friends user", async function () {
+            var user1: any = await request(url)
+                .post(`/user/api/register`)
+                .send(payload)
+                .expect(200);
+            var user2: any = await request(url)
+                .post(`/user/api/register`)
+                .send(payload2)
+                .expect(200);
+            await request(url)
+                .get(
+                    `/user/api/sendInvite?receiverEmail=${randomEmail1}&senderEmail=${randomEmail2}`
+                )
+                .expect(200);
+            await request(url)
+                .post(`/user/delete/${user1._body.registeredUser[1]}`)
+                .expect(200);
+            await request(url)
+                .post(`/user/delete/${user2._body.registeredUser[1]}`)
                 .expect(200);
         });
     });

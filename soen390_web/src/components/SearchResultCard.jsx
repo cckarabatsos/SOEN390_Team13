@@ -1,35 +1,89 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Typography, Button, Avatar } from "@material-ui/core";
 
-const SearchResultCard = () => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    margin: "2%",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "left",
+    color: theme.palette.text.secondary,
+  },
+  avatar: {
+    width: theme.spacing(30),
+    height: theme.spacing(30),
+    marginRight: theme.spacing(2),
+    borderRadius: "50%",
+    border: "2px solid white",
+  },
+  connectButton: {
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  viewProfileButton: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+const SearchResultCard = ({ data }) => {
+  const classes = useStyles();
+
   return (
-    <Card>
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Lizard
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={4}>
+            <Avatar
+              alt="Profile Picture"
+              src={data.imageUrl}
+              className={classes.avatar}
+            />
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <Typography variant="h6" gutterBottom>
+              {data.name}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {`Work Position: ${data.workPosition}`}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {`Address: ${data.address}`}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {`Connections (like LinkedIn): ${data.connections}`}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.connectButton}
+            >
+              Connect
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.viewProfileButton}
+            >
+              View Profile
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
   );
+};
+
+SearchResultCard.defaultProps = {
+  data: {
+    imageUrl: "",
+    name: "",
+    workPosition: "",
+    address: "",
+    connections: "",
+  },
 };
 
 export default SearchResultCard;

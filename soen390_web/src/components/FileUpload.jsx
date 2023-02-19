@@ -1,31 +1,64 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Button, Typography } from "@mui/material";
 import "../styles/components/FileUpload.css";
+import api from "../config.json";
 
 const FileUpload = ({ files, setFiles, removeFile }) => {
-  const uploadHandler = (event) => {
+  const [userData, setUserData] = React.useState({});
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    if (data != null) {
+      setUserData(JSON.parse(localStorage.getItem("isAuth")));
+    } else {
+      setUserData(false);
+    }
+  }, []);
+
+  const uploadHandler = async (fileType, event) => {
     const file = event.target.files[0];
-    if(!file) return;
     file.isUploading = true;
-    setFiles([...files, file])
-    // // upload file
-    // const formData = new FormData();
-    // formData.append(
-    //     "newFile",
-    //     file,
-    //     file.name
-    // )
-    // axios.post('http://localhost:8080/upload', formData)
-    //     .then((res) => {
-    //         file.isUploading = false;
-    //         setFiles([...files, file])
-    //     })
-    //     .catch((err) => {
-    //         // inform the user
-    //         console.error(err)
-    //         removeFile(file.name)
-    //     });
+    setFiles([...files, file]);
+    // upload file
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // calling the backend
+    try {
+      console.log(userData.userID);
+      console.log(fileType);
+      console.log(file);
+      console.log(
+        `${api.BACKEND_API}/user/uploadAccountFile/${userData.userID}`
+      );
+      const response = await axios
+        .post(
+          `${api.BACKEND_API}/user/uploadAccountFile/${userData.userID}?type=${fileType}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            params: {
+              type: fileType,
+            },
+          }
+        )
+        .then((res) => {
+          file.isUploading = false;
+          setFiles([...files, file]);
+          console.log("success");
+          return res.data;
+        });
+      console.log(response);
+      if (response == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.error(err);
+      removeFile(file.name);
+    }
   };
 
   return (
@@ -35,7 +68,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           <Button
             variant="text"
             component="label"
-            onChange={uploadHandler}
+            onChange={(event) => uploadHandler("Resume", event)}
             className="file-button"
             style={{
               outline: "5px solid #EEEEEE",
@@ -57,7 +90,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           <Button
             variant="text"
             component="label"
-            onChange={uploadHandler}
+            onChange={(event) => uploadHandler("coverLetter", event)}
             className="file-button"
             style={{
               outline: "5px solid #EEEEEE",
@@ -78,7 +111,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           <Button
             variant="text"
             component="label"
-            onChange={uploadHandler}
+            onChange={(event) => uploadHandler("Picture", event)}
             className="file-button"
             style={{
               outline: "5px solid #EEEEEE",
@@ -88,7 +121,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               color: "#9606D9",
             }}
           >
-            <div>&nbsp;Other</div>
+            <div>&nbsp;Picture</div>
             <input
               hidden
               accept="image/png, image/jpeg, .pdf"

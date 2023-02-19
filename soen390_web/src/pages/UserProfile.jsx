@@ -36,7 +36,6 @@ function UserProfile(props) {
     } else {
       navigate("/");
     }
-    console.log(data);
   }, [navigate]);
 
   return (
