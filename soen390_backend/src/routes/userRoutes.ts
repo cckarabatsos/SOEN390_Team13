@@ -120,7 +120,6 @@ user.post("/api/register", async (req: Request, res: Response) => {
     try {
         const registeredUser: User = await registerUser(req.body);
         const status: number = registeredUser[0];
-        //console.log("user registration");
         if (status == 200) {
             res.status(200);
             res.json({
@@ -178,6 +177,7 @@ user.post(
             if (hasFile(req)) {
                 data = await uploadAccountFile(userID, type, req.file);
             }
+            console.log(data);
             status = data[0];
             if (status == 200) {
                 res.sendStatus(200);
@@ -262,11 +262,7 @@ user.get("/api/getPendingInvitations", async (req: Request, res: Response) => {
     let data = await getInvitationsOrContacts(userEmail, false);
 
     if (data[0] == 200) {
-        res.status(200);
-        res.json({
-            Response: "Success",
-            data,
-        });
+        res.status(200).json(data);
     } else {
         res.sendStatus(404);
     }

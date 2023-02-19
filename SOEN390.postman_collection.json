@@ -42,7 +42,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/accountfile/:userID?type=Resume",
+							"raw": "http://localhost:7000/user/accountFile/:userID?type=resume",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -50,13 +50,13 @@
 							"port": "7000",
 							"path": [
 								"user",
-								"accountfile",
+								"accountFile",
 								":userID"
 							],
 							"query": [
 								{
 									"key": "type",
-									"value": "Resume"
+									"value": "resume"
 								}
 							],
 							"variable": [
@@ -90,23 +90,11 @@
 				},
 				{
 					"name": "Login",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"password\": \"pass123!\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:7000/user/api/login",
+							"raw": "http://localhost:7000/user/api/login?email=LinkedOutInc@gmail.com&password=pass123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -116,6 +104,16 @@
 								"user",
 								"api",
 								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "LinkedOutInc@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "pass123"
+								}
 							]
 						}
 					},
@@ -125,27 +123,9 @@
 					"name": "userSearch",
 					"request": {
 						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "Upload Account File",
-					"request": {
-						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "20210427_162611.jpg"
-								}
-							]
-						},
 						"url": {
-							"raw": "http://localhost:7000/user/uploadAccountFile/:userID?type=profilePic",
+							"raw": "http://localhost:7000/user/api/search?name=&email=test@test.com&limit=10&skip=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -153,19 +133,83 @@
 							"port": "7000",
 							"path": [
 								"user",
-								"uploadAccountFile",
-								":userID"
+								"api",
+								"search"
 							],
 							"query": [
 								{
-									"key": "type",
-									"value": "profilePic"
-								}
-							],
-							"variable": [
+									"key": "name",
+									"value": ""
+								},
 								{
-									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"key": "email",
+									"value": "test@test.com"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InviteUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=bog5@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"sendInvite"
+							],
+							"query": [
+								{
+									"key": "receiverEmail",
+									"value": "bog1@test.com"
+								},
+								{
+									"key": "senderEmail",
+									"value": "bog5@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPendingInvitations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=bog@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"getPendingInvitations"
+							],
+							"query": [
+								{
+									"key": "userEmail",
+									"value": "bog@test.com"
 								}
 							]
 						}
@@ -179,7 +223,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Liam\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"test@test.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"LinkedOutInc\",\r\n    \"isRecruiter\": \"True\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -285,6 +329,49 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Upload Account File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "Cover Letter.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/user/uploadAccountFile/:userID?type=coverLetter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"uploadAccountFile",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "coverLetter"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -333,7 +420,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"LinkedOutInc\",\r\n    \"isRecruiter\": \"True\"\r\n}",
+							"raw": "{\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"location\": \"MTL\",\r\n    \"position\": \"CEO\",\r\n    \"salary\": \"200k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"contract\": \"4 years\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"category\": \"Big boss\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

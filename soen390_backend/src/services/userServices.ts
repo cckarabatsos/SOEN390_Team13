@@ -93,6 +93,10 @@ export const deleteUserWithId = async (userID: string) => {
 };
 export const storeAccountFile = async (userID: string, type: string, file: any) => {
     try {
+        if (!file) {
+            return null;
+        }
+
         var user: any = await findUserWithID(userID);
         if (user) {
             let casted_user = await user_schema.cast(user);
@@ -101,6 +105,10 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                 contentType: file.mimetype,
             };
             let folder: string;
+            console.log(type);
+            if (type[0]){
+                type = type[0];
+            }
             if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {
@@ -148,6 +156,9 @@ export const findAccountFile = async (userID: string, type: string) => {
             } else if (type.toUpperCase() === "PICTURE") {
                 console.log(casted_user.picture);
                 return casted_user.picture;
+            }
+            else {
+                return null;
             }
         }
     } catch (error) {

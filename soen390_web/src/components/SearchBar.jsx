@@ -1,73 +1,86 @@
-import React, { useState } from "react";
-import "../styles/components/SearchBar.css";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import { JobSearch } from "../api/JobPostingApi";
+import React, { useState, useRef } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { grey, purple } from "@material-ui/core/colors";
 
-function SearchBar({ setJobs }) {
-  const navigate = useNavigate();
+const useStyles = makeStyles((theme) => ({
+  searchInput: {
+    backgroundColor: grey[200],
+    borderRadius: 25,
+    width: "40%",
+    height: "3rem",
+    paddingTop: "5px",
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+  },
+  searchButton: {
+    backgroundColor: purple[500],
+    color: "black",
+    "&:hover": {
+      backgroundColor: purple[700],
+    },
+    textTransform: "none",
+    borderRadius: 5,
+    width: "40%",
+    fontSize: "1rem",
+  },
+}));
 
-  const [category, setCategory] = useState("location");
-  const [text, setText] = useState("");
+function SearchBar(props, ref) {
+  const classes = useStyles();
+  const [searchText, setSearchText] = useState("");
+  const inputRef = useRef(null);
 
-  const handleTextChange = (e) => {
-    setText(e.target.value);
+  const handleInputChange = (event) => {
+    setSearchText(event.target.value);
   };
 
-  const handleChange = (e) => {
-    setCategory(e.target.value);
-    console.log(e.target.value);
+  const handleSearchClick = () => {
+    props.onSearchBtnClick(searchText);
   };
 
-  const handleSearch = async () => {
-    console.log("text: " + text + " category " + category);
-
-    var jobs = await JobSearch(text);
-
-    console.log(jobs);
-    setJobs(jobs)
-  };
+  React.useImperativeHandle(ref, () => ({
+    getInputValue: () => inputRef.current.value,
+  }));
 
   return (
-    <div class="input-box">
-      <i class="uil uil-search"></i>
-      <div>
-        <input
-          type="text"
-          placeholder="Search here..."
-          value={text}
-          onChange={handleTextChange}
-        />
-        <Button
-          className="button"
-          variant="contained"
-          onClick={handleSearch}
-          style={{
-            borderRadius: 27,
-            backgroundColor: "#a640f4b9",
-          }}
-        >
-          Search
-        </Button>
-
-        <select
-          category="category"
-          id="category"
-          className="buttonfilter"
-          style={{
-            borderRadius: 27,
-            backgroundColor: "#a640f4b9",
-          }}
-          value={category}
-          onChange={handleChange}
-        >
-          <option value="Location">Location</option>
-          <option value="Company">Company</option>
-          <option value="Position">Position</option>
-          <option value="Contract">Contract</option>
-        </select>
-      </div>
-    </div>
+    <TextField
+      className={classes.searchInput}
+      placeholder="Search"
+      variant="outlined"
+      size="small"
+      fullWidth
+      inputRef={inputRef}
+      value={searchText}
+      onChange={handleInputChange}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <Button
+              className={classes.searchButton}
+              variant="contained"
+              size="small"
+              onClick={handleSearchClick}
+            >
+              Search
+            </Button>
+          </InputAdornment>
+        ),
+        style: { justifyContent: "center" },
+      }}
+    />
   );
 }
-export default SearchBar;
+
+const ForwardedSearchBar = React.forwardRef(SearchBar);
+
+export default ForwardedSearchBar;
