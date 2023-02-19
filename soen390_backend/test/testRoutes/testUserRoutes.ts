@@ -1,53 +1,60 @@
 import * as mocha from "mocha";
-import express from "express";
 import request from "supertest";
 import { expect } from "chai";
+import app from "../../src/index";
 const it = mocha.it;
-
-const app = express();
+console.log(app);
+const url = "http://localhost:4000";
+let server: any;
+const id = "18JRHKkLE2t50nE17SHc";
+const wrongId = "5";
 
 describe("Test User Routes", function () {
+    before(function () {
+        server = app.listen(4000);
+    });
+
+    after(function () {
+        server.close();
+    });
     describe("Get user/api/login", function () {
         it("responds with 404 when user not found", async function () {
-            await request(app)
-                .get("/user/api/login")
-                .send({ email: "test@example.com", password: "password" })
+            await request(url)
+                .get("/user/api/login?email=LinkedOutInc&password=pass123")
                 .expect(404);
         });
 
         it("responds with a 401 when invalid email or password is provided", async function () {
-            await request(app)
-                .get("/user/api/login")
-                .send({
-                    email: "test@test.com",
-                    password: "invalidpassword",
-                })
-                .expect(404);
+            await request(url)
+                .get(
+                    "/user/api/login?email=LinkedOutInc@gmail.com&password=pass123"
+                )
+                .expect(401);
         });
 
         it("responds with a 200 when a valid email and password are provided", async function () {
-            await request(app)
-                .get("/user/api/login")
-                .set("Cookie", [])
-                .send({ email: "test@test.com", password: "Test123!" })
-                .expect(404);
+            await request(url)
+                .get(
+                    "/user/api/login?email=LinkedOutInc@gmail.com1&password=pass123!"
+                )
+                .expect(200);
         });
     });
     describe("Post user/api/logout", function () {
-        it("responds with 200 and logouts user if no error", async function () {
+        it("responds with 200 and logs out user if no error", async function () {
             console.log("Hello from logout route");
-            await request(app)
+            await request(url)
                 .post("/user/api/logout")
                 .set("Cookie", ["FrontendUser=somevalue; Path=/; HttpOnly"])
                 .send()
                 .then((res) => {
-                    expect(res.status).equal(404);
+                    expect(res.status).equal(200);
                 });
         });
     });
     describe("Get user/api/register", function () {
         it("responds with 404 when user submit without filling out the name field", async function () {
-            await request(app)
+            await request(url)
                 .get("/user/api/register")
                 .send({
                     email: "test@example.com",
@@ -58,7 +65,7 @@ describe("Test User Routes", function () {
         });
 
         it("responds with 404 when user submit without filling out the password field", async function () {
-            await request(app)
+            await request(url)
                 .get("/user/api/register")
                 .send({
                     email: "test@example.com",
@@ -68,7 +75,7 @@ describe("Test User Routes", function () {
                 .expect(404);
         });
         it("responds with 404 when user submit without filling out the email field", async function () {
-            await request(app)
+            await request(url)
                 .get("/user/api/register")
                 .send({
                     email: "",
@@ -79,14 +86,14 @@ describe("Test User Routes", function () {
         });
 
         it("responds with 401 when user submit with an already registered email", async function () {
-            await request(app)
+            await request(url)
                 .get("/user/api/register")
                 .send({
                     email: "test@test.com",
                     password: "Test123!",
                     name: "yoy yoy",
                 })
-                .expect(404);
+                .expect(401);
         });
     });
     describe("Post user/api/posting/:email", async function () {
@@ -103,7 +110,7 @@ describe("Test User Routes", function () {
         };
         const badEmail = "lamoutre24@gmail.123124141";
         it("responds with 404 if the email does not exist", async function () {
-            await request(app)
+            await request(url)
                 .post(`/user/api/posting/${badEmail}`)
                 .send(payload)
                 .set("Content-Type", "application/json")
@@ -112,21 +119,48 @@ describe("Test User Routes", function () {
         });
         const notRecruiterEmail = "poda4@gmail.com";
         it("responds with 400 if the user is not a recruiter", async function () {
-            await request(app)
+            await request(url)
                 .post(`/user/api/posting/${notRecruiterEmail}`)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .send(payload)
-                .expect(404);
+                .expect(400);
         });
         const goodEmail = "LinkedOutInc@gmail.com";
         it("responds with 200 if the user is a recruiter", async function () {
-            await request(app)
+            await request(url)
                 .post(`/user/api/posting/${goodEmail}`)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .send(payload)
+                .expect(200);
+        });
+    });
+    describe("Post user/accountFile/:userID", async function () {
+        it("responds with 404 if wrong type", async function () {
+            await request(url)
+                .get(`/user/accountFile/${id}?type=badType`)
                 .expect(404);
+        });
+        it("responds with 404 if wrong user id", async function () {
+            await request(url)
+                .get(`/user/accountFile/${wrongId}?type=resume`)
+                .expect(404);
+        });
+        it("responds with 200 for resume retrieval", async function () {
+            await request(url)
+                .get(`/user/accountFile/${id}?type=resume`)
+                .expect(200);
+        });
+        it("responds with 200 for cover letter retrieval", async function () {
+            await request(url)
+                .get(`/user/accountFile/${id}?type=coverLetter`)
+                .expect(200);
+        });
+        it("responds with 200 for profile picture retrieval", async function () {
+            await request(url)
+                .get(`/user/accountFile/${id}?type=picture`)
+                .expect(200);
         });
     });
 });

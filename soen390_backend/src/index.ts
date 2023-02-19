@@ -1,15 +1,15 @@
-import express, { Application, Request, Response, Router } from "express";
+import express, { Application, Request, Response } from "express";
 //imports needed later for the encryption
 //import jsonwebtoken from "jsonwebtoken";
 //import { hash, compare } from "bcrypt";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-(global as any).XMLHttpRequest = require('xhr2');
+(global as any).XMLHttpRequest = require("xhr2");
 dotenv.config();
 const User = require("./firebaseconfig");
 const app: Application = express();
-const port: number = 7000; //Port for the backend
+const port: any = process.env.port || 7000; //Port for the backend
 
 app.use(express.json());
 app.use(cookieParser());
@@ -72,4 +72,4 @@ app.listen(port, () => {
     console.log(`app listening on port ${port}`);
 });
 
-module.exports = Router;
+export default app;
