@@ -12,17 +12,16 @@ export function GoogleSignin({ setIsAuth }) {
 }
 
 export async function SignInUser(reqEmail, reqPassword) {
+  console.log("hello");
   try {
-    const response = await axios
-      .get(api.BACKEND_API + "/user/api/login", {
-        params: {
-          email: reqEmail,
-          password: reqPassword,
-        },
-      })
-      .then((res) => {
-        return res;
-      });
+    const response = await axios.get(api.BACKEND_API + "/user/api/login", {
+      params: {
+        email: reqEmail,
+        password: reqPassword,
+      },
+    });
+    console.log("hello2");
+    console.log(response);
     return response;
   } catch (error) {
     console.error("error", error);
@@ -45,7 +44,7 @@ export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
         privateKey: "",
         email: emailIn,
         password: passwordIn,
-        name: firstNameIn+" "+ lastNameIn,
+        name: firstNameIn + " " + lastNameIn,
       })
       .then((res) => {
         return res.data;

@@ -2,16 +2,13 @@ import React, { useEffect } from "react";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import JobPostingComponent from "../components/JobPostingComponent";
-import SearchBar from "../components/SearchBar";
+import JobSearchBar from "../components/JobSearchBar";
 import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
 import { useState } from "react";
 
-
-
-
 export default function JobSearch() {
-  
+ 
   const [modalOpen, setModalOpen] = useState(false);
   const [jobPosterID, setjobPosterID] = useState(false);
   const [position, setPosition] = useState(false);
@@ -28,7 +25,6 @@ export default function JobSearch() {
 
 useEffect(() => {
     console.log(jobs);
-    console.log("hellu")
     var jobArray=[]
     
 
@@ -37,7 +33,7 @@ useEffect(() => {
 
 
     }
-    console.log("here ")
+
     console.log(jobArray)
 
     setJobDisplay(jobArray)
@@ -45,7 +41,6 @@ useEffect(() => {
     
   }, [jobs]);
 
-  console.log("job array" + jobDisplay.length);
   return (
     <div>
       <div>
@@ -53,9 +48,8 @@ useEffect(() => {
           Start your job searching journey here. Browse available jobs down
           below.
         </h2>
-        <SearchBar 
+        <JobSearchBar 
         setJobs={setJobs}/>
-        
         <h1>Please search for your desired job.</h1>
         {modalOpen && (
           <Modal

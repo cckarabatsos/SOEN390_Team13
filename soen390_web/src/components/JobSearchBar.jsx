@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "../styles/components/SearchBar.css";
+import "../styles/components/JobSearchBar.css";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
 
-function SearchBar({ setJobs }) {
+function JobSearchBar({ setJobs }) {
   const navigate = useNavigate();
-
+  
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
 
@@ -29,8 +29,8 @@ function SearchBar({ setJobs }) {
   };
 
   return (
-    <div class="input-box">
-      <i class="uil uil-search"></i>
+    <div className="input-box">
+      <i className="uil uil-search"></i>
       <div>
         <input
           type="text"
@@ -70,4 +70,4 @@ function SearchBar({ setJobs }) {
     </div>
   );
 }
-export default SearchBar;
+export default JobSearchBar;

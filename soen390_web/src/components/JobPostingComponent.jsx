@@ -13,9 +13,9 @@ function JobPostingComponent(props) {
   const setJob = props.setJob;
 
   return (
-    <div class="container">
+    <div className="container">
       <div>
-        <div class="button-moreinfo-position">
+        <div className="button-moreinfo-position">
           <Button
             className="button-moreinfo"
             variant="contained"
@@ -32,11 +32,11 @@ function JobPostingComponent(props) {
           </Button>
         </div>
 
-        <div class="position">{position}</div>
-        <div class="company">{company}</div>
+        <div className="position">{position}</div>
+        <div className="company">{company}</div>
 
-        <div class="location">{location}</div>
-        <div class="contract">{contract}</div>
+        <div className="location">{location}</div>
+        <div className="contract">{contract}</div>
       </div>
     </div>
   );
