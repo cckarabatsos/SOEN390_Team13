@@ -17,9 +17,9 @@ const ChatPage = ({route}:{route:any}) => {
   let name = chatData.name
   let image = require("../Components/Images/google-icon.png")
   const [messages, setMessages] = useState([
-    { id: 1,sendByUser:true,  name: 'Cédric Michaud',text: ' salut bonjour?' },
-    { id: 2,sendByUser:false, name: name,text: name },
-    { id: 3,sendByUser:false,name: 'lionel messi',text: '390 project' }
+    { id: 1,sendByUser:true,  name: 'Cédric Michaud',text: ' salut bonjour?', image: image },
+    { id: 2,sendByUser:false, name: name,text: name, image: image},
+    { id: 3,sendByUser:false,name: 'lionel messi',text: '390 project', image: image }
   ]);
   const [input, setInput] = useState('');
 
