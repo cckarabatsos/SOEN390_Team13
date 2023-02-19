@@ -4,10 +4,10 @@ import api from "../config.json";
 export async function searchInfo(reqType, reqTerm) {
   try {
     const response = await axios
-      .get(api.BACKEND_API + "/api/search", {
+      .get(api.BACKEND_API + "/user/api/search", {
         params: {
-          type: reqType,
-          term: reqTerm,
+          name: reqType == "name" ? reqTerm : "",
+          email: reqType == "email" ? reqTerm : "",
         },
       })
       .then((res) => {
@@ -16,6 +16,23 @@ export async function searchInfo(reqType, reqTerm) {
     return response;
   } catch (error) {
     console.error("error from api call");
+    return false;
+  }
+}
+export async function sendInvite(userEmail, targetEmail) {
+  try {
+    const response = await axios
+      .get(api.BACKEND_API + "/user/api/sendInvite", {
+        params: {
+          receiverEmail: targetEmail,
+          senderEmail: userEmail,
+        },
+      })
+      .then((res) => {
+        return true;
+      });
+    return response;
+  } catch (error) {
     return false;
   }
 }

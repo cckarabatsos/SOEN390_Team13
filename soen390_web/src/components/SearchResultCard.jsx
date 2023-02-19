@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, Typography, Button, Avatar } from "@material-ui/core";
+import { sendInvite } from "../api/userNetworkingApi";
+import { Alert } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,10 +28,38 @@ const useStyles = makeStyles((theme) => ({
   viewProfileButton: {
     marginTop: theme.spacing(2),
   },
+  alert: {
+    margin: "3% 0",
+  },
 }));
 
 const SearchResultCard = ({ data }) => {
   const classes = useStyles();
+  const [alert, setAlert] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
+
+  const sendConnection = async (email) => {
+    const personalData = JSON.parse(localStorage.getItem("isAuth"));
+    console.log(email);
+    console.log(personalData.email);
+    const temp = await sendInvite(personalData.email, email);
+    console.log(temp);
+    const alertSeverity = temp ? "success" : "error";
+    const alertMessage = temp
+      ? "Connection request sent!"
+      : "Failed to send connection request";
+    setAlert({ open: true, severity: alertSeverity, message: alertMessage });
+    setTimeout(() => {
+      setAlert({ ...alert, open: false });
+    }, 3000);
+  };
+
+  const handleClose = () => {
+    setAlert({ ...alert, open: false });
+  };
 
   return (
     <div className={classes.root}>
@@ -47,18 +77,19 @@ const SearchResultCard = ({ data }) => {
               {data.name}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {`Work Position: ${data.workPosition}`}
+              {`${data.currentPosition}`}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {`Address: ${data.address}`}
+              {`${data.bio}`}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {`Connections (like LinkedIn): ${data.connections}`}
+              {`${data.contacts ? data.contacts.length : "No"} Connections`}
             </Typography>
             <Button
               variant="contained"
               color="primary"
               className={classes.connectButton}
+              onClick={() => sendConnection(`${data.email}`)}
             >
               Connect
             </Button>
@@ -69,6 +100,14 @@ const SearchResultCard = ({ data }) => {
             >
               View Profile
             </Button>
+            <Alert
+              severity={alert.severity}
+              onClose={handleClose}
+              open={alert.open}
+              className={classes.alert}
+            >
+              {alert.message}
+            </Alert>
           </Grid>
         </Grid>
       </Paper>
