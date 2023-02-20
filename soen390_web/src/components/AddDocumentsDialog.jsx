@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import FileUpload from "./FileUpload";
 import FileList from "./FileList";
 
-function AddEducationDialog() {
+function AddDocumentsDialog() {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -84,4 +84,4 @@ function AddEducationDialog() {
   );
 }
 
-export default AddEducationDialog;
+export default AddDocumentsDialog;

@@ -48,6 +48,7 @@ function MainTitle(props) {
                 <Grid className="field-input" item xs={8}>
                   <div className="input-margin">
                     <TextField
+                      data-testid="email-1"
                       autoFocus
                       className="inputRounded"
                       margin="dense"
@@ -66,6 +67,7 @@ function MainTitle(props) {
                 <Grid className="field-input" item xs={6}>
                   <div className="input-margin">
                     <TextField
+                      data-testid="password-1"
                       className="inputRounded"
                       autoFocus
                       margin="dense"
