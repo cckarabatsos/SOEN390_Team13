@@ -1,0 +1,66 @@
+.container {
+  background: #F4F4F4;
+  border: 2px solid #d7e2e9;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-bottom: 2rem;
+  
+  transition: all 0.3s ease 0s;
+  position: relative;
+  }
+  
+  .position {
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3E3E3E;
+  }
+  
+  .company {
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contract {
+    text-align: left;
+    font-size: 1.1rem;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+  }
+  
+  .location {
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+  }
+  
+  .button-moreinfo {
+  font-size: 0.875rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  background-color: #3C64B1;
+  color: #fff;
+  padding: 0.6rem 2rem;
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  
+  }
+  
+  .button-moreinfo:hover {
+  background-color: #1A3365;
+  }
+  
+  .button-moreinfo-position {
+  right: 1.5rem;
+  top: 1.5rem;
+  position: absolute;
+  }

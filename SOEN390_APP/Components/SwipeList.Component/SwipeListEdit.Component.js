@@ -18,7 +18,6 @@ import { SwipeListView } from "react-native-swipe-list-view";
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
-  console.log(data);
   const { key, text } = data;
   const [name, setName] = useState(text);
   const [program, setProgram] = useState("Insert Program");

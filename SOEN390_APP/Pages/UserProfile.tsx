@@ -17,6 +17,8 @@ import Basic from '../Components/SwipeList.Component/SwipeListBasic.Component';
 import StandaloneRow from '../Components/SwipeList.Component/SwipeListEdit.Component';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { LogBox } from 'react-native';
+
 
 
 
@@ -24,6 +26,10 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
     //Custom Component for the Expandable List
     const [layoutHeight, setLayoutHeight] = useState(0);
   
+    useEffect(() => {
+      LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
+
     useEffect(() => {
       if (item.isExpanded) {
         setLayoutHeight(null);
@@ -91,7 +97,7 @@ const UserProfile = ({route}:{route:any}) => {
         let name = route.params.username
         let password = route.params.password
         if(password==null)
-          password="<EMPTY>"
+          password="--hidden--"
         let email = route.params.email
       
         const CONTENT = [
@@ -99,9 +105,9 @@ const UserProfile = ({route}:{route:any}) => {
               isExpanded: false,
               category_name: 'Profile',
               subcategory: [
-                {key: 1, text: name},
-                {key: 3, text: email},
-                {key: 4, text: password},
+                {key: 1, input: "Name",text: name},
+                {key: 3, input: "Email",text: email},
+                {key: 4, input: "Password",text: password},
               ],
             },
           {
@@ -124,8 +130,8 @@ const UserProfile = ({route}:{route:any}) => {
               isExpanded: false,
               category_name: 'Skills',
               subcategory: [
-                {key: 9, text: 'Java'},
-                {key: 10, text: 'Python'},
+                {key: 9, input: "Skills", text: 'Java'},
+                {key: 10, input: "Skills", text: 'Python'},
               ],
             },
         ];

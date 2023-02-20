@@ -10,29 +10,20 @@ import HomeIcon from "@mui/icons-material/Home";
 import NorthIcon from "@mui/icons-material/North";
 import OutputIcon from "@mui/icons-material/Output";
 import WorkIcon from "@mui/icons-material/Work";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 
-function Navbar({}) {
+function Navbar(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [userData, setUseData] = React.useState({});
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("isAuth"));
-    if (data != null) {
-      setUseData(JSON.parse(localStorage.getItem("isAuth")));
-    } else {
-      setUseData(false);
-    }
-    console.log(data);
-  }, []);
+  const userData =props.userData
 
   const signout = () => {
     localStorage.setItem("isAuth", null);
+    window.dispatchEvent(new Event("storage"));
   };
 
   return (
@@ -40,7 +31,9 @@ function Navbar({}) {
       <AppBar position="static" style={{ background: "#BDBABA" }}>
         <CssBaseline />
         <Toolbar>
-          <img className="logo" src={navlogo} alt="LinkedOut" />
+          <Link data-testid="home-1" to="/" className="logo">
+            <img className="logo" src={navlogo} alt="LinkedOut" />
+          </Link>
           {isMobile ? (
             <DrawerComponent />
           ) : (
@@ -48,9 +41,20 @@ function Navbar({}) {
               <Link data-testid="home-1" to="/" className="link">
                 Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
-              <Link data-testid="job-1" to="/" className="link">
+              <Link data-testid="job-1" to="/JobSearch" className="link">
                 Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
+              <Link data-testid="job-1" to="/UserNetworking" className="link">
+                Networking
+                <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
+              </Link>
+
+              {userData && (
+                <Link data-testid="job-1" to="/UserConnection" className="link">
+                  User Connection
+                  <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
+                </Link>
+              )}
 
               {!userData ? (
                 <>
