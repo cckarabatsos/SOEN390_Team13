@@ -69,7 +69,7 @@ export const retrieveSkills = async (userID: string) => {
     }
     const snapshot = await skillsRef.get();
     const skills = snapshot.docs.map((doc) => ({
-        ...doc.data() // do we need ... ?
+        ...doc.data()
     }));
     return skills;
 };

@@ -54,3 +54,18 @@ export const deleteExperienceWithId = async (experienceID: string) => {
     }
     return data;
 };
+export const retrieveExperiences = async (userID: string, type: string) => {
+    let experiencesRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+        db.collection("experiences");
+
+    if (userID) {
+        experiencesRef = experiencesRef
+            .where("ownerID", "==", userID)
+            .where("type", "==", type);
+    }
+    const snapshot = await experiencesRef.get();
+    const experiences = snapshot.docs.map((doc) => ({
+        ...doc.data()
+    }));
+    return experiences;
+};
