@@ -29,3 +29,13 @@ export async function createExperience(
         throw err;
     }
 }
+export async function deleteExperience(experienceID: string) {
+    let experience = await deleteExperience(experienceID);
+    let castedExperience: Experience = await experience_schema.cast(experience);
+
+    if (experience) {
+        return [200, castedExperience];
+    } else {
+        return [404, { msg: "Experience not found" }];
+    }
+}
