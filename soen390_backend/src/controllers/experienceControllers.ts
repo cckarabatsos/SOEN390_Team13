@@ -30,7 +30,7 @@ export async function createExperience(
     }
 }
 export async function deleteExperience(experienceID: string) {
-    let experience = await deleteExperience(experienceID);
+    let experience = await deleteExperienceWithId(experienceID);
     let castedExperience: Experience = await experience_schema.cast(experience);
 
     if (experience) {
