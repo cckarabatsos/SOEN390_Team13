@@ -5,6 +5,15 @@ import { Skill, /*skill_schema*/ } from "../models/Skill";
 
 const db = firebase.firestore();
 
+export const findSkillWithID = async (skillID: string) => {
+    try {
+        var snapShot = await db.collection("skills").doc(skillID).get();
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return snapShot.data();
+};
 export const storeSkill = async (skill: Skill) => {
     try {
         var document = await db.collection("jobpostings").add({
