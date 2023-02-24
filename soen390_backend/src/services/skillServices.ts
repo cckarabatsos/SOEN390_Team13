@@ -28,3 +28,24 @@ export const storeSkill = async (skill: Skill) => {
     }
     return document.id;
 };
+export const deleteSkillWithId = async (skillID: string) => {
+    try {
+        var data: any = await findSkillWithID(skillID);
+        if (data !== undefined) {
+            db.collection("skills")
+                .doc(skillID)
+                .delete()
+                .then(() => {
+                    console.log(
+                        "Skill with ID " +
+                        skillID +
+                        " successfully deleted."
+                    );
+                });
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return data;
+};
