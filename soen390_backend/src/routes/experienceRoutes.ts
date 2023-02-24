@@ -36,5 +36,21 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+experience.post("/remove/:docID", async (req: Request, res: Response) => {
+    let experienceID = req.params.docID;
+    try {
+        let status,
+            data = await deleteExperience(experienceID);
+        res.json({ data });
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
 
 module.exports = experience;
