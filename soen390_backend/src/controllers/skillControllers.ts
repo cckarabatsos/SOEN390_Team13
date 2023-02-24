@@ -16,3 +16,13 @@ export async function createSkill(name: string, ownerID: string) {
         throw err;
     }
 }
+export async function deleteSkill(skillID: string) {
+    let skill = await deleteSkillWithId(skillID);
+    let castedSkill: Skill = await skill_schema.cast(skill);
+
+    if (skill) {
+        return [200, castedSkill];
+    } else {
+        return [404, { msg: "User not found" }];
+    }
+}
