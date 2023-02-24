@@ -33,3 +33,24 @@ export const storeExperience = async (experience: Experience) => {
     }
     return document.id;
 };
+export const deleteExperienceWithId = async (experienceID: string) => {
+    try {
+        var data: any = await findExperienceWithID(experienceID);
+        if (data !== undefined) {
+            db.collection("experiences")
+                .doc(experienceID)
+                .delete()
+                .then(() => {
+                    console.log(
+                        "Experience with ID " +
+                        experienceID +
+                        " successfully deleted."
+                    );
+                });
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return data;
+};
