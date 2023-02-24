@@ -39,3 +39,12 @@ export async function deleteExperience(experienceID: string) {
         return [404, { msg: "Experience not found" }];
     }
 }
+export async function getExperiences(userID: string, type: string) {
+    let experiences = await retrieveExperiences(userID, type);
+
+    if (experiences) {
+        return [200, experiences];
+    } else {
+        return [404, { msg: "Experiences of type \"" + type + "\" not found" }];
+    }
+}
