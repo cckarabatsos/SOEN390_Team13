@@ -16,6 +16,9 @@ skill.post("/skill/:ownerID", async (req: Request, res: Response) => {
                 Response: "Success",
                 skill,
             });
+        } else if (status == 400) {
+            res.status(400);
+            res.json(skill[1]);
         } else if (status !== 404) {
             res.sendStatus(status);
         }
@@ -46,7 +49,6 @@ skill.get("/skill/:userID", async (req: Request, res: Response) => {
         let status,
             data = await getSkills(userID);
         res.json(data);
-        res.status(200);
         if (status == 200) {
             res.sendStatus(200);
         }

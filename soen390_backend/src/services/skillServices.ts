@@ -16,7 +16,14 @@ export const findSkillWithID = async (skillID: string) => {
 };
 export const storeSkill = async (skill: Skill) => {
     try {
-        var document = await db.collection("jobpostings").add({
+        let skills = await retrieveSkills(skill.ownerID);
+        if (skills) {
+            if (skills.length >= 10) {
+                return "limit";
+            }
+        }
+
+        var document = await db.collection("skills").add({
             name: skill.name,
             ownerId: skill.ownerID
         });
