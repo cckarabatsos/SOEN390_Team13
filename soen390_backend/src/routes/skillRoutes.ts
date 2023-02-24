@@ -60,3 +60,5 @@ skill.get("/get/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+
+module.exports = skill;

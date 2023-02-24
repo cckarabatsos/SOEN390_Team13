@@ -25,7 +25,7 @@ export const storeSkill = async (skill: Skill) => {
 
         var document = await db.collection("skills").add({
             name: skill.name,
-            ownerId: skill.ownerID
+            ownerID: skill.ownerID
         });
         await document.update({ skillID: document.id });
         console.log("Skill successfully stored with id: " + document.id);

@@ -62,6 +62,8 @@ app.use("/jobposting", jobposting);
 // Adding user routes
 const user = require("./routes/userRoutes");
 app.use("/user", user);
+const skill = require("./routes/skillRoutes");
+app.use("/skill", skill);
 
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {
