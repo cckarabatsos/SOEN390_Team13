@@ -4,7 +4,7 @@ import { Skill } from "../models/Skill";
 const skill = express.Router();
 skill.use(express.json());
 
-skill.post("/api/skill/:ownerID", async (req: Request, res: Response) => {
+skill.post("/skill/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
     let name: string = req.body.name;
     try {
@@ -38,5 +38,23 @@ skill.post("/remove/:docID", async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(400);
         res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+skill.get("/skill/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    try {
+        let status,
+            data = await getSkills(userID);
+        res.json(data);
+        res.status(200);
+        if (status == 200) {
+            res.sendStatus(200);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
     }
 });
