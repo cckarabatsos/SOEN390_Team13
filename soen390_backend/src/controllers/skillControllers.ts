@@ -1,5 +1,5 @@
 import { Skill, skill_schema } from "../models/Skill";
-import { storeSkill, deleteSkillWithId } from "../services/skillServices";
+import { storeSkill, deleteSkillWithId, retrieveSkills } from "../services/skillServices";
 
 export async function createSkill(name: string, ownerID: string) {
     try {
@@ -23,6 +23,15 @@ export async function deleteSkill(skillID: string) {
     if (skill) {
         return [200, castedSkill];
     } else {
-        return [404, { msg: "User not found" }];
+        return [404, { msg: "Skill not found" }];
+    }
+}
+export async function getSkills(userID: string) {
+    let skills = await retrieveSkills(userID);
+
+    if (skills) {
+        return [200, skills];
+    } else {
+        return [404, { msg: "Skills not found" }];
     }
 }

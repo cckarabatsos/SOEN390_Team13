@@ -49,3 +49,20 @@ export const deleteSkillWithId = async (skillID: string) => {
     }
     return data;
 };
+export const retrieveSkills = async (userID: string) => {
+    let skillsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+        db.collection("skills");
+
+    if (userID) {
+        skillsRef = skillsRef.where(
+            "ownerID",
+            "==",
+            userID
+        );
+    }
+    const snapshot = await skillsRef.get();
+    const skills = snapshot.docs.map((doc) => ({
+        ...doc.data() // do we need ... ?
+    }));
+    return skills;
+};

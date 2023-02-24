@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { deleteSkill, createSkill } from "../controllers/skillControllers";
+import { deleteSkill, createSkill, getSkills } from "../controllers/skillControllers";
 import { Skill } from "../models/Skill";
 const skill = express.Router();
 skill.use(express.json());
