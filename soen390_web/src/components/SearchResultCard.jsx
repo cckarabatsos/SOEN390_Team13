@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { Avatar, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography, Button, Avatar } from "@material-ui/core";
-import { sendInvite } from "../api/userNetworkingApi";
 import { Alert } from "@mui/material";
+import React, { useState } from "react";
+import { sendInvite } from "../api/userNetworkingApi";
 
 const useStyles = makeStyles((theme) => ({
   root: {

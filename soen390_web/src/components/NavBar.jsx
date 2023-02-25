@@ -10,7 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import NorthIcon from "@mui/icons-material/North";
 import OutputIcon from "@mui/icons-material/Output";
 import WorkIcon from "@mui/icons-material/Work";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
@@ -19,7 +19,7 @@ import DrawerComponent from "./Drawer";
 function Navbar(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const userData =props.userData
+  const userData = props.userData;
 
   const signout = () => {
     localStorage.setItem("isAuth", null);

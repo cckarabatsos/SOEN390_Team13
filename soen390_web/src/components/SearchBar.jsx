@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import Button from "@material-ui/core/Button";
+import { grey, purple } from "@material-ui/core/colors";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import { grey, purple } from "@material-ui/core/colors";
+import React, { useRef, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   searchInput: {

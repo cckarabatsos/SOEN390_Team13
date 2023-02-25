@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import "../styles/components/JobSearchBar.css";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { JobSearch } from "../api/JobPostingApi";
+import "../styles/components/JobSearchBar.css";
 
 function JobSearchBar({ setJobs }) {
   const navigate = useNavigate();
-  
+
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
 
@@ -25,7 +25,7 @@ function JobSearchBar({ setJobs }) {
     var jobs = await JobSearch(text);
 
     console.log(jobs);
-    setJobs(jobs)
+    setJobs(jobs);
   };
 
   return (

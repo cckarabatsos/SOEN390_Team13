@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import "../styles/components/Drawer.css";
+import { IconButton } from "@material-ui/core";
+import AddIcon from "@mui/icons-material/Add";
+import { DialogContentText } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DialogContentText } from "@mui/material";
-import { IconButton } from "@material-ui/core";
-import AddIcon from "@mui/icons-material/Add";
-import FileUpload from "./FileUpload";
+import React, { useState } from "react";
+import "../styles/components/Drawer.css";
 import FileList from "./FileList";
+import FileUpload from "./FileUpload";
 
 function AddDocumentsDialog() {
   const [open, setOpen] = React.useState(false);

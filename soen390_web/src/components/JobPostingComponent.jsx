@@ -1,7 +1,6 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 import "../styles/components/JobPostingComponent.css";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@material-ui/core";
 
 function JobPostingComponent(props) {
   const position = props.position;

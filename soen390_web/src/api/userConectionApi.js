@@ -30,7 +30,7 @@ export async function AcceptInvitations(senderEmail, receiverEmail) {
         },
       }
     );
-    if (response.status == 200) {
+    if (response.status === 200) {
       return true;
     } else {
       return false;
@@ -54,7 +54,7 @@ export async function DeclineInvitations(senderEmail, receiverEmail) {
       }
     );
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       return true;
     } else {
       return false;
