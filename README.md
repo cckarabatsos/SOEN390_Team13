@@ -23,7 +23,7 @@ Mock-up: Figma (https://www.figma.com/) <br/>
 Christos Karabatsos| cckarabatsos | chris.karabatsos5@gmail.com | Web Application |
 Diana Alexandra Merlusca|	dianaoana1|	dianamerlusca2001@gmail.com | Web Application |
 Matthew Beaulieu|	MatthewBeaulieu0|	matthew.beaulieu631@gmail.com | Backend + Project Management|
-Bogdan Podariu|	Bogdanpoda|	podariubogdan1@gmail.com | Mobile Application + Backend|
+Bogdan Podariu|	Bogdanpoda|	podariubogdan1@gmail.com | Mobile Application + Backend + web|
 Nadia Beauregard|	nadiaaab|	nadiabeauu@gmail.com | Web Application |
 Cédric Michaud	|cemichaud|	michaud.cedric18@gmail.com | Mobile Application|
 Olivier Langlois Medaino	| SkylineP |	olivier.medaino.98@outlook.com | Mobile Application |
