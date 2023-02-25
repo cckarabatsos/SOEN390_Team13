@@ -9,7 +9,7 @@ export async function createSkill(name: string, ownerID: string) {
         let skill = await storeSkill(newSkill);
         if (skill === "limit") {
             return [400, { msg: "Already at maximum number of skills allowed." }];
-        } else if (skill) {
+        } else if (skill !== null) {
             return [200, skill];
         }
         else {
@@ -31,8 +31,9 @@ export async function deleteSkill(skillID: string) {
 }
 export async function getSkills(userID: string) {
     let skills = await retrieveSkills(userID);
-
-    if (skills) {
+    console.log(skills);
+    if (skills !== null) {
+        console.log("In controller method to get skills");
         return [200, skills];
     } else {
         return [404, { msg: "Skills not found" }];

@@ -10,6 +10,7 @@ skill.post("/:ownerID", async (req: Request, res: Response) => {
     try {
         const skill: Skill = await createSkill(name, ownerID);
         const status: number = skill[0];
+        console.log(status);
         if (status == 200) {
             res.status(200);
             res.json({
@@ -19,7 +20,7 @@ skill.post("/:ownerID", async (req: Request, res: Response) => {
         } else if (status == 400) {
             res.status(400);
             res.json(skill[1]);
-        } else if (status !== 404) {
+        } else if (status == 404) {
             res.sendStatus(status);
         }
     } catch (err: any) {
@@ -46,14 +47,17 @@ skill.post("/remove/:docID", async (req: Request, res: Response) => {
 skill.get("/get/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     try {
-        let status,
-            data = await getSkills(userID);
-        res.json(data);
+        const skill: Skill = await getSkills(userID);
+        const status: number = skill[0];
+        console.log(status);
         if (status == 200) {
-            res.sendStatus(200);
-        }
-        if (status == 404) {
-            res.sendStatus(404);
+            res.status(200);
+            res.json({
+                Response: "Success",
+                skill,
+            });
+        } else if (status == 404) {
+            res.sendStatus(status);
         }
     } catch (err: any) {
         res.status(400);
