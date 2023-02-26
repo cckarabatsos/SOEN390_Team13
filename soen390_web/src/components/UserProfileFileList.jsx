@@ -1,6 +1,8 @@
 import React from "react";
-import UserProfileFileItem from "../components/UserProfileFileItem";
 import "../styles/components/FileItem.css";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { Typography } from "@mui/material";
+import UserProfileFileItem from "../components/UserProfileFileItem";
 
 const FileItem = ({ fileList }) => {
   return (

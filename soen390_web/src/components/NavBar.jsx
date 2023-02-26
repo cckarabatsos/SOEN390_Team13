@@ -11,7 +11,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import NorthIcon from "@mui/icons-material/North";
 import OutputIcon from "@mui/icons-material/Output";
 import WorkIcon from "@mui/icons-material/Work";
-import React from "react";
+import { default as React } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/linkedout logo navbar.png";
