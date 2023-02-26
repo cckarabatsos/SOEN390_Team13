@@ -48,7 +48,7 @@ function Navbar(props) {
                 Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
               <Link data-testid="job-1" to="/JobSearch" className="link">
-                {t("jobsNavBar")}{" "}
+                {t("jobsNavBar")}
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
               <Link data-testid="job-1" to="/UserNetworking" className="link">

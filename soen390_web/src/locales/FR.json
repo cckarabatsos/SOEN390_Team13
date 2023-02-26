@@ -1,3 +1,5 @@
 {
-  "jobsNavBar": "Jobe"
+  "jobsNavBar": "Jobe",
+  "emailText": "Courriel",
+  "passwordText": "Mot de Passe"
 }
