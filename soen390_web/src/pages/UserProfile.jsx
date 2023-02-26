@@ -14,7 +14,7 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
-
+import ApplicationHistory from "./applicationHistory";
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUseData] = React.useState({});
@@ -272,7 +272,9 @@ function UserProfile(props) {
           </div>
         </div>
       </div>
-
+  < ApplicationHistory
+  >
+  </ApplicationHistory>
       <SubFooter />
       <Footer />
     </>
