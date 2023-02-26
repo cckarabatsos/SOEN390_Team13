@@ -1,7 +1,9 @@
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import { Typography } from "@mui/material";
 import React from "react";
 import "../styles/components/FileItem.css";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { Typography } from "@mui/material";
+import LoopIcon from "@mui/icons-material/Loop";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const FileItem = ({ file, deleteFile }) => {
   return (

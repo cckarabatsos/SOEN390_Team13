@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/components/Modal.css";
 
 function Modal({
@@ -43,7 +44,7 @@ function Modal({
           >
             Cancel
           </button>
-          <button id="applyBtn">Apply</button>
+          <Link id="applyBtn"  to="/JobApplication"> Apply </Link>
         </div>
       </div>
     </div>

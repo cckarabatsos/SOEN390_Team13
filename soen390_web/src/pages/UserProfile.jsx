@@ -7,7 +7,6 @@ import picture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
 import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
 import Concordia from "../assets/UserProfileImages/Concordia.png";
-import AddDocumentsDialog from "../components/AddDocumentsDialog";
 import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
 import AddSkillDialog from "../components/AddSkillDialog";
@@ -15,6 +14,8 @@ import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
 import ApplicationHistory from "./applicationHistory";
+import AddDocumentsDialog from "../components/AddDocumentsDialog";
+
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUseData] = React.useState({});

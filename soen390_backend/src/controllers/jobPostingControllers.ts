@@ -42,14 +42,14 @@ export async function createJobPosting(
         throw err;
     }
 }
-export async function deleteJobPosting(userID: string) {
-    let user = await deleteJobPostingWithId(userID);
-    let castedJobPosting: Jobposting = await jobposting_schema.cast(user);
+export async function deleteJobPosting(jobPostingID: string) {
+    let jobPosting = await deleteJobPostingWithId(jobPostingID);
+    let castedJobPosting: Jobposting = await jobposting_schema.cast(jobPosting);
     //console.log(user);
-    if (user) {
+    if (jobPosting) {
         return [200, castedJobPosting];
     } else {
-        return [404, { msg: "User not found" }];
+        return [404, { msg: "Job posting not found" }];
     }
 }
 export async function getFilteredJobPostings(filter: Filter) {
