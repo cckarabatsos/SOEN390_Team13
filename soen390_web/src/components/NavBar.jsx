@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Button,
   CssBaseline,
   Toolbar,
   useMediaQuery,
@@ -11,6 +12,7 @@ import NorthIcon from "@mui/icons-material/North";
 import OutputIcon from "@mui/icons-material/Output";
 import WorkIcon from "@mui/icons-material/Work";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
@@ -20,10 +22,14 @@ function Navbar(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const userData = props.userData;
-
+  const { t, i18n } = useTranslation();
   const signout = () => {
     localStorage.setItem("isAuth", null);
     window.dispatchEvent(new Event("storage"));
+  };
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
   };
 
   return (
@@ -42,7 +48,8 @@ function Navbar(props) {
                 Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
               <Link data-testid="job-1" to="/JobSearch" className="link">
-                Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
+                {t("jobsNavBar")}{" "}
+                <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
               <Link data-testid="job-1" to="/UserNetworking" className="link">
                 Networking
@@ -76,6 +83,23 @@ function Navbar(props) {
                   Signout
                   <OutputIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
+              )}
+              {i18n.language !== "en" ? (
+                <Button
+                  color="inherit"
+                  onClick={() => changeLanguage("en")}
+                  className="link-button"
+                >
+                  EN
+                </Button>
+              ) : (
+                <Button
+                  color="inherit"
+                  onClick={() => changeLanguage("fr")}
+                  className="link-button"
+                >
+                  FR
+                </Button>
               )}
             </span>
           )}
