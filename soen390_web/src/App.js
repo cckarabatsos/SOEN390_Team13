@@ -9,6 +9,10 @@ import JobSearch from "./pages/JobSearch";
 import UserNetworking from "./pages/UserNetworking";
 import Navbar from "./components/NavBar";
 import UserConnection from "./pages/UserConnection";
+import Contacts from "./pages/Contacts";
+import JobApplication from "./pages/JobApplication";
+import MessagingPage from "./pages/MessagingPage";
+import NewsFeedPage from "./pages/NewsFeedPage";
 
 const AppWrapper = () => {
   const [userData, setUseData] = useState({});
@@ -42,9 +46,13 @@ const AppWrapper = () => {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/UserProfile" element={<UserProfile />} />
           <Route path="/JobSearch" element={<JobSearch />} />
-
+          <Route path ="/Contacts" element={<Contacts/>}></Route>
+          <Route path ="/JobApplication" element={<JobApplication/>}></Route>
           <Route path="/UserNetworking" element={<UserNetworking />} />
           <Route path="/UserConnection" element={<UserConnection />} />
+          <Route path="/MessagingPage" element={<MessagingPage />} />
+          <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
+          
         </Routes>
       </Router>
     </div>

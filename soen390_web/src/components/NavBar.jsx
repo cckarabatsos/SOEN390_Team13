@@ -38,22 +38,34 @@ function Navbar(props) {
             <DrawerComponent />
           ) : (
             <span className="navlinks">
-              <Link data-testid="home-1" to="/" className="link">
+               {userData && (
+              <Link data-testid="home-1" to="/NewsFeedPAge" className="link">
                 Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
+               )}
               <Link data-testid="job-1" to="/JobSearch" className="link">
                 Jobs <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
-              <Link data-testid="job-1" to="/UserNetworking" className="link">
+              
+
+              {userData && (
+                <>
+                <Link data-testid="job-1" to="/UserNetworking" className="link">
                 Networking
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
-
-              {userData && (
                 <Link data-testid="job-1" to="/UserConnection" className="link">
                   User Connection
                   <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
+
+                <Link data-testid="job-1" to="/Contacts" className="link">
+                Contacts
+                <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
+              </Link>
+                
+                </>
+                
               )}
 
               {!userData ? (
