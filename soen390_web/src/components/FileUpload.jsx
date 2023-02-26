@@ -1,8 +1,8 @@
-import { Button, Typography } from "@mui/material";
-import axios from "axios";
 import React, { useEffect } from "react";
-import api from "../config.json";
+import axios from "axios";
+import { Button, Typography } from "@mui/material";
 import "../styles/components/FileUpload.css";
+import api from "../config.json";
 
 const FileUpload = ({ files, setFiles, removeFile }) => {
   const [userData, setUserData] = React.useState({});
