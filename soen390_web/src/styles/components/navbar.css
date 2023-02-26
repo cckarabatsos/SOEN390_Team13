@@ -42,3 +42,26 @@
     color: #660e99;
     /* border-bottom: 1px solid #660e99; */
   }
+  .link-button {
+    color: #9606d9 !important;
+    font-size: 20px !important;
+    margin-left: 50px !important;
+    font-family: "Inter-regular" !important;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding-top: 0px !important;
+  }
+  
+  .link-button:hover {
+    color: #660e99 !important;
+  }
+  
+  .link-button:hover .icon {
+    color: #660e99 !important;
+    border-bottom: 1px solid #660e99 !important;
+  }
+  
