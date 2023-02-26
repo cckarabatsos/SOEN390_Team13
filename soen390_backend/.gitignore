@@ -25,3 +25,6 @@ yarn-error.log*
 /dist
 \dist
 dist/
+
+#.nyc_output
+.nyc_output/
