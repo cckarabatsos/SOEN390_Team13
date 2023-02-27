@@ -49,7 +49,7 @@ function JobSearchBar({ setJobs }) {
         >
           Search
         </Button>
-
+        
         <select
           category="category"
           id="category"
@@ -61,6 +61,7 @@ function JobSearchBar({ setJobs }) {
           value={category}
           onChange={handleChange}
         >
+          <option value="">Filter By:</option>
           <option value="Location">Location</option>
           <option value="Company">Company</option>
           <option value="Position">Position</option>
