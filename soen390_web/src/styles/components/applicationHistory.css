@@ -1,0 +1,60 @@
+.application-history-container {
+  margin: 0 auto;
+  max-width: 2000px;
+}
+
+.application-history-title {
+  color: #283E4A;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 24px 0 0 0;
+  text-align: left;
+}
+
+.application-history-subtitle {
+  color: #283E4A;
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0;
+  text-align: left;
+}
+
+.application-history-list {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  margin: 24px;
+  padding: 24px;
+}
+
+.application-history-list .job-posting {
+  border-bottom: 1px solid #dce0e0;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+}
+
+.application-history-list .job-posting:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.application-history-list .job-posting h2 {
+  color: #283E4A;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.application-history-list .job-posting p {
+  color: #54698d;
+  font-size: 16px;
+  margin: 12px 0;
+}
+
+.application-history-list .job-posting p span {
+  color: #283E4A;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
