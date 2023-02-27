@@ -106,7 +106,7 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
             };
             let folder: string;
             console.log(type);
-            if (type[0]){
+            if (type[0]) {
                 type = type[0];
             }
             if (type.toUpperCase() == "RESUME") {
@@ -118,6 +118,7 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
             } else {
                 return null;
             }
+            console.log(file.originalname);
             const uploadTask = await ref
                 .child(folder + userID + " - " + file.originalname)
                 .put(buffer, metadata);
@@ -134,6 +135,44 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                 return downloadURL;
             }
             return null;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
+};
+
+export const deleteAccountFile = async (userID: string, type: string) => {
+    try {
+        var user: any = await findUserWithID(userID);
+        if (user === undefined) {
+            return null;
+        }
+        if (user) {
+            let url: string;
+            let casted_user = await user_schema.cast(user);
+            if (type[0]) {
+                type = type[0];
+            }
+            if (type.toUpperCase() == "RESUME") {
+                url = casted_user.resume;
+                casted_user.resume = "";
+            } else if (type.toUpperCase() == "COVERLETTER") {
+                url = casted_user.coverLetter;
+                casted_user.coverLetter = "";
+            } else if (type.toUpperCase() == "PICTURE") {
+                url = casted_user.picture;
+                casted_user.picture = "";
+            } else {
+                return null;
+            }
+            var fileRef = ref.storage.refFromURL(url);
+            fileRef.delete().then(function () {
+                updateUser(casted_user, userID);
+                console.log("File successfully deleted.");
+            })
+            return "Success";
         }
     } catch (error) {
         console.log(error);
