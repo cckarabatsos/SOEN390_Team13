@@ -151,10 +151,10 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
     });
-    describe("Post user/accountFile/:userID", async function () {
+    describe("Get user/accountFile/:userID", async function () {
         it("responds with 404 if wrong type", async function () {
             await request(url)
-                .get(`/user/accountFile/${id}?type=${"badtype"}`)
+                .get(`/user/accountFile/${id}?type=badtype`)
                 .expect(404);
         });
         it("responds with 404 if wrong user id", async function () {

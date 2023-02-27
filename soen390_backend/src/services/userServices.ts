@@ -93,11 +93,11 @@ export const deleteUserWithId = async (userID: string) => {
 };
 export const storeAccountFile = async (userID: string, type: string, file: any) => {
     try {
-        if (!file) {
+        let user = await findUserWithID(userID);
+        if (!file || (user === undefined)) {
             return null;
         }
 
-        var user: any = await findUserWithID(userID);
         if (user) {
             let casted_user = await user_schema.cast(user);
             const buffer = Buffer.from(file.buffer);
@@ -106,7 +106,7 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
             };
             let folder: string;
             console.log(type);
-            if (type[0]){
+            if (type[0]) {
                 type = type[0];
             }
             if (type.toUpperCase() == "RESUME") {
@@ -145,6 +145,9 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
 export const findAccountFile = async (userID: string, type: string) => {
     try {
         var user: any = await findUserWithID(userID);
+        if (user === undefined) {
+            return null;
+        }
         if (user) {
             let casted_user = await user_schema.cast(user);
             if (type.toUpperCase() === "RESUME") {
@@ -156,8 +159,7 @@ export const findAccountFile = async (userID: string, type: string) => {
             } else if (type.toUpperCase() === "PICTURE") {
                 console.log(casted_user.picture);
                 return casted_user.picture;
-            }
-            else {
+            } else {
                 return null;
             }
         }

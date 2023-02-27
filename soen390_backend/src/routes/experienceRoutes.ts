@@ -28,7 +28,7 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
                 Response: "Success",
                 experience
             });
-        } else if (status !== 404) {
+        } else if (status == 404) {
             res.sendStatus(status);
         }
     } catch (err: any) {
@@ -39,11 +39,14 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
 experience.post("/remove/:docID", async (req: Request, res: Response) => {
     let experienceID = req.params.docID;
     try {
-        let status,
-            data = await deleteExperience(experienceID);
-        res.json({ data });
+        const experience: Experience = await deleteExperience(experienceID);
+        const status: number = experience[0];
         if (status == 200) {
             res.sendStatus(200);
+            res.json({
+                Response: "Success",
+                experience
+            });
         } else if (status == 404) {
             res.sendStatus(404);
         }
@@ -56,11 +59,11 @@ experience.get("/get/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type = req.query.type as string;
     try {
-        let status,
-            data = await getExperiences(userID, type);
-        res.json(data);
+        const experience: Experience = await getExperiences(userID, type);
+        const status: number = experience[0];
         if (status == 200) {
             res.sendStatus(200);
+            res.json(experience[1]);
         }
         if (status == 404) {
             res.sendStatus(404);
