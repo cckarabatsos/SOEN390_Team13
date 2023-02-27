@@ -20,6 +20,7 @@ import {
     getAccountFile,
     uploadAccountFile,
     hasFile,
+    removeAccountFile,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -107,6 +108,23 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
         res.json({ data });
         if (status == 200) {
             res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let success: any = await removeAccountFile(userID, type);
+        let status: number = success[0];
+        if (status == 200) {
+            res.status(200);
+            res.json(success[1]);
         } else if (status == 404) {
             res.sendStatus(404);
         }

@@ -152,9 +152,6 @@ export const deleteAccountFile = async (userID: string, type: string) => {
         if (user) {
             let url: string;
             let casted_user = await user_schema.cast(user);
-            if (type[0]) {
-                type = type[0];
-            }
             if (type.toUpperCase() == "RESUME") {
                 url = casted_user.resume;
                 casted_user.resume = "";
@@ -168,10 +165,10 @@ export const deleteAccountFile = async (userID: string, type: string) => {
                 return null;
             }
             var fileRef = ref.storage.refFromURL(url);
-            fileRef.delete().then(function () {
+            await fileRef.delete().then(function () {
                 updateUser(casted_user, userID);
                 console.log("File successfully deleted.");
-            })
+            });
             return "Success";
         }
     } catch (error) {
