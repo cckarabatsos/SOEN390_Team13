@@ -10,6 +10,7 @@ import {
     manageUserInvitation,
     getUserInvitationsOrContacts,
     getFilteredUsers,
+    deleteAccountFile,
 } from "../services/userServices";
 import dotenv from "dotenv";
 import {
@@ -95,6 +96,14 @@ export async function uploadAccountFile(
         return [404, { msg: "File storage failed." }];
     } else {
         return [200, url];
+    }
+}
+export async function removeAccountFile(userID: string, type: string) {
+    let success = await deleteAccountFile(userID, type);
+    if (success === null) {
+        return [404, { msg: "File retrieval failed." }];
+    } else {
+        return [200, success];
     }
 }
 export async function getAccountFile(userID: string, type: string) {
