@@ -36,7 +36,6 @@ export async function getSkills(userID: string) {
     let skills = await retrieveSkills(userID);
     console.log(skills);
     if (skills !== null) {
-        console.log("In controller method to get skills");
         return [200, skills];
     } else {
         return [404, { msg: "Skills not found" }];
