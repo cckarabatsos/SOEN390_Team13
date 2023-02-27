@@ -1,6 +1,7 @@
-.application-history-container {
+/* .application-history-container {
   margin: 0 auto;
   max-width: 2000px;
+  
 }
 
 .application-history-title {
@@ -56,5 +57,60 @@
   color: #283E4A;
   font-weight: 500;
   margin-right: 8px;
+} */
+.application-history-container {
+  margin: 0 auto;
+  max-width: 2000px;
+}
+
+.application-history-title {
+  color: #283E4A;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 24px 0 0 0;
+  text-align: left;
+}
+
+.application-history-subtitle {
+  color: #283E4A;
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0;
+  text-align: left;
+}
+
+.application-history-list {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  margin: 24px;
+  padding: 24px;
+  display: flex; /* add this to display as flex container */
+  flex-direction: row; /* add this to make the flex items display horizontally */
+}
+
+.application-history-list .column {
+  display: flex; /* add this to make each column a flex container */
+  flex-direction: column; /* add this to make each column display vertically */
+  flex-grow: 1; /* add this to make each column take up equal amount of space */
+}
+
+.application-history-list .column:not(:last-child) {
+  margin-right: 24px; /* add this to add spacing between columns */
+}
+
+.application-history-list .column h2 {
+  color: #283E4A;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+  text-align: left;
+}
+
+.application-history-list .column p {
+  color: #54698d;
+  font-size: 16px;
+  margin: 0;
+  text-align: left;
 }
 
