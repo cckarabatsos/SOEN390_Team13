@@ -42,7 +42,7 @@ experience.post("/remove/:docID", async (req: Request, res: Response) => {
         const experience: Experience = await deleteExperience(experienceID);
         const status: number = experience[0];
         if (status == 200) {
-            res.sendStatus(200);
+            res.status(200);
             res.json({
                 Response: "Success",
                 experience
@@ -62,7 +62,7 @@ experience.get("/get/:userID", async (req: Request, res: Response) => {
         const experience: Experience = await getExperiences(userID, type);
         const status: number = experience[0];
         if (status == 200) {
-            res.sendStatus(200);
+            res.status(200);
             res.json(experience[1]);
         }
         if (status == 404) {

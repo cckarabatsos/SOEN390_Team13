@@ -35,7 +35,7 @@ award.post("/remove/:docID", async (req: Request, res: Response) => {
         const award: Award = await deleteAward(awardID);
         const status: number = award[0];
         if (status == 200) {
-            res.sendStatus(200);
+            res.status(200);
             res.json({
                 Response: "Success",
                 award

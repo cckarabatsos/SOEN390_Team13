@@ -17,7 +17,7 @@ export const findAwardWithID = async (awardID: string) => {
 };
 export const storeAward = async (award: Award) => {
     try {
-        let user = await findAwardWithID(award.ownerID);
+        let user = await findUserWithID(award.ownerID);
         if (user === undefined) {
             return null;
         }
