@@ -19,7 +19,7 @@ export async function createExperience(
             atPresent, startDate, endDate, company, position, type, ownerID
         });
         let experience = await storeExperience(newExperience);
-        if (experience) {
+        if (experience !== null) {
             return [200, experience];
         }
         else {
@@ -31,6 +31,9 @@ export async function createExperience(
 }
 export async function deleteExperience(experienceID: string) {
     let experience = await deleteExperienceWithId(experienceID);
+    if (experience === null) {
+        return [404, { msg: "Experience not found" }];
+    }
     let castedExperience: Experience = await experience_schema.cast(experience);
 
     if (experience) {
@@ -42,7 +45,7 @@ export async function deleteExperience(experienceID: string) {
 export async function getExperiences(userID: string, type: string) {
     let experiences = await retrieveExperiences(userID, type);
 
-    if (experiences) {
+    if (experiences !== null) {
         return [200, experiences];
     } else {
         return [404, { msg: "Experiences of type \"" + type + "\" not found" }];

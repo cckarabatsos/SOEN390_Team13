@@ -2,6 +2,7 @@ import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
 import { Experience, /*experience_schema*/ } from "../models/Experience";
+import { findUserWithID } from "./userServices";
 
 const db = firebase.firestore();
 
@@ -16,6 +17,10 @@ export const findExperienceWithID = async (experienceID: string) => {
 };
 export const storeExperience = async (experience: Experience) => {
     try {
+        let user = await findUserWithID(experience.ownerID);
+        if (user === undefined) {
+            return null;
+        }
         var document = await db.collection("experiences").add({
             atPresent: experience.atPresent,
             startDate: experience.startDate,
@@ -47,6 +52,8 @@ export const deleteExperienceWithId = async (experienceID: string) => {
                         " successfully deleted."
                     );
                 });
+        } else {
+            return null;
         }
     } catch (error) {
         console.log(error);
@@ -55,6 +62,10 @@ export const deleteExperienceWithId = async (experienceID: string) => {
     return data;
 };
 export const retrieveExperiences = async (userID: string, type: string) => {
+    let user = await findUserWithID(userID);
+    if (user === undefined) {
+        return null;
+    }
     let experiencesRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("experiences");
 

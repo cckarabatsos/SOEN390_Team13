@@ -54,10 +54,7 @@ skill.get("/get/:userID", async (req: Request, res: Response) => {
         const status: number = skill[0];
         if (status == 200) {
             res.status(200);
-            res.json({
-                Response: "Success",
-                skill,
-            });
+            res.json(skill[1]);
         } else if (status == 404) {
             res.sendStatus(status);
         }
