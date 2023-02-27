@@ -8,11 +8,13 @@ import background from "../assets/undraw_login_re_4vu2.svg";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
+import { useTranslation } from "react-i18next";
 
 function MainTitle(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
 
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const signInUser = async () => {
@@ -43,7 +45,7 @@ function MainTitle(props) {
             <div className="login-form">
               <Grid container spacing={2}>
                 <Grid className="field-name" item xs={4}>
-                  Email Address
+                  {t("emailText")}
                 </Grid>
                 <Grid className="field-input" item xs={8}>
                   <div className="input-margin">
@@ -52,7 +54,7 @@ function MainTitle(props) {
                       autoFocus
                       className="inputRounded"
                       margin="dense"
-                      label="Email Address"
+                      label={t("emailText")}
                       type="email"
                       variant="outlined"
                       size="small"
@@ -62,7 +64,7 @@ function MainTitle(props) {
                   </div>
                 </Grid>
                 <Grid className="field-name" item xs={4}>
-                  Password
+                  {t("passwordText")}
                 </Grid>
                 <Grid className="field-input" item xs={6}>
                   <div className="input-margin">
@@ -71,7 +73,7 @@ function MainTitle(props) {
                       className="inputRounded"
                       autoFocus
                       margin="dense"
-                      label="Password"
+                      label={t("passwordText")}
                       type="password"
                       variant="outlined"
                       size="small"
