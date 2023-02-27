@@ -31,11 +31,14 @@ skill.post("/:ownerID", async (req: Request, res: Response) => {
 skill.post("/remove/:docID", async (req: Request, res: Response) => {
     let skillID = req.params.docID;
     try {
-        let status,
-            data = await deleteSkill(skillID);
-        res.json({ data });
+        const skill: Skill = await deleteSkill(skillID);
+        const status: number = skill[0];
         if (status == 200) {
             res.sendStatus(200);
+            res.json({
+                Response: "Success",
+                skill
+            });
         } else if (status == 404) {
             res.sendStatus(404);
         }
@@ -49,7 +52,6 @@ skill.get("/get/:userID", async (req: Request, res: Response) => {
     try {
         const skill: Skill = await getSkills(userID);
         const status: number = skill[0];
-        console.log(status);
         if (status == 200) {
             res.status(200);
             res.json({

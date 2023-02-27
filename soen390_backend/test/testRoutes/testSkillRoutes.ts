@@ -58,13 +58,13 @@ describe("Test Skill Routes", function () {
                 .expect(404);
         });
     });
-    describe("Get skill/remove/:docID", function () {
+    describe("Post skill/remove/:docID", function () {
         it("responds with 200 when skills for a specific user", async function () {
             let skillID = await storeSkill(skill);
-            await request(url).get(`/skill/remove/${skillID}`).expect(200);
+            await request(url).post(`/skill/remove/${skillID}`).expect(200);
         });
         it("responds with a 404 when skill with passed id does not exist", async function () {
-            await request(url).get(`/skill/remove/${badUserID}`).expect(404);
+            await request(url).post(`/skill/remove/${badUserID}`).expect(404);
         });
     });
 });

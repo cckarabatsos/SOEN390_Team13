@@ -21,9 +21,12 @@ export async function createSkill(name: string, ownerID: string) {
 }
 export async function deleteSkill(skillID: string) {
     let skill = await deleteSkillWithId(skillID);
+    if (skill === null) {
+        return [404, { msg: "Skill not found" }];
+    }
     let castedSkill: Skill = await skill_schema.cast(skill);
 
-    if (skill) {
+    if (skill !== null) {
         return [200, castedSkill];
     } else {
         return [404, { msg: "Skill not found" }];

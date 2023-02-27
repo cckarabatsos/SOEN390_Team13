@@ -55,6 +55,9 @@ export const deleteSkillWithId = async (skillID: string) => {
                     );
                 });
         }
+        else {
+            return null;
+        }
     } catch (error) {
         console.log(error);
         throw error;
@@ -64,7 +67,6 @@ export const deleteSkillWithId = async (skillID: string) => {
 export const retrieveSkills = async (userID: string) => {
     let user = await findUserWithID(userID);
     if (user === undefined) {
-        console.log("In get undefined if statement");
         return null;
     }
     let skillsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
