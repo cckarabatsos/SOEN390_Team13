@@ -91,7 +91,7 @@ export async function uploadAccountFile(
 ) {
     let url = await storeAccountFile(userID, type, file);
     console.log("File upload finished.");
-    if (url == null) {
+    if (url === null) {
         return [404, { msg: "File storage failed." }];
     } else {
         return [200, url];
@@ -99,7 +99,7 @@ export async function uploadAccountFile(
 }
 export async function getAccountFile(userID: string, type: string) {
     let downloadUrl = await findAccountFile(userID, type);
-    if (downloadUrl == null) {
+    if (downloadUrl === null) {
         return [404, { msg: "File retrieval failed." }];
     } else {
         return [200, downloadUrl];
