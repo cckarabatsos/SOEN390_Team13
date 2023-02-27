@@ -42,8 +42,8 @@ export async function createJobPosting(
         throw err;
     }
 }
-export async function deleteJobPosting(jobPostingID: string) {
-    let jobPosting = await deleteJobPostingWithId(jobPostingID);
+export async function deleteJobPosting(jobPostingID: string, email: string) {
+    let jobPosting = await deleteJobPostingWithId(jobPostingID, email);
     let castedJobPosting: Jobposting = await jobposting_schema.cast(jobPosting);
     //console.log(user);
     if (jobPosting) {

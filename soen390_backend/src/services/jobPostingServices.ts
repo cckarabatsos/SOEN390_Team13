@@ -32,10 +32,18 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
     }
     return document.id;
 };
-export const deleteJobPostingWithId = async (postingID: string) => {
+export const deleteJobPostingWithId = async (
+    postingID: string,
+    email: string
+) => {
     try {
         var data: any = await findJobpostingWithID(postingID);
         if (data !== undefined) {
+            if (data.email !== email) {
+                const error: any = new Error("Not the good company");
+                error.code = "401";
+                throw error;
+            }
             db.collection("jobpostings")
                 .doc(postingID)
                 .delete()
