@@ -63,7 +63,7 @@ export const deleteExperienceWithId = async (experienceID: string) => {
 };
 export const retrieveExperiences = async (userID: string, type: string) => {
     let user = await findUserWithID(userID);
-    if (user === undefined) {
+    if ((user === undefined) || (type !== "Education" && type !== "Work")) {
         return null;
     }
     let experiencesRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
