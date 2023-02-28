@@ -4,7 +4,6 @@ import request from "supertest";
 import { storeSkill } from "../../src/services/skillServices";
 import { Skill } from "../../src/models/Skill";
 const it = mocha.it;
-console.log(app);
 const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
@@ -12,7 +11,7 @@ const userID2 = "Fh2XqT92iexcowGTe4th";
 const badUserID = "5";
 const skill: Skill = {
     name: "skill",
-    ownerID: userID2
+    ownerID: userID2,
 };
 
 describe("Test Skill Routes", function () {
