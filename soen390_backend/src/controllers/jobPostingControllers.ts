@@ -10,26 +10,30 @@ import {
     storeJobPosting,
 } from "../services/jobPostingServices";
 export async function createJobPosting(
+    email: string,
     location: string,
     position: string,
     salary: string,
     company: string,
-    contract: string,
     description: string,
-    email: string,
-    category: string,
+    remote: boolean,
+    contract: boolean,
+    duration: any,
+    type: any,
     jobPosterID: string
 ) {
     try {
-        let newJobPosting: Jobposting = jobposting_schema.cast({
+        let newJobPosting: Jobposting = jobposting_schema.validateSync({
+            email,
             location,
             position,
             salary,
             company,
-            contract,
             description,
-            email,
-            category,
+            remote,
+            contract,
+            duration,
+            type,
             jobPosterID,
         });
         let jobPosting = await storeJobPosting(newJobPosting);

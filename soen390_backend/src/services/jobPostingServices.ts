@@ -14,14 +14,16 @@ export const findJobpostingWithID = async (postingID: string) => {
 export const storeJobPosting = async (newJobPosting: Jobposting) => {
     try {
         var document = await db.collection("jobpostings").add({
+            email: newJobPosting.email,
             location: newJobPosting.location,
             position: newJobPosting.position,
             salary: newJobPosting.salary,
             company: newJobPosting.company,
-            contract: newJobPosting.contract,
             description: newJobPosting.description,
-            email: newJobPosting.email,
-            category: newJobPosting.category,
+            remote: newJobPosting.remote,
+            contract: newJobPosting.contract,
+            duration: newJobPosting.duration,
+            type: newJobPosting.type,
             jobPosterID: newJobPosting.jobPosterID,
         });
         await document.update({ postingID: document.id });
@@ -66,11 +68,11 @@ export const filterJobPostings = async (filter: Filter) => {
         db.collection("jobpostings");
 
     if (filter.category) {
-        jobPostingsRef = jobPostingsRef.where(
-            "category",
-            "==",
-            filter.category
-        );
+        const prefix = filter.category;
+        const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
+        jobPostingsRef = jobPostingsRef
+            .where("category", ">=", prefix)
+            .where("category", "<", prefixEnd);
     }
     if (filter.limit) {
         jobPostingsRef = jobPostingsRef.limit(filter.limit);

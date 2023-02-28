@@ -308,13 +308,21 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
 user.post("/api/posting/:email", async (req: Request, res: Response) => {
     console.log("I AM IN");
     let email: string = req.params.email;
-    let location: string = req.body.location;
-    let position: string = req.body.position;
+    let location: string = req.body.location.toLowerCase();
+    let position: string = req.body.position.toLowerCase();
     let salary: string = req.body.salary;
     let company: string = req.body.company;
-    let contract: string = req.body.contract;
     let description: string = req.body.description;
-    let category: string = req.body.category;
+    let remote: boolean = req.body.remote;
+    let contract: boolean = req.body.contract;
+    let duration: any = null;
+    if (req.body.duration) {
+        duration = req.body.duration;
+    }
+    let type: any = null;
+    if (req.body.type) {
+        type = req.body.type;
+    }
     console.log(email);
     const userArr: User = await getUserWithEmail(email).then();
     console.log(userArr);
@@ -329,16 +337,19 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     } else {
         try {
             let data: any = await createJobPosting(
+                email,
                 location,
                 position,
                 salary,
                 company,
-                contract,
                 description,
-                email,
-                category,
+                remote,
+                contract,
+                duration,
+                type,
                 userArr[1].data.userID
             );
+
             if (data[0] == 200) {
                 console.log(data[1]);
                 res.status(data[0]);
