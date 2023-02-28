@@ -78,27 +78,27 @@
   margin: 0;
   text-align: left;
 }
-
+/* box below the h2 subtile */
 .application-history-list {
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
   margin: 24px;
   padding: 24px;
-  display: flex; /* add this to display as flex container */
-  flex-direction: row; /* add this to make the flex items display horizontally */
+  display: flex; 
+  flex-direction: row; /*  this makes the flex items display horizontally */
 }
 
 .application-history-list .column {
-  display: flex; /* add this to make each column a flex container */
-  flex-direction: column; /* add this to make each column display vertically */
-  flex-grow: 1; /* add this to make each column take up equal amount of space */
+  display: flex; /*  this makes each column a flex container */
+  flex-direction: column; /* this makes each column display vertically */
+  flex-grow: 1; /* this  makes each column take up equal amount of space */
 }
 
 .application-history-list .column:not(:last-child) {
-  margin-right: 24px; /* add this to add spacing between columns */
+  margin-right: 240px; /* this adds spacing between columns */
 }
-
+/* this represents the column names position company etc */
 .application-history-list .column h2 {
   color: #283E4A;
   font-size: 20px;
@@ -106,11 +106,47 @@
   margin: 0 0 12px 0;
   text-align: left;
 }
-
+/* this represents the text in the columns software engineer,brp etc */
 .application-history-list .column p {
   color: #54698d;
   font-size: 16px;
   margin: 0;
   text-align: left;
 }
+/* the 3 dot buttons */
+.action-container button {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: #54698d;
+  cursor: pointer;
+  outline: none;
+}
+/* container that holds the view application and withdraw */
+.options-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 250px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  z-index: 1;
+}
+/* view application and withdraw application buttons */
+.options-container button {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  color: #54698d;
+  cursor: pointer;
+  outline: none;
+  padding: 16px 24px;
+  text-align: left;
+  transition: all 0.2s ease-in-out;
+}
+
+
+
 

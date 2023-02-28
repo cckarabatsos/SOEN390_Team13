@@ -13,7 +13,7 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
-import ApplicationHistory from "./applicationHistory";
+import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
 
 function UserProfile(props) {
