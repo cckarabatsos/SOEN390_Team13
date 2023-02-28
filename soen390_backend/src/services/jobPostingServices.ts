@@ -67,12 +67,35 @@ export const filterJobPostings = async (filter: Filter) => {
     let jobPostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("jobpostings");
 
-    if (filter.category) {
-        const prefix = filter.category;
+    if (filter.location) {
+        const prefix = filter.location.toLowerCase();
+        const prefixEnd = prefix + "\uf8ff";
+        jobPostingsRef = jobPostingsRef
+            .where("location", ">=", prefix)
+            .where("location", "<", prefixEnd);
+    }
+    if (filter.company) {
+        const prefix = filter.company.toLowerCase();
+        const prefixEnd = prefix + "\uf8ff";
+        jobPostingsRef = jobPostingsRef
+            .where("company", ">=", prefix)
+            .where("company", "<", prefixEnd);
+    }
+    if (filter.position) {
+        const prefix = filter.position.toLowerCase();
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         jobPostingsRef = jobPostingsRef
-            .where("category", ">=", prefix)
-            .where("category", "<", prefixEnd);
+            .where("positon", ">=", prefix)
+            .where("position", "<", prefixEnd);
+    }
+
+    if (filter.type) {
+        const type = filter.type.toLowerCase();
+        jobPostingsRef = jobPostingsRef.where("type", "==", type);
+    }
+    if (filter.remote) {
+        const remote = filter.remote;
+        jobPostingsRef = jobPostingsRef.where("remote", "==", remote);
     }
     if (filter.limit) {
         jobPostingsRef = jobPostingsRef.limit(filter.limit);

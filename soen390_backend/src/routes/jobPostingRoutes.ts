@@ -29,7 +29,6 @@ jobposting.get("/filter/products", async (req: Request, res: Response) => {
     for (const [key, value] of Object.entries(req.query)) {
         filter[key] = value;
     }
-    console.log(req.query);
     try {
         let status,
             data = await getFilteredJobPostings(filter);

@@ -36,7 +36,6 @@ export const filter_schema = yup.object().shape({
     location: yup.string(),
     company: yup.string(),
     position: yup.string(),
-    contract: yup.boolean(),
     remote: yup.boolean(),
     type: yup.string(),
     limit: yup.number().positive().integer().default(10),
