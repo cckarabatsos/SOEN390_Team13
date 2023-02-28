@@ -10,26 +10,30 @@ import {
     storeJobPosting,
 } from "../services/jobPostingServices";
 export async function createJobPosting(
+    email: string,
     location: string,
     position: string,
     salary: string,
     company: string,
-    contract: string,
     description: string,
-    email: string,
-    category: string,
+    remote: boolean,
+    contract: boolean,
+    duration: any,
+    type: any,
     jobPosterID: string
 ) {
     try {
-        let newJobPosting: Jobposting = jobposting_schema.cast({
+        let newJobPosting: Jobposting = jobposting_schema.validateSync({
+            email,
             location,
             position,
             salary,
             company,
-            contract,
             description,
-            email,
-            category,
+            remote,
+            contract,
+            duration,
+            type,
             jobPosterID,
         });
         let jobPosting = await storeJobPosting(newJobPosting);
@@ -42,8 +46,8 @@ export async function createJobPosting(
         throw err;
     }
 }
-export async function deleteJobPosting(jobPostingID: string) {
-    let jobPosting = await deleteJobPostingWithId(jobPostingID);
+export async function deleteJobPosting(jobPostingID: string, email: string) {
+    let jobPosting = await deleteJobPostingWithId(jobPostingID, email);
     let castedJobPosting: Jobposting = await jobposting_schema.cast(jobPosting);
     //console.log(user);
     if (jobPosting) {
@@ -53,14 +57,15 @@ export async function deleteJobPosting(jobPostingID: string) {
     }
 }
 export async function getFilteredJobPostings(filter: Filter) {
-    let stripped_filer = filter_schema.cast(filter, {
+    let strippedJobFilter = filter_schema.validateSync(filter, {
         stripUnknown: true,
     });
-    let [err, error_data] = validateFilterData(stripped_filer);
+    console.log(strippedJobFilter);
+    let [err, error_data] = validateFilterData(strippedJobFilter);
     if (err) {
         return [400, error_data];
     } else {
-        let products = await filterJobPostings(stripped_filer);
+        let products = await filterJobPostings(strippedJobFilter);
         // parse_links(products);
         return [200, products];
     }

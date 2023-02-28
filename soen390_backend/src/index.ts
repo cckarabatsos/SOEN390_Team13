@@ -66,6 +66,8 @@ const skill = require("./routes/skillRoutes");
 app.use("/skill", skill);
 const experience = require("./routes/experienceRoutes");
 app.use("/experience", experience);
+const award = require("./routes/awardRoutes");
+app.use("/award", award);
 
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {

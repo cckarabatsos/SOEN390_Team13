@@ -2,7 +2,6 @@ import * as mocha from "mocha";
 import app from "../../src/index";
 import request from "supertest";
 const it = mocha.it;
-console.log(app);
 const url = "http://localhost:4000";
 let server: any;
 describe("Test Job Posting Routes", function () {

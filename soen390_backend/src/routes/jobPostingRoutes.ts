@@ -6,11 +6,12 @@ import {
 const jobposting = express.Router();
 jobposting.use(express.json());
 
-jobposting.post("/remove/:docID", async (req: Request, res: Response) => {
-    let postID = req.params.docID;
+jobposting.post("/remove/:email", async (req: Request, res: Response) => {
+    let email = req.params.email;
+    let postID = req.body.docID;
     try {
         let status,
-            data = await deleteJobPosting(postID);
+            data = await deleteJobPosting(postID, email);
         res.json({ data });
         if (status == 200) {
             res.sendStatus(200);
@@ -23,12 +24,10 @@ jobposting.post("/remove/:docID", async (req: Request, res: Response) => {
     }
 });
 jobposting.get("/filter/products", async (req: Request, res: Response) => {
-    console.log("hello")
     var filter: any = {};
     for (const [key, value] of Object.entries(req.query)) {
         filter[key] = value;
     }
-    console.log(req.query);
     try {
         let status,
             data = await getFilteredJobPostings(filter);

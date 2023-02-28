@@ -3,7 +3,6 @@ import request from "supertest";
 import { expect } from "chai";
 import app from "../../src/index";
 const it = mocha.it;
-console.log(app);
 const url = "http://localhost:4000";
 let server: any;
 const id = "18JRHKkLE2t50nE17SHc";
@@ -57,7 +56,6 @@ describe("Test User Routes", function () {
     });
     describe("Post user/api/logout", function () {
         it("responds with 200 and logs out user if no error", async function () {
-            console.log("Hello from logout route");
             await request(url)
                 .post("/user/api/logout")
                 .set("Cookie", ["FrontendUser=somevalue; Path=/; HttpOnly"])
@@ -151,10 +149,10 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
     });
-    describe("Post user/accountFile/:userID", async function () {
+    describe("Get user/accountFile/:userID", async function () {
         it("responds with 404 if wrong type", async function () {
             await request(url)
-                .get(`/user/accountFile/${id}?type=${"badtype"}`)
+                .get(`/user/accountFile/${id}?type=badtype`)
                 .expect(404);
         });
         it("responds with 404 if wrong user id", async function () {

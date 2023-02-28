@@ -7,18 +7,38 @@ export const jobposting_schema = yup
         position: yup.string().required(),
         salary: yup.string().required(),
         company: yup.string().required(),
-        contract: yup.string().required(),
+        contract: yup.boolean().required(),
+        duration: yup.string().when("contract", {
+            is: true,
+            then: yup.string().required(),
+            otherwise: yup.string().notRequired(),
+        }),
+        type: yup.string().when("contract", {
+            is: true,
+            then: yup
+                .string()
+                .test({
+                    name: "type-equals-contract",
+                    message: "type must be 'contract' when contract is true",
+                    test: (value) => value === "contract",
+                })
+                .required(),
+            otherwise: yup.string().notRequired(),
+        }),
+        remote: yup.boolean().required(),
         description: yup.string().required(),
         email: yup.string().required(),
-        category: yup.string().required(),
         jobPosterID: yup.string().required(),
     })
     .required();
 
 export const filter_schema = yup.object().shape({
-    // name: yup.string(),
-    category: yup.string(),
-    limit: yup.number().positive().integer().default(20),
+    location: yup.string(),
+    company: yup.string(),
+    position: yup.string(),
+    remote: yup.boolean(),
+    type: yup.string(),
+    limit: yup.number().positive().integer().default(10),
     skip: yup.number().integer().default(0),
 });
 
