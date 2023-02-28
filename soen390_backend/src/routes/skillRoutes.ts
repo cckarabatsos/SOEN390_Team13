@@ -34,7 +34,7 @@ skill.post("/remove/:docID", async (req: Request, res: Response) => {
         const skill: Skill = await deleteSkill(skillID);
         const status: number = skill[0];
         if (status == 200) {
-            res.sendStatus(200);
+            res.status(200);
             res.json({
                 Response: "Success",
                 skill
