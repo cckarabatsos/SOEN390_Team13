@@ -70,6 +70,39 @@
 					"response": []
 				},
 				{
+					"name": "Remove Account File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/removeAccountFile/:userID?type=resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"removeAccountFile",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "resume"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Hearbeat",
 					"request": {
 						"method": "GET",
@@ -420,7 +453,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"location\": \"MTL\",\r\n    \"position\": \"CEO\",\r\n    \"salary\": \"200k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"contract\": \"4 years\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"category\": \"Big boss\"\r\n}",
+							"raw": "{\r\n    \"location\": \"MTL\",\r\n    \"position\": \"intern\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -443,7 +476,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "LinkedOutInc@gmail.com"
+									"value": "LinkedOutInc@gmail.com1"
 								}
 							]
 						}
@@ -455,8 +488,17 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"docID\":\"3NXfI22nyCqzHMJI9SmZ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:7000/jobposting/remove/:docID",
+							"raw": "http://localhost:7000/jobposting/remove/:email",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -465,12 +507,294 @@
 							"path": [
 								"jobposting",
 								"remove",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "LinkedOutInc@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Skill",
+			"item": [
+				{
+					"name": "Post Skill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"C#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/skill/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Skill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/skill/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								"remove",
 								":docID"
 							],
 							"variable": [
 								{
 									"key": "docID",
-									"value": ""
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Skills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/skill/get/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								"get",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Award",
+			"item": [
+				{
+					"name": "Post Award",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Governor's Award\",\r\n    \"description\": \"Some award given to a person invested in the community.\",\r\n    \"timestamp\": \"15-05-2021\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/award/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"award",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Award",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/award/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"award",
+								"remove",
+								":docID"
+							],
+							"variable": [
+								{
+									"key": "docID",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Awards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/award/get/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"award",
+								"get",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Experience",
+			"item": [
+				{
+					"name": "Post Experience",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/experience/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"experience",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Experience",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/experience/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"experience",
+								"remove",
+								":docID"
+							],
+							"variable": [
+								{
+									"key": "docID",
+									"value": "wLGMwFdNWEjKRPfhqDQZ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Experiences",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/skill/get/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								"get",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
 								}
 							]
 						}
