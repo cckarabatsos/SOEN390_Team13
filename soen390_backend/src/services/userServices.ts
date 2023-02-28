@@ -112,10 +112,11 @@ export const storeAccountFile = async (
                 contentType: file.mimetype,
             };
             let folder: string;
-            console.log(type);
-            if (type[0]) {
+            if (Array.isArray(type)) {
                 type = type[0];
             }
+            console.log(type);
+            deleteAccountFile(userID, type);
             if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {
@@ -159,6 +160,9 @@ export const deleteAccountFile = async (userID: string, type: string) => {
         if (user) {
             let url: string;
             let casted_user = await user_schema.cast(user);
+            if (Array.isArray(type)) {
+                type = type[0];
+            }
             if (type.toUpperCase() == "RESUME") {
                 url = casted_user.resume;
                 casted_user.resume = "";
