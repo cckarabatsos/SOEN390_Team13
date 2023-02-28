@@ -47,13 +47,10 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
-    console.log(user);
-
     let casted_user: User = await user_schema.cast(user, {
         stripUnknown: false,
     });
     casted_user.password = await hash(casted_user.password, saltRounds);
-    console.log(casted_user);
     user = await new Promise((resolve, _) => {
         findUserWithEmail(casted_user.email, (user) => {
             // console.log(user);
@@ -168,7 +165,7 @@ export async function manageInvite(
     isAccept: boolean
 ) {
     try {
-        console.log(isAccept);
+        // console.log(isAccept);
         await manageUserInvitation(senderEmail, invitedEmail, isAccept);
     } catch (error) {
         return [404, { msg: (error as Error).message }];

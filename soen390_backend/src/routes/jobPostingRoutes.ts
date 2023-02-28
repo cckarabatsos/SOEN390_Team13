@@ -24,7 +24,6 @@ jobposting.post("/remove/:email", async (req: Request, res: Response) => {
     }
 });
 jobposting.get("/filter/products", async (req: Request, res: Response) => {
-    console.log("hello");
     var filter: any = {};
     for (const [key, value] of Object.entries(req.query)) {
         filter[key] = value;

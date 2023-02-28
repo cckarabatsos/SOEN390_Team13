@@ -90,7 +90,6 @@ user.get("/api/login", async (req: Request, res: Response) => {
 user.post("/api/session", [verifyJWT], async (req: Request, res: Response) => {
     try {
         if (hasUser(req)) {
-            console.log(req.user);
             return res.status(200).json(req.user);
         } else {
             throw { msg: "no user" };
@@ -153,8 +152,6 @@ user.post("/api/register", async (req: Request, res: Response) => {
     }
 });
 user.post("/api/logout", async (req: Request, res: Response) => {
-    console.log("We are in ");
-    console.log(await req.cookies.FrontendUser);
     try {
         res.cookie("FrontendUser", "", {
             expires: new Date(Date.now()),
@@ -195,7 +192,6 @@ user.post(
             if (hasFile(req)) {
                 data = await uploadAccountFile(userID, type, req.file);
             }
-            console.log(data);
             status = data[0];
             if (status == 200) {
                 res.sendStatus(200);
@@ -227,7 +223,6 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
                 ID
             ).then();
             const { password, ...newUser } = await newSettings[1];
-            console.log(newSettings);
             res.status(200).json(newUser);
         }
     } catch (err: any) {
@@ -306,7 +301,6 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
 
 //****************Start Job Posting route ********************//
 user.post("/api/posting/:email", async (req: Request, res: Response) => {
-    console.log("I AM IN");
     let email: string = req.params.email;
     let location: string = req.body.location.toLowerCase();
     let position: string = req.body.position.toLowerCase();
@@ -351,7 +345,6 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
             );
 
             if (data[0] == 200) {
-                console.log(data[1]);
                 res.status(data[0]);
                 res.json(data[1]);
             } else {

@@ -41,8 +41,11 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        let pic: string = user.picture ? user.picture :
-            await ref.child("Profile Pictures/blank_profile_pic.png").getDownloadURL();
+        let pic: string = user.picture
+            ? user.picture
+            : await ref
+                  .child("Profile Pictures/blank_profile_pic.png")
+                  .getDownloadURL();
 
         var document = await db.collection("users").add({
             name: user.name,
@@ -91,10 +94,14 @@ export const deleteUserWithId = async (userID: string) => {
     }
     return data;
 };
-export const storeAccountFile = async (userID: string, type: string, file: any) => {
+export const storeAccountFile = async (
+    userID: string,
+    type: string,
+    file: any
+) => {
     try {
         let user = await findUserWithID(userID);
-        if (!file || (user === undefined)) {
+        if (!file || user === undefined) {
             return null;
         }
 
@@ -307,7 +314,6 @@ export async function sendUserInvitation(
 
         //check 3 : check if sender and receiver are already contacts
         if ((senderUser.data as User).contacts.includes(receiverEmail)) {
-            //console.log("error sender and receiver are already friends");
             throw error("error sender and receiver are already friends");
         } else {
             console.log("proceed check 3");
@@ -470,7 +476,6 @@ export async function getFilteredUsers(filter: UserFilter) {
 
     if (filter.email) {
         userRef = userRef.where("email", "==", filter.email);
-
     }
     if (filter.limit) {
         userRef = userRef.limit(filter.limit);

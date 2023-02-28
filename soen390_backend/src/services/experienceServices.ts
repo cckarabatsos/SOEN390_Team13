@@ -1,14 +1,17 @@
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-import { Experience, /*experience_schema*/ } from "../models/Experience";
+import { Experience /*experience_schema*/ } from "../models/Experience";
 import { findUserWithID } from "./userServices";
 
 const db = firebase.firestore();
 
 export const findExperienceWithID = async (experienceID: string) => {
     try {
-        var snapShot = await db.collection("experiences").doc(experienceID).get();
+        var snapShot = await db
+            .collection("experiences")
+            .doc(experienceID)
+            .get();
     } catch (error) {
         console.log(error);
         throw error;
@@ -28,10 +31,10 @@ export const storeExperience = async (experience: Experience) => {
             company: experience.company,
             position: experience.position,
             type: experience.type,
-            ownerID: experience.ownerID
+            ownerID: experience.ownerID,
         });
         await document.update({ experienceID: document.id });
-        console.log("Experience successfully stored with id: " + document.id);
+        // console.log("Experience successfully stored with id: " + document.id);
     } catch (error) {
         console.log(error);
         throw error;
@@ -48,8 +51,8 @@ export const deleteExperienceWithId = async (experienceID: string) => {
                 .then(() => {
                     console.log(
                         "Experience with ID " +
-                        experienceID +
-                        " successfully deleted."
+                            experienceID +
+                            " successfully deleted."
                     );
                 });
         } else {
@@ -63,7 +66,7 @@ export const deleteExperienceWithId = async (experienceID: string) => {
 };
 export const retrieveExperiences = async (userID: string, type: string) => {
     let user = await findUserWithID(userID);
-    if ((user === undefined) || (type !== "Education" && type !== "Work")) {
+    if (user === undefined || (type !== "Education" && type !== "Work")) {
         return null;
     }
     let experiencesRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
@@ -76,7 +79,7 @@ export const retrieveExperiences = async (userID: string, type: string) => {
     }
     const snapshot = await experiencesRef.get();
     const experiences = snapshot.docs.map((doc) => ({
-        ...doc.data()
+        ...doc.data(),
     }));
     return experiences;
 };
