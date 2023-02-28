@@ -6,7 +6,6 @@ import JobSearchBar from "../components/JobSearchBar";
 import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
 import { useState } from "react";
-
 export default function JobSearch() {
  
   const [modalOpen, setModalOpen] = useState(false);
@@ -64,18 +63,39 @@ useEffect(() => {
           />
         )}
 
-        {jobDisplay.map((job) => (
-          <JobPostingComponent
-            key={job.jobPosterID}
-            position={job.position}
-            location={job.location}
-            company={job.company}
-            contract={job.contract}
-            viewDesc={setModalOpen}
-            jobPosterID={job.jobPosterID}
-            setJob={setjobPosterID}
-          ></JobPostingComponent>
-        ))}
+{jobDisplay.map((job) => (
+  <JobPostingComponent
+    key={job.jobPosterID}
+    position={
+      <div>
+        <span style={{fontWeight: 'bold', color: '#0072b1', marginRight: '8px'}}>Position:</span>
+        <span style={{fontWeight: 'normal', color: '#1c1e21'}}>{job.position}</span>
+      </div>
+    }
+    location={
+      <div>
+        <span style={{fontWeight: 'bold', color: '#0072b1', marginRight: '8px'}}>Location:</span>
+        <span style={{fontWeight: 'normal', color: '#1c1e21'}}>{job.location}</span>
+      </div>
+    }
+    company={
+      <div>
+        <span style={{fontWeight: 'bold', color: '#0072b1', marginRight: '8px'}}>Company:</span>
+        <span style={{fontWeight: 'normal', color: '#1c1e21'}}>{job.company}</span>
+      </div>
+    }
+    contract={
+      <div>
+        <span style={{fontWeight: 'bold', color: '#0072b1', marginRight: '8px'}}>Contract:</span>
+        <span style={{fontWeight: 'normal', color: '#1c1e21'}}>{job.contract}</span>
+      </div>
+    }
+    viewDesc={setModalOpen}
+    jobPosterID={job.jobPosterID}
+    setJob={setjobPosterID}
+  ></JobPostingComponent>
+))}
+
       </div>
 
       <SubFooter />
