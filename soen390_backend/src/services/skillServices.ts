@@ -2,6 +2,7 @@ import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
 import { Skill, /*skill_schema*/ } from "../models/Skill";
+import { findUserWithID } from "./userServices";
 
 const db = firebase.firestore();
 
@@ -16,6 +17,10 @@ export const findSkillWithID = async (skillID: string) => {
 };
 export const storeSkill = async (skill: Skill) => {
     try {
+        let user = await findUserWithID(skill.ownerID);
+        if (user === undefined) {
+            return null;
+        }
         let skills = await retrieveSkills(skill.ownerID);
         if (skills) {
             if (skills.length >= 10) {
@@ -50,6 +55,9 @@ export const deleteSkillWithId = async (skillID: string) => {
                     );
                 });
         }
+        else {
+            return null;
+        }
     } catch (error) {
         console.log(error);
         throw error;
@@ -57,6 +65,10 @@ export const deleteSkillWithId = async (skillID: string) => {
     return data;
 };
 export const retrieveSkills = async (userID: string) => {
+    let user = await findUserWithID(userID);
+    if (user === undefined) {
+        return null;
+    }
     let skillsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("skills");
 

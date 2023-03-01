@@ -41,8 +41,11 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        let pic: string = user.picture ? user.picture :
-            await ref.child("Profile Pictures/blank_profile_pic.png").getDownloadURL();
+        let pic: string = user.picture
+            ? user.picture
+            : await ref
+                  .child("Profile Pictures/blank_profile_pic.png")
+                  .getDownloadURL();
 
         var document = await db.collection("users").add({
             name: user.name,
@@ -91,13 +94,17 @@ export const deleteUserWithId = async (userID: string) => {
     }
     return data;
 };
-export const storeAccountFile = async (userID: string, type: string, file: any) => {
+export const storeAccountFile = async (
+    userID: string,
+    type: string,
+    file: any
+) => {
     try {
-        if (!file) {
+        let user = await findUserWithID(userID);
+        if (!file || user === undefined) {
             return null;
         }
 
-        var user: any = await findUserWithID(userID);
         if (user) {
             let casted_user = await user_schema.cast(user);
             const buffer = Buffer.from(file.buffer);
@@ -105,10 +112,11 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
                 contentType: file.mimetype,
             };
             let folder: string;
-            console.log(type);
-            if (type[0]){
+            if (Array.isArray(type)) {
                 type = type[0];
             }
+            console.log(type);
+            deleteAccountFile(userID, type);
             if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {
@@ -118,6 +126,7 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
             } else {
                 return null;
             }
+            console.log(file.originalname);
             const uploadTask = await ref
                 .child(folder + userID + " - " + file.originalname)
                 .put(buffer, metadata);
@@ -142,9 +151,50 @@ export const storeAccountFile = async (userID: string, type: string, file: any) 
     return null;
 };
 
+export const deleteAccountFile = async (userID: string, type: string) => {
+    try {
+        var user: any = await findUserWithID(userID);
+        if (user === undefined) {
+            return null;
+        }
+        if (user) {
+            let url: string;
+            let casted_user = await user_schema.cast(user);
+            if (Array.isArray(type)) {
+                type = type[0];
+            }
+            if (type.toUpperCase() == "RESUME") {
+                url = casted_user.resume;
+                casted_user.resume = "";
+            } else if (type.toUpperCase() == "COVERLETTER") {
+                url = casted_user.coverLetter;
+                casted_user.coverLetter = "";
+            } else if (type.toUpperCase() == "PICTURE") {
+                url = casted_user.picture;
+                casted_user.picture = "";
+            } else {
+                return null;
+            }
+            var fileRef = ref.storage.refFromURL(url);
+            await fileRef.delete().then(function () {
+                updateUser(casted_user, userID);
+                console.log("File successfully deleted.");
+            });
+            return "Success";
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
+};
+
 export const findAccountFile = async (userID: string, type: string) => {
     try {
         var user: any = await findUserWithID(userID);
+        if (user === undefined) {
+            return null;
+        }
         if (user) {
             let casted_user = await user_schema.cast(user);
             if (type.toUpperCase() === "RESUME") {
@@ -156,8 +206,7 @@ export const findAccountFile = async (userID: string, type: string) => {
             } else if (type.toUpperCase() === "PICTURE") {
                 console.log(casted_user.picture);
                 return casted_user.picture;
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -269,7 +318,6 @@ export async function sendUserInvitation(
 
         //check 3 : check if sender and receiver are already contacts
         if ((senderUser.data as User).contacts.includes(receiverEmail)) {
-            //console.log("error sender and receiver are already friends");
             throw error("error sender and receiver are already friends");
         } else {
             console.log("proceed check 3");
@@ -432,7 +480,6 @@ export async function getFilteredUsers(filter: UserFilter) {
 
     if (filter.email) {
         userRef = userRef.where("email", "==", filter.email);
-
     }
     if (filter.limit) {
         userRef = userRef.limit(filter.limit);

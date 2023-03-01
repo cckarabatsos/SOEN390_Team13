@@ -20,6 +20,7 @@ import {
     getAccountFile,
     uploadAccountFile,
     hasFile,
+    removeAccountFile,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -89,7 +90,6 @@ user.get("/api/login", async (req: Request, res: Response) => {
 user.post("/api/session", [verifyJWT], async (req: Request, res: Response) => {
     try {
         if (hasUser(req)) {
-            console.log(req.user);
             return res.status(200).json(req.user);
         } else {
             throw { msg: "no user" };
@@ -102,11 +102,28 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
     try {
-        let status,
-            data = await getAccountFile(userID, type);
-        res.json({ data });
+        const accountFile: any = await getAccountFile(userID, type);
+        const status: number = accountFile[0];
         if (status == 200) {
             res.sendStatus(200);
+            res.json(accountFile[1]);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
+    let userID = req.params.userID;
+    let type: string = req.query.type as string;
+    try {
+        let success: any = await removeAccountFile(userID, type);
+        let status: number = success[0];
+        if (status == 200) {
+            res.status(200);
+            res.json(success[1]);
         } else if (status == 404) {
             res.sendStatus(404);
         }
@@ -135,8 +152,6 @@ user.post("/api/register", async (req: Request, res: Response) => {
     }
 });
 user.post("/api/logout", async (req: Request, res: Response) => {
-    console.log("We are in ");
-    console.log(await req.cookies.FrontendUser);
     try {
         res.cookie("FrontendUser", "", {
             expires: new Date(Date.now()),
@@ -177,7 +192,6 @@ user.post(
             if (hasFile(req)) {
                 data = await uploadAccountFile(userID, type, req.file);
             }
-            console.log(data);
             status = data[0];
             if (status == 200) {
                 res.sendStatus(200);
@@ -209,7 +223,6 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
                 ID
             ).then();
             const { password, ...newUser } = await newSettings[1];
-            console.log(newSettings);
             res.status(200).json(newUser);
         }
     } catch (err: any) {
@@ -288,15 +301,22 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
 
 //****************Start Job Posting route ********************//
 user.post("/api/posting/:email", async (req: Request, res: Response) => {
-    console.log("I AM IN");
     let email: string = req.params.email;
-    let location: string = req.body.location;
-    let position: string = req.body.position;
+    let location: string = req.body.location.toLowerCase();
+    let position: string = req.body.position.toLowerCase();
     let salary: string = req.body.salary;
     let company: string = req.body.company;
-    let contract: string = req.body.contract;
     let description: string = req.body.description;
-    let category: string = req.body.category;
+    let remote: boolean = req.body.remote;
+    let contract: boolean = req.body.contract;
+    let duration: any = null;
+    if (req.body.duration) {
+        duration = req.body.duration;
+    }
+    let type: any = null;
+    if (req.body.type) {
+        type = req.body.type;
+    }
     console.log(email);
     const userArr: User = await getUserWithEmail(email).then();
     console.log(userArr);
@@ -311,18 +331,20 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     } else {
         try {
             let data: any = await createJobPosting(
+                email,
                 location,
                 position,
                 salary,
                 company,
-                contract,
                 description,
-                email,
-                category,
+                remote,
+                contract,
+                duration,
+                type,
                 userArr[1].data.userID
             );
+
             if (data[0] == 200) {
-                console.log(data[1]);
                 res.status(data[0]);
                 res.json(data[1]);
             } else {

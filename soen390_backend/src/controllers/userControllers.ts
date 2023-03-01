@@ -10,6 +10,7 @@ import {
     manageUserInvitation,
     getUserInvitationsOrContacts,
     getFilteredUsers,
+    deleteAccountFile,
 } from "../services/userServices";
 import dotenv from "dotenv";
 import {
@@ -46,13 +47,10 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
-    console.log(user);
-
     let casted_user: User = await user_schema.cast(user, {
         stripUnknown: false,
     });
     casted_user.password = await hash(casted_user.password, saltRounds);
-    console.log(casted_user);
     user = await new Promise((resolve, _) => {
         findUserWithEmail(casted_user.email, (user) => {
             // console.log(user);
@@ -91,15 +89,23 @@ export async function uploadAccountFile(
 ) {
     let url = await storeAccountFile(userID, type, file);
     console.log("File upload finished.");
-    if (url == null) {
+    if (url === null) {
         return [404, { msg: "File storage failed." }];
     } else {
         return [200, url];
     }
 }
+export async function removeAccountFile(userID: string, type: string) {
+    let success = await deleteAccountFile(userID, type);
+    if (success === null) {
+        return [404, { msg: "File retrieval failed." }];
+    } else {
+        return [200, success];
+    }
+}
 export async function getAccountFile(userID: string, type: string) {
     let downloadUrl = await findAccountFile(userID, type);
-    if (downloadUrl == null) {
+    if (downloadUrl === null) {
         return [404, { msg: "File retrieval failed." }];
     } else {
         return [200, downloadUrl];
@@ -159,7 +165,7 @@ export async function manageInvite(
     isAccept: boolean
 ) {
     try {
-        console.log(isAccept);
+        // console.log(isAccept);
         await manageUserInvitation(senderEmail, invitedEmail, isAccept);
     } catch (error) {
         return [404, { msg: (error as Error).message }];
