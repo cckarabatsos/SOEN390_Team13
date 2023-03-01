@@ -34,8 +34,8 @@ describe('JobSearchBar', () => {
   it("updates category when user selects an option from the category selection", () => {
     render(<JobSearchBar />);
     const categorySelect = screen.getByRole("combobox");
-    fireEvent.change(categorySelect, { target: { value: "Location" } });
-    expect(categorySelect.value).toBe("Location");
+    fireEvent.change(categorySelect, { target: { value: "location" } });
+    expect(categorySelect.value).toBe("location");
   });
 
   //checks if input field box and search button are rendered
