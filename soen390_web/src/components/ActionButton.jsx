@@ -24,6 +24,24 @@ function ActionButton() {
     setHoveredIndex(-1);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  React.useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (anchorEl && !anchorEl.contains(event.target)) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [anchorEl]);
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popper' : undefined;
 
