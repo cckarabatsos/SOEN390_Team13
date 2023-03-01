@@ -41,28 +41,14 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        let pic: string = user.picture
+        let pic = user.picture
             ? user.picture
             : await ref
                   .child("Profile Pictures/blank_profile_pic.png")
                   .getDownloadURL();
-
+        user.picture = pic;
         var document = await db.collection("users").add({
-            name: user.name,
-            password: user.password,
-            email: user.email,
-            privateKey: user.privateKey,
-            publicKey: user.publicKey,
-            picture: pic,
-            resume: user.resume,
-            coverLetter: user.coverLetter,
-            bio: user.bio,
-            currentPosition: user.currentPosition,
-            currentCompany: user.currentCompany,
-            isRecruiter: user.isRecruiter,
-            userID: "",
-            pendingInvitations: [],
-            contacts: [],
+            ...user,
         });
 
         await document.update({ userID: document.id });
