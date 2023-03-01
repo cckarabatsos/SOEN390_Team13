@@ -44,7 +44,11 @@ function Modal({
           >
             Cancel
           </button>
-          <Link id="applyBtn"  to="/JobApplication"> Apply </Link>
+          <Link id="applyBtn" style={{width:"150px", height:"45px",
+        display: "inline-block", textDecoration: "none", 
+        backgroundColor: "cornflowerblue", color: "white", 
+        borderRadius: "8px", textAlign: "center", 
+        lineHeight: "45px" }}  to="/JobApplication"> Apply </Link>
         </div>
       </div>
     </div>

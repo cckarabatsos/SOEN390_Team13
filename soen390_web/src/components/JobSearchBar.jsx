@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import "../styles/components/JobSearchBar.css";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
 
 function JobSearchBar({ setJobs }) {
-  const navigate = useNavigate();
-  
+ 
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
 
@@ -20,10 +18,10 @@ function JobSearchBar({ setJobs }) {
   };
 
   const handleSearch = async () => {
-    console.log("text: " + text + " category " + category);
-
-    var jobs = await JobSearch(text);
-
+    console.log("text: " + text + " category: " + category);
+  
+    var jobs = await JobSearch(category, text);
+  
     console.log(jobs);
     setJobs(jobs)
   };
@@ -49,7 +47,7 @@ function JobSearchBar({ setJobs }) {
         >
           Search
         </Button>
-
+        
         <select
           category="category"
           id="category"
@@ -61,10 +59,12 @@ function JobSearchBar({ setJobs }) {
           value={category}
           onChange={handleChange}
         >
-          <option value="Location">Location</option>
-          <option value="Company">Company</option>
-          <option value="Position">Position</option>
-          <option value="Contract">Contract</option>
+          
+          <option value="location">Location</option>
+          <option value="company">Company</option>
+          <option value="position">Position</option>
+          <option value="type">Type</option>
+          <option valye="remote">Remote</option>
         </select>
       </div>
     </div>
