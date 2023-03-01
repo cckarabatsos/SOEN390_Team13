@@ -23,7 +23,7 @@ export async function JobSearch(category, text) {
         console.error("error", error);
         return false;
       } 
-      case 'company': console.log('boooooooo')
+      case 'company': 
         try {
           const response = await axios.get(
             api.BACKEND_API + "/jobposting/filter/products",
@@ -41,7 +41,7 @@ export async function JobSearch(category, text) {
           console.error("error", error);
           return false;
         } 
-        case 'position': console.log('biiiiiiii')
+        case 'position':
           try {
             const response = await axios.get(
               api.BACKEND_API + "/jobposting/filter/products",
@@ -59,7 +59,7 @@ export async function JobSearch(category, text) {
             console.error("error", error);
             return false;
           } 
-          case 'type': console.log('oyaaaaa')
+          case 'type':
             try {
               const response = await axios.get(
                 api.BACKEND_API + "/jobposting/filter/products",
@@ -77,7 +77,7 @@ export async function JobSearch(category, text) {
               console.error("error", error);
               return false;
             } 
-            case 'remote': console.log('aibadbhdkasdkj')
+            case 'remote':
               try {
                 const response = await axios.get(
                   api.BACKEND_API + "/jobposting/filter/products",
