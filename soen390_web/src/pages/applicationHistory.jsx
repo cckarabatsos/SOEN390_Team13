@@ -165,11 +165,11 @@ export default function BasicTable() {
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '15px', paddingBottom: '16px' }} align="left">Position</TableCell>
-            <TableCell sx={{ fontSize: '15px', paddingBottom: '16px' }} align="left">Location&nbsp;</TableCell>
-            <TableCell sx={{ fontSize: '15px', paddingBottom: '16px' }} align="left">Company&nbsp;</TableCell>
-            <TableCell sx={{ fontSize: '15px', paddingBottom: '16px' }} align="left">Contract&nbsp;</TableCell>
-            <TableCell sx={{ fontSize: '15px', paddingBottom: '16px' }} align="left">Action&nbsp;</TableCell>
+            <TableCell sx={{ fontSize: '20px', paddingBottom: '16px' }} align="left">Position</TableCell>
+            <TableCell sx={{ fontSize: '20px', paddingBottom: '16px' }} align="left">Location&nbsp;</TableCell>
+            <TableCell sx={{ fontSize: '20px', paddingBottom: '16px' }} align="left">Company&nbsp;</TableCell>
+            <TableCell sx={{ fontSize: '20px', paddingBottom: '16px' }} align="left">Contract&nbsp;</TableCell>
+            <TableCell sx={{ fontSize: '20px', paddingBottom: '16px' }} align="left">Action&nbsp;</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
