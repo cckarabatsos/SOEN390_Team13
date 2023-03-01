@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import { Popper } from "@mui/material";
 import { Box } from "@mui/system";
 
+
+
 function ActionButton() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -12,17 +14,19 @@ function ActionButton() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
+  const id = open ? 'simple-popper' : undefined;
 
   return (
     <>
-      <Button sx={{fontSize: "30px"}} onClick={handleClick}>...</Button>
+      <Button sx={{ fontSize: '30px' }} onClick={handleClick}>
+        ...
+      </Button>
       <Popper id={id} open={open} anchorEl={anchorEl}>
-        <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
-          View application
+        <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper', width: '200px' }}>
+          <div style={{ fontSize: '20px' }}>View application</div>
         </Box>
-        <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
-          Withdraw application
+        <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper', width: '200px' }}>
+          <div style={{ fontSize: '20px' }}>Withdraw application</div>
         </Box>
       </Popper>
     </>
@@ -30,4 +34,3 @@ function ActionButton() {
 }
 
 export default ActionButton;
-
