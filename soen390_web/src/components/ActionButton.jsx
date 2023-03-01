@@ -6,6 +6,8 @@ import { Box } from "@mui/system";
 
 
 
+
+
 function ActionButton() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -22,10 +24,10 @@ function ActionButton() {
         ...
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl}>
-        <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper', width: '200px' }}>
+        <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper', width: '200px', borderRadius: '10px' }}>
           <div style={{ fontSize: '20px' }}>View application</div>
         </Box>
-        <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper', width: '200px' }}>
+        <Box sx={{ border: 1, p: 1, bgcolor: 'background.paper', width: '200px', borderRadius: '10px' }}>
           <div style={{ fontSize: '20px' }}>Withdraw application</div>
         </Box>
       </Popper>
