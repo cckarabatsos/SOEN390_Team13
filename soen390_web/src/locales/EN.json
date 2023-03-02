@@ -1,5 +1,7 @@
 {
   "jobsNavBar": "Jobs",
   "emailText": "Email",
-  "passwordText": "Password"
+  "passwordText": "Password",
+  "FirstNameText" : "First Name"
+  
 }

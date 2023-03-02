@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
+import { useTranslation } from "react-i18next";
 
 function SignUp(props) {
   const [fNameInput, setfNameInput] = React.useState("");
@@ -20,6 +21,8 @@ function SignUp(props) {
   const [passwordMismatch, setPasswordMismatch] = React.useState(false);
 
   let navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const registerUser = async () => {
     if (confirmPasswordInput === passwordInput) {
@@ -62,15 +65,16 @@ function SignUp(props) {
                 <h1 data-testid="signuptitle-1">Sign Up</h1>
                 <Grid container spacing={2}>
                   <Grid className="field-name" item xs={4}>
-                    First Name
+                  {t("FirstNameText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
+                 
                     <div className="input-margin">
                       <TextField
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="First Name"
+                        label={t("FirstNameText")}
                         type="name"
                         variant="outlined"
                         size="small"
