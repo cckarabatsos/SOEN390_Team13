@@ -4,6 +4,8 @@
   "passwordText": "Password",
   "FirstNameText" : "First Name",
   "LastNameText" : "Last Name",
-  "CreatePasswordText" : "Create Password"
+  "CreatePasswordText" : "Create Password",
+  "ConfirmPasswordText" : "Confirm Password"
+  
   
 }

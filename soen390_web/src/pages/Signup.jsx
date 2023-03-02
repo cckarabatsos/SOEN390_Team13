@@ -138,7 +138,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Confirm Password
+                  {t("ConfirmPasswordText")}
                   </Grid>
                   <Grid className="field-input" item xs={6}>
                     <div className="input-margin">
@@ -146,7 +146,7 @@ function SignUp(props) {
                         className="inputRounded"
                         autoFocus
                         margin="dense"
-                        label="Confirm Password"
+                        label={t("ConfirmPasswordText")}
                         type="password"
                         variant="outlined"
                         size="small"

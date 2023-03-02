@@ -4,6 +4,7 @@
   "passwordText": "Mot de Passe",
   "FirstNameText" : "Prénom",
   "LastNameText" : "Nom de Famille",
-  "CreatePasswordText" : "Créer mot de passe"
+  "CreatePasswordText" : "Créer mot de passe",
+  "ConfirmPasswordText" : "Confirmer Mot de Passe"
 
 }
