@@ -3,6 +3,7 @@
   "emailText": "Email",
   "passwordText": "Password",
   "FirstNameText" : "First Name",
-  "LastNameText" : "Last Name"
+  "LastNameText" : "Last Name",
+  "CreatePasswordText" : "Create Password"
   
 }

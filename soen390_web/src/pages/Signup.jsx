@@ -120,7 +120,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Create Password
+                  {t("CreatePasswordText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
                     <div className="input-margin">
@@ -128,7 +128,7 @@ function SignUp(props) {
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="Create Password"
+                        label={t("CreatePasswordText")}
                         type="password"
                         variant="outlined"
                         size="small"
