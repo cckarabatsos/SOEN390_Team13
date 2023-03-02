@@ -74,7 +74,6 @@ const HomeScreen = ({ navigation, route}: { navigation: any, route:any }) => {
 
 
 function BottomNav({route}:{route:any}){
-
   console.log(route.params)
   return(
     <Tab.Navigator screenOptions={({ route }) => ({
@@ -102,13 +101,13 @@ function BottomNav({route}:{route:any}){
     }
     })}>
       
-        <Tab.Screen name="HomeScreen" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password}} component={HomeScreen} options={{
+        <Tab.Screen name="HomeScreen" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password, userID: route.params.userID}} component={HomeScreen} options={{
             title:"Home"
           }}/>
         <Tab.Screen name="Messages" component={Messages} options={{ title: 'Messages', tabBarBadge: messagesCount }}/>
-        <Tab.Screen name="Inbox" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password}} component={Inbox} options={{
+        <Tab.Screen name="Inbox" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password, userID: route.params.userID}} component={Inbox} options={{
             title:'Inbox'}}/>
-        <Tab.Screen name="Profile" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password}} component={UserProfile} options={{
+        <Tab.Screen name="Profile" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password, userID: route.params.userID}} component={UserProfile} options={{
             title:'profile'
           
           }}/>

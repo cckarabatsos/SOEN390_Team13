@@ -19,7 +19,7 @@ export async function UserSignUp(user: ISignUpUser) {
       password: user.password,
       name: user.name,
     });
-    console.log(response.data)
+
 
     if (response.data.registeredUser) {
       return response.data;

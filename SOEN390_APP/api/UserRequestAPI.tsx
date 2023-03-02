@@ -10,7 +10,6 @@ export async function UserRequest(email: String) {
       },
     });
 
-
     return response.data.data[1];
   } catch (error) {
     console.log("error", error);
