@@ -7,7 +7,8 @@
   "CreatePasswordText" : "Create Password",
   "ConfirmPasswordText" : "Confirm Password",
   "MismatchPasswordText" : "Passwords do not match",
-  "AccountExistsText" : "User already has an account"
+  "AccountExistsText" : "User already has an account",
+  "CancelText" : "Cancel"
   
   
 }

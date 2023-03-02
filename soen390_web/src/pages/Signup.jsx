@@ -181,7 +181,7 @@ function SignUp(props) {
                       }}
                       onClick={() => navigate("/")}
                     >
-                      Cancel
+                      {t("CancelText")}
                     </Button>
                   </Grid>
                   <Grid className="login" item xs={6}>

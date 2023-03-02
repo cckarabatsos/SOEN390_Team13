@@ -7,6 +7,7 @@
   "CreatePasswordText" : "Créer mot de passe",
   "ConfirmPasswordText" : "Confirmer Mot de Passe",
   "MismatchPasswordText" : "Les mots de passe ne correspondent pas",
-  "AccountExistsText" : "L'utilisateur a déja un compte"
+  "AccountExistsText" : "L'utilisateur a déja un compte",
+  "CancelText" : "Annuler"
 
 }
