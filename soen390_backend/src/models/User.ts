@@ -34,6 +34,7 @@ export const user_schema = yup
             then: yup
                 .object({
                     applied: yup.array(yup.string()).default([]),
+                    documents: yup.array(yup.string()).default([]),
                     postingids: yup.array(yup.string()).default([]),
                 })
                 .required("Field Is required when its a recruiter"),

@@ -55,10 +55,14 @@ export const deleteJobPostingWithId = async (
             if (index > -1) {
                 const applied = userSnapshot.data()?.jobpostings?.applied ?? [];
                 applied.splice(index, 1);
+                const documents =
+                    userSnapshot.data()?.jobpostings?.documents ?? [];
+                documents.splice(index, 1);
                 await userRef.update({
                     "jobpostings.postingids":
                         firebase.firestore.FieldValue.arrayRemove(postingID),
                     "jobpostings.applied": applied,
+                    "jobpostings.documents": documents,
                 });
             }
         }

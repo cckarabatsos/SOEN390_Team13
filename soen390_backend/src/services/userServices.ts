@@ -510,7 +510,8 @@ export async function updateCompanyPostings(
 
     // Add an empty string to the applied array for the new posting
     jobPostings.applied.push("");
-
+    // Add an empty string to the documents array for the new posting
+    jobPostings.documents.push("");
     // Update the jobpostings object in the user document
     await jobPosterRef.update({
         jobpostings: jobPostings,
