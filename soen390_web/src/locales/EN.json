@@ -8,7 +8,10 @@
   "ConfirmPasswordText" : "Confirm Password",
   "MismatchPasswordText" : "Passwords do not match",
   "AccountExistsText" : "User already has an account",
-  "CancelText" : "Cancel"
+  "CancelText" : "Cancel",
+  "SignUpText" : "Sign up",
+  "AlreadyAccountText" : "Do you already have an account? Login",
+  "HereText" : "Here!"
   
   
 }

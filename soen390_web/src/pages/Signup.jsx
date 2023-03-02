@@ -195,14 +195,14 @@ function SignUp(props) {
                       }}
                       onClick={registerUser}
                     >
-                      Sign Up
+                       {t("SignUpText")}
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
                     <GoogleLogin />
                   </Grid>
                   <Grid item xs={12}>
-                    Already have an account? Login <Link to="/">here!</Link>
+                  {t("AlreadyAccountText")} <Link to="/"> {t("HereText")}</Link>
                   </Grid>
                 </Grid>
               </div>

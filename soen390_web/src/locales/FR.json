@@ -8,6 +8,9 @@
   "ConfirmPasswordText" : "Confirmer Mot de Passe",
   "MismatchPasswordText" : "Les mots de passe ne correspondent pas",
   "AccountExistsText" : "L'utilisateur a déja un compte",
-  "CancelText" : "Annuler"
+  "CancelText" : "Annuler",
+  "SignUpText" : "S'inscrire",
+  "AlreadyAccountText" : "Avez-vous déja un compte? Connexion",
+  "HereText" : "Ici!"
 
 }
