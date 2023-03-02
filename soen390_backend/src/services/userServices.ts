@@ -502,9 +502,17 @@ export async function updateCompanyPostings(
     jobPosterID: string
 ) {
     const jobPosterRef = db.collection("users").doc(jobPosterID);
+    const jobPosterDoc = await jobPosterRef.get();
+    const jobPostings = jobPosterDoc.get("jobpostings");
+
+    // Add the new posting ID to the posting IDs array
+    jobPostings.postingids.push(postingID);
+
+    // Add an empty string to the applied array for the new posting
+    jobPostings.applied.push("");
+
+    // Update the jobpostings object in the user document
     await jobPosterRef.update({
-        "jobpostings.postingids":
-            firebase.firestore.FieldValue.arrayUnion(postingID),
-        "jobpostings.applied": firebase.firestore.FieldValue.arrayUnion(" "),
+        jobpostings: jobPostings,
     });
 }
