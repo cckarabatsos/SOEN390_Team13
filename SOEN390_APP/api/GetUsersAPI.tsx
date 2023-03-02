@@ -17,11 +17,7 @@ export async function GetUsersAPI(data:any) {
 
   export async function GetUserInfo(data:any) {
     try {
-      const response = await axios.get(api.BACKEND_API + "/user/id/:userID", {
-        params: {
-          userID: data
-        },
-      });
+      const response = await axios.get(api.BACKEND_API + "/user/id/" + data);
       return response.data.data[1];
     } catch (error) {
       console.log("error", error);

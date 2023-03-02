@@ -106,14 +106,18 @@ const Inbox = ({route}:{route:any}) => {
   let text = "Work here now! A robot is a machine—especially one programmable by a computer—capable of carrying out a complex series of actions automatically.[2] A robot can be guided by an external control device, or the control may be embedded within. Robots may be constructed to evoke human form, but most robots are task-performing machines, designed with an emphasis on stark functionality, rather than expressive aesthetics. Robots can be autonomous or semi-autonomous and range from humanoids such as Honda's Advanced Step in Innovative Mobility (ASIMO) and TOSY's TOSY Ping Pong Playing Robot (TOPIO) to industrial robots, medical operating robots, patient assist robots, dog therapy robots, collectively programmed swarm robots, UAV drones such as General Atomics MQ-1 Predator, and even microscopic nano robots. By mimicking a lifelike appearance or automating movements, a robot may convey a sense of intelligence or thought of its own. Autonomous things are expected to proliferate in the future, with home robotics and the autonomous car as some of the main drivers.[3]"
 
   const handleGetUser = async () => {
-  const user = await UserRequest(email)
-  const newObjectsArray = user.map(buildObject);
-  setData(newObjectsArray);
-
-  // Update the subcategory in CONTENT with the fetched data
-  const updatedContent = [...CONTENT];
-  updatedContent[0].subcategory = newObjectsArray;
-  setListDataSource(updatedContent);
+    try {
+      const user = await UserRequest(email);
+      if (Array.isArray(user)) {
+        const newObjectsArray = user.map(buildObject);
+        setData(newObjectsArray);
+        const updatedContent = [...CONTENT];
+        updatedContent[0].subcategory = newObjectsArray;
+        setListDataSource(updatedContent);
+      }
+    } catch (error) {
+      console.log(error);
+    }
 }
 
 useEffect(() => {
