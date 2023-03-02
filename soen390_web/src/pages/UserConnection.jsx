@@ -2,7 +2,6 @@ import React from "react";
 import SubFooter from "../components/SubFooter";
 import Footer from "../components/Footer";
 import "../styles/components/userconnection.css";
-import { Button } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import UserConnectionComponent from "../components/UserConectionComponent";
 import {
