@@ -5,7 +5,8 @@
   "FirstNameText" : "First Name",
   "LastNameText" : "Last Name",
   "CreatePasswordText" : "Create Password",
-  "ConfirmPasswordText" : "Confirm Password"
+  "ConfirmPasswordText" : "Confirm Password",
+  "MismatchPasswordText" : "Passwords do not match"
   
   
 }

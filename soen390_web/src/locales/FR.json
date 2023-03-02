@@ -5,6 +5,7 @@
   "FirstNameText" : "Prénom",
   "LastNameText" : "Nom de Famille",
   "CreatePasswordText" : "Créer mot de passe",
-  "ConfirmPasswordText" : "Confirmer Mot de Passe"
+  "ConfirmPasswordText" : "Confirmer Mot de Passe",
+  "MismatchPasswordText" : "Les mots de passe ne correspondent pas"
 
 }

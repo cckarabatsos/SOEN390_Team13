@@ -159,7 +159,7 @@ function SignUp(props) {
                   </Grid>
                   {passwordMismatch ? (
                     <Grid item xs={12} style={{ color: "red" }}>
-                      Passwords do not Match
+                      {t("MismatchPasswordText")}
                     </Grid>
                   ) : (
                     <></>
