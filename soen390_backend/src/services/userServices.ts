@@ -1,7 +1,6 @@
 //thx saad
 import { error } from "console";
 import firebase from "firebase";
-//import { string } from "yup";
 import "firebase/storage";
 import { User, user_schema, UserFilter } from "../models/User";
 // import { database } from "firebase-admin";
@@ -9,6 +8,7 @@ import { User, user_schema, UserFilter } from "../models/User";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
+
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -65,6 +65,21 @@ export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
         if (data !== undefined) {
+            if (data.jobpostings) {
+                const batch = db.batch();
+                console.log(data.jobpostings.postingids);
+                data.jobpostings.postingids.forEach((postingID: string) => {
+                    const postingRef = db
+                        .collection("jobpostings")
+                        .doc(postingID);
+                    batch.delete(postingRef);
+                });
+                await batch.commit();
+                console.log(
+                    data.jobpostings.postingids.length +
+                        " job postings successfully deleted."
+                );
+            }
             db.collection("users")
                 .doc(userID)
                 .delete()
@@ -481,4 +496,15 @@ export async function getFilteredUsers(filter: UserFilter) {
         ...doc.data(),
     }));
     return users;
+}
+export async function updateCompanyPostings(
+    postingID: string,
+    jobPosterID: string
+) {
+    const jobPosterRef = db.collection("users").doc(jobPosterID);
+    await jobPosterRef.update({
+        "jobpostings.postingids":
+            firebase.firestore.FieldValue.arrayUnion(postingID),
+        "jobpostings.applied": firebase.firestore.FieldValue.arrayUnion(" "),
+    });
 }

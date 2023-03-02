@@ -29,7 +29,7 @@ export const user_schema = yup
                 )
                 .required(),
         }),
-        jobPosting: yup.object().when("isCompany", {
+        jobpostings: yup.object().when("isCompany", {
             is: true,
             then: yup
                 .object({

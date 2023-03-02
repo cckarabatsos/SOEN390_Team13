@@ -9,6 +9,7 @@ import {
     filterJobPostings,
     storeJobPosting,
 } from "../services/jobPostingServices";
+import { updateCompanyPostings } from "../services/userServices";
 export async function createJobPosting(
     email: string,
     location: string,
@@ -36,9 +37,10 @@ export async function createJobPosting(
             type,
             jobPosterID,
         });
-        let jobPosting = await storeJobPosting(newJobPosting);
-        if (jobPosting) {
-            return [200, jobPosterID];
+        let postingID = await storeJobPosting(newJobPosting);
+        updateCompanyPostings(postingID, jobPosterID);
+        if (postingID) {
+            return [200, postingID];
         } else {
             return [404, { msg: "Posting not stored" }];
         }
