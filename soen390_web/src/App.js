@@ -13,6 +13,7 @@ import Contacts from "./pages/Contacts";
 import JobApplication from "./pages/JobApplication";
 import MessagingPage from "./pages/MessagingPage";
 import NewsFeedPage from "./pages/NewsFeedPage";
+import Admin from "./pages/Admin";
 
 const AppWrapper = () => {
   const [userData, setUseData] = useState({});
@@ -46,13 +47,13 @@ const AppWrapper = () => {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/UserProfile" element={<UserProfile />} />
           <Route path="/JobSearch" element={<JobSearch />} />
-          <Route path ="/Contacts" element={<Contacts/>}></Route>
-          <Route path ="/JobApplication" element={<JobApplication/>}></Route>
+          <Route path="/Contacts" element={<Contacts />}></Route>
+          <Route path="/JobApplication" element={<JobApplication />}></Route>
           <Route path="/UserNetworking" element={<UserNetworking />} />
           <Route path="/UserConnection" element={<UserConnection />} />
           <Route path="/MessagingPage" element={<MessagingPage />} />
           <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
-          
+          <Route path="/Admin" element={<Admin />} />
         </Routes>
       </Router>
     </div>
