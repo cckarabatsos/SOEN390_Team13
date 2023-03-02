@@ -57,7 +57,7 @@ import {
     const { v4: uuidv4 } = require('uuid');
   
     const buildObject = (jsonObject:any) => {
-      const { category, company, contract, description, email, jobPosterID, location, position, PostingID, salary } = jsonObject;
+      const { type, company, contract, description, email, jobPosterID, location, position, PostingID, salary } = jsonObject;
       const obj = {
         key: uuidv4(),
         text: company,
@@ -67,10 +67,10 @@ import {
         loc: location,
         email: email,
         contract: contract,
-        category: category,
+        category: type,
         position: position,
         salary: salary,
-        title: category
+        title: type
       }
       return obj;
     }
