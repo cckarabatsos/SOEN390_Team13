@@ -2,5 +2,6 @@
   "jobsNavBar": "Jobe",
   "emailText": "Courriel",
   "passwordText": "Mot de Passe",
-  "FirstNameText" : "Prénom"
+  "FirstNameText" : "Prénom",
+  "LastNameText" : "Nom de Famille"
 }

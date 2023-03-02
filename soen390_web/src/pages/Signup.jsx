@@ -84,7 +84,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Last Name
+                  {t("LastNameText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
                     <div className="input-margin">
@@ -92,7 +92,7 @@ function SignUp(props) {
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="Last Name"
+                        label= {t("LastNameText")}
                         type="name"
                         variant="outlined"
                         size="small"

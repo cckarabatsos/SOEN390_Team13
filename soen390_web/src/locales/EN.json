@@ -2,6 +2,7 @@
   "jobsNavBar": "Jobs",
   "emailText": "Email",
   "passwordText": "Password",
-  "FirstNameText" : "First Name"
+  "FirstNameText" : "First Name",
+  "LastNameText" : "Last Name"
   
 }
