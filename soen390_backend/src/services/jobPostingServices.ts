@@ -85,7 +85,7 @@ export const filterJobPostings = async (filter: Filter) => {
         const prefix = filter.position.toLowerCase();
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         jobPostingsRef = jobPostingsRef
-            .where("positon", ">=", prefix)
+            .where("position", ">=", prefix)
             .where("position", "<", prefixEnd);
     }
 
