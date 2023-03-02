@@ -166,7 +166,7 @@ function SignUp(props) {
                   )}
                   {registerError ? (
                     <Grid item xs={12} style={{ color: "red" }}>
-                      User already has an account
+                      {t("AccountExitsText")}
                     </Grid>
                   ) : (
                     <></>
