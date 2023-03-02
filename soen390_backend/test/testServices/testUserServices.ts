@@ -3,21 +3,6 @@ import * as mocha from "mocha";
 import { getUserWithEmail } from "../../src/controllers/userControllers";
 import { findUserWithID } from "../../src/services/userServices";
 
-// let testEmail = "test@test.com";
-// let testUser: any = {
-//     name: "Jake",
-//     password: "123",
-//     email: "mat@gmail.ca",
-//     privateKey: "",
-//     publicKey: "",
-//     picture: "",
-//     resume: "",
-//     coverLetter: "",
-//     bio: "",
-//     currentPosition: "",
-//     currentCompany: "",
-//     isRecruiter: false,
-// };
 const expect = chai.expect;
 const describe = mocha.describe;
 const it = mocha.it;
@@ -35,7 +20,7 @@ let testUserFrontend: any = {
     bio: "",
     currentPosition: "",
     currentCompany: "",
-    isRecruiter: false,
+    isCompany: false,
 };
 describe("# User Services", function () {
     describe("# FindUserWithEmail", function () {

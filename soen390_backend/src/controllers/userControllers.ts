@@ -143,12 +143,7 @@ export async function editAccount(
                 ];
             }
         }
-        currProfile.email = newProfile.email;
-        currProfile.password = newProfile.password;
-        currProfile.bio = newProfile.bio;
-        currProfile.currentCompany = newProfile.currentCompany;
-        currProfile.currentPosition = newProfile.currentPosition;
-        currProfile.name = newProfile.name;
+        currProfile = newProfile;
         updateUser(currProfile, id);
     } catch (err: any) {
         return [400, { msg: "missing field" }];

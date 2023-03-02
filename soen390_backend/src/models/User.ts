@@ -15,8 +15,8 @@ export const user_schema = yup
         currentPosition: yup.string(),
         pendingInvitations: yup.array(yup.string()).required().default([]),
         contacts: yup.array(yup.string()).required().default([]),
-        isRecruiter: yup.boolean().required().default(false),
-        currentCompany: yup.string().when("isRecruiter", {
+        isCompany: yup.boolean().required().default(false),
+        currentCompany: yup.string().when("isCompany", {
             is: true,
             then: yup
                 .string()
@@ -29,7 +29,7 @@ export const user_schema = yup
                 )
                 .required(),
         }),
-        jobPosting: yup.object().when("isRecruiter", {
+        jobPosting: yup.object().when("isCompany", {
             is: true,
             then: yup
                 .object({
@@ -40,7 +40,7 @@ export const user_schema = yup
         }),
         employees: yup
             .array(yup.string())
-            .when("isRecruiter", {
+            .when("isCompany", {
                 is: true,
                 then: yup.array(yup.string()).default([]),
             })

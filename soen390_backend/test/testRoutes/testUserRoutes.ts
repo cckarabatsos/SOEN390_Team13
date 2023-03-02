@@ -182,7 +182,7 @@ describe("Test User Routes", function () {
         const randomEmail2 = makeid(10);
 
         const payload = {
-            isRecruiter: false,
+            isCompany: false,
             currentCompany: "Concordia University",
             currentPosition: "Student",
             bio: "I am Liam and I want to be an engineer.",
@@ -197,7 +197,7 @@ describe("Test User Routes", function () {
         };
 
         const payload2 = {
-            isRecruiter: false,
+            isCompany: false,
             currentCompany: "Concordia University",
             currentPosition: "Student",
             bio: "I am Liam and I want to be an engineer.",
