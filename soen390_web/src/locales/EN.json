@@ -23,7 +23,8 @@
   "ContactsText" : "Contacts",
   "LoginText" : "Login",
   "SignoutText" : "Sign Out",
-  "JobSearchingJourneyText" : "Start your job searching journey here. Browse available jobs down below."
+  "JobSearchingJourneyText" : "Start your job searching journey here. Browse available jobs down below.",
+  "DesiredJobText" : "Please search for your desired job."
   
   
 }

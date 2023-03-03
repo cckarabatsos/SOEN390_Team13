@@ -23,6 +23,7 @@
   "ContactsText" : "Contacts",
   "LoginText" : "Se connecter",
   "SignoutText" : "Déconnexion",
-  "JobSearchingJourneyText" : "Commencez votre recherche d'emploi ici. Parcourez les emplois disponibles ci-dessous."
+  "JobSearchingJourneyText" : "Commencez votre recherche d'emploi ici. Parcourez les emplois disponibles ci-dessous.",
+  "DesiredJobText" : "Veuillez rechercher l'emploi souhaité."
 
 }

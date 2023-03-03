@@ -51,7 +51,7 @@ useEffect(() => {
         </h2>
         <JobSearchBar 
         setJobs={setJobs}/>
-        <h1>Please search for your desired job.</h1>
+        <h1>{t("DesiredJobText")}</h1>
         {modalOpen && (
           <Modal
             setOpenModal={setModalOpen}
