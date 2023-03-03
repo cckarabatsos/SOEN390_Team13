@@ -21,7 +21,8 @@
   "NetworkingText" : "Networking",
   "UserConnectionText" : "User Connection",
   "ContactsText" : "Contacts",
-  "LoginText" : "Login"
+  "LoginText" : "Login",
+  "SignoutText" : "Sign Out"
   
   
 }

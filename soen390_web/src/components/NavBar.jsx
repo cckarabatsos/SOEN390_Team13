@@ -92,7 +92,7 @@ function Navbar(props) {
                 </>
               ) : (
                 <Link to="/" className="link" onClick={signout}>
-                  Signout
+                  {t("SignoutText")}
                   <OutputIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
               )}

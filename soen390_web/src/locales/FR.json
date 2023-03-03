@@ -21,6 +21,7 @@
   "NetworkingText" : "Réseautage",
   "UserConnectionText" : "Connexion avec d'autres utilisateurs",
   "ContactsText" : "Contacts",
-  "LoginText" : "Se connecter"
+  "LoginText" : "Se connecter",
+  "SignoutText" : "Déconnexion"
 
 }
