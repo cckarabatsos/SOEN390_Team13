@@ -14,11 +14,13 @@ import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
+import { useTranslation } from "react-i18next";
+
 
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUseData] = React.useState({});
-
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleClickEnableEdit = () => {
@@ -58,7 +60,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                  Education
+                {t("EducationText")}
                   <AddEducationDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />

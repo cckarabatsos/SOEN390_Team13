@@ -11,6 +11,7 @@
   "CancelText" : "Annuler",
   "SignUpText" : "S'inscrire",
   "AlreadyAccountText" : "Avez-vous déja un compte? Connexion",
-  "HereText" : "Ici!"
+  "HereText" : "Ici!",
+  "EducationText" : "Éducation"
 
 }
