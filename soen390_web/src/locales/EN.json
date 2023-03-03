@@ -25,7 +25,9 @@
   "SignoutText" : "Sign Out",
   "JobSearchingJourneyText" : "Start your job searching journey here. Browse available jobs down below.",
   "DesiredJobText" : "Please search for your desired job.",
-  "SearchResultText" : "No search results found"
+  "SearchResultText" : "No search results found",
+  "ConnectText" : "Connect",
+  "ViewProfileText" : "View Profile"
   
   
 }

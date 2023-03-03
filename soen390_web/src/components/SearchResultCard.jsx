@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, Typography, Button, Avatar } from "@material-ui/core";
 import { sendInvite } from "../api/userNetworkingApi";
 import { Alert } from "@mui/material";
-
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -40,7 +40,7 @@ const SearchResultCard = ({ data }) => {
     severity: "",
     message: "",
   });
-
+  const { t } = useTranslation();
   const sendConnection = async (email) => {
     const personalData = JSON.parse(localStorage.getItem("isAuth"));
     console.log(email);
@@ -91,14 +91,14 @@ const SearchResultCard = ({ data }) => {
               className={classes.connectButton}
               onClick={() => sendConnection(`${data.email}`)}
             >
-              Connect
+             {t("ConnectText")}
             </Button>
             <Button
               variant="outlined"
               color="primary"
               className={classes.viewProfileButton}
             >
-              View Profile
+              {t("ViewProfileText")}
             </Button>
             <Alert
               severity={alert.severity}
