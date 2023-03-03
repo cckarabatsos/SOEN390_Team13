@@ -1,7 +1,6 @@
 //thx saad
 import { error } from "console";
 import firebase from "firebase";
-//import { string } from "yup";
 import "firebase/storage";
 import { User, user_schema, UserFilter } from "../models/User";
 // import { database } from "firebase-admin";
@@ -9,6 +8,7 @@ import { User, user_schema, UserFilter } from "../models/User";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
+
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -41,28 +41,14 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        let pic: string = user.picture
+        let pic = user.picture
             ? user.picture
             : await ref
                   .child("Profile Pictures/blank_profile_pic.png")
                   .getDownloadURL();
-
+        user.picture = pic;
         var document = await db.collection("users").add({
-            name: user.name,
-            password: user.password,
-            email: user.email,
-            privateKey: user.privateKey,
-            publicKey: user.publicKey,
-            picture: pic,
-            resume: user.resume,
-            coverLetter: user.coverLetter,
-            bio: user.bio,
-            currentPosition: user.currentPosition,
-            currentCompany: user.currentCompany,
-            isRecruiter: user.isRecruiter,
-            userID: "",
-            pendingInvitations: [],
-            contacts: [],
+            ...user,
         });
 
         await document.update({ userID: document.id });
@@ -79,6 +65,21 @@ export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
         if (data !== undefined) {
+            if (data.jobpostings) {
+                const batch = db.batch();
+                console.log(data.jobpostings.postingids);
+                data.jobpostings.postingids.forEach((postingID: string) => {
+                    const postingRef = db
+                        .collection("jobpostings")
+                        .doc(postingID);
+                    batch.delete(postingRef);
+                });
+                await batch.commit();
+                console.log(
+                    data.jobpostings.postingids.length +
+                        " job postings successfully deleted."
+                );
+            }
             db.collection("users")
                 .doc(userID)
                 .delete()
@@ -495,4 +496,24 @@ export async function getFilteredUsers(filter: UserFilter) {
         ...doc.data(),
     }));
     return users;
+}
+export async function updateCompanyPostings(
+    postingID: string,
+    jobPosterID: string
+) {
+    const jobPosterRef = db.collection("users").doc(jobPosterID);
+    const jobPosterDoc = await jobPosterRef.get();
+    const jobPostings = jobPosterDoc.get("jobpostings");
+
+    // Add the new posting ID to the posting IDs array
+    jobPostings.postingids.push(postingID);
+
+    // Add an empty string to the applied array for the new posting
+    jobPostings.applied.push("");
+    // Add an empty string to the documents array for the new posting
+    jobPostings.documents.push("");
+    // Update the jobpostings object in the user document
+    await jobPosterRef.update({
+        jobpostings: jobPostings,
+    });
 }

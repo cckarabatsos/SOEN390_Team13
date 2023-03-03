@@ -47,9 +47,16 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
-    let casted_user: User = await user_schema.cast(user, {
-        stripUnknown: false,
-    });
+    let casted_user: User;
+    try {
+        casted_user = await user_schema.cast(user, {
+            stripUnknown: false,
+        });
+        console.log(casted_user);
+    } catch (error) {
+        // The object is invalid
+        console.error(error);
+    }
     casted_user.password = await hash(casted_user.password, saltRounds);
     user = await new Promise((resolve, _) => {
         findUserWithEmail(casted_user.email, (user) => {
@@ -136,12 +143,7 @@ export async function editAccount(
                 ];
             }
         }
-        currProfile.email = newProfile.email;
-        currProfile.password = newProfile.password;
-        currProfile.bio = newProfile.bio;
-        currProfile.currentCompany = newProfile.currentCompany;
-        currProfile.currentPosition = newProfile.currentPosition;
-        currProfile.name = newProfile.name;
+        currProfile = newProfile;
         updateUser(currProfile, id);
     } catch (err: any) {
         return [400, { msg: "missing field" }];

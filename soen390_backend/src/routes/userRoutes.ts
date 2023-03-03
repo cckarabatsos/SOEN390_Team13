@@ -323,11 +323,11 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     const status = userArr[0];
     if (status == 404) {
         res.status(404).json({ errMsg: "That user doesnt exists" });
-    } else if (!userArr[1].data.isRecruiter) {
-        console.log(userArr[1].isRecruiter);
-        console.log("That user is not even a recruiter");
+    } else if (!userArr[1].data.isCompany) {
+        console.log(userArr[1].isCompany);
+        console.log("That user is not even a company");
         res.status(400);
-        res.json({ errMsg: "That user is not a recruiter" });
+        res.json({ errMsg: "That user is not a company" });
     } else {
         try {
             let data: any = await createJobPosting(
