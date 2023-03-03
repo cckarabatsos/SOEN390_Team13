@@ -86,7 +86,7 @@ function Navbar(props) {
                     <EastIcon className="icon" sx={{ color: "#9606D9" }} />
                   </Link>
                   <Link data-testid="signup-1" to="/Signup" className="link">
-                    Signup
+                  {t("SignUpText")}
                     <NorthIcon className="icon" sx={{ color: "#9606D9" }} />
                   </Link>
                 </>
