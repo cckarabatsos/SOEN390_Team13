@@ -15,7 +15,8 @@
   "EducationText" : "Education",
   "ExperienceText" : "Work Experience",
   "SkillsText" : "Skills",
-  "RequestCenterText" : "Request Center"
+  "RequestCenterText" : "Request Center",
+  "UserNetworkingText" : "User Networking"
   
   
 }
