@@ -40,7 +40,16 @@
   "RemoteText" : "Remote",
   "ApplyText" : "Apply",
   "NoAccountText" :"Don't have an account?",
-  "ClickHereText" : "Click Here!"
+  "ClickHereText" : "Click Here!",
+  "AboutUsText" : "About Us",
+  "PrivacySettingsText" : "Privacy Settings",
+  "GuidelinesText" : "Guidelines",
+  "CareersText" : "Careers",
+  "AccessText" : "Accessibility",
+  "AdvertisingText" : "Advertising",
+  "SalesText" : "Sales",
+  "BusinessText" : "Businesses",
+  "ContactText" : "Contact Us"
   
   
 }

@@ -40,5 +40,14 @@
    "RemoteText" : "Télétravail",
    "ApplyText" : "Postuler",
    "NoAccountText" :"Vous n'avez pas de compte?",
-   "ClickHereText" : "Cliquez Ici!"
+   "ClickHereText" : "Cliquez Ici!",
+   "AboutUsText" : "Qui sommes-nous?",
+   "PrivacySettingsText" : "Paramètres de Confidentialité",
+   "GuidelinesText" : "Directives",
+   "CareersText" : "Carrières",
+   "AccessText" : "Accessibilité",
+   "AdvertisingText" : "Publicités",
+   "SalesText" : "Ventes",
+   "BusinessText" : "Entreprises",
+   "ContactText" : "Nous Contacter"
 }
