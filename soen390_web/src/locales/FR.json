@@ -75,5 +75,8 @@
    "DocumentsText" : "Documents Personnels",
    "CoverLetterText" : "Lettre de motivation",
    "PictureText" : "Photo",
-   "FilesText" : "Fichiers Supportés"
+   "FilesText" : "Fichiers Supportés",
+   "NameText" : "Par Nom",
+   "ByEmailText" : "Par Courriel",
+   "SearchByText" : "Rechercher Par"
 }

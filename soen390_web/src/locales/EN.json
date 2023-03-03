@@ -75,7 +75,10 @@
   "DocumentsText" : "Personal Documents",
   "CoverLetterText" : "Cover Letter",
   "PictureText" : "Picture",
-  "FilesText" : "Files Supported"
+  "FilesText" : "Files Supported",
+  "NameText" : "By Name",
+  "ByEmailText" : "By Email",
+  "SearchByText" : "Search By"
   
   
 }
