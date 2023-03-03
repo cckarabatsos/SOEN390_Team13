@@ -78,7 +78,9 @@
   "FilesText" : "Files Supported",
   "NameText" : "By Name",
   "ByEmailText" : "By Email",
-  "SearchByText" : "Search By"
-  
+  "SearchByText" : "Search By",
+  "UploadDocText" : "Upload Personal Documents",
+  "SentenceText" :"Upload your CV, Cover letter, or anything else you wish your recruiters to look at!",
+  "UpFileText" :"Upload File"
   
 }

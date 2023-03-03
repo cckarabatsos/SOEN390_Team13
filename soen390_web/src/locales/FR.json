@@ -78,5 +78,8 @@
    "FilesText" : "Fichiers Supportés",
    "NameText" : "Par Nom",
    "ByEmailText" : "Par Courriel",
-   "SearchByText" : "Rechercher Par"
+   "SearchByText" : "Rechercher Par",
+   "UploadDocText" : "Télécharger vos documents personnels",
+   "SentenceText" :"Téléchargez votre CV, lettre de motivation ou tout autre document que vous souhaitez que vos recruteurs examinent!",
+  "UpFileText" :"Télecharger document"
 }
