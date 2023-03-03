@@ -66,7 +66,7 @@ export async function createApplication(
     }
 }
 export async function getLastApplication(userID: string) {
-    let application: Application = await getLastApplication(userID);
+    let application: Application = await retrieveLastApplication(userID);
 
     if (application !== null) {
         return [200, application];
@@ -84,7 +84,7 @@ export async function getApplications(userID: string) {
     }
 }
 export async function getApplicationHistory(userID: string) {
-    let jobpostings = await retrieveApplications(userID);
+    let jobpostings = await retrieveApplicationHistory(userID);
 
     if (jobpostings !== null) {
         return [200, jobpostings];
