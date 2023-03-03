@@ -68,5 +68,8 @@
    "StartDateText" : "Date de commencement",
    "EndDateText" : "Date de fin",
    "ProgramText" : "Programme d'études",
-   "SaveApplyText" : "Enregistrer et appliquer"
+   "SaveApplyText" : "Enregistrer et appliquer",
+   "AddExpText" : "Ajouter de l'expérience",
+   "AddSkillText" : "Ajouter des compétences",
+   "WhatSkillText" : "Quels sont vos compétences?"
 }

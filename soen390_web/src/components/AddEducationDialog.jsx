@@ -42,7 +42,7 @@ function AddEducationDialog() {
               autoFocus
               className="inputRounded"
               margin="dense"
-              label="Name of School or University"
+              label={t("SchoolNameText")}
               type="university"
               variant="outlined"
               size="small"
@@ -56,7 +56,7 @@ function AddEducationDialog() {
               autoFocus
               className="inputRounded"
               margin="dense"
-              label="Program of Study"
+              label={t("ProgramText")}
               type="program"
               variant="outlined"
               size="small"

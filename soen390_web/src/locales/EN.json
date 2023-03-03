@@ -68,7 +68,9 @@
   "StartDateText" : "Start Date",
   "EndDateText" : "End Date",
   "ProgramText" : "Program of Study",
-  "SaveApplyText" : "Save and Apply"
+  "SaveApplyText" : "Save and Apply",
+  "AddExpText" : "Add Experience",
+  "AddSkillText" : "Add Skills "
   
   
 }
