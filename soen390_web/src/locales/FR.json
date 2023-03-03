@@ -29,5 +29,6 @@
   "ConnectText" : "Connecter",
   "ViewProfileText" : "Voir Profile",
   "ConnectionRequestText" : "Demande de connexion envoyée",
-   "FailedConnectionRequestText" : "Échec de l'envoi de la demande de connexion"
+   "FailedConnectionRequestText" : "Échec de l'envoi de la demande de connexion",
+   "AcceptText" : "Accepter"
 }

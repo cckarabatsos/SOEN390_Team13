@@ -4,6 +4,7 @@ import "../styles/components/userconnection.css";
 import Person from "../assets/UserConnectionImages/image (1).jpg"
 import { Button } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 function handleDecline() {
   // Do something when the decline button is clicked
   console.log("Decline button clicked");
@@ -28,6 +29,7 @@ export default function UserConnectionComponent(props) {
 
   const accept = props.accept;
   const decline = props.decline;
+  const { t } = useTranslation();
 
   return (
     <div className="friend-request">
@@ -49,7 +51,7 @@ export default function UserConnectionComponent(props) {
           color="success"
           onClick={() => accept(currentEmail, senderEmail)}
         >
-          Accept
+          {t("AcceptText")}
         </Button>
         <Button
           style={{
