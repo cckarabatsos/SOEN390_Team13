@@ -177,7 +177,7 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={6}>
-                    <div className="header">Skills</div>
+                    <div className="header">{t("SkillsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
                     <AddSkillDialog />
