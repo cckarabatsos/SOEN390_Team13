@@ -1,7 +1,10 @@
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-import { Application /*application_schema*/ } from "../models/Application";
+import {
+    Application, /*application_schema*/
+    application_schema
+} from "../models/Application";
 import { jobposting_schema } from "../models/jobPosting";
 import { user_schema } from "../models/User";
 import { findJobpostingWithID } from "./jobPostingServices";
@@ -60,4 +63,36 @@ export const storeApplication = async (application: Application) => {
         throw error;
     }
     return document.id;
+};
+
+export const retrieveLastApplication = async (userID: string) => {
+    try {
+        let user = await findUserWithID(userID);
+        if (user === undefined) {
+            console.log("User not found.");
+            return null;
+        }
+        let casted_user = await user_schema.cast(user);
+        if (casted_user.isCompany) {
+            console.log("User specified is a company. Route not applicable.")
+            return null;
+        }
+        let nbrApplications: number = casted_user.jobpostings.applied.length
+        if (nbrApplications === 0) {
+            return {};
+        } else {
+            let applicationID = casted_user.jobpostings.applied[nbrApplications - 1].split(",")[0];
+            let application = findApplicationWithID(applicationID);
+            if (application === undefined) {
+                console.log("Application not found.");
+                return null;
+            }
+            let casted_application = application_schema.cast(application);
+            return casted_application;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
 };
