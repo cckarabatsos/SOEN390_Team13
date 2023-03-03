@@ -50,7 +50,25 @@
   "SalesText" : "Sales",
   "BusinessText" : "Businesses",
   "ContactText" : "Contact Us",
-  "MoreInfoText" : "More Info"
+  "MoreInfoText" : "More Info",
+  "JanuaryText": "January",
+  "FebruaryText": "February",
+  "MarchText": "March",
+  "AprilText": "April",
+  "MayText": "May",
+  "JuneText": "June",
+  "JulyText": "July",
+  "AugustText": "August",
+  "SeptemberText": "September",
+  "OctoberText": "October",
+  "NovemberText": "November",
+  "DecemberText": "December",
+  "AddEducationText" : "Add an education",
+  "SchoolNameText" : "Name of the institute",
+  "StartDateText" : "Start Date",
+  "EndDateText" : "End Date",
+  "ProgramText" : "Program of Study",
+  "SaveApplyText" : "Save and Apply"
   
   
 }
