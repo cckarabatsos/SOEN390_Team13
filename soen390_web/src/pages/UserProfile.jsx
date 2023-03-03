@@ -23,6 +23,7 @@ function UserProfile(props) {
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
   const [picture, setpicture] = React.useState();
+  const [filename, setFilename] = React.useState();
 
   const navigate = useNavigate();
 
@@ -57,19 +58,16 @@ function UserProfile(props) {
     if (UserCoverLetter !== null) {
       getCoverLetter().then((coverLetter) => {
         setCoverletter(coverLetter);
+        const url = coverLetter;
+        setFilename(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
+        console.log(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
         console.log("coverletter:", coverLetter);
       });
     }
-
-    // GetFile(userData.userID, "coverletter")
-    //   .then((userCoverletter) => {
-    //     if (userCoverletter !== null) {
-    //       setCoverletter(userCoverletter);
-    //       console.log("userCoverletter:", userCoverletter); // add console log
-    //     }
-    //     console.log("coverletter:", coverletter); // add console log
-    //   })
-    //   .catch((error) => console.error(error)); // add error handler
   }, [navigate, userData.userID]);
 
   return (
@@ -299,9 +297,8 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={12}>
-                    <div>resume</div>
-                    <div>{resume}</div>
-                    <div>{/* <ProfileFileItem file={resume} /> */}</div>
+                    <div>coverletter</div>
+                    <ProfileFileItem file={coverletter} filename={filename} />
                   </Grid>
                 </Grid>
               </Grid>
