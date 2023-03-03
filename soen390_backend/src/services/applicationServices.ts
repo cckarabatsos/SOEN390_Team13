@@ -94,5 +94,35 @@ export const retrieveLastApplication = async (userID: string) => {
         console.log(error);
         throw error;
     }
-    return null;
+};
+
+export const retrieveApplications = async (userID: string) => {
+    try {
+        let user = await findUserWithID(userID);
+        if (user === undefined) {
+            console.log("User not found.");
+            return null;
+        }
+        let casted_user = await user_schema.cast(user);
+        if (!casted_user.isCompany) {
+            console.log("User specified is not a company. Route not applicable.")
+            return null;
+        }
+
+        let applicationsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+            db.collection("applications");
+
+        applicationsRef = applicationsRef
+            .where("applicationID", "in", casted_user.jobpostings.applied);
+
+        const snapshot = await applicationsRef.get();
+        const applications = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+        }));
+        return applications;
+
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 };

@@ -51,8 +51,8 @@ export const deleteExperienceWithId = async (experienceID: string) => {
                 .then(() => {
                     console.log(
                         "Experience with ID " +
-                            experienceID +
-                            " successfully deleted."
+                        experienceID +
+                        " successfully deleted."
                     );
                 });
         } else {
@@ -72,11 +72,10 @@ export const retrieveExperiences = async (userID: string, type: string) => {
     let experiencesRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("experiences");
 
-    if (userID) {
-        experiencesRef = experiencesRef
-            .where("ownerID", "==", userID)
-            .where("type", "==", type);
-    }
+    experiencesRef = experiencesRef
+        .where("ownerID", "==", userID)
+        .where("type", "==", type);
+
     const snapshot = await experiencesRef.get();
     const experiences = snapshot.docs.map((doc) => ({
         ...doc.data(),
