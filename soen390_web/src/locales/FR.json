@@ -49,5 +49,6 @@
    "AdvertisingText" : "Publicités",
    "SalesText" : "Ventes",
    "BusinessText" : "Entreprises",
-   "ContactText" : "Nous Contacter"
+   "ContactText" : "Nous Contacter",
+   "MoreInfoText" : "Plus d'informations"
 }
