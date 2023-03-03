@@ -24,6 +24,7 @@
   "LoginText" : "Se connecter",
   "SignoutText" : "Déconnexion",
   "JobSearchingJourneyText" : "Commencez votre recherche d'emploi ici. Parcourez les emplois disponibles ci-dessous.",
-  "DesiredJobText" : "Veuillez rechercher l'emploi souhaité."
+  "DesiredJobText" : "Veuillez rechercher l'emploi souhaité.",
+  "SearchResultText" : "Aucun résultats trouvés"
 
 }

@@ -1,14 +1,14 @@
 import { Pagination } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import SearchResultCard from "./SearchResultCard";
-
+import { useTranslation } from "react-i18next";
 const SearchResultPagination = ({ searchResults, resultsPerPage = 10 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Determine the index range for the current page
   const startIndex = (currentPage - 1) * resultsPerPage;
   const endIndex = startIndex + resultsPerPage;
-
+  const { t } = useTranslation();
   // Slice the search results array to show only the current page's results
   const currentResults = searchResults
     ? searchResults.slice(startIndex, endIndex)
@@ -20,7 +20,7 @@ const SearchResultPagination = ({ searchResults, resultsPerPage = 10 }) => {
   };
 
   if (!searchResults || searchResults.length === 0) {
-    return <div>No search results found</div>;
+    return <div>{t("SearchResultText")}</div>;
   }
 
   return (
