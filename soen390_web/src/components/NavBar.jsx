@@ -58,7 +58,7 @@ function Navbar(props) {
               {userData && (
                 <>
                 <Link data-testid="job-1" to="/UserNetworking" className="link">
-                Networking
+                {t("NetworkingText")}
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
                 <Link data-testid="job-1" to="/UserConnection" className="link">

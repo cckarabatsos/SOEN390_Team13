@@ -1,5 +1,5 @@
 {
-  "jobsNavBar": "Jobe",
+  "jobsNavBar": "Emplois",
   "emailText": "Adresse de Courriel",
   "passwordText": "Mot de Passe",
   "FirstNameText" : "Prénom",
@@ -17,6 +17,7 @@
   "SkillsText" : "Compétences",
   "RequestCenterText" : "Centre de Requêtes",
   "UserNetworkingText" : "Réseaux d'utilisateurs",
-  "HomeText" : "Accueil"
+  "HomeText" : "Accueil",
+  "NetworkingText" : "Réseautage"
 
 }
