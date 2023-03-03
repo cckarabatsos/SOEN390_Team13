@@ -27,6 +27,7 @@
   "DesiredJobText" : "Veuillez rechercher l'emploi souhaité.",
   "SearchResultText" : "Aucun résultats trouvés",
   "ConnectText" : "Connecter",
-  "ViewProfileText" : "Voir Profile"
-
+  "ViewProfileText" : "Voir Profile",
+  "ConnectionRequestText" : "Demande de connexion envoyée",
+   "FailedConnectionRequestText" : "Échec de l'envoi de la demande de connexion"
 }

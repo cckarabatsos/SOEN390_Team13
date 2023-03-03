@@ -49,8 +49,10 @@ const SearchResultCard = ({ data }) => {
     console.log(temp);
     const alertSeverity = temp ? "success" : "error";
     const alertMessage = temp
-      ? "Connection request sent!"
-      : "Failed to send connection request";
+    ? "Connection request sent!"
+    : "Failed to send connection request";
+      //? '${t("ConnectionRequestText")}'
+      //: '${t("FailedConnectionRequestText")};'
     setAlert({ open: true, severity: alertSeverity, message: alertMessage });
     setTimeout(() => {
       setAlert({ ...alert, open: false });
