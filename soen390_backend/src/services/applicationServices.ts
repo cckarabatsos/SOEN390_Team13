@@ -40,6 +40,14 @@ export const storeApplication = async (application: Application) => {
         }
         let casted_user = await user_schema.cast(user);
         let casted_company = await user_schema.cast(company);
+        let jobPostingIDs: string[] = [];
+        casted_user.jobpostings.applied.forEach((str: string) => {
+            jobPostingIDs.push(str.split(",")[1]);
+        });
+        if (jobPostingIDs.includes(application.postingID)) {
+            console.log("User has already applied to this job posting.")
+            return "alreadyApplied";
+        }
         if (application.attachCoverLetter) {
             application.coverLetter = casted_user.coverLetter;
         }

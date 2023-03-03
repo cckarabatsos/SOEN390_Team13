@@ -22,6 +22,8 @@ export const application_schema = yup
         postingID: yup.string().required(),
         attachResume: yup.boolean().required().default(false),
         attachCoverLetter: yup.boolean().required().default(false),
+        resume: yup.string().required(),
+        coverLetter: yup.string().required(),
         experience: yup.array(yup.string()).required().default([]),
         applicationID: yup.string().required()
     })
