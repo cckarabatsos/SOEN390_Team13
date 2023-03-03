@@ -70,7 +70,12 @@
   "ProgramText" : "Program of Study",
   "SaveApplyText" : "Save and Apply",
   "AddExpText" : "Add Experience",
-  "AddSkillText" : "Add Skills "
+  "AddSkillText" : "Add Skills ",
+  "WhatSkillText" : "What are your skills ?",
+  "DocumentsText" : "Personal Documents",
+  "CoverLetterText" : "Cover Letter",
+  "PictureText" : "Picture",
+  "FilesText" : "Files Supported"
   
   
 }

@@ -243,7 +243,7 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={6}>
-                    <div className="header">Personal Documents</div>
+                    <div className="header">{t("DocumentsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
                     <AddDocumentsDialog />

@@ -71,5 +71,9 @@
    "SaveApplyText" : "Enregistrer et appliquer",
    "AddExpText" : "Ajouter de l'expérience",
    "AddSkillText" : "Ajouter des compétences",
-   "WhatSkillText" : "Quels sont vos compétences?"
+   "WhatSkillText" : "Quels sont vos compétences?",
+   "DocumentsText" : "Documents Personnels",
+   "CoverLetterText" : "Lettre de motivation",
+   "PictureText" : "Photo",
+   "FilesText" : "Fichiers Supportés"
 }
