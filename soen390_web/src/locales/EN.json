@@ -22,7 +22,8 @@
   "UserConnectionText" : "User Connection",
   "ContactsText" : "Contacts",
   "LoginText" : "Login",
-  "SignoutText" : "Sign Out"
+  "SignoutText" : "Sign Out",
+  "JobSearchingJourneyText" : "Start your job searching journey here. Browse available jobs down below."
   
   
 }

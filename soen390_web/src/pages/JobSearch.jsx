@@ -6,6 +6,8 @@ import JobSearchBar from "../components/JobSearchBar";
 import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 
 export default function JobSearch() {
  
@@ -19,7 +21,7 @@ export default function JobSearch() {
   const [description, setDescription] = useState(false);
   const [email, setEmail] = useState(false);
   const [jobs, setJobs] = useState([]);
-
+  const { t } = useTranslation();
   const [jobDisplay, setJobDisplay] = useState([]);
 
 
@@ -45,8 +47,7 @@ useEffect(() => {
     <div>
       <div>
         <h2>
-          Start your job searching journey here. Browse available jobs down
-          below.
+        {t("JobSearchingJourneyText")}
         </h2>
         <JobSearchBar 
         setJobs={setJobs}/>

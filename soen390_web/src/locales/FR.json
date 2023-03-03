@@ -22,6 +22,7 @@
   "UserConnectionText" : "Connexion avec d'autres utilisateurs",
   "ContactsText" : "Contacts",
   "LoginText" : "Se connecter",
-  "SignoutText" : "Déconnexion"
+  "SignoutText" : "Déconnexion",
+  "JobSearchingJourneyText" : "Commencez votre recherche d'emploi ici. Parcourez les emplois disponibles ci-dessous."
 
 }
