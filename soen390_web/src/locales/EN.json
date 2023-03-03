@@ -37,7 +37,8 @@
   "CompanyText" : "Company",
   "PositionText" : "Position",
   "TypeText" : "Type",
-  "RemoteText" : "Remote"
+  "RemoteText" : "Remote",
+  "ApplyText" : "Apply"
   
   
 }

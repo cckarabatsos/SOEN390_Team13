@@ -37,5 +37,6 @@
    "CompanyText" : "Compagnie",
    "PositionText" : "Poste",
    "TypeText" : "Type",
-   "RemoteText" : "Télétravail"
+   "RemoteText" : "Télétravail",
+   "ApplyText" : "Postuler"
 }
