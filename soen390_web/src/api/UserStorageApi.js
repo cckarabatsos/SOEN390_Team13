@@ -1,21 +1,24 @@
 import axios from "axios";
 import api from "../config.json";
-import { auth, provider } from "../firebaseConfig";
 
-export async function UploadFile({files, setFiles}, file, formData){
+export async function GetFile(userid, type){
     try{
-        const response = await axios
-            .post(api.BACKEND_API + "user/uploadAccountFile/:userID", formData)
-            .then((res) => {
-                file.isUploading = false;
-                setFiles([...files, file])
-            });
-        return response;
+        if (typeof userid !== 'undefined') {
+            console.log(userid);
+            console.log(type);
+            console.log(`${api.BACKEND_API}/user/accountFile/?${userid}?type=${type}`);
+            const response = await axios.get(
+                `${api.BACKEND_API}/user/accountFile/${userid}?type=${type}`,
+              );
+            if(response.status == 200){
+                return response.data;
+            } else{
+                return null;
+            }
+          }
+
     } catch (err) {
-        console.error("yo", err);
+        console.error("error", err);
+        return false;
     }
-}
-
-export async function DeleteFile(file){
-
 }
