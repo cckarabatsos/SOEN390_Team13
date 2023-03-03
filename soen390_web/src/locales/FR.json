@@ -32,5 +32,10 @@
    "FailedConnectionRequestText" : "Échec de l'envoi de la demande de connexion",
    "AcceptText" : "Accepter",
    "DeclineText" : "Refuser",
-   "SearchText" : "Rechercher"
+   "SearchText" : "Rechercher",
+   "LocationText" : "Emplacement",
+   "CompanyText" : "Compagnie",
+   "PositionText" : "Poste",
+   "TypeText" : "Type",
+   "RemoteText" : "Télétravail"
 }

@@ -55,7 +55,7 @@ function SearchBar(props, ref) {
   return (
     <TextField
       className={classes.searchInput}
-      placeholder="Search"
+      placeholder={t("SearchText")}
       variant="outlined"
       size="small"
       fullWidth

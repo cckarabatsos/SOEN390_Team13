@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import "../styles/components/JobSearchBar.css";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
+import { useTranslation } from "react-i18next";
 
 function JobSearchBar({ setJobs }) {
  
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
-
+  const { t } = useTranslation();
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
@@ -32,7 +33,7 @@ function JobSearchBar({ setJobs }) {
       <div>
         <input
           type="text"
-          placeholder="Search here..."
+          placeholder={t("SearchText")}
           value={text}
           onChange={handleTextChange}
         />
@@ -60,11 +61,11 @@ function JobSearchBar({ setJobs }) {
           onChange={handleChange}
         >
           
-          <option value="location">Location</option>
-          <option value="company">Company</option>
-          <option value="position">Position</option>
-          <option value="type">Type</option>
-          <option valye="remote">Remote</option>
+          <option value="location">{t("LocationText")}</option>
+          <option value="company">{t("CompanyText")}</option>
+          <option value="position">{t("PositionText")}</option>
+          <option value="type">{t("TypeText")}</option>
+          <option valye="remote">{t("RemoteText")}</option>
         </select>
       </div>
     </div>

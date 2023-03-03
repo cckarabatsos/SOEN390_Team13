@@ -32,7 +32,12 @@
   "FailedConnectionRequestText" : "Failed Connection Request",
   "AcceptText" : "Accept",
   "DeclineText" : "Decline",
-  "SearchText" : "Search"
+  "SearchText" : "Search",
+  "LocationText" : "Location",
+  "CompanyText" : "Company",
+  "PositionText" : "Position",
+  "TypeText" : "Type",
+  "RemoteText" : "Remote"
   
   
 }
