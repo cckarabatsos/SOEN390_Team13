@@ -59,7 +59,7 @@ export default function UserConnectionComponent(props) {
           }}
           onClick={() => decline(currentEmail, senderEmail)}
         >
-          Decline
+          {t("DeclineText")}
         </Button>
       </div>
     </div>

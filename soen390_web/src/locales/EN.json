@@ -30,7 +30,8 @@
   "ViewProfileText" : "View Profile",
   "ConnectionRequestText" : "Connection Request Sent",
   "FailedConnectionRequestText" : "Failed Connection Request",
-  "AcceptText" : "Accept"
+  "AcceptText" : "Accept",
+  "DeclineText" : "Decline"
   
   
 }
