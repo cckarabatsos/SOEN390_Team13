@@ -126,3 +126,38 @@ export const retrieveApplications = async (userID: string) => {
         throw error;
     }
 };
+
+export const retrieveApplicationHistory = async (userID: string) => {
+    try {
+        let user = await findUserWithID(userID);
+        if (user === undefined) {
+            console.log("User not found.");
+            return null;
+        }
+        let casted_user = await user_schema.cast(user);
+        if (casted_user.isCompany) {
+            console.log("User specified is a company. Route not applicable.")
+            return null;
+        }
+
+        let jobpostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+            db.collection("jobpostings");
+        let jobPostingIDs: string[] = [];
+        casted_user.jobpostings.applied.forEach((str: string) => {
+            jobPostingIDs.push(str.split(",")[1]);
+        });
+
+        jobpostingsRef = jobpostingsRef
+            .where("postingID", "in", jobPostingIDs);
+
+        const snapshot = await jobpostingsRef.get();
+        const applications = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+        }));
+        return applications;
+
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
