@@ -112,7 +112,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                  Experience
+                {t("ExperienceText")}
                   <AddExperienceDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
