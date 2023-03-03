@@ -22,6 +22,8 @@ import {
     hasFile,
     removeAccountFile,
     getFilteredCompaniesController,
+    followCompany,
+    unFollowCompany,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -245,7 +247,31 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+user.get("/api/follow", async (req: Request, res: Response) => {
+    let receiverID = (await req.query.receiverID) as string;
+    let senderID = (await req.query.senderID) as string;
 
+    let data = await followCompany(senderID, receiverID);
+
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+user.get("/api/unFollow", async (req: Request, res: Response) => {
+    console.log("HI IM ROKI");
+    let receiverID = (await req.query.receiverID) as string;
+    let senderID = (await req.query.senderID) as string;
+
+    let data = await unFollowCompany(senderID, receiverID);
+
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
 user.get("/api/manageInvite", async (req: Request, res: Response) => {
     let invitedEmail = req.query.invitedEmail as string;
     let senderEmail = req.query.senderEmail as string;
