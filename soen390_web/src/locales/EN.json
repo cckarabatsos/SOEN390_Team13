@@ -16,7 +16,8 @@
   "ExperienceText" : "Work Experience",
   "SkillsText" : "Skills",
   "RequestCenterText" : "Request Center",
-  "UserNetworkingText" : "User Networking"
+  "UserNetworkingText" : "User Networking",
+  "HomeText" : "Home"
   
   
 }

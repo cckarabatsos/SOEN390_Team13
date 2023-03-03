@@ -46,7 +46,7 @@ function Navbar(props) {
             <span className="navlinks">
                {userData && (
               <Link data-testid="home-1" to="/NewsFeedPAge" className="link">
-                Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
+                {t("HomeText")} <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
                )}
               <Link data-testid="job-1" to="/JobSearch" className="link">
