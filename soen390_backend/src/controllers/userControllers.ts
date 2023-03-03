@@ -217,7 +217,22 @@ export async function getFilteredUsersController(filter: UserFilter) {
     if (err) {
         return [400, error_data];
     } else {
-        let users = await getFilteredUsers(stripped_filer);
+        let users = await getFilteredUsers(stripped_filer, false);
+
+        // parse_links(products);
+        return [200, users];
+    }
+}
+export async function getFilteredCompaniesController(filter: UserFilter) {
+    let stripped_filer = user_filter_schema.cast(filter, {
+        stripUnknown: true,
+    });
+
+    let [err, error_data] = validateUserFilter(stripped_filer);
+    if (err) {
+        return [400, error_data];
+    } else {
+        let users = await getFilteredUsers(stripped_filer, true);
 
         // parse_links(products);
         return [200, users];

@@ -471,10 +471,10 @@ export function updateUser(newProfile: User, id: string) {
     db.collection("users").doc(id).update(newProfile);
 }
 
-export async function getFilteredUsers(filter: UserFilter) {
+export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
-
+    userRef = userRef.where("isCompany", "==", company);
     if (filter.name) {
         userRef = userRef.where("name", "==", filter.name);
     }
@@ -497,6 +497,7 @@ export async function getFilteredUsers(filter: UserFilter) {
     }));
     return users;
 }
+
 export async function updateCompanyPostings(
     postingID: string,
     jobPosterID: string

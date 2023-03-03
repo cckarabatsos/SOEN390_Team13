@@ -21,6 +21,7 @@ import {
     uploadAccountFile,
     hasFile,
     removeAccountFile,
+    getFilteredCompaniesController,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -372,6 +373,30 @@ user.get("/api/search", async (req: Request, res: Response) => {
     try {
         let status,
             data = await getFilteredUsersController(filter);
+        res.json(data);
+        res.status(200);
+        if (status == 200) {
+            res.sendStatus(200);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
+user.get("/api/searchCompanies", async (req: Request, res: Response) => {
+    var filter: any = {};
+
+    for (const [key, value] of Object.entries(req.query)) {
+        filter[key] = value;
+    }
+
+    console.log(req.query);
+    try {
+        let status,
+            data = await getFilteredCompaniesController(filter);
         res.json(data);
         res.status(200);
         if (status == 200) {
