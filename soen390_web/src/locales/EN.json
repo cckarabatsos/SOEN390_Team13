@@ -19,7 +19,8 @@
   "UserNetworkingText" : "User Networking",
   "HomeText" : "Home",
   "NetworkingText" : "Networking",
-  "UserConnectionText" : "User Connection"
+  "UserConnectionText" : "User Connection",
+  "ContactsText" : "Contacts"
   
   
 }

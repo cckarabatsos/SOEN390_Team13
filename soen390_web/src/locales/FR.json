@@ -19,6 +19,7 @@
   "UserNetworkingText" : "Réseaux d'utilisateurs",
   "HomeText" : "Accueil",
   "NetworkingText" : "Réseautage",
-  "UserConnectionText" : "Connexion avec d'autres utilisateurs"
+  "UserConnectionText" : "Connexion avec d'autres utilisateurs",
+  "ContactsText" : "Contacts"
 
 }
