@@ -31,7 +31,8 @@
   "ConnectionRequestText" : "Connection Request Sent",
   "FailedConnectionRequestText" : "Failed Connection Request",
   "AcceptText" : "Accept",
-  "DeclineText" : "Decline"
+  "DeclineText" : "Decline",
+  "SearchText" : "Search"
   
   
 }
