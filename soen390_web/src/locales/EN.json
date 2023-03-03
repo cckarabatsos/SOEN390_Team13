@@ -18,7 +18,8 @@
   "RequestCenterText" : "Request Center",
   "UserNetworkingText" : "User Networking",
   "HomeText" : "Home",
-  "NetworkingText" : "Networking"
+  "NetworkingText" : "Networking",
+  "UserConnectionText" : "User Connection"
   
   
 }

@@ -62,7 +62,7 @@ function Navbar(props) {
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
                 <Link data-testid="job-1" to="/UserConnection" className="link">
-                  User Connection
+                {t("UserConnectionText")}
                   <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
 

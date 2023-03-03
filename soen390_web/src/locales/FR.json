@@ -18,6 +18,7 @@
   "RequestCenterText" : "Centre de Requêtes",
   "UserNetworkingText" : "Réseaux d'utilisateurs",
   "HomeText" : "Accueil",
-  "NetworkingText" : "Réseautage"
+  "NetworkingText" : "Réseautage",
+  "UserConnectionText" : "Connexion avec d'autres utilisateurs"
 
 }
