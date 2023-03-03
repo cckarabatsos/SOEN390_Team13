@@ -38,5 +38,7 @@
    "PositionText" : "Poste",
    "TypeText" : "Type",
    "RemoteText" : "Télétravail",
-   "ApplyText" : "Postuler"
+   "ApplyText" : "Postuler",
+   "NoAccountText" :"Vous n'avez pas de compte?",
+   "ClickHereText" : "Cliquez Ici!"
 }

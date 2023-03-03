@@ -38,7 +38,9 @@
   "PositionText" : "Position",
   "TypeText" : "Type",
   "RemoteText" : "Remote",
-  "ApplyText" : "Apply"
+  "ApplyText" : "Apply",
+  "NoAccountText" :"Don't have an account?",
+  "ClickHereText" : "Click Here!"
   
   
 }

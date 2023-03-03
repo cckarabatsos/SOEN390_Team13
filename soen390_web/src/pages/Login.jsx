@@ -92,7 +92,7 @@ function MainTitle(props) {
                     }}
                     onClick={() => navigate("/")}
                   >
-                    Cancel
+                    {t("CancelText")}
                   </Button>
                 </Grid>
                 <Grid className="login" item xs={6}>
@@ -105,14 +105,14 @@ function MainTitle(props) {
                       backgroundColor: "rgba(100, 69, 227, 0.85)",
                     }}
                   >
-                    Login
+                    {t("LoginText")}
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <GoogleLogin />
                 </Grid>
                 <Grid item xs={12}>
-                  Don't have an account? Sign up <Link to="/Signup">here!</Link>
+                {t("NoAccountText")} <Link to="/Signup">{t("ClickHereText")}</Link>
                 </Grid>
               </Grid>
             </div>
