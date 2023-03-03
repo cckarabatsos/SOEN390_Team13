@@ -19,6 +19,7 @@ export const application_schema = yup
         schoolMajor: yup.string().required(),
         timestamp: yup.string().required(),
         ownerID: yup.string().required(),
+        postingID: yup.string().required(),
         attachResume: yup.boolean().required().default(false),
         attachCoverLetter: yup.boolean().required().default(false),
         experience: yup.array(yup.string()).required().default([]),

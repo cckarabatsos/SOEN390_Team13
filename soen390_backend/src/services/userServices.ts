@@ -44,8 +44,8 @@ export const storeUser = async (user: User) => {
         let pic = user.picture
             ? user.picture
             : await ref
-                  .child("Profile Pictures/blank_profile_pic.png")
-                  .getDownloadURL();
+                .child("Profile Pictures/blank_profile_pic.png")
+                .getDownloadURL();
         user.picture = pic;
         var document = await db.collection("users").add({
             ...user,
@@ -77,7 +77,7 @@ export const deleteUserWithId = async (userID: string) => {
                 await batch.commit();
                 console.log(
                     data.jobpostings.postingids.length +
-                        " job postings successfully deleted."
+                    " job postings successfully deleted."
                 );
             }
             db.collection("users")
@@ -117,7 +117,7 @@ export const storeAccountFile = async (
                 type = type[0];
             }
             console.log(type);
-            deleteAccountFile(userID, type);
+            // deleteAccountFile(userID, type); Commented out because of applications implementation
             if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {
@@ -127,7 +127,7 @@ export const storeAccountFile = async (
             } else {
                 return null;
             }
-            console.log(file.originalname);
+            console.log();
             const uploadTask = await ref
                 .child(folder + userID + " - " + file.originalname)
                 .put(buffer, metadata);
