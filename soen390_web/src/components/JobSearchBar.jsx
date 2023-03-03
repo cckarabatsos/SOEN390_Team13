@@ -36,6 +36,7 @@ function JobSearchBar({ setJobs }) {
           placeholder={t("SearchText")}
           value={text}
           onChange={handleTextChange}
+          
         />
         <Button
           className="button"
@@ -43,10 +44,11 @@ function JobSearchBar({ setJobs }) {
           onClick={handleSearch}
           style={{
             borderRadius: 27,
+            display: "inline-block", width: "125px", 
             backgroundColor: "#a640f4b9",
           }}
         >
-          Search
+          {t("SearchText")}
         </Button>
         
         <select
@@ -55,6 +57,9 @@ function JobSearchBar({ setJobs }) {
           className="buttonfilter"
           style={{
             borderRadius: 27,
+            display: "inline-block", 
+            width: "160px", 
+            marginRight: "140px",
             backgroundColor: "#a640f4b9",
           }}
           value={category}
