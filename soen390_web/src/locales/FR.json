@@ -20,6 +20,7 @@
   "HomeText" : "Accueil",
   "NetworkingText" : "Réseautage",
   "UserConnectionText" : "Connexion avec d'autres utilisateurs",
-  "ContactsText" : "Contacts"
+  "ContactsText" : "Contacts",
+  "LoginText" : "Se connecter"
 
 }

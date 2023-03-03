@@ -82,7 +82,7 @@ function Navbar(props) {
                     to="/UserProfile"
                     className="link"
                   >
-                    Login{" "}
+                    {t("LoginText")}{" "}
                     <EastIcon className="icon" sx={{ color: "#9606D9" }} />
                   </Link>
                   <Link data-testid="signup-1" to="/Signup" className="link">

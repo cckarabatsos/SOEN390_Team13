@@ -20,7 +20,8 @@
   "HomeText" : "Home",
   "NetworkingText" : "Networking",
   "UserConnectionText" : "User Connection",
-  "ContactsText" : "Contacts"
+  "ContactsText" : "Contacts",
+  "LoginText" : "Login"
   
   
 }
