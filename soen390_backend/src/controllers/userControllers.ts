@@ -11,6 +11,8 @@ import {
     getUserInvitationsOrContacts,
     getFilteredUsers,
     deleteAccountFile,
+    followCompanyInv,
+    unFollowCompanyInv,
 } from "../services/userServices";
 import dotenv from "dotenv";
 import {
@@ -160,6 +162,31 @@ export async function sendInvite(receiverEmail: string, senderEmail: string) {
 
     return [200, { msg: "Invitation sent" }];
 }
+export async function followCompany(
+    receiverEmail: string,
+    senderEmail: string
+) {
+    try {
+        await followCompanyInv(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
+
+export async function unFollowCompany(
+    receiverEmail: string,
+    senderEmail: string
+) {
+    try {
+        await unFollowCompanyInv(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
 
 export async function manageInvite(
     senderEmail: string,
@@ -217,7 +244,22 @@ export async function getFilteredUsersController(filter: UserFilter) {
     if (err) {
         return [400, error_data];
     } else {
-        let users = await getFilteredUsers(stripped_filer);
+        let users = await getFilteredUsers(stripped_filer, false);
+
+        // parse_links(products);
+        return [200, users];
+    }
+}
+export async function getFilteredCompaniesController(filter: UserFilter) {
+    let stripped_filer = user_filter_schema.cast(filter, {
+        stripUnknown: true,
+    });
+
+    let [err, error_data] = validateUserFilter(stripped_filer);
+    if (err) {
+        return [400, error_data];
+    } else {
+        let users = await getFilteredUsers(stripped_filer, true);
 
         // parse_links(products);
         return [200, users];

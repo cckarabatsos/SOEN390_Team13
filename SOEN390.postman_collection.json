@@ -1,661 +1,908 @@
 {
-    "info": {
-        "_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
-        "name": "SOEN390",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "_exporter_id": "19175436"
-    },
-    "item": [
-        {
-            "name": "User",
-            "item": [
-                {
-                    "name": "Get user by id",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/id/:userID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "id", ":userID"],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "2ioAGZLt2UqzVIK8gWrM"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Account File",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/accountFile/:userID?type=resume",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "accountFile", ":userID"],
-                            "query": [
-                                {
-                                    "key": "type",
-                                    "value": "resume"
-                                }
-                            ],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Remove Account File",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/removeAccountFile/:userID?type=resume",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "removeAccountFile", ":userID"],
-                            "query": [
-                                {
-                                    "key": "type",
-                                    "value": "resume"
-                                }
-                            ],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Hearbeat",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": [""]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Login",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/login?email=LinkedOutInc@gmail.com&password=pass123",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "login"],
-                            "query": [
-                                {
-                                    "key": "email",
-                                    "value": "LinkedOutInc@gmail.com"
-                                },
-                                {
-                                    "key": "password",
-                                    "value": "pass123"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "userSearch",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/search?name=&email=test@test.com&limit=10&skip=1",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "search"],
-                            "query": [
-                                {
-                                    "key": "name",
-                                    "value": ""
-                                },
-                                {
-                                    "key": "email",
-                                    "value": "test@test.com"
-                                },
-                                {
-                                    "key": "limit",
-                                    "value": "10"
-                                },
-                                {
-                                    "key": "skip",
-                                    "value": "1"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "InviteUser",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=bog5@test.com",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "sendInvite"],
-                            "query": [
-                                {
-                                    "key": "receiverEmail",
-                                    "value": "bog1@test.com"
-                                },
-                                {
-                                    "key": "senderEmail",
-                                    "value": "bog5@test.com"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GetPendingInvitations",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=bog@test.com",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "getPendingInvitations"],
-                            "query": [
-                                {
-                                    "key": "userEmail",
-                                    "value": "bog@test.com"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Register",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"LinkedOutInc\",\r\n    \"isCompany\": \"True\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/register",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "register"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Delete User",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/delete/:userID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "delete", ":userID"],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "l51aljtbuZsBSTCJCygu"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Logout",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/logout",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "logout"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Edit User",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"name\": \"Poda\",\r\n    \"password\": \"matthewisthebest\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": \"false\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/user/edit/:email",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "edit", ":email"],
-                            "variable": [
-                                {
-                                    "key": "email",
-                                    "value": "poda4@gmail.com"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Upload Account File",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "formdata",
-                            "formdata": [
-                                {
-                                    "key": "file",
-                                    "type": "file",
-                                    "src": "Cover Letter.pdf"
-                                }
-                            ]
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/user/uploadAccountFile/:userID?type=coverLetter",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "uploadAccountFile", ":userID"],
-                            "query": [
-                                {
-                                    "key": "type",
-                                    "value": "coverLetter"
-                                }
-                            ],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "JobPostings",
-            "item": [
-                {
-                    "name": "Filter Job posting",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/jobposting/filter/products?category&skip=0&limit=10",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["jobposting", "filter", "products"],
-                            "query": [
-                                {
-                                    "key": "category",
-                                    "value": null
-                                },
-                                {
-                                    "key": "skip",
-                                    "value": "0"
-                                },
-                                {
-                                    "key": "limit",
-                                    "value": "10"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Post jobposting",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"location\": \"MTL\",\r\n    \"position\": \"intern\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\"\r\n}\r\n",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/user/api/posting/:email",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["user", "api", "posting", ":email"],
-                            "variable": [
-                                {
-                                    "key": "email",
-                                    "value": "LinkedOutInc@gmail.com1"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Remove",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"docID\":\"3NXfI22nyCqzHMJI9SmZ\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/jobposting/remove/:email",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["jobposting", "remove", ":email"],
-                            "variable": [
-                                {
-                                    "key": "email",
-                                    "value": "LinkedOutInc@gmail.com"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Skill",
-            "item": [
-                {
-                    "name": "Post Skill",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"name\": \"C#\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/skill/:ownerID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["skill", ":ownerID"],
-                            "variable": [
-                                {
-                                    "key": "ownerID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Remove Skill",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/skill/remove/:docID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["skill", "remove", ":docID"],
-                            "variable": [
-                                {
-                                    "key": "docID",
-                                    "value": "5"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Skills",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/skill/get/:userID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["skill", "get", ":userID"],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Award",
-            "item": [
-                {
-                    "name": "Post Award",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"name\": \"Governor's Award\",\r\n    \"description\": \"Some award given to a person invested in the community.\",\r\n    \"timestamp\": \"15-05-2021\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/award/:ownerID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["award", ":ownerID"],
-                            "variable": [
-                                {
-                                    "key": "ownerID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Remove Award",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/award/remove/:docID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["award", "remove", ":docID"],
-                            "variable": [
-                                {
-                                    "key": "docID",
-                                    "value": "5"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Awards",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/award/get/:userID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["award", "get", ":userID"],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Experience",
-            "item": [
-                {
-                    "name": "Post Experience",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:7000/experience/:ownerID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["experience", ":ownerID"],
-                            "variable": [
-                                {
-                                    "key": "ownerID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Remove Experience",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/experience/remove/:docID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["experience", "remove", ":docID"],
-                            "variable": [
-                                {
-                                    "key": "docID",
-                                    "value": "wLGMwFdNWEjKRPfhqDQZ"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Get Experiences",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:7000/skill/get/:userID",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "7000",
-                            "path": ["skill", "get", ":userID"],
-                            "variable": [
-                                {
-                                    "key": "userID",
-                                    "value": "18JRHKkLE2t50nE17SHc"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        }
-    ]
+	"info": {
+		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
+		"name": "SOEN390",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19175436"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/id/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"id",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "2ioAGZLt2UqzVIK8gWrM"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/accountFile/:userID?type=resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"accountFile",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "resume"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hearbeat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/login?email=LinkedOutInc@gmail.com&password=pass123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "LinkedOutInc@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "pass123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userSearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/search?name=&email=test@test.com&limit=10&skip=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": ""
+								},
+								{
+									"key": "email",
+									"value": "test@test.com"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "companySearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/searchCompanies?name=&email=&limit=10&skip=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"searchCompanies"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": ""
+								},
+								{
+									"key": "email",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InviteUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=encryption@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"sendInvite"
+							],
+							"query": [
+								{
+									"key": "receiverEmail",
+									"value": "bog1@test.com"
+								},
+								{
+									"key": "senderEmail",
+									"value": "encryption@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "followCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/follow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"follow"
+							],
+							"query": [
+								{
+									"key": "senderID",
+									"value": "v1M1tUnMZUQsFy6UUteh"
+								},
+								{
+									"key": "receiverID",
+									"value": "I9WE1blHEGTP0KkI4zVL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unFollowCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/unFollow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"unFollow"
+							],
+							"query": [
+								{
+									"key": "senderID",
+									"value": "v1M1tUnMZUQsFy6UUteh"
+								},
+								{
+									"key": "receiverID",
+									"value": "I9WE1blHEGTP0KkI4zVL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPendingInvitations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=bog@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"getPendingInvitations"
+							],
+							"query": [
+								{
+									"key": "userEmail",
+									"value": "bog@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Account File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/removeAccountFile/:userID?type=resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"removeAccountFile",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "resume"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"worldwide\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"worldwide\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"worldwide\",\r\n    \"isCompany\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/user/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/delete/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"delete",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "gUlrkmlR9OmaprKkjC6L"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Poda\",\r\n    \"password\": \"matthewisthebest\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/user/edit/:email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"edit",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "poda4@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Account File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "Cover Letter.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/user/uploadAccountFile/:userID?type=coverLetter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"uploadAccountFile",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "coverLetter"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JobPostings",
+			"item": [
+				{
+					"name": "Filter Job posting",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/jobposting/filter/products?category&skip=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"jobposting",
+								"filter",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": null
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post jobposting",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location\": \"MTL\",\r\n    \"position\": \"intern\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/user/api/posting/:email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"posting",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "LinkedOutInc@gmail.com1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"docID\":\"v3wE2KtJEUTA8bbg4skM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/jobposting/remove/:email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"jobposting",
+								"remove",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "worldwide"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Skill",
+			"item": [
+				{
+					"name": "Post Skill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"C#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/skill/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Skill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/skill/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								"remove",
+								":docID"
+							],
+							"variable": [
+								{
+									"key": "docID",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Skills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/skill/get/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								"get",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Award",
+			"item": [
+				{
+					"name": "Post Award",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Governor's Award\",\r\n    \"description\": \"Some award given to a person invested in the community.\",\r\n    \"timestamp\": \"15-05-2021\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/award/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"award",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Award",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/award/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"award",
+								"remove",
+								":docID"
+							],
+							"variable": [
+								{
+									"key": "docID",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Awards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/award/get/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"award",
+								"get",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Experience",
+			"item": [
+				{
+					"name": "Post Experience",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/experience/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"experience",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Experience",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/experience/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"experience",
+								"remove",
+								":docID"
+							],
+							"variable": [
+								{
+									"key": "docID",
+									"value": "wLGMwFdNWEjKRPfhqDQZ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Experiences",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/skill/get/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"skill",
+								"get",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
 }
