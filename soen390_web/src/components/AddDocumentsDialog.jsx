@@ -12,7 +12,7 @@ import FileUpload from "./FileUpload";
 import FileList from "./FileList";
 import { useTranslation } from "react-i18next";
 
-function AddDocumentsDialog() {
+function AddDocumentsDialog({ setFileData }) {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
   const handleClickOpen = () => {
@@ -21,6 +21,7 @@ function AddDocumentsDialog() {
 
   const handleClose = () => {
     setOpen(false);
+    setFileData();
   };
 
   const [files, setFiles] = useState([]);

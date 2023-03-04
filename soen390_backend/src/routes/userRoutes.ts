@@ -21,6 +21,9 @@ import {
     uploadAccountFile,
     hasFile,
     removeAccountFile,
+    getFilteredCompaniesController,
+    followCompany,
+    unFollowCompany,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -104,9 +107,10 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     try {
         const accountFile: any = await getAccountFile(userID, type);
         const status: number = accountFile[0];
+        console.log(userID);
+        console.log(type);
         if (status == 200) {
-            res.sendStatus(200);
-            res.json(accountFile[1]);
+            res.status(200).json(accountFile[1]);
         } else if (status == 404) {
             res.sendStatus(404);
         }
@@ -244,7 +248,31 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+user.get("/api/follow", async (req: Request, res: Response) => {
+    let receiverID = (await req.query.receiverID) as string;
+    let senderID = (await req.query.senderID) as string;
 
+    let data = await followCompany(senderID, receiverID);
+
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+user.get("/api/unFollow", async (req: Request, res: Response) => {
+    console.log("HI IM ROKI");
+    let receiverID = (await req.query.receiverID) as string;
+    let senderID = (await req.query.senderID) as string;
+
+    let data = await unFollowCompany(senderID, receiverID);
+
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
 user.get("/api/manageInvite", async (req: Request, res: Response) => {
     let invitedEmail = req.query.invitedEmail as string;
     let senderEmail = req.query.senderEmail as string;
@@ -323,11 +351,11 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     const status = userArr[0];
     if (status == 404) {
         res.status(404).json({ errMsg: "That user doesnt exists" });
-    } else if (!userArr[1].data.isRecruiter) {
-        console.log(userArr[1].isRecruiter);
-        console.log("That user is not even a recruiter");
+    } else if (!userArr[1].data.isCompany) {
+        console.log(userArr[1].isCompany);
+        console.log("That user is not even a company");
         res.status(400);
-        res.json({ errMsg: "That user is not a recruiter" });
+        res.json({ errMsg: "That user is not a company" });
     } else {
         try {
             let data: any = await createJobPosting(
@@ -372,6 +400,30 @@ user.get("/api/search", async (req: Request, res: Response) => {
     try {
         let status,
             data = await getFilteredUsersController(filter);
+        res.json(data);
+        res.status(200);
+        if (status == 200) {
+            res.sendStatus(200);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
+user.get("/api/searchCompanies", async (req: Request, res: Response) => {
+    var filter: any = {};
+
+    for (const [key, value] of Object.entries(req.query)) {
+        filter[key] = value;
+    }
+
+    console.log(req.query);
+    try {
+        let status,
+            data = await getFilteredCompaniesController(filter);
         res.json(data);
         res.status(200);
         if (status == 200) {

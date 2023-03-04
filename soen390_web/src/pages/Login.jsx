@@ -13,7 +13,10 @@ import { useTranslation } from "react-i18next";
 function MainTitle(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
+  const [incorrectLogin, setIncorrectLogin] = React.useState(false);
 
+
+  
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -21,9 +24,13 @@ function MainTitle(props) {
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
     setIsAuth(success.data);
-    success.status === 200
-      ? navigate("/UserProfile")
-      : console.log("Login Fail");
+    if (success.status === 200){
+       navigate("/UserProfile")
+    } else {
+
+      setIncorrectLogin(true);
+      console.log("Login Fail");
+    }
   };
 
   const setIsAuth = (data) => {
@@ -108,6 +115,28 @@ function MainTitle(props) {
                     {t("LoginText")}
                   </Button>
                 </Grid>
+                {incorrectLogin && (
+                  <Grid item xs={12}>
+                
+                  <div
+                    style={{
+                      
+                      backgroundColor: "red",
+                      color: "white",
+                      padding: "10px",
+                      borderRadius: "10px",
+                      maxWidth: "400px",
+                      margin: "0 auto",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                     minHeight: "50px",
+                    }}
+                  >
+                    You have entered the wrong email or the wrong password
+                  </div>
+                </Grid>
+                )}
                 <Grid item xs={12}>
                   <GoogleLogin />
                 </Grid>
@@ -126,3 +155,4 @@ function MainTitle(props) {
 }
 
 export default MainTitle;
+
