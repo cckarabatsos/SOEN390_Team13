@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import FileUpload from "./FileUpload";
 import FileList from "./FileList";
 
-function AddDocumentsDialog() {
+function AddDocumentsDialog({ setFileData }) {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,6 +19,7 @@ function AddDocumentsDialog() {
 
   const handleClose = () => {
     setOpen(false);
+    setFileData();
   };
 
   const [files, setFiles] = useState([]);

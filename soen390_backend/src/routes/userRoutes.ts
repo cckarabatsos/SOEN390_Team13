@@ -107,9 +107,10 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     try {
         const accountFile: any = await getAccountFile(userID, type);
         const status: number = accountFile[0];
+        console.log(userID);
+        console.log(type);
         if (status == 200) {
-            res.sendStatus(200);
-            res.json(accountFile[1]);
+            res.status(200).json(accountFile[1]);
         } else if (status == 404) {
             res.sendStatus(404);
         }

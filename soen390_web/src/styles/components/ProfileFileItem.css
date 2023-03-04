@@ -1,0 +1,15 @@
+.file-icon {
+    display: inline-flex;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+.file-item{
+    text-align: left;
+    padding-left: 2em;
+}
+
+.file-link{
+    text-decoration: none;
+    color: black;
+}
