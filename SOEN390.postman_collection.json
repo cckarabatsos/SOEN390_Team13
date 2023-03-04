@@ -70,39 +70,6 @@
 					"response": []
 				},
 				{
-					"name": "Remove Account File",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7000/user/removeAccountFile/:userID?type=resume",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7000",
-							"path": [
-								"user",
-								"removeAccountFile",
-								":userID"
-							],
-							"query": [
-								{
-									"key": "type",
-									"value": "resume"
-								}
-							],
-							"variable": [
-								{
-									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Hearbeat",
 					"request": {
 						"method": "GET",
@@ -192,12 +159,51 @@
 					"response": []
 				},
 				{
+					"name": "companySearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/searchCompanies?name=&email=&limit=10&skip=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"searchCompanies"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": ""
+								},
+								{
+									"key": "email",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "InviteUser",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=bog5@test.com",
+							"raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=encryption@test.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -215,7 +221,69 @@
 								},
 								{
 									"key": "senderEmail",
-									"value": "bog5@test.com"
+									"value": "encryption@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "followCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/follow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"follow"
+							],
+							"query": [
+								{
+									"key": "senderID",
+									"value": "v1M1tUnMZUQsFy6UUteh"
+								},
+								{
+									"key": "receiverID",
+									"value": "I9WE1blHEGTP0KkI4zVL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unFollowCompany",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/unFollow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"unFollow"
+							],
+							"query": [
+								{
+									"key": "senderID",
+									"value": "v1M1tUnMZUQsFy6UUteh"
+								},
+								{
+									"key": "receiverID",
+									"value": "I9WE1blHEGTP0KkI4zVL"
 								}
 							]
 						}
@@ -250,13 +318,46 @@
 					"response": []
 				},
 				{
+					"name": "Remove Account File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/removeAccountFile/:userID?type=resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"removeAccountFile",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "resume"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Register",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"LinkedOutInc\",\r\n    \"isRecruiter\": \"True\"\r\n}",
+							"raw": "{\r\n    \"name\": \"worldwide\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"worldwide\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"worldwide\",\r\n    \"isCompany\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -299,7 +400,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "l51aljtbuZsBSTCJCygu"
+									"value": "gUlrkmlR9OmaprKkjC6L"
 								}
 							]
 						}
@@ -490,7 +591,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"docID\":\"3NXfI22nyCqzHMJI9SmZ\"\r\n}",
+							"raw": "{\r\n    \"docID\":\"v3wE2KtJEUTA8bbg4skM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,7 +613,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "LinkedOutInc@gmail.com"
+									"value": "worldwide"
 								}
 							]
 						}

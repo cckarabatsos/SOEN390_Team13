@@ -10,6 +10,9 @@ import {
   DeclineInvitations,
 } from "../api/userConectionApi";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+
 
 const UserConnection = () => {
   const [userData, setUseData] = React.useState({});
@@ -17,11 +20,12 @@ const UserConnection = () => {
   const [users, setUsers] = useState([]);
 
   const [currentEmail, setCurrentEmail] = useState("");
-
+  const { t } = useTranslation();
   const getInvitations = async (email) => {
     var responce = await GetPendingInvitations(email);
     console.log(responce);
     setUsers(responce);
+    
   };
 
   useEffect(() => {
@@ -58,7 +62,7 @@ const UserConnection = () => {
   return (
     <div data-testid="userconnection-1">
     <>
-      <h1 className="center">Request Center</h1>
+      <h1 className="center">{t("RequestCenterText")}</h1>
       <div className="request-section">
         <Grid container spacing={2}>
           {users.map((aUser) => (

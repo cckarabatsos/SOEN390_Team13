@@ -5,11 +5,13 @@ import FilterSelection from "../components/FilterSelection";
 import SearchBar from "../components/SearchBar";
 import SearchResultPagination from "../components/SearchResultPagination";
 import { searchInfo } from "../api/userNetworkingApi";
+import { useTranslation } from "react-i18next";
+
 const UserNetworking = () => {
   const searchBarRef = useRef(null);
   const [radioValue, setRadioValue] = useState("name");
   const [searchResults, setSearchResults] = useState([]);
-
+  const { t } = useTranslation();
   const handleRadioChange = (value) => {
     setRadioValue(value);
   };
@@ -60,7 +62,7 @@ const UserNetworking = () => {
 
   return (
     <div data-testid="login-1">
-      <h1>User Networking</h1>
+      <h1>{t("UserNetworkingText")}</h1>
       <Box sx={{ flexGrow: 2 }}>
         <Grid container spacing={4}>
           <Grid item xs={6} md={12}>

@@ -3,12 +3,13 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import React from "react";
-
+import { useTranslation } from "react-i18next";
 const FilterSelection = (props) => {
   const handleChange = (event) => {
     props.onRadioChange(event.target.value);
+    
   };
-
+  const { t } = useTranslation();
   return (
     <Paper
       sx={{
@@ -23,7 +24,7 @@ const FilterSelection = (props) => {
         <Grid item>
           <FormControl>
             <FormLabel id="demo-controlled-radio-buttons-group">
-              Search By
+            {t("SearchByText")}
             </FormLabel>
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
@@ -34,12 +35,12 @@ const FilterSelection = (props) => {
               <FormControlLabel
                 value="name"
                 control={<Radio />}
-                label="By Name"
+                label={t("NameText")}
               />
               <FormControlLabel
                 value="email"
                 control={<Radio />}
-                label="By Email"
+                label={t("ByEmailText")}
               />
             </RadioGroup>
           </FormControl>
