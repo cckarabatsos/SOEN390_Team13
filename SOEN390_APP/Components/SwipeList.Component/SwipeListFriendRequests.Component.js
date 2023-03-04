@@ -100,7 +100,7 @@ export default function Basic({ data, email }) {
       underlayColor={"#AAA"}
     >
       <View style={{ flexDirection: "row" }}>
-        <Image style={styles.logo} source={image} />
+        <Image style={styles.logo} source={{ uri: image }} />
         <View>
           <Text style={styles.titleText}>{name}</Text>
           <Text style={styles.smallText}>{job}</Text>
@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 50,
+    marginRight: 15,
   },
   titleText: {
     fontSize: 15,

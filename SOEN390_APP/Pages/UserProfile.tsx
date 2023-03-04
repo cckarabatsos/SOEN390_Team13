@@ -53,16 +53,22 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
   
     if(item.category_name == "Profile"){
     return (
-      <View>
+      <View style={{
+        marginTop:10,
+        borderColor: "rgb(145, 140, 224)",
+        borderTopWidth: 1,
+      }}>
         {/*Header of the Expandable List Item*/}
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={onClickFunction}
           style={styles.header}>
-            <Ionicons size={20} name="list-outline"/>
-          <Text style={styles.headerText}>
-            {item.category_name}
-          </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={styles.headerText}>
+              {item.category_name}
+            </Text>
+            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+          </View>
         </TouchableOpacity>
         <View
           style={{
@@ -81,14 +87,17 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
              return (
       <View>
         {/*Header of the Expandable List Item*/}
-        <TouchableOpacity
+         {/*Header of the Expandable List Item*/}
+         <TouchableOpacity
           activeOpacity={0.8}
           onPress={onClickFunction}
           style={styles.header}>
-            <Ionicons size={20} name="list-outline"/>
-          <Text style={styles.headerText}>
-            {item.category_name}
-          </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={styles.headerText}>
+              {item.category_name}
+            </Text>
+            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+          </View>
         </TouchableOpacity>
         <View
           style={{
@@ -106,16 +115,18 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
     else if (item.category_name == "Education"){
             return (
       <View>
-      {/*Header of the Expandable List Item*/}
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={onClickFunction}
-        style={styles.header}>
-          <Ionicons size={20} name="list-outline"/>
-        <Text style={styles.headerText}>
-          {item.category_name}
-        </Text>
-      </TouchableOpacity>
+       {/*Header of the Expandable List Item*/}
+       <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onClickFunction}
+          style={styles.header}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={styles.headerText}>
+              {item.category_name}
+            </Text>
+            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+          </View>
+        </TouchableOpacity>
       <View
         style={{
           height: layoutHeight,
@@ -132,16 +143,18 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
       else if (item.category_name == "Skills"){
                   return (
             <View>
-            {/*Header of the Expandable List Item*/}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={onClickFunction}
-              style={styles.header}>
-                <Ionicons size={20} name="list-outline"/>
-              <Text style={styles.headerText}>
-                {item.category_name}
-              </Text>
-            </TouchableOpacity>
+             {/*Header of the Expandable List Item*/}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={onClickFunction}
+          style={styles.header}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={styles.headerText}>
+              {item.category_name}
+            </Text>
+            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+          </View>
+        </TouchableOpacity>
             <View
               style={{
                 height: layoutHeight,
@@ -304,32 +317,73 @@ const UserProfile = ({route}:{route:any}) => {
     </View> */}
     
   return (
-      <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={{flexDirection: 'row'}}>
-            <View style={{backgroundColor: "rgb(208, 164, 245)", height: 225, width: '100%',padding: 10}}>
-                <Image
-                style={styles.logo}
-                source={{ uri: user.picture }}
-                />
+            <View style={{backgroundColor: "rgb(145, 140, 224)", width: '100%', paddingTop:10}}>
+                <View style={styles.logoContainer}>
+                  <Image
+                  style={styles.logo}
+                  source={{ uri: user.picture }}
+                  />
+                  
+                </View>
+                <View style={styles.textContainer}>
                 <Text style={styles.titleText}> {user.name} </Text>
-                <Text style={styles.textSmall}> {user.currentCompany + " " + user.currentPosition} </Text>
-                <Text style={styles.textSmall}> {user.bio} </Text>
+                </View>
+                <View style={{backgroundColor: "rgb(249, 248, 250)", width: '100%',padding: 10, marginTop:10}}>
+                  <View style={{flexDirection:'row'}}>
+                      <View>                          
+                            <TouchableOpacity
+                              activeOpacity={0.8}
+                              //onPress={}
+                              >
+                                <Ionicons size={45} name="logo-facebook" style={styles.icon} color={'#2629ce'}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              activeOpacity={0.8}
+                              //onPress={}
+                              >
+                                <Ionicons size={45} name="logo-github" style={styles.icon}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              activeOpacity={0.8}
+                              //onPress={}
+                              >
+                                <Ionicons size={45} name="logo-google" style={styles.icon} color={'#17b42c'}/>
+                            </TouchableOpacity>                               
+                      </View>
+                      <View>
+                          <Text style={styles.textMed}> {user.currentCompany + " " + user.currentPosition} </Text>
+                          <Text style={styles.textSmall}> {user.bio} </Text>
+                          <View>
+                            <TouchableOpacity
+                              activeOpacity={0.8}
+                              //onPress={}
+                              style={styles.contactsButtons}>
+                                <Ionicons size={35} name="people-outline" style={styles.icon} color={"rgb(145, 140, 224)"}/>
+                              <Text style={styles.headerButtonText}>
+                                Contacts
+                              </Text>
+                            </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                  </View>
+                  </View>
             </View>
-
+              <ScrollView>
+                {listDataSource.map((item, key) => (
+                  <ExpandableComponent
+                    key={item.category_name}
+                    onClickFunction={() => {
+                      updateLayout(key);
+                    }}
+                    item={item}
+                  />
+                ))}
+              </ScrollView>
         </View>
-        <ScrollView>
-          {listDataSource.map((item, key) => (
-            <ExpandableComponent
-              key={item.category_name}
-              onClickFunction={() => {
-                updateLayout(key);
-              }}
-              item={item}
-            />
-          ))}
-        </ScrollView>
-      </View>
     </SafeAreaView>
   );
 }
@@ -356,20 +410,26 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         width: Dimensions.get('window').width / 3,
     },  titleText: {
-        fontSize: 22,
-        fontWeight: 'bold',
+        fontSize: 30,
+        fontWeight: '400',
+        justifyContent: 'center'
       },
       header: {
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#f5f5f5',
         padding: 20,
-        flexDirection: 'row-reverse',
-        borderBottomColor: "black",
+        borderColor: "rgb(145, 140, 224)",
         borderBottomWidth: 1,
       },
       headerText: {
         paddingRight: 20,
+        fontSize: 22,
+        fontWeight: '400',
+      },
+      headerButtonText: {
+        paddingRight: 20,
         fontSize: 16,
         fontWeight: '500',
+        color: "rgb(145, 140, 224)"
       },
       rightText: {
         fontSize: 16,
@@ -393,16 +453,45 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         backgroundColor: '#fff',  
       },
-        logo: {
-        paddingLeft: 20,
-        alignSelf: 'flex-start',
-        width: 125,
-        height: 125,
-        borderRadius: 50
+      logoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 127,
+        height: 127,
+        borderRadius: 70,
+        borderColor: 'rgb(255, 255, 255)',
+        borderWidth: 4,
+        alignSelf: 'center',
+      },
+      textContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+      },
+      logo: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
       },
       textSmall: {
         fontSize: 16,
+        color: 'gray',
+      },
+      textMed: {
+        fontSize: 16,
         color: 'black',
+      },
+      contactsButtons: {
+        //backgroundColor:'#84a8f5',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 20,  
+        width: 125,
+        height: 35,
+        paddingLeft:10
+      },
+      icon: {
+        marginRight: 5, // Optional - adjust the spacing between the icon and text
       },
 })
 

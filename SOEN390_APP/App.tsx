@@ -121,7 +121,7 @@ export default function App() {
       <AlertNotificationRoot>
       <Stack.Navigator
         initialRouteName="Login"
-        screenOptions={{headerStyle: { backgroundColor: "#967BB6" }, }}
+        screenOptions={{headerStyle: { backgroundColor:  "rgb(202, 202, 202)" }, }}
       >
         <Stack.Screen
           name="Login"
