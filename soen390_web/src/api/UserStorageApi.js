@@ -10,6 +10,7 @@ export async function GetFile(userid, type){
             const response = await axios.get(
                 `${api.BACKEND_API}/user/accountFile/${userid}?type=${type}`,
               );
+            console.log(response);
             if(response.status == 200){
                 return response.data;
             } else{

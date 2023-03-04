@@ -23,7 +23,8 @@ function UserProfile(props) {
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
   const [picture, setpicture] = React.useState();
-  const [filename, setFilename] = React.useState();
+  const [coverletterFilename, setCoverletterFilename] = React.useState();
+  const [resumeFilename, setResumeFilename] = React.useState();
 
   const navigate = useNavigate();
 
@@ -35,20 +36,7 @@ function UserProfile(props) {
     setEnable(false);
   };
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("isAuth"));
-    if (data != null) {
-      setUserData(JSON.parse(localStorage.getItem("isAuth")));
-    } else {
-      navigate("/");
-    }
-
-    // GetFile(userData.userID, "resume").then((userResume) => {
-    //   setResume(userResume);
-    //   console.log(resume);
-    //   console.log(userData.userID);
-    // });
-
+  const setFileData = () => {
     let UserCoverLetter = "";
     const getCoverLetter = async () => {
       UserCoverLetter = await GetFile(userData.userID, "coverletter");
@@ -59,15 +47,43 @@ function UserProfile(props) {
       getCoverLetter().then((coverLetter) => {
         setCoverletter(coverLetter);
         const url = coverLetter;
-        setFilename(
+        setCoverletterFilename(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
+      });
+      console.log(coverletterFilename);
+    }
+
+    let UserResume = "";
+    const getResume = async () => {
+      UserResume = await GetFile(userData.userID, "resume");
+      return UserResume;
+    };
+
+    if (UserResume !== null) {
+      getResume().then((resume) => {
+        setResume(resume);
+        const url = resume;
+        setResumeFilename(
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
         console.log(
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
-        console.log("coverletter:", coverLetter);
+        console.log("resume:", resume);
       });
     }
+  };
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    if (data != null) {
+      setUserData(JSON.parse(localStorage.getItem("isAuth")));
+    } else {
+      navigate("/");
+    }
+
+    setFileData();
   }, [navigate, userData.userID]);
 
   return (
@@ -280,7 +296,7 @@ function UserProfile(props) {
                     <div className="header">Personal Documents</div>
                   </Grid>
                   <Grid iten xs={6}>
-                    <AddDocumentsDialog />
+                    <AddDocumentsDialog setFileData={setFileData} />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
                     </IconButton>
@@ -297,8 +313,26 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={12}>
-                    <div>coverletter</div>
-                    <ProfileFileItem file={coverletter} filename={filename} />
+                    {coverletter !== "" && (
+                      <>
+                        <Typography className="file-type">
+                          Cover Letter
+                        </Typography>
+                        <ProfileFileItem
+                          file={coverletter}
+                          filename={coverletterFilename}
+                        />
+                      </>
+                    )}
+                    {resume !== "" && (
+                      <>
+                        <Typography className="file-type">Resume</Typography>
+                        <ProfileFileItem
+                          file={resume}
+                          filename={resumeFilename}
+                        />
+                      </>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
