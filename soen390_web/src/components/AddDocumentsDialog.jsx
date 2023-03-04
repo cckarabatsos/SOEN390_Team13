@@ -10,9 +10,11 @@ import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import FileUpload from "./FileUpload";
 import FileList from "./FileList";
+import { useTranslation } from "react-i18next";
 
 function AddDocumentsDialog({ setFileData }) {
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -40,14 +42,13 @@ function AddDocumentsDialog({ setFileData }) {
         <AddIcon className="add-icon" />
       </IconButton>
       <Dialog data-testid="dialog-box" open={open} onClose={handleClose}>
-        <DialogTitle>Upload Personal Documents</DialogTitle>
+        <DialogTitle>{t("UploadDocText")}</DialogTitle>
         <DialogContentText style={{ marginLeft: "5%" }}>
-          Upload your CV, Cover letter, or anything else you wish your
-          recruiters to look at!
+        {t("SentenceText")}
         </DialogContentText>
         <DialogContent>
           <div className="App">
-            <div className="title">Upload file</div>
+            <div className="title">{t("UpFileText")}</div>
             <FileUpload
               files={files}
               setFiles={setFiles}
@@ -66,7 +67,7 @@ function AddDocumentsDialog({ setFileData }) {
             }}
             onClick={handleClose}
           >
-            Cancel
+            {t("CancelText")}
           </Button>
           <Button
             className="button"
@@ -77,7 +78,7 @@ function AddDocumentsDialog({ setFileData }) {
             }}
             onClick={handleClose}
           >
-            Save and Apply
+            {t("SaveApplyText")}
           </Button>
         </DialogActions>
       </Dialog>

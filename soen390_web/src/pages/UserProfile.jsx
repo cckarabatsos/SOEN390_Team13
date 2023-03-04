@@ -14,8 +14,10 @@ import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
+
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
+import { useTranslation } from "react-i18next";
 
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
@@ -25,6 +27,7 @@ function UserProfile(props) {
   const [picture, setpicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -110,7 +113,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                  Education
+                {t("EducationText")}
                   <AddEducationDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
@@ -162,7 +165,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                  Experience
+                {t("ExperienceText")}
                   <AddExperienceDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
@@ -227,7 +230,7 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={6}>
-                    <div className="header">Skills</div>
+                    <div className="header">{t("SkillsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
                     <AddSkillDialog />
@@ -293,7 +296,7 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={6}>
-                    <div className="header">Personal Documents</div>
+                    <div className="header">{t("DocumentsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
                     <AddDocumentsDialog setFileData={setFileData} />

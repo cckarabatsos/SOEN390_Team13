@@ -10,11 +10,13 @@ import { DialogContentText } from "@mui/material";
 import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import { Select, MenuItem } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 const years = Array.from({ length: 51 }, (_, i) => 1980 + i);
 
 function AddEducationDialog() {
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -31,66 +33,66 @@ function AddEducationDialog() {
           <AddIcon className="add-icon" />
         </IconButton>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Add an Experience</DialogTitle>
+          <DialogTitle>{t("AddExpText")}</DialogTitle>
           <DialogContentText style={{ marginLeft: "5%" }}>
-            Name of Position
+          {t("PositionText")}
           </DialogContentText>
           <DialogContent>
             <TextField
               autoFocus
               className="inputRounded"
               margin="dense"
-              label="Name of School or University"
+              label={t("PositionText")}
               type="university"
               variant="outlined"
               size="small"
             />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-            Company
+          {t("CompanyText")}
           </DialogContentText>
           <DialogContent>
             <TextField
               autoFocus
               className="inputRounded"
               margin="dense"
-              label="Program of Study"
+              label={t("CompanyText")}
               type="program"
               variant="outlined"
               size="small"
             />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-            Location
+          {t("LocationText")}
           </DialogContentText>
           <DialogContent>
             <TextField
               autoFocus
               className="inputRounded"
               margin="dense"
-              label="Location"
+              label={t("LocationText")}
               type="location"
               variant="outlined"
               size="small"
             />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-            Start date
+          {t("StartDateText")}
           </DialogContentText>
           <DialogContent>
             <Select value={1}>
-              <MenuItem value={1}>January</MenuItem>
-              <MenuItem value={2}>February</MenuItem>
-              <MenuItem value={3}>March</MenuItem>
-              <MenuItem value={4}>April</MenuItem>
-              <MenuItem value={5}>May</MenuItem>
-              <MenuItem value={6}>June</MenuItem>
-              <MenuItem value={7}>July</MenuItem>
-              <MenuItem value={8}>August</MenuItem>
-              <MenuItem value={9}>September</MenuItem>
-              <MenuItem value={10}>October</MenuItem>
-              <MenuItem value={11}>November</MenuItem>
-              <MenuItem value={12}>December</MenuItem>
+            <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
+              <MenuItem value={2}> {t("FebruaryText")}</MenuItem>
+              <MenuItem value={3}>{t("MarchText")}</MenuItem>
+              <MenuItem value={4}>{t("AprilText")}</MenuItem>
+              <MenuItem value={5}>{t("MayText")}</MenuItem>
+              <MenuItem value={6}>{t("JuneText")}</MenuItem>
+              <MenuItem value={7}>{t("JulyText")}</MenuItem>
+              <MenuItem value={8}>{t("AugustText")}</MenuItem>
+              <MenuItem value={9}>{t("SeptemberText")}</MenuItem>
+              <MenuItem value={10}>{t("OctoberText")}</MenuItem>
+              <MenuItem value={11}>{t("NovemberText")}</MenuItem>
+              <MenuItem value={12}>{t("DecemberText")}</MenuItem>
             </Select>
             <Select
               style={{ marginLeft: "10px" }}
@@ -105,22 +107,22 @@ function AddEducationDialog() {
             </Select>
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-            End Date
+          {t("EndDateText")}
           </DialogContentText>
           <DialogContent>
             <Select value={1}>
-              <MenuItem value={1}>January</MenuItem>
-              <MenuItem value={2}>February</MenuItem>
-              <MenuItem value={3}>March</MenuItem>
-              <MenuItem value={4}>April</MenuItem>
-              <MenuItem value={5}>May</MenuItem>
-              <MenuItem value={6}>June</MenuItem>
-              <MenuItem value={7}>July</MenuItem>
-              <MenuItem value={8}>August</MenuItem>
-              <MenuItem value={9}>September</MenuItem>
-              <MenuItem value={10}>October</MenuItem>
-              <MenuItem value={11}>November</MenuItem>
-              <MenuItem value={12}>December</MenuItem>
+            <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
+              <MenuItem value={2}> {t("FebruaryText")}</MenuItem>
+              <MenuItem value={3}>{t("MarchText")}</MenuItem>
+              <MenuItem value={4}>{t("AprilText")}</MenuItem>
+              <MenuItem value={5}>{t("MayText")}</MenuItem>
+              <MenuItem value={6}>{t("JuneText")}</MenuItem>
+              <MenuItem value={7}>{t("JulyText")}</MenuItem>
+              <MenuItem value={8}>{t("AugustText")}</MenuItem>
+              <MenuItem value={9}>{t("SeptemberText")}</MenuItem>
+              <MenuItem value={10}>{t("OctoberText")}</MenuItem>
+              <MenuItem value={11}>{t("NovemberText")}</MenuItem>
+              <MenuItem value={12}>{t("DecemberText")}</MenuItem>
             </Select>
             <Select
               style={{ marginLeft: "10px" }}
@@ -144,7 +146,7 @@ function AddEducationDialog() {
               }}
               onClick={handleClose}
             >
-              Cancel
+               {t("CancelText")}
             </Button>
             <Button
               className="button"
@@ -155,7 +157,7 @@ function AddEducationDialog() {
               }}
               onClick={handleClose}
             >
-              Save and Apply
+              {t("SaveApplyText")}
             </Button>
           </DialogActions>
         </Dialog>

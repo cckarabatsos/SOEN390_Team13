@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
+import { useTranslation } from "react-i18next";
 
 function SignUp(props) {
   const [fNameInput, setfNameInput] = React.useState("");
@@ -20,6 +21,8 @@ function SignUp(props) {
   const [passwordMismatch, setPasswordMismatch] = React.useState(false);
 
   let navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const registerUser = async () => {
     if (confirmPasswordInput === passwordInput) {
@@ -62,15 +65,16 @@ function SignUp(props) {
                 <h1 data-testid="signuptitle-1">Sign Up</h1>
                 <Grid container spacing={2}>
                   <Grid className="field-name" item xs={4}>
-                    First Name
+                  {t("FirstNameText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
+                 
                     <div className="input-margin">
                       <TextField
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="First Name"
+                        label={t("FirstNameText")}
                         type="name"
                         variant="outlined"
                         size="small"
@@ -80,7 +84,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Last Name
+                  {t("LastNameText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
                     <div className="input-margin">
@@ -88,7 +92,7 @@ function SignUp(props) {
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="Last Name"
+                        label= {t("LastNameText")}
                         type="name"
                         variant="outlined"
                         size="small"
@@ -98,7 +102,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Email Address
+                  {t("emailText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
                     <div className="input-margin">
@@ -106,7 +110,7 @@ function SignUp(props) {
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="Email Address"
+                        label={t("emailText")}
                         type="email"
                         variant="outlined"
                         size="small"
@@ -116,7 +120,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Create Password
+                  {t("CreatePasswordText")}
                   </Grid>
                   <Grid className="field-input" item xs={8}>
                     <div className="input-margin">
@@ -124,7 +128,7 @@ function SignUp(props) {
                         autoFocus
                         className="inputRounded"
                         margin="dense"
-                        label="Create Password"
+                        label={t("CreatePasswordText")}
                         type="password"
                         variant="outlined"
                         size="small"
@@ -134,7 +138,7 @@ function SignUp(props) {
                     </div>
                   </Grid>
                   <Grid className="field-name" item xs={4}>
-                    Confirm Password
+                  {t("ConfirmPasswordText")}
                   </Grid>
                   <Grid className="field-input" item xs={6}>
                     <div className="input-margin">
@@ -142,7 +146,7 @@ function SignUp(props) {
                         className="inputRounded"
                         autoFocus
                         margin="dense"
-                        label="Confirm Password"
+                        label={t("ConfirmPasswordText")}
                         type="password"
                         variant="outlined"
                         size="small"
@@ -155,14 +159,14 @@ function SignUp(props) {
                   </Grid>
                   {passwordMismatch ? (
                     <Grid item xs={12} style={{ color: "red" }}>
-                      Passwords do not Match
+                      {t("MismatchPasswordText")}
                     </Grid>
                   ) : (
                     <></>
                   )}
                   {registerError ? (
                     <Grid item xs={12} style={{ color: "red" }}>
-                      User already has an account
+                      {t("AccountExitsText")}
                     </Grid>
                   ) : (
                     <></>
@@ -177,7 +181,7 @@ function SignUp(props) {
                       }}
                       onClick={() => navigate("/")}
                     >
-                      Cancel
+                      {t("CancelText")}
                     </Button>
                   </Grid>
                   <Grid className="login" item xs={6}>
@@ -191,14 +195,14 @@ function SignUp(props) {
                       }}
                       onClick={registerUser}
                     >
-                      Sign Up
+                       {t("SignUpText")}
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
                     <GoogleLogin />
                   </Grid>
                   <Grid item xs={12}>
-                    Already have an account? Login <Link to="/">here!</Link>
+                  {t("AlreadyAccountText")} <Link to="/"> {t("HereText")}</Link>
                   </Grid>
                 </Grid>
               </div>
