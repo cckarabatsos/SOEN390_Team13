@@ -10,11 +10,12 @@ import navlogo from "../assets/linkedout logo navbar.png";
 import "../styles/components/navbar.css";
 import "../styles/components/SubFooter.css";
 import DrawerComponent from "./Drawer";
+import { useTranslation } from "react-i18next";
 
 function SubFooter() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { t } = useTranslation();
   return (
     <div data-testid='subfooter-1'>
     <AppBar
@@ -32,21 +33,21 @@ function SubFooter() {
           </span>
         )}
         <h5 className="Section1">
-          About Us <br></br>
-          Privacy Settings<br></br>
-          Guidelines <br></br>
+        {t("AboutUsText")} <br></br>
+        {t("PrivacySettingsText")}<br></br>
+        {t("GuidelinesText")} <br></br>
           Mobile<br></br>
         </h5>
         <h5 className="Section2">
-          Careers<br></br>
-          Accessibility<br></br>
-          Advertising<br></br>
-          Sales<br></br>
+        {t("CareersText")}<br></br>
+        {t("AccessText")}<br></br>
+        {t("AdvertisingText")}<br></br>
+        {t("SalesText")}<br></br>
         </h5>
         <h5 className="Section3">
-          Businesses<br></br>
+        {t("BusinessText")}<br></br>
           Solutions<br></br>
-          Contact Us <br></br>
+          {t("ContactText")} <br></br>
           Marketing
         </h5>
       </Toolbar>

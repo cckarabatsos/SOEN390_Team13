@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { grey, purple } from "@material-ui/core/colors";
-
+import { useTranslation } from "react-i18next";
 const useStyles = makeStyles((theme) => ({
   searchInput: {
     backgroundColor: grey[200],
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textTransform: "none",
     borderRadius: 5,
-    width: "40%",
+    width: "100%",
     fontSize: "1rem",
   },
 }));
@@ -39,7 +39,7 @@ function SearchBar(props, ref) {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");
   const inputRef = useRef(null);
-
+  const { t } = useTranslation();
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
   };
@@ -55,7 +55,7 @@ function SearchBar(props, ref) {
   return (
     <TextField
       className={classes.searchInput}
-      placeholder="Search"
+      placeholder={t("SearchText")}
       variant="outlined"
       size="small"
       fullWidth
@@ -71,7 +71,7 @@ function SearchBar(props, ref) {
               size="small"
               onClick={handleSearchClick}
             >
-              Search
+              {t("SearchText")}
             </Button>
           </InputAdornment>
         ),

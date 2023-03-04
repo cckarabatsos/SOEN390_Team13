@@ -46,7 +46,7 @@ function Navbar(props) {
             <span className="navlinks">
                {userData && (
               <Link data-testid="home-1" to="/NewsFeedPAge" className="link">
-                Home <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
+                {t("HomeText")} <HomeIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
                )}
               <Link data-testid="job-1" to="/JobSearch" className="link">
@@ -58,16 +58,16 @@ function Navbar(props) {
               {userData && (
                 <>
                 <Link data-testid="job-1" to="/UserNetworking" className="link">
-                Networking
+                {t("NetworkingText")}
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
                 <Link data-testid="job-1" to="/UserConnection" className="link">
-                  User Connection
+                {t("UserConnectionText")}
                   <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
 
                 <Link data-testid="job-1" to="/Contacts" className="link">
-                Contacts
+                {t("ContactsText")}
                 <WorkIcon className="icon" sx={{ color: "#9606D9" }} />
               </Link>
                 
@@ -82,17 +82,17 @@ function Navbar(props) {
                     to="/UserProfile"
                     className="link"
                   >
-                    Login{" "}
+                    {t("LoginText")}{" "}
                     <EastIcon className="icon" sx={{ color: "#9606D9" }} />
                   </Link>
                   <Link data-testid="signup-1" to="/Signup" className="link">
-                    Signup
+                  {t("SignUpText")}
                     <NorthIcon className="icon" sx={{ color: "#9606D9" }} />
                   </Link>
                 </>
               ) : (
                 <Link to="/" className="link" onClick={signout}>
-                  Signout
+                  {t("SignoutText")}
                   <OutputIcon className="icon" sx={{ color: "#9606D9" }} />
                 </Link>
               )}

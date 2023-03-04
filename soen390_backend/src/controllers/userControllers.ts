@@ -11,6 +11,8 @@ import {
     getUserInvitationsOrContacts,
     getFilteredUsers,
     deleteAccountFile,
+    followCompanyInv,
+    unFollowCompanyInv,
 } from "../services/userServices";
 import dotenv from "dotenv";
 import {
@@ -47,9 +49,16 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
-    let casted_user: User = await user_schema.cast(user, {
-        stripUnknown: false,
-    });
+    let casted_user: User;
+    try {
+        casted_user = await user_schema.cast(user, {
+            stripUnknown: false,
+        });
+        console.log(casted_user);
+    } catch (error) {
+        // The object is invalid
+        console.error(error);
+    }
     casted_user.password = await hash(casted_user.password, saltRounds);
     user = await new Promise((resolve, _) => {
         findUserWithEmail(casted_user.email, (user) => {
@@ -136,12 +145,7 @@ export async function editAccount(
                 ];
             }
         }
-        currProfile.email = newProfile.email;
-        currProfile.password = newProfile.password;
-        currProfile.bio = newProfile.bio;
-        currProfile.currentCompany = newProfile.currentCompany;
-        currProfile.currentPosition = newProfile.currentPosition;
-        currProfile.name = newProfile.name;
+        currProfile = newProfile;
         updateUser(currProfile, id);
     } catch (err: any) {
         return [400, { msg: "missing field" }];
@@ -152,6 +156,31 @@ export async function editAccount(
 export async function sendInvite(receiverEmail: string, senderEmail: string) {
     try {
         await sendUserInvitation(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
+export async function followCompany(
+    receiverEmail: string,
+    senderEmail: string
+) {
+    try {
+        await followCompanyInv(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
+
+export async function unFollowCompany(
+    receiverEmail: string,
+    senderEmail: string
+) {
+    try {
+        await unFollowCompanyInv(receiverEmail, senderEmail);
     } catch (error) {
         return [404, { msg: (error as Error).message }];
     }
@@ -215,7 +244,22 @@ export async function getFilteredUsersController(filter: UserFilter) {
     if (err) {
         return [400, error_data];
     } else {
-        let users = await getFilteredUsers(stripped_filer);
+        let users = await getFilteredUsers(stripped_filer, false);
+
+        // parse_links(products);
+        return [200, users];
+    }
+}
+export async function getFilteredCompaniesController(filter: UserFilter) {
+    let stripped_filer = user_filter_schema.cast(filter, {
+        stripUnknown: true,
+    });
+
+    let [err, error_data] = validateUserFilter(stripped_filer);
+    if (err) {
+        return [400, error_data];
+    } else {
+        let users = await getFilteredUsers(stripped_filer, true);
 
         // parse_links(products);
         return [200, users];

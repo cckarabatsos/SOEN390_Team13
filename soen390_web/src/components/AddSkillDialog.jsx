@@ -9,9 +9,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
 import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
+import { useTranslation } from "react-i18next";
 
 function AddEducationDialog() {
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -27,16 +29,16 @@ function AddEducationDialog() {
           <AddIcon className="add-icon" />
         </IconButton>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Add a Skill</DialogTitle>
+          <DialogTitle>{t("AddSkillText")}</DialogTitle>
           <DialogContentText style={{ marginLeft: "5%" }}>
-            What are your skills?
+          {t("WhatSkillText")}
           </DialogContentText>
           <DialogContent>
             <TextField
               autoFocus
               className="inputRounded"
               margin="dense"
-              label="Skill"
+              label={t("SkillsText")}
               type="skill"
               variant="outlined"
               size="small"
@@ -52,7 +54,7 @@ function AddEducationDialog() {
               }}
               onClick={handleClose}
             >
-              Cancel
+              {t("CancelText")}
             </Button>
             <Button
               className="button"
@@ -63,7 +65,7 @@ function AddEducationDialog() {
               }}
               onClick={handleClose}
             >
-              Save and Apply
+              {t("SaveApplyText")}
             </Button>
           </DialogActions>
         </Dialog>
