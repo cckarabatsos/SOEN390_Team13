@@ -93,6 +93,7 @@ export const deleteUserWithId = async (userID: string) => {
         console.log(error);
         throw error;
     }
+
     return data;
 };
 export const storeAccountFile = async (
@@ -315,16 +316,6 @@ export async function sendUserInvitation(
             console.log("proceed check 3");
         }
 
-        // console.log(
-        //   "sender name: " + senderUser.data.name + " Id: " + senderUser.data.userID
-        // );
-        // console.log(
-        //   "sender name: " +
-        //     receiverUser.data.name +
-        //     " Id: " +
-        //     receiverUser.data.userID
-        // );
-
         //check 4 : check if sender and receiver are already contacts
         if ((senderUser.data as User).contacts.includes(receiverEmail)) {
             throw error("error sender and receiver are already friends");
@@ -528,16 +519,24 @@ export function updateUser(newProfile: User, id: string) {
     db.collection("users").doc(id).update(newProfile);
 }
 
-export async function getFilteredUsers(filter: UserFilter, company: boolean) {
+export async function getFilteredUsers(filter: UserFilter) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
-    userRef = userRef.where("isCompany", "==", company);
+
     if (filter.name) {
-        userRef = userRef.where("name", "==", filter.name);
+        const prefix = filter.name.toLowerCase();
+        const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
+        userRef = userRef
+            .where("name", ">=", prefix)
+            .where("name", "<", prefixEnd);
     }
 
     if (filter.email) {
-        userRef = userRef.where("email", "==", filter.email);
+        const prefix = filter.email.toLowerCase();
+        const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
+        userRef = userRef
+            .where("email", ">=", prefix)
+            .where("email", "<", prefixEnd);
     }
     if (filter.limit) {
         userRef = userRef.limit(filter.limit);

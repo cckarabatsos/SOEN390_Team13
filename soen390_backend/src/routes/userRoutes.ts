@@ -119,6 +119,7 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
 user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -316,10 +317,7 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
 
     if (data[0] == 200) {
         res.status(200);
-        res.json({
-            Response: "Success",
-            data,
-        });
+        res.status(200).json(data);
     } else {
         res.sendStatus(404);
     }
