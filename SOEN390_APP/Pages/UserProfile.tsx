@@ -9,7 +9,8 @@ import {
     UIManager,
     TouchableOpacity,
     Platform,
-    Image
+    Image,
+    Modal
 } from 'react-native';
 import React from 'react'
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ import { LogBox } from 'react-native';
 import { GetUserInfo } from '../api/GetUsersAPI';
 import { GetUserExperience } from '../api/UserExperienceAPI';
 import { GetUserSkills } from '../api/UserSkillsAPI';
+import ContactModal from '../Components/contacts.Component'
 
 interface User {
   id: number;
@@ -174,6 +176,7 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
 const UserProfile = ({route}:{route:any}) => {
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   let name = route.params.username
   let password = route.params.password
@@ -315,7 +318,15 @@ const UserProfile = ({route}:{route:any}) => {
         <Basic data = {password}/>
         <StandaloneRow data = {file} />
     </View> */}
-    
+
+
+  const openContacts = ()=>{
+    setModalVisible(true);
+  }
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  }; 
+  
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -361,11 +372,17 @@ const UserProfile = ({route}:{route:any}) => {
                               activeOpacity={0.8}
                               //onPress={}
                               style={styles.contactsButtons}>
-                                <Ionicons size={35} name="people-outline" style={styles.icon} color={"rgb(145, 140, 224)"}/>
+                                <Ionicons size={35} name="people-outline" style={styles.icon} color={"rgb(145, 140, 224)"} onPress={() => openContacts()}/>
                               <Text style={styles.headerButtonText}>
                                 Contacts
                               </Text>
                             </TouchableOpacity>
+                            <ContactModal
+                                      isVisible={modalVisible}
+                                      handleCloseModal={handleCloseModal}
+                                      screen={2}
+                                      email={user.email}
+                            ></ContactModal>
                             </View>
                         </View>
                     </View>
