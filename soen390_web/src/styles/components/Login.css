@@ -4,52 +4,89 @@
 }
 
 .background{
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 70vh;
-    background-color: white;
-    border-radius: 229px;
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 80vh;
+  background-color: white;    
+  background-size: 50%;
+  padding-top: 1px;
 }
 
 .background-color{
-    background-color: #D9D9D9;
+    background-color: #ffffff;
     padding-bottom: 10%;
 }
 
 .form-field{
-    background: rgba(217, 217, 217, 0.75);
+    background: rgb(255, 254, 254);
     border-radius: 27px;
+    
+    
 }
 
 .form{
     border-radius: 27px;
+    
 }
 
+.inputRounded {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    
+  }
+  
 .inputRounded .MuiOutlinedInput-root {
-    background: rgba(217, 217, 217, 0.75);
-    border-radius: 27px;
-    width: 30em;
+    background: white;
+    border-radius: 30px;  
+    width: 200%;
+    
+  }
+  
+.inputRounded .MuiInputLabel-root {
+    position: absolute;  
+    transform: translate(14px, 14px) scale(1);
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.15;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 200ms, color 200ms;
+  }
+  
+.inputRounded .MuiInputLabel-shrink {
+    transform: translate(14px, 0) scale(0.75);
   }
 
 .field-name{
-    text-align: right;
-    font-family: 'Inter-regular';
-    font-weight: bold;
-    font-size: large;
-    line-height: 50px;
+    font-family: 'roboto';
+    font-size: medium;    
+    color: #120564; 
+    margin-left: 30%;
 }
 
 .field-input{
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
 .input-margin{
-    margin-left: 5em;
+    
+    padding: 10px;
+    text-align: center;
 }
 
 .login-form{
     position: relative;
-    top: 35%;
+    top: 20%;
+    
+    width: 40%;
+    margin-left: 3%;
+    
 }
 
 .cancel{
@@ -58,10 +95,62 @@
 }
 
 .login{
-    text-align: left;
+    text-align: center;
+    
+    
 }
 
 .button{
     box-shadow: none;
     background-color: dodgerblue;
 }
+
+
+
+/* Responsive Styles */
+@media only screen and (max-width: 768px) {
+    .background {
+        background-size: 70%;
+        height: auto;
+    }
+    
+    .login-form {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+    
+    .name-field {
+        text-align: center;
+    }
+    
+    .inputRounded .MuiOutlinedInput-root {
+        width: 100%;
+    }
+  
+    .input-margin{
+      margin-right: 10em;
+      text-align: center;
+      width: 150%;
+    }
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .background {
+        background-size: 100%;
+    }
+    
+    .login-form {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    .inputRounded .MuiOutlinedInput-root {
+      width: 100%;
+  }
+  .input-margin{
+    margin-right: 10em;
+    text-align: center;
+  }
+  
+  }
