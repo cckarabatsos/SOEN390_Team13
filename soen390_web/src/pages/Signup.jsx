@@ -53,8 +53,13 @@ function SignUp(props) {
   return (
     <div data-testid="signup-1">
       <div>
-        <div className="signup" style={{ backgroundImage: `url(${background})`, }}>
-          <p className="signuptitle" data-testid="signuptitle-1">One step away from a remarkable career</p>
+        <div
+          className="signup"
+          style={{ backgroundImage: `url(${background})` }}
+        >
+          <p className="signuptitle" data-testid="signuptitle-1">
+            One step away from a remarkable career
+          </p>
           <div className="form-group">
             <Grid container spacing={1}>
               <Grid container spacing={2}>
@@ -84,7 +89,7 @@ function SignUp(props) {
                         autoFocus
                         className="Roundedinput"
                         margin="dense"
-                        label= {t("LastNameText")}
+                        label={t("LastNameText")}
                         type="name"
                         variant="outlined"
                         size="small"
@@ -143,7 +148,9 @@ function SignUp(props) {
                         variant="outlined"
                         size="small"
                         value={confirmPasswordInput}
-                        onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                        onChange={(e) =>
+                          setConfirmPasswordInput(e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -162,7 +169,7 @@ function SignUp(props) {
                 </Grid>
               ) : (
                 <></>
-              )}              
+              )}
               <Grid className="login" item xs={12}>
                 <Button
                   className="button"
@@ -185,12 +192,9 @@ function SignUp(props) {
                 {t("AlreadyAccountText")} <Link to="/">{t("HereText")}</Link>
               </Grid>
             </Grid>
-
           </div>
         </div>
       </div>
-      <SubFooter />
-      <Footer />
     </div>
   );
 }

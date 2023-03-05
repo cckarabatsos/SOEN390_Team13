@@ -15,8 +15,6 @@ function MainTitle(props) {
   const [passwordInput, setPasswordInput] = React.useState("");
   const [incorrectLogin, setIncorrectLogin] = React.useState(false);
 
-
-  
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -24,10 +22,9 @@ function MainTitle(props) {
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
     setIsAuth(success.data);
-    if (success.status === 200){
-       navigate("/UserProfile")
+    if (success.status === 200) {
+      navigate("/UserProfile");
     } else {
-
       setIncorrectLogin(true);
       console.log("Login Fail");
     }
@@ -42,13 +39,16 @@ function MainTitle(props) {
   return (
     <div data-testid="login-1">
       <div className="background-color">
-        <div className="background" style={{ backgroundImage: `url(${background})`, }}>
-          <h3 className="signuptitle">Your shortcut to career success</h3>          
-          <div className="login-form">                       
-            <Grid container spacing={1}>              
+        <div
+          className="background"
+          style={{ backgroundImage: `url(${background})` }}
+        >
+          <h3 className="signuptitle">Your shortcut to career success</h3>
+          <div className="login-form">
+            <Grid container spacing={1}>
               <Grid container spacing={2}>
                 <Grid className="field-input" item xs={8}>
-                <div className="field-name" >{t("emailText")}</div> 
+                  <div className="field-name">{t("emailText")}</div>
                   <div className="input-margin">
                     <TextField
                       data-testid="email-1"
@@ -64,9 +64,9 @@ function MainTitle(props) {
                     />
                   </div>
                 </Grid>
-                                
+
                 <Grid className="field-input" item xs={8}>
-                <div className="field-name" > {t("passwordText")} </div>
+                  <div className="field-name"> {t("passwordText")} </div>
                   <div className="input-margin">
                     <TextField
                       data-testid="password-1"
@@ -81,7 +81,7 @@ function MainTitle(props) {
                       onChange={(e) => setPasswordInput(e.target.value)}
                     />
                   </div>
-                </Grid>                
+                </Grid>
                 <Grid className="login" item xs={12}>
                   <Button
                     className="button"
@@ -120,18 +120,16 @@ function MainTitle(props) {
                   <GoogleLogin />
                 </Grid>
                 <Grid item xs={12}>
-                  {t("NoAccountText")} <Link to="/Signup">{t("ClickHereText")}</Link>
+                  {t("NoAccountText")}{" "}
+                  <Link to="/Signup">{t("ClickHereText")}</Link>
                 </Grid>
               </Grid>
             </Grid>
           </div>
         </div>
       </div>
-      <SubFooter />
-      <Footer />
     </div>
   );
 }
 
 export default MainTitle;
-

@@ -49,8 +49,6 @@ export default function Contacts() {
           ))}
         </Grid>
       </div>
-      <SubFooter />
-      <Footer />
     </div>
   );
 }
