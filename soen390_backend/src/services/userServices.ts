@@ -519,10 +519,14 @@ export function updateUser(newProfile: User, id: string) {
     db.collection("users").doc(id).update(newProfile);
 }
 
-export async function getFilteredUsers(filter: UserFilter) {
+export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
-
+    if (company === false) {
+        userRef = userRef.where("isCompany", "==", false);
+    } else {
+        userRef = userRef.where("isCompany", "==", true);
+    }
     if (filter.name) {
         const prefix = filter.name.toLowerCase();
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
