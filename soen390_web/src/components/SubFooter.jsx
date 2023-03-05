@@ -67,7 +67,9 @@ function SubFooter() {
             ) : (
               <span className="navlinks"></span>
             )}
-            <h2>Linked Out @ 2023 </h2>
+            <div data-testid="footer-1">
+              <h2>Linked Out @ 2023 </h2>
+            </div>
           </Toolbar>
         </AppBar>
       </div>

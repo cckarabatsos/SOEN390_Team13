@@ -1,7 +1,5 @@
-import axios from "axios";
 import React from "react";
 import FileItem from "./FileItem";
-import api from "../config.json";
 
 const FileList = ({ files, removeFile }) => {
   const deleteFileHandler = ({ files, removeFile }) => {

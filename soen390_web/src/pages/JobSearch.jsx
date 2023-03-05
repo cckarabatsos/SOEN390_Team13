@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
-import Footer from "../components/Footer";
-import SubFooter from "../components/SubFooter";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import JobPostingComponent from "../components/JobPostingComponent";
 import JobSearchBar from "../components/JobSearchBar";
-import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import JobsOverview from "../models/JobsOverview.ts";
 
 export default function JobSearch() {
   const [modalOpen, setModalOpen] = useState(false);

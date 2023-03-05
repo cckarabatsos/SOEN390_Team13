@@ -29,7 +29,6 @@ function Navbar(props) {
 
   return (
     <div data-testid="navbar-1">
-      {console.log(userData)}
       <AppBar position="static" style={{ background: "#ffffff" }}>
         <CssBaseline />
         <Toolbar>
@@ -37,14 +36,18 @@ function Navbar(props) {
             <DrawerComponent />
           ) : (
             <>
-              <Link data-testid="home-1" to="/" className="logo">
+              <Link
+                data-testid="home-1"
+                to={userData ? "/NewsFeedPage" : "/"}
+                className="logo"
+              >
                 <img className="logo" src={navlogo} alt="LinkedOut" />
               </Link>
               <span className="navlinks">
                 {userData && (
                   <Link
                     data-testid="home-1"
-                    to="/NewsFeedPAge"
+                    to="/NewsFeedPage"
                     className="link"
                   >
                     {t("HomeText")}
