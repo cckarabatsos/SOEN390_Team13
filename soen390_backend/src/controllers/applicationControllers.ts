@@ -3,7 +3,8 @@ import {
     storeApplication,
     retrieveLastApplication,
     retrieveApplications,
-    retrieveApplicationHistory
+    retrieveApplicationHistory,
+    deleteApplicationWithId
 } from "../services/applicationServices";
 
 export async function createApplication(
@@ -90,5 +91,14 @@ export async function getApplicationHistory(userID: string) {
         return [200, jobpostings];
     } else {
         return [404, { msg: "Application history not found" }];
+    }
+}
+export async function deleteApplication(userID: string, postingID: string) {
+    let msg = await deleteApplicationWithId(userID, postingID);
+
+    if (msg !== null) {
+        return [200, msg];
+    } else {
+        return [404, { msg: "Experience not found" }];
     }
 }

@@ -171,3 +171,55 @@ export const retrieveApplicationHistory = async (userID: string) => {
         throw error;
     }
 };
+
+export const deleteApplicationWithId = async (userID: string, postingID: string) => {
+    try {
+        let user = await findUserWithID(userID);
+        let posting = await findJobpostingWithID(postingID);
+        if (user === undefined || posting === undefined) {
+            console.log("User or job posting not found.");
+            return null;
+        }
+        let casted_posting = await jobposting_schema.cast(posting);
+        let company = await findUserWithID(casted_posting.jobPosterID);
+        if (company === undefined) {
+            console.log("Company not found.");
+            return null;
+        }
+        let casted_user = await user_schema.cast(user);
+        let casted_company = await user_schema.cast(company);
+
+        let counter: number = 0;
+        let index: number = -1;
+        //let applicationID: string = "";
+        casted_user.jobpostings.applied.forEach((str: string) => {
+            if (str.split(",")[1] === postingID) {
+                index = counter;
+            }
+            counter++;
+        });
+        if (index !== -1) {
+            casted_user.jobpostings.applied.splice(index, 1);
+            updateUser(casted_user, casted_user.userID);
+        }
+        await db.collection("applications")
+            .where("ownerID", "==", userID)
+            .where("postingID", "==", postingID)
+            .get()
+            .then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    let data = doc.data();
+                    index = casted_company.jobpostings.postingids.indexOf(postingID);
+                    let applications = casted_company.jobpostings.applied[index].split(",");
+                    applications.splice(applications.indexOf(data.applicationID), 1);
+                    casted_company.jobpostings.applied[index] = applications.toString();
+                    updateUser(casted_company, casted_company.userID);
+                    doc.ref.delete();
+                });
+            });
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return "Success";
+};

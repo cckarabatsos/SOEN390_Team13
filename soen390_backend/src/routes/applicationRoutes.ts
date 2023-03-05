@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { createApplication, getApplications, getLastApplication, getApplicationHistory }
+import { createApplication, getApplications, getLastApplication, getApplicationHistory, deleteApplication }
     from "../controllers/applicationControllers";
 import { Application } from "../models/Application";
 const application = express.Router();
@@ -107,6 +107,24 @@ application.get("/getApplicationHistory/:userID", async (req: Request, res: Resp
     let userID = req.params.userID;
     try {
         const application: Application = await getApplicationHistory(userID);
+        const status: number = application[0];
+        if (status == 200) {
+            res.status(200);
+            res.json(application[1]);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
+application.post("/remove/:userID", async (req: Request, res: Response) => {
+    let userID: string = req.params.userID;
+    let postingID: string = req.query.postingID as string;
+    try {
+        const application: Application = await deleteApplication(userID, postingID);
         const status: number = application[0];
         if (status == 200) {
             res.status(200);
