@@ -74,8 +74,8 @@ export async function getLastApplication(userID: string) {
         return [404, { msg: "Application not found" }];
     }
 }
-export async function getApplications(userID: string) {
-    let applications = await retrieveApplications(userID);
+export async function getApplications(userID: string, postingID: string) {
+    let applications = await retrieveApplications(userID, postingID);
 
     if (applications !== null) {
         return [200, applications];

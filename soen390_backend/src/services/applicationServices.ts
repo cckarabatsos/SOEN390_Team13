@@ -1,10 +1,7 @@
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-import {
-    Application, /*application_schema*/
-    application_schema
-} from "../models/Application";
+import { Application, /*application_schema*/ } from "../models/Application";
 import { jobposting_schema } from "../models/jobPosting";
 import { user_schema } from "../models/User";
 import { findJobpostingWithID } from "./jobPostingServices";
@@ -62,7 +59,7 @@ export const storeApplication = async (application: Application) => {
         casted_user.jobpostings.applied.push(document.id + "," + application.postingID);
         updateUser(casted_user, casted_user.userID);
         let index: number = casted_company.jobpostings.postingids.indexOf(application.postingID);
-        casted_company.jobpostings.applied[index] = casted_company.jobpostings.postingids[index].length === 0 ?
+        casted_company.jobpostings.applied[index] = casted_company.jobpostings.applied[index].length === 0 ?
             document.id :
             casted_company.jobpostings.applied[index] + "," + document.id;
         updateUser(casted_company, casted_company.userID);
@@ -95,8 +92,9 @@ export const retrieveLastApplication = async (userID: string) => {
                 console.log("Application not found.");
                 return null;
             }
-            let casted_application = application_schema.cast(application);
-            return casted_application;
+            // Need to see why cast_application gives error
+            // let casted_application = application_schema.cast(application);
+            return application;
         }
     } catch (error) {
         console.log(error);
@@ -104,7 +102,7 @@ export const retrieveLastApplication = async (userID: string) => {
     }
 };
 
-export const retrieveApplications = async (userID: string) => {
+export const retrieveApplications = async (userID: string, postingID: string) => {
     try {
         let user = await findUserWithID(userID);
         if (user === undefined) {
@@ -119,9 +117,13 @@ export const retrieveApplications = async (userID: string) => {
 
         let applicationsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
             db.collection("applications");
-
+        let index: number = casted_user.jobpostings.postingids.indexOf(postingID);
+        if (index === -1) {
+            console.log("Company not responsible for this job posting.")
+            return null;
+        }
         applicationsRef = applicationsRef
-            .where("applicationID", "in", casted_user.jobpostings.applied);
+            .where("applicationID", "in", casted_user.jobpostings.applied[index].split(","));
 
         const snapshot = await applicationsRef.get();
         const applications = snapshot.docs.map((doc) => ({

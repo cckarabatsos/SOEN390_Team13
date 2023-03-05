@@ -55,6 +55,11 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
                 Response: "Success",
                 application
             });
+        } else if (status == 400) {
+            res.status(200);
+            res.json({
+                application
+            });
         } else if (status == 404) {
             res.sendStatus(status);
         }
@@ -64,7 +69,7 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
     }
 });
 application.get("/getLastApplication/:userID", async (req: Request, res: Response) => {
-    let userID = req.params.userID;
+    let userID: string = req.params.userID;
     try {
         const application: Application = await getLastApplication(userID);
         const status: number = application[0];
@@ -81,9 +86,10 @@ application.get("/getLastApplication/:userID", async (req: Request, res: Respons
     }
 });
 application.get("/getApplications/:userID", async (req: Request, res: Response) => {
-    let userID = req.params.userID;
+    let userID: string = req.params.userID;
+    let postingID: string = req.query.postingID as string;
     try {
-        const application: Application = await getApplications(userID);
+        const application: Application = await getApplications(userID, postingID);
         const status: number = application[0];
         if (status == 200) {
             res.status(200);
