@@ -6,10 +6,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { default as React } from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/default_picture2.jpg";
+import SearchBar from "../components/SearchBar";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 
@@ -17,6 +18,8 @@ function Navbar(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const userData = props.userData;
+  const searchBarRef = useRef(null);
+
   const { t, i18n } = useTranslation();
   const signout = () => {
     localStorage.setItem("isAuth", null);
@@ -25,6 +28,9 @@ function Navbar(props) {
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
+  };
+  const handleSearch = async () => {
+    console.log("hi");
   };
 
   return (
@@ -43,6 +49,7 @@ function Navbar(props) {
               >
                 <img className="logo" src={navlogo} alt="LinkedOut" />
               </Link>
+              <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
               <span className="navlinks">
                 {userData && (
                   <Link

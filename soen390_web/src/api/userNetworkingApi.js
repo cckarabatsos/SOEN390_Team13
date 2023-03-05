@@ -6,8 +6,8 @@ export async function searchInfo(reqType, reqTerm) {
     const response = await axios
       .get(api.BACKEND_API + "/user/api/search", {
         params: {
-          name: reqType == "name" ? reqTerm : "",
-          email: reqType == "email" ? reqTerm : "",
+          name: reqType === "name" ? reqTerm : "",
+          email: reqType === "email" ? reqTerm : "",
         },
       })
       .then((res) => {

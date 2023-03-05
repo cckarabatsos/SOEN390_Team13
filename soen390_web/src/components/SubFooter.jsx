@@ -6,7 +6,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React from "react";
-import navlogo from "../assets/linkedout logo navbar.png";
+import navlogo from "../assets/default_picture2.jpg";
 import "../styles/components/navbar.css";
 import "../styles/components/SubFooter.css";
 import DrawerComponent from "./Drawer";
@@ -25,7 +25,7 @@ function SubFooter() {
         <AppBar
           className="border"
           position="static"
-          style={{ background: "#BDBABA" }}
+          style={{ background: "#ffffff" }}
         >
           <CssBaseline />
           <Toolbar className="border">

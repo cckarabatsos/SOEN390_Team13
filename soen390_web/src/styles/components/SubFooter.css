@@ -2,7 +2,7 @@
     display: inline-block;
     /* flex-grow: 1; */
     cursor: pointer;
-    height: 50px;
+    height: 7vh;
     max-width: 100%;
     margin-left: -50%;
 }
