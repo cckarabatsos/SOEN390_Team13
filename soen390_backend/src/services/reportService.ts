@@ -26,3 +26,58 @@ export const getReports = async () => {
         throw new Error("Error getting reports: " + error.message);
     }
 };
+export const applyVerdict = async (
+    reportID: string,
+    reportedID: string,
+    banned: boolean
+) => {
+    try {
+        console.log(reportID);
+        console.log(reportedID);
+        let reportedDocRef = db.collection("users").doc(reportedID);
+        let reportDocRef = db.collection("reports").doc(reportID);
+        const reportedDoc = await reportedDocRef.get();
+        const reportDoc = await reportDocRef.get();
+        if (!reportedDoc.exists) {
+            throw new Error(`User document with ID ${reportedID} not found`);
+        }
+
+        if (!reportDoc.exists) {
+            throw new Error(`Report document with ID ${reportID} not found`);
+        }
+        if (reportDoc.data()?.reportedID !== reportedID) {
+            throw new Error(
+                `Reported ID ${reportedID} does not match ID in report`
+            );
+        }
+        const batch = db.batch();
+        if (banned) {
+            const reportingStatus = reportedDoc.data()?.reporting_status;
+            console.log(reportingStatus);
+            if (reportingStatus === "never_reported") {
+                batch.update(reportedDocRef, {
+                    reporting_status: "reported_once",
+                });
+            } else if (reportingStatus === "reported_once") {
+                batch.update(reportedDocRef, { reporting_status: "banned" });
+                const reportsSnapshot = await db
+                    .collection("reports")
+                    .where("reportedID", "==", reportedID)
+                    .get();
+                reportsSnapshot.forEach((doc) => {
+                    batch.delete(doc.ref);
+                });
+            }
+            batch.delete(reportDocRef);
+            await batch.commit();
+            return [200, "User banned and report deleted"];
+        } else {
+            batch.delete(reportDocRef);
+            await batch.commit();
+            return [200, "User not banned but report deleted"];
+        }
+    } catch (err: any) {
+        console.log(err);
+        return [400, { msg: err.message }];
+    }
+};

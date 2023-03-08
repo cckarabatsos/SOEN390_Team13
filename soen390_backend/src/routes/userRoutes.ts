@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import firebase from "firebase";
 import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 export interface IGetUserAuthInfoRequest extends Request {
@@ -435,6 +436,29 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+//Route used to update all fields this is not to be used in final versions
+user.get("/updateFields", (_: Request, res: Response) => {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const usersRef = db.collection("users");
+    usersRef
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                batch.update(doc.ref, { reporting_status: "never_reported" });
+            });
 
+            return batch.commit();
+        })
+        .then(() => {
+            res.status(200).send(
+                "reporting_status field added to all user documents"
+            );
+        })
+        .catch((error) => {
+            console.error("Error adding reporting_status field:", error);
+            res.status(500).send("Error adding reporting_status field");
+        });
+});
 //Exporting the user as a module
 module.exports = user;

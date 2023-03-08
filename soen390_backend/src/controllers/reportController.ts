@@ -1,5 +1,9 @@
 import { Report, report_schema } from "../models/reports";
-import { getReports, storeReport } from "../services/reportService";
+import {
+    applyVerdict,
+    getReports,
+    storeReport,
+} from "../services/reportService";
 
 export async function createNewReport(
     reportedID: string,
@@ -25,6 +29,22 @@ export async function createNewReport(
 export async function getBatchReports() {
     try {
         let data = await getReports();
+        if (data) {
+            return [200, data];
+        } else {
+            return [404, { msg: "Posting not stored" }];
+        }
+    } catch (err: any) {
+        throw err;
+    }
+}
+export async function userVerdict(
+    reportID: string,
+    reportedID: string,
+    banned: boolean
+) {
+    try {
+        let data: any = await applyVerdict(reportID, reportedID, banned); // Change to a service for that
         if (data) {
             return [200, data];
         } else {

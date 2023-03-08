@@ -16,6 +16,7 @@ export const user_schema = yup
         pendingInvitations: yup.array(yup.string()).required().default([]),
         contacts: yup.array(yup.string()).required().default([]),
         isCompany: yup.boolean().required().default(false),
+        reportingStatus: yup.string().required().default("never_reported"),
         currentCompany: yup.string().when("isCompany", {
             is: true,
             then: yup
@@ -40,9 +41,9 @@ export const user_schema = yup
                 .required("Field is required when its a recruiter"),
             otherwise: yup
                 .object({
-                    applied: yup.array(yup.string()).default([])
+                    applied: yup.array(yup.string()).default([]),
                 })
-                .required("Field is required when its a normal user")
+                .required("Field is required when its a normal user"),
         }),
         employees: yup
             .array(yup.string())

@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import {
     createNewReport,
     getBatchReports,
+    userVerdict,
 } from "../controllers/reportController";
 import { getUserWithID } from "../controllers/userControllers";
 import { User } from "../models/User";
@@ -50,6 +51,25 @@ reports.get("/batchReports", async (req: Request, res: Response) => {
         console.log(err);
         res.status(400);
         res.json({ errType: err.name, errMsg: err.message });
+    }
+});
+reports.post("/verdictReport", async (req: Request, res: Response) => {
+    try {
+        const reportID: string = req.body.reportID;
+        const reportedID: string = req.body.reportedID;
+        const banned: boolean = req.body.banned;
+        const data: any = await userVerdict(reportID, reportedID, banned);
+        if (data[0] == 200) {
+            res.status(data[0]);
+            res.json(data[1]);
+        } else {
+            res.status(data[0]);
+            res.json(data[1]);
+        }
+    } catch (err: any) {
+        console.log(err);
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
     }
 });
 
