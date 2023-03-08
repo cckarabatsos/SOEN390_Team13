@@ -36,7 +36,7 @@ export async function deleteExperience(experienceID: string) {
     }
     let castedExperience: Experience = await experience_schema.cast(experience);
 
-    if (experience) {
+    if (experience !== null) {
         return [200, castedExperience];
     } else {
         return [404, { msg: "Experience not found" }];

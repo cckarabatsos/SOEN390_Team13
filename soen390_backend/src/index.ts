@@ -68,6 +68,8 @@ const experience = require("./routes/experienceRoutes");
 app.use("/experience", experience);
 const award = require("./routes/awardRoutes");
 app.use("/award", award);
+const application = require("./routes/applicationRoutes");
+app.use("/application", application);
 
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {
