@@ -445,15 +445,13 @@ user.get("/updateFields", (_: Request, res: Response) => {
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                batch.update(doc.ref, { reporting_status: "never_reported" });
+                batch.update(doc.ref, { isAdmin: false });
             });
 
             return batch.commit();
         })
         .then(() => {
-            res.status(200).send(
-                "reporting_status field added to all user documents"
-            );
+            res.status(200).send("isAdmin field added to all user documents");
         })
         .catch((error) => {
             console.error("Error adding reporting_status field:", error);

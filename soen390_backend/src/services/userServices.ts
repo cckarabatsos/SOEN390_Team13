@@ -44,8 +44,8 @@ export const storeUser = async (user: User) => {
         let pic = user.picture
             ? user.picture
             : await ref
-                .child("Profile Pictures/blank_profile_pic.png")
-                .getDownloadURL();
+                  .child("Profile Pictures/blank_profile_pic.png")
+                  .getDownloadURL();
         user.picture = pic;
         var document = await db.collection("users").add({
             ...user,
@@ -77,7 +77,7 @@ export const deleteUserWithId = async (userID: string) => {
                 await batch.commit();
                 console.log(
                     data.jobpostings.postingids.length +
-                    " job postings successfully deleted."
+                        " job postings successfully deleted."
                 );
             }
             db.collection("users")
@@ -522,6 +522,7 @@ export function updateUser(newProfile: User, id: string) {
 export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
+    userRef = userRef.where("isAdmin", "==", false);
     if (company === false) {
         userRef = userRef.where("isCompany", "==", false);
     } else {
@@ -545,8 +546,12 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     if (filter.limit) {
         userRef = userRef.limit(filter.limit);
     }
-    if (filter.skip) {
-        userRef = userRef.startAfter(filter.skip);
+    if (filter.skip > 0) {
+        const lastVisible = await userRef.get().then((snapshot) => {
+            const lastDoc = snapshot.docs[filter.skip - 1];
+            return lastDoc;
+        });
+        userRef = userRef.startAfter(lastVisible);
     }
 
     const snapshot = await userRef.get();

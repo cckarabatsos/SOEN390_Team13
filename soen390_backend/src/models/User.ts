@@ -16,7 +16,8 @@ export const user_schema = yup
         pendingInvitations: yup.array(yup.string()).required().default([]),
         contacts: yup.array(yup.string()).required().default([]),
         isCompany: yup.boolean().required().default(false),
-        reportingStatus: yup.string().required().default("never_reported"),
+        reportingStatus: yup.string().required().default("never_reported"), // never_reported || reported_once || banned
+        isAdmin: yup.boolean().required().default(false),
         currentCompany: yup.string().when("isCompany", {
             is: true,
             then: yup
