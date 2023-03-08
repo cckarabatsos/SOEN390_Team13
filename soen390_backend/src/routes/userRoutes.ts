@@ -384,7 +384,7 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     }
 });
 //Exporting the user as a module
-module.exports = user;
+
 //****************End User invitation route section ***********88
 
 user.get("/api/search", async (req: Request, res: Response) => {
@@ -435,3 +435,6 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+
+//Exporting the user as a module
+module.exports = user;
