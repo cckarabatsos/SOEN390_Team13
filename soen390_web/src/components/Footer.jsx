@@ -16,18 +16,23 @@ const Footer = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <div data-testid='footer-1'>
-    <AppBar
-      className="border"
-      position="static"
-      style={{ background: "#BDBABA" }}
-    >
-      <CssBaseline />
-      <Toolbar className="border">
-        {isMobile ? <DrawerComponent /> : <span className="navlinks"></span>}
-        <h2>Linked Out @ 2023 </h2>
-      </Toolbar>
-    </AppBar>
+    <div data-testid="footer-1">
+      <AppBar
+        className="border"
+        position="static"
+        style={{
+          background: "#BDBABA",
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+        }}
+      >
+        <CssBaseline />
+        <Toolbar className="border">
+          {isMobile ? <DrawerComponent /> : <span className="navlinks"></span>}
+          <h2>Linked Out @ 2023 </h2>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 };

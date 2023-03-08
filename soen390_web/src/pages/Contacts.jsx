@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
-import ContactsComponent from "../components/ContactComponent";
 import { Grid } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { GetContacts } from "../api/userContactsApi";
-import { Navigate } from "react-router-dom";
-import SubFooter from "../components/SubFooter";
-import Footer from "../components/Footer";
+import ContactsComponent from "../components/ContactComponent";
 
 export default function Contacts() {
   const [userData, setUseData] = React.useState({});
@@ -49,8 +46,6 @@ export default function Contacts() {
           ))}
         </Grid>
       </div>
-      <SubFooter />
-      <Footer />
     </div>
   );
 }

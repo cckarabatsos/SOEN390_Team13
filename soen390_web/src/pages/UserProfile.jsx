@@ -113,7 +113,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                {t("EducationText")}
+                  {t("EducationText")}
                   <AddEducationDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
@@ -165,7 +165,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                {t("ExperienceText")}
+                  {t("ExperienceText")}
                   <AddExperienceDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
@@ -359,9 +359,6 @@ function UserProfile(props) {
           </div>
         </div>
       </div>
-
-      <SubFooter />
-      <Footer />
     </>
   );
 }

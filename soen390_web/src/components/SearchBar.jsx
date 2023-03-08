@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: "40%",
     height: "3rem",
     paddingTop: "5px",
+    maxWidth: "30%",
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
     },

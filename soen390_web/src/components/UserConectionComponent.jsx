@@ -1,10 +1,8 @@
-import { TextField } from "@material-ui/core";
-import React from "react";
-import "../styles/components/userconnection.css";
-import Person from "../assets/UserConnectionImages/image (1).jpg"
 import { Button } from "@material-ui/core";
-import { Grid } from "@material-ui/core";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import Person from "../assets/UserConnectionImages/image (1).jpg";
+import "../styles/components/userconnection.css";
 function handleDecline() {
   // Do something when the decline button is clicked
   console.log("Decline button clicked");
