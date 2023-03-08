@@ -110,10 +110,13 @@ export const filterJobPostings = async (filter: Filter) => {
     if (filter.limit) {
         jobPostingsRef = jobPostingsRef.limit(filter.limit);
     }
-    if (filter.skip) {
-        jobPostingsRef = jobPostingsRef.startAfter(filter.skip);
+    if (filter.skip > 0) {
+        const lastVisible = await jobPostingsRef.get().then((snapshot) => {
+            const lastDoc = snapshot.docs[filter.skip - 1];
+            return lastDoc;
+        });
+        jobPostingsRef = jobPostingsRef.startAfter(lastVisible);
     }
-
     const snapshot = await jobPostingsRef.get();
     const jobPostings = snapshot.docs.map((doc) => ({
         id: doc.id,
