@@ -14,3 +14,15 @@ export const storeReport = async (newReport: Report) => {
     }
     return document.id;
 };
+export const getReports = async () => {
+    try {
+        const querySnapshot = await db.collection("reports").limit(10).get();
+        const reports: any = [];
+        querySnapshot.forEach((doc) => {
+            reports.push(doc.data());
+        });
+        return reports;
+    } catch (error: any) {
+        throw new Error("Error getting reports: " + error.message);
+    }
+};

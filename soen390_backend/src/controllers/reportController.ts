@@ -1,5 +1,5 @@
 import { Report, report_schema } from "../models/reports";
-import { storeReport } from "../services/reportService";
+import { getReports, storeReport } from "../services/reportService";
 
 export async function createNewReport(
     reportedID: string,
@@ -15,6 +15,18 @@ export async function createNewReport(
         let reportID = await storeReport(newReport);
         if (reportID) {
             return [200, reportID];
+        } else {
+            return [404, { msg: "Posting not stored" }];
+        }
+    } catch (err: any) {
+        throw err;
+    }
+}
+export async function getBatchReports() {
+    try {
+        let data = await getReports();
+        if (data) {
+            return [200, data];
         } else {
             return [404, { msg: "Posting not stored" }];
         }
