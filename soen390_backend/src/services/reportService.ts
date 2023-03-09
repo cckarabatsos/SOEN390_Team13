@@ -38,6 +38,7 @@ export const applyVerdict = async (
         let reportDocRef = db.collection("reports").doc(reportID);
         const reportedDoc = await reportedDocRef.get();
         const reportDoc = await reportDocRef.get();
+
         if (!reportedDoc.exists) {
             throw new Error(`User document with ID ${reportedID} not found`);
         }
@@ -79,5 +80,21 @@ export const applyVerdict = async (
     } catch (err: any) {
         console.log(err);
         return [400, { msg: err.message }];
+    }
+};
+
+export const deleteReportById = async (reportId: string) => {
+    try {
+        const reportRef = db.collection("reports").doc(reportId);
+        const reportDoc = await reportRef.get();
+
+        if (reportDoc.exists) {
+            await reportRef.delete();
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error: any) {
+        throw new Error("Error deleting report: " + error.message);
     }
 };

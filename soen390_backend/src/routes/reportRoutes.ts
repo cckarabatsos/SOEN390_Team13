@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 
 import {
     createNewReport,
+    deleteReport,
     getBatchReports,
     userVerdict,
 } from "../controllers/reportController";
@@ -27,6 +28,18 @@ reports.post("/newReport", async (req: Request, res: Response) => {
         console.log(err);
         res.status(400);
         res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+reports.delete("/:id", async (req: Request, res: Response) => {
+    try {
+        const reportId: string = req.params.id;
+        const data: any = await deleteReport(reportId);
+
+        res.status(data[0]);
+        res.json(data[1]);
+    } catch (err: any) {
+        console.log(err);
+        res.status(400).json({ errType: err.Name, errMsg: err.message });
     }
 });
 
@@ -59,13 +72,9 @@ reports.post("/verdictReport", async (req: Request, res: Response) => {
         const reportedID: string = req.body.reportedID;
         const banned: boolean = req.body.banned;
         const data: any = await userVerdict(reportID, reportedID, banned);
-        if (data[0] == 200) {
-            res.status(data[0]);
-            res.json(data[1]);
-        } else {
-            res.status(data[0]);
-            res.json(data[1]);
-        }
+        console.log(data);
+        res.status(data[0]);
+        res.json(data[1]);
     } catch (err: any) {
         console.log(err);
         res.status(400);

@@ -232,26 +232,6 @@ function processData(snapshot: any) {
     }
 }
 
-//helper function to create userNodes
-// async function createUserNode(user: UserNode) {
-//   try {
-//     var document = await db.collection("users").add({
-//       name: user.name,
-//       email: user.email,
-//       picture: user.picture,
-//       userID: "",
-//     });
-
-//     await document.update({ userID: document.id });
-
-//     console.log("UserNode successfully registered with id: " + document.id);
-//   } catch (error) {
-//     console.log(error);
-//     throw error;
-//   }
-//   return document.id;
-// }
-
 export async function sendUserInvitation(
     receiverEmail: string,
     senderEmail: string

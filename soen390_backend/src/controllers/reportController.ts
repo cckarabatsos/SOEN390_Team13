@@ -1,6 +1,7 @@
 import { Report, report_schema } from "../models/reports";
 import {
     applyVerdict,
+    deleteReportById,
     getReports,
     storeReport,
 } from "../services/reportService";
@@ -45,12 +46,21 @@ export async function userVerdict(
 ) {
     try {
         let data: any = await applyVerdict(reportID, reportedID, banned); // Change to a service for that
-        if (data) {
+        console.log(data);
+        if (data && data[0] !== 400) {
             return [200, data];
         } else {
-            return [404, { msg: "Posting not stored" }];
+            return [404, { msg: "Report Error" }];
         }
     } catch (err: any) {
-        throw err;
+        return [400, { msg: err.message }];
+    }
+}
+export async function deleteReport(reportID: string) {
+    const result = await deleteReportById(reportID);
+    if (result) {
+        return [200, `Report with ID ${reportID} deleted`];
+    } else {
+        return [404, { msg: "Report not found" }];
     }
 }
