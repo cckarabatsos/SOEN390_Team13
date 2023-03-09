@@ -26,7 +26,8 @@ function JobPostingComponent(props) {
             }}
             style={{
               borderRadius: 27,
-              backgroundColor: "#a640f4b9",
+              border: "2px solid #8f8aff",
+              fontSize: "15px",
             }}
           >
             {t("MoreInfoText")}
@@ -35,7 +36,6 @@ function JobPostingComponent(props) {
 
         <div className="position">{position}</div>
         <div className="company">{company}</div>
-
         <div className="location">{location}</div>
         <div className="contract">{contract}</div>
       </div>

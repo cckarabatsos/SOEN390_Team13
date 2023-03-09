@@ -46,25 +46,30 @@
     height: 45px;
     margin: 10px;
     border: none;
-    background-color: cornflowerblue;
-    color: white;
-    border-radius: 8px;
-    font-size: 20px;
+    background-color: white ;
+    color: black;
+    border: 2px solid #8f8aff ;
+    border-radius: 8px ;
+    font-size: 20px ;
     cursor: pointer;
+    position: relative;
   }
   
   #cancelBtn {
-    position: relative;
-    background-color: crimson;
     width: 150px;
     height: 45px;
     margin: 10px;
     border: none;
-    border-radius: 8px;
-    font-size: 20px;
+    background-color: white ;
+    color: black;
+    border: 2px solid #8f8aff ;
+    border-radius: 8px ;
+    font-size: 20px ;
     cursor: pointer;
-    color: white;
+    position: relative;
   }
+  
   #cancelBtn:hover {
-    background-color: #e74c3c;
+    background-color: #8f8aff;
+    color: white;
   }

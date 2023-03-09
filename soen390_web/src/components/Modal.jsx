@@ -30,15 +30,17 @@ const { t } = useTranslation();
           </button>
         </div>
         <div className="title">
-          <h1>{viewPosition}</h1>
+          <h1>Postion: {viewPosition}</h1>
         </div>
         <div className="body">
-          <h3>{viewCompany}</h3>
-          <h3>{viewLocation}</h3>
-          <h3>{viewContract}</h3>
-          <h3>{viewSalary}</h3>
+          <p style={{ fontSize: "24px"}}>{viewCompany}</p>
+          <p style={{ marginBottom: "10px"}}>Location: {viewLocation}</p>
+          <p style={{borderTop: "1px solid #ccc"}}></p>
+          <p style={{marginTop: "10px",fontSize: "24px"}}>Job Description</p>
           <p>{viewDesc}</p>
-          <h4>{viewEmail}</h4>
+          <p>{viewContract}</p>
+          <p>Salary: ${viewSalary}</p>
+          <p>Contact: {viewEmail}</p>
         </div>
         <div>
           <button
@@ -51,9 +53,11 @@ const { t } = useTranslation();
           </button>
           <Link id="applyBtn" style={{width:"150px", height:"45px",
         display: "inline-block", textDecoration: "none", 
-        backgroundColor: "cornflowerblue", color: "white", 
+        border: "2px solid #8f8aff", color: "black", 
+        backgroundColor:"white",
+        fontWeight:"normal",
         borderRadius: "8px", textAlign: "center", 
-        lineHeight: "45px" }}  to="/JobApplication"> {t("ApplyText")} </Link>
+        lineHeight: "39px" }}  to="/JobApplication"> {t("ApplyText")} </Link>
         </div>
       </div>
     </div>
