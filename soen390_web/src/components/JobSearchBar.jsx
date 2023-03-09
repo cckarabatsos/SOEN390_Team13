@@ -36,7 +36,7 @@ function JobSearchBar({ setJobs }) {
           placeholder={t("SearchText")}
           value={text}
           onChange={handleTextChange}
-          
+          data-testid="search-input"
         />
         <Button
           className="button"

@@ -45,7 +45,7 @@ export default function JobSearch() {
 
   return (
     <div>
-      <div>
+      <div data-testid="job-posting">
         <div className="jobSearchingText">
         <p>{t("JobSearchingJourneyText")}</p>
         </div>
