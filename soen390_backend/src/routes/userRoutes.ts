@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import firebase from "firebase";
 import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 export interface IGetUserAuthInfoRequest extends Request {
@@ -16,8 +15,6 @@ import {
     getInvitationsOrContacts,
     getFilteredUsersController,
     generateAccessToken,
-    verifyJWT,
-    hasUser,
     getAccountFile,
     uploadAccountFile,
     hasFile,
@@ -89,17 +86,7 @@ user.get("/api/login", async (req: Request, res: Response) => {
     }
     return user;
 });
-user.post("/api/session", [verifyJWT], async (req: Request, res: Response) => {
-    try {
-        if (hasUser(req)) {
-            return res.status(200).json(req.user);
-        } else {
-            throw { msg: "no user" };
-        }
-    } catch (err: any) {
-        return res.status(400).json({ errType: err.name, errMsg: err.message });
-    }
-});
+
 user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -241,7 +228,6 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
     let senderEmail = req.query.senderEmail as string;
 
     let data = await sendInvite(receiverEmail, senderEmail);
-
     if (data[0] == 200) {
         res.sendStatus(200);
     } else {
@@ -429,26 +415,26 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
     }
 });
 //Route used to update all fields this is not to be used in final versions
-user.get("/updateFields", (_: Request, res: Response) => {
-    const db = firebase.firestore();
-    const batch = db.batch();
-    const usersRef = db.collection("users");
-    usersRef
-        .get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                batch.update(doc.ref, { isAdmin: false });
-            });
+// user.get("/updateFields", (_: Request, res: Response) => {
+//     const db = firebase.firestore();
+//     const batch = db.batch();
+//     const usersRef = db.collection("users");
+//     usersRef
+//         .get()
+//         .then((querySnapshot) => {
+//             querySnapshot.forEach((doc) => {
+//                 batch.update(doc.ref, { isAdmin: false });
+//             });
 
-            return batch.commit();
-        })
-        .then(() => {
-            res.status(200).send("isAdmin field added to all user documents");
-        })
-        .catch((error) => {
-            console.error("Error adding reporting_status field:", error);
-            res.status(500).send("Error adding reporting_status field");
-        });
-});
+//             return batch.commit();
+//         })
+//         .then(() => {
+//             res.status(200).send("isAdmin field added to all user documents");
+//         })
+//         .catch((error) => {
+//             console.error("Error adding reporting_status field:", error);
+//             res.status(500).send("Error adding reporting_status field");
+//         });
+// });
 //Exporting the user as a module
 module.exports = user;

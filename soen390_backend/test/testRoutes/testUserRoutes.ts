@@ -2,6 +2,7 @@ import * as mocha from "mocha";
 import request from "supertest";
 import { expect } from "chai";
 import app from "../../src/index";
+
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
@@ -60,6 +61,11 @@ describe("Test User Routes", function () {
                     "/user/api/login?email=LinkedOutInc@gmail.com1&password=pass123!"
                 )
                 .expect(200);
+        });
+    });
+    describe("Post user/api/session", function () {
+        it("responds with 401 when there is no session", async function () {
+            await request(url).post("/user/api/session").expect(401);
         });
     });
     describe("Post user/api/logout", function () {
@@ -208,11 +214,12 @@ describe("Test User Routes", function () {
         });
     });
 
-    describe("Get userser/api/sendInvite", async function () {
+    let response2: any;
+
+    describe("Get user/api/sendInvite", async function () {
         const randomEmail1 = makeid(10);
         const randomEmail2 = makeid(10);
-
-        const payload = {
+        let payload = {
             isCompany: false,
             currentCompany: "Concordia University",
             currentPosition: "Student",
@@ -226,8 +233,7 @@ describe("Test User Routes", function () {
             password: "123",
             name: "bog test",
         };
-
-        const payload2 = {
+        let payload2 = {
             isCompany: false,
             currentCompany: "Concordia University",
             currentPosition: "Student",
@@ -241,35 +247,62 @@ describe("Test User Routes", function () {
             password: "123",
             name: "bog test",
         };
-
-        it("responds with 404 if user already invited", async function () {
-            await request(url)
-                .get(
-                    `/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=bog5@test.com`
-                )
-                .expect(404);
-        });
         it("responds with 200 for 2 non friends user", async function () {
-            var user1: any = await request(url)
+            var response1 = await request(url)
                 .post(`/user/api/register`)
                 .send(payload)
                 .expect(200);
-            console.log(user1);
-            var user2: any = await request(url)
+            response2 = await request(url)
                 .post(`/user/api/register`)
                 .send(payload2)
                 .expect(200);
-            console.log(user2);
             await request(url)
                 .get(
                     `/user/api/sendInvite?receiverEmail=${randomEmail1}&senderEmail=${randomEmail2}`
                 )
                 .expect(200);
             await request(url)
-                .post(`/user/delete/${user1._body.registeredUser[1]}`)
+                .post(`/user/delete/${response1.body.registeredUser[1]}`)
                 .expect(200);
+        });
+    });
+
+    describe("Get user/api/follow", function () {
+        it("responds with 200 when you can follow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
             await request(url)
-                .post(`/user/delete/${user2._body.registeredUser[1]}`)
+                .get(
+                    `/user/api/follow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when you already follow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/follow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(404);
+        });
+    });
+    describe("Get user/api/unFollow", function () {
+        it("responds with 200 when you can unFollow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when you already follow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(404);
+            await request(url)
+                .post(`/user/delete/${response2.body.registeredUser[1]}`)
                 .expect(200);
         });
     });

@@ -22,7 +22,7 @@ import {
     user_schema,
 } from "../models/User";
 import { hash } from "bcrypt";
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
 const saltRounds = 4;
@@ -273,23 +273,7 @@ export async function generateAccessToken(username: any) {
     //console.log(process.env.TOKEN_SECRET!);
     return sign(username, process.env.TOKEN_SECRET!, { expiresIn: "28800000" });
 }
-export function verifyJWT(req: Request, res: Response, next: NextFunction) {
-    console.log(req.cookies);
-    const { FrontendUser } = req.cookies;
-    try {
-        const { iat, exp, ...payload } = jwt.verify(
-            FrontendUser,
-            process.env.TOKEN_SECRET!
-        ) as User;
-        req.cookies.user = payload; //Maybe not good will need to recheck
-        next();
-    } catch (err: any) {
-        res.status(401).json("Invalid Session");
-    }
-}
-export function hasUser(request: Request): request is Request & { user: any } {
-    return "user" in request;
-}
+
 export function hasFile(request: Request): request is Request & { file: any } {
     return "file" in request;
 }
