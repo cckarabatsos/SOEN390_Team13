@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import firebase from "firebase";
 import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
 export interface IGetUserAuthInfoRequest extends Request {
@@ -384,7 +385,7 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     }
 });
 //Exporting the user as a module
-module.exports = user;
+
 //****************End User invitation route section ***********88
 
 user.get("/api/search", async (req: Request, res: Response) => {
@@ -435,3 +436,27 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+//Route used to update all fields this is not to be used in final versions
+user.get("/updateFields", (_: Request, res: Response) => {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const usersRef = db.collection("users");
+    usersRef
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                batch.update(doc.ref, { isAdmin: false });
+            });
+
+            return batch.commit();
+        })
+        .then(() => {
+            res.status(200).send("isAdmin field added to all user documents");
+        })
+        .catch((error) => {
+            console.error("Error adding reporting_status field:", error);
+            res.status(500).send("Error adding reporting_status field");
+        });
+});
+//Exporting the user as a module
+module.exports = user;

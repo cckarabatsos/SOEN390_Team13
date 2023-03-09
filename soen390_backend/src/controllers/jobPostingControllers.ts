@@ -67,9 +67,9 @@ export async function getFilteredJobPostings(filter: Filter) {
     if (err) {
         return [400, error_data];
     } else {
-        let products = await filterJobPostings(strippedJobFilter);
+        let jobPostings = await filterJobPostings(strippedJobFilter);
         // parse_links(products);
-        return [200, products];
+        return [200, jobPostings];
     }
 }
 function validateFilterData(filter: Filter) {

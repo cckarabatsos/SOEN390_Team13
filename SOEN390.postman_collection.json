@@ -3,7 +3,7 @@
 		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
 		"name": "SOEN390",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19175436"
+		"_exporter_id": "25472351"
 	},
 	"item": [
 		{
@@ -125,7 +125,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/search?name=&email=test@test.com&limit=10&skip=1",
+							"raw": "http://localhost:7000/user/api/search?name=&email=&limit=10&skip=3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,7 +143,7 @@
 								},
 								{
 									"key": "email",
-									"value": "test@test.com"
+									"value": ""
 								},
 								{
 									"key": "limit",
@@ -151,7 +151,7 @@
 								},
 								{
 									"key": "skip",
-									"value": "1"
+									"value": "3"
 								}
 							]
 						}
@@ -318,6 +318,26 @@
 					"response": []
 				},
 				{
+					"name": "UpdateFields",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/updateFields",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"updateFields"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Remove Account File",
 					"request": {
 						"method": "POST",
@@ -357,7 +377,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"worldwide\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"worldwide\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"worldwide\",\r\n    \"isCompany\": true\r\n}",
+							"raw": "{\r\n    \"name\": \"worldwide\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"worldwide2\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"worldwide\",\r\n    \"isCompany\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -518,7 +538,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/jobposting/filter/products?category&skip=0&limit=10",
+							"raw": "http://localhost:7000/jobposting/filter/products?location=mtl&company&position&type=internship&skip=0&limit=10&remote=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -531,8 +551,20 @@
 							],
 							"query": [
 								{
-									"key": "category",
+									"key": "location",
+									"value": "mtl"
+								},
+								{
+									"key": "company",
 									"value": null
+								},
+								{
+									"key": "position",
+									"value": null
+								},
+								{
+									"key": "type",
+									"value": "internship"
 								},
 								{
 									"key": "skip",
@@ -541,6 +573,10 @@
 								{
 									"key": "limit",
 									"value": "10"
+								},
+								{
+									"key": "remote",
+									"value": "true"
 								}
 							]
 						}
@@ -707,7 +743,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "5"
 								}
 							]
 						}
@@ -774,7 +810,7 @@
 							"variable": [
 								{
 									"key": "docID",
-									"value": "5"
+									"value": "KeUBpyfu3FBFZRwmGdJ6"
 								}
 							]
 						}
@@ -881,14 +917,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/skill/get/:userID",
+							"raw": "http://localhost:7000/experience/get/:userID",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "7000",
 							"path": [
-								"skill",
+								"experience",
 								"get",
 								":userID"
 							],
@@ -896,6 +932,293 @@
 								{
 									"key": "userID",
 									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "Post Application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dzm.fiodarau@gmail.com\",\r\n    \"firstName\": \"Dzmitry\",\r\n    \"lastName\": \"Fiodarau\",\r\n    \"phone\": \"514-123-1234\",\r\n    \"address\": \"123, Nowhere St.\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Montreal\",\r\n    \"area\": \"H8J 4H1\",\r\n    \"province\": \"QC\",\r\n    \"school\": \"Concordia\",\r\n    \"schoolCountry\": \"Canada\",\r\n    \"schoolDegree\": \"Bachelor of Engineering\",\r\n    \"schoolEnd\": \"01-05-2024\",\r\n    \"schoolMajor\": \"Software Engineering\",\r\n    \"timestamp\": \"05-03-2023\",\r\n    \"postingID\": \"B9edMZe4tjUEAFcimWUu\",\r\n    \"attachResume\": false,\r\n    \"attachCoverLetter\": true,\r\n    \"experience\": [\"Ville de Montreal,Marketing Intern,May 2021,Sept 2021\",\"Nventive,Developer Intern,May 2022,Dec 2022\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/application/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/remove/:userID?postingID=B9edMZe4tjUEAFcimWUu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"remove",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "postingID",
+									"value": "B9edMZe4tjUEAFcimWUu"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Applications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/getApplications/:userID?postingID=B9edMZe4tjUEAFcimWUu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"getApplications",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "postingID",
+									"value": "B9edMZe4tjUEAFcimWUu"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "i2iLvPkBHmkV43PufHVp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Last Application",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/getLastApplication/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"getLastApplication",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Application History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/getApplicationHistory/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"getApplicationHistory",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "batchReports",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/reports/batchReports?userID=lZioJzyfCxPy28CTyT9E",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								"batchReports"
+							],
+							"query": [
+								{
+									"key": "userID",
+									"value": "lZioJzyfCxPy28CTyT9E"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NewReports",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportedID\": \"3Ri6yXlYSo7rCQk4t4ks\",\r\n    \"reason\": \"It's Inappropriate\",\r\n    \"reporterID\": \"i2iLvPkBHmkV43PufHVp\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/reports/newReport",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								"newReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verdictReport",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportID\":\"EKbDtTB9c4uA6GTHXxxp\",\r\n    \"reportedID\": \"3Ri6yXlYSo7rCQk4t4ks\",\r\n    \"banned\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/reports/verdictReport",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								"verdictReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteReport",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/reports/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
 								}
 							]
 						}
