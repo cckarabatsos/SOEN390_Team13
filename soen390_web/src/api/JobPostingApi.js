@@ -23,7 +23,7 @@ export async function JobSearch(category, text) {
         console.error("error", error);
         return false;
       } 
-      case 'company': 
+      case 'company':
         try {
           const response = await axios.get(
             api.BACKEND_API + "/jobposting/filter/products",

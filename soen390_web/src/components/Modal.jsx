@@ -12,7 +12,6 @@ function Modal({
   viewContract,
   viewEmail,
   viewCompany,
-  
 }) 
 {
 const { t } = useTranslation();
@@ -39,7 +38,7 @@ const { t } = useTranslation();
           <p style={{marginTop: "10px",fontSize: "24px"}}>Job Description</p>
           <p>{viewDesc}</p>
           <p>{viewContract}</p>
-          <p>Salary: ${viewSalary}</p>
+          <p>Salary: ${viewSalary}/hr</p>
           <p>Contact: {viewEmail}</p>
         </div>
         <div>

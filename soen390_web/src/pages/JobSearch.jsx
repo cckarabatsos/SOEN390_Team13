@@ -31,7 +31,7 @@ export default function JobSearch() {
           jobs[i].company,
           jobs[i].contract,
           i,
-          20,
+          20,  //jobs[i].salary
           jobs[i].description,
           jobs[i].email
         )

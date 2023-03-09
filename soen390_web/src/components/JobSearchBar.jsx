@@ -56,7 +56,7 @@ function JobSearchBar({ setJobs }) {
         </Button>
         
         <select
-          category="category"
+          name="category"
           id="category"
           className="buttonfilter"
           style={{
@@ -75,8 +75,8 @@ function JobSearchBar({ setJobs }) {
           <option value="location">{t("LocationText")}</option>
           <option value="company">{t("CompanyText")}</option>
           <option value="position">{t("PositionText")}</option>
-          <option value="type">{t("TypeText")}</option>
-          <option valye="remote">{t("RemoteText")}</option>
+          {/* <option value="type">{t("TypeText")}</option> */}
+          <option value="remote">{t("RemoteText")}</option>
         </select>
       </div>
     </div>
