@@ -31,6 +31,14 @@ describe("Test User Routes", function () {
     after(function () {
         server.close();
     });
+    describe("Post user/id/:userID", function () {
+        it("responds with 200 if the userID is valid", async function () {
+            await request(url).get(`/user/id/${id}`).expect(200);
+        });
+        it("responds with 404 if the userID is invalid", async function () {
+            await request(url).get(`/user/id/L`).expect(404);
+        });
+    });
     describe("Get user/api/login", function () {
         it("responds with 404 when user not found", async function () {
             await request(url)
@@ -41,7 +49,7 @@ describe("Test User Routes", function () {
         it("responds with a 401 when invalid email or password is provided", async function () {
             await request(url)
                 .get(
-                    "/user/api/login?email=LinkedOutInc@gmail.com&password=pass123"
+                    "/user/api/login?email=LinkedOutInc@gmail.com1&password=pass123"
                 )
                 .expect(401);
         });
@@ -66,46 +74,56 @@ describe("Test User Routes", function () {
         });
     });
     describe("Get user/api/register", function () {
-        it("responds with 404 when user submit without filling out the name field", async function () {
+        it("responds with 400 when user submit without filling out the name field", async function () {
             await request(url)
-                .get("/user/api/register")
+                .post("/user/api/register")
                 .send({
                     email: "test@example.com",
                     password: "password",
                     name: "",
                 })
-                .expect(404);
+                .expect(400);
         });
 
-        it("responds with 404 when user submit without filling out the password field", async function () {
+        it("responds with 401 when user submit without filling out the password field", async function () {
             await request(url)
-                .get("/user/api/register")
+                .post("/user/api/register")
                 .send({
                     email: "test@example.com",
                     password: "",
                     name: "Matthew aime les test",
                 })
-                .expect(404);
+                .expect(401);
         });
-        it("responds with 404 when user submit without filling out the email field", async function () {
+        it("responds with 400 when user submit without filling out the email field", async function () {
             await request(url)
-                .get("/user/api/register")
+                .post("/user/api/register")
                 .send({
                     email: "",
                     password: "Test123!",
                     name: "Matthew aime les test",
                 })
-                .expect(404);
+                .expect(400);
         });
 
         it("responds with 401 when user submit with an already registered email", async function () {
+            const payload = {
+                name: "Joe",
+                password: "mama",
+                email: "LinkedOutInc@gmail.com1",
+                privateKey: "",
+                publicKey: "",
+                picture: "",
+                resume: "",
+                coverLetter: "",
+                bio: "Admin account",
+                currentPosition: "Admin",
+                currentCompany: "LinkedOutInc",
+                isCompany: false,
+            };
             await request(url)
-                .get("/user/api/register")
-                .send({
-                    email: "test@test.com",
-                    password: "Test123!",
-                    name: "yoy yoy",
-                })
+                .post("/user/api/register")
+                .send(payload)
                 .expect(401);
         });
     });
@@ -130,7 +148,7 @@ describe("Test User Routes", function () {
                 .set("Accept", "application/json")
                 .expect(404);
         });
-        const notRecruiterEmail = "poda4@gmail.com";
+        const notRecruiterEmail = "dzm.fiodarau@gmail.com";
         it("responds with 400 if the user is not a recruiter", async function () {
             await request(url)
                 .post(`/user/api/posting/${notRecruiterEmail}`)
@@ -139,8 +157,21 @@ describe("Test User Routes", function () {
                 .send(payload)
                 .expect(400);
         });
-        const goodEmail = "LinkedOutInc@gmail.com";
+
         it("responds with 200 if the user is a recruiter", async function () {
+            const goodEmail = "LinkedOutInc@gmail.com1";
+            const payload = {
+                location: "MTL",
+                position: "intern",
+                salary: "0k/yr",
+                company: "LinkedOutInc",
+                description:
+                    "Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing",
+                remote: true,
+                contract: false,
+                duration: "4 years",
+                type: "internship",
+            };
             await request(url)
                 .post(`/user/api/posting/${goodEmail}`)
                 .set("Content-Type", "application/json")
@@ -223,10 +254,12 @@ describe("Test User Routes", function () {
                 .post(`/user/api/register`)
                 .send(payload)
                 .expect(200);
+            console.log(user1);
             var user2: any = await request(url)
                 .post(`/user/api/register`)
                 .send(payload2)
                 .expect(200);
+            console.log(user2);
             await request(url)
                 .get(
                     `/user/api/sendInvite?receiverEmail=${randomEmail1}&senderEmail=${randomEmail2}`

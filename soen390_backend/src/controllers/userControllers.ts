@@ -49,15 +49,18 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
+    if (user.name === "" || user.email === "") {
+        throw new Error("User name cannot be empty");
+    }
     let casted_user: User;
     try {
         casted_user = await user_schema.cast(user, {
             stripUnknown: false,
         });
-        console.log(casted_user);
+        // console.log(casted_user);
     } catch (error) {
-        // The object is invalid
         console.error(error);
+        return [404, { msg: "Cast error" }];
     }
     casted_user.password = await hash(casted_user.password, saltRounds);
     user = await new Promise((resolve, _) => {
@@ -266,7 +269,7 @@ export async function getFilteredCompaniesController(filter: UserFilter) {
     }
 }
 export async function generateAccessToken(username: any) {
-    console.log(await process.env.TOKEN_SECRET);
+    // console.log(await process.env.TOKEN_SECRET);
     //console.log(process.env.TOKEN_SECRET!);
     return sign(username, process.env.TOKEN_SECRET!, { expiresIn: "28800000" });
 }
