@@ -45,7 +45,11 @@ function JobSearchBar({ setJobs }) {
           style={{
             borderRadius: 27,
             display: "inline-block", width: "125px", 
-            backgroundColor: "#a640f4b9",
+            border: "2px solid #8f8aff",
+            backgroundColor: "white",
+            textTransform: "none",
+            fontSize: "15px",
+            height: "43px",
           }}
         >
           {t("SearchText")}
@@ -58,9 +62,11 @@ function JobSearchBar({ setJobs }) {
           style={{
             borderRadius: 27,
             display: "inline-block", 
-            width: "160px", 
+            width: "125px", 
+            height: "43px",
             marginRight: "140px",
-            backgroundColor: "#a640f4b9",
+            border: "2px solid #8f8aff",
+            fontSize: "15px",
           }}
           value={category}
           onChange={handleChange}
