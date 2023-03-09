@@ -27,6 +27,7 @@ describe('JobSearchBar', () => {
   fireEvent.click(searchButton);
 });
 
+// checks if it searches for jobs when user clicks the search button
 it('should search for jobs when search button is clicked', async () => {
   const setJobs = jest.fn();
   const { getByText, getByPlaceholderText } = render(<JobSearchBar setJobs={setJobs} />);
@@ -37,6 +38,7 @@ it('should search for jobs when search button is clicked', async () => {
   await waitFor(() => expect(setJobs).toHaveBeenCalled());
 });
 
+//checks if category is updated when user changes it
 it("updates category state when select value changes", () => {
   const setJobs = jest.fn();
   const { getByLabelText } = render(<JobSearchBar setJobs={setJobs} />);
