@@ -6,7 +6,7 @@ export async function JobSearch(category, text) {
   switch(category){
     
     case 'location': 
-      try {
+      try { 
         const response = await axios.get(
           api.BACKEND_API + "/jobposting/filter/products",
           {
@@ -24,7 +24,7 @@ export async function JobSearch(category, text) {
         return false;
       } 
       case 'company':
-        try {
+        try { 
           const response = await axios.get(
             api.BACKEND_API + "/jobposting/filter/products",
             {
@@ -95,5 +95,9 @@ export async function JobSearch(category, text) {
                 console.error("error", error);
                 return false;
               } 
-  } 
-}
+        
+              default:
+                console.error("Invalid category specified");
+                return false;
+          } 
+        }

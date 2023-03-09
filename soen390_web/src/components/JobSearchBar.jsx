@@ -75,7 +75,7 @@ function JobSearchBar({ setJobs }) {
           <option value="location">{t("LocationText")}</option>
           <option value="company">{t("CompanyText")}</option>
           <option value="position">{t("PositionText")}</option>
-          {/* <option value="type">{t("TypeText")}</option> */}
+          <option value="type">{t("TypeText")}</option> 
           <option value="remote">{t("RemoteText")}</option>
         </select>
       </div>
