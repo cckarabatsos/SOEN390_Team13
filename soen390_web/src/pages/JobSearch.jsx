@@ -46,9 +46,13 @@ export default function JobSearch() {
   return (
     <div>
       <div>
-        <h2>{t("JobSearchingJourneyText")}</h2>
+        <div className="jobSearchingText">
+        <p>{t("JobSearchingJourneyText")}</p>
+        </div>
+        <div className="desiredJobText">
+        <p>{t("DesiredJobText")}</p>
+        </div>
         <JobSearchBar setJobs={setJobs} />
-        <h1>{t("DesiredJobText")}</h1>
         {modalOpen && (
           <Modal
             setOpenModal={setModalOpen}
