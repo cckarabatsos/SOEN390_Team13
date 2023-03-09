@@ -15,6 +15,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { GetContacts } from "../api/userContactsApi";
 import ContactsComponent from "./ContactComponent";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ContactModal(props: {
   handleCloseModal: (() => void) | undefined;
@@ -32,7 +33,6 @@ const [currentEmail, setCurrentEmail] = useState("");
 
 const getContactsList = async (email:string) => {
   var responce = await GetContacts(email);
-  console.log(responce);
   setUsers(responce);
 };
 
@@ -70,16 +70,18 @@ return (
             onPress={props.handleCloseModal}
             style={styles.closeButtonContainer}
           >
-            <Text style={styles.closeButtonText}>X</Text>
+            <Ionicons name="close-outline" size={25}></Ionicons>
           </TouchableOpacity>
           <Text style={styles.contactsTitle}>Contacts</Text>
           <View style={styles.contactsContainer}>
+          <View style={styles.contactsListWrapper}>
             <FlatList
               data={users}
               renderItem={renderContacts}
               //keyExtractor={(item) => item.id.toString()}
               contentContainerStyle={styles.contactsList}
             />
+            </View>
           </View>
         </View>
       </View>
@@ -95,16 +97,17 @@ const styles = StyleSheet.create({
         justifyContent: "center",
       },
       modalInnerContainer: {
-        backgroundColor: "white",
+        backgroundColor: "#f1f1f1",
         width: "80%",
         height: "80%",
         borderRadius: 10,
         alignItems: "center",
         justifyContent: "center",
+        paddingBottom:20
       },
       closeButtonContainer: {
         backgroundColor: "#f44336",
-        padding: 10,
+        padding: 5,
         borderRadius: 20,
         position: "absolute",
         top: 20,
@@ -119,13 +122,26 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 20,
+        padding: 20,
+        alignItems: "flex-start"
       },
       contactsContainer: {
         flex: 1,
         width: "100%",
       },
+      contactsListWrapper: {
+        paddingVertical: 40,
+        marginHorizontal: 10,
+        borderRadius: 20,
+        backgroundColor: "#fff",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
+      },
       contactsList: {
-        paddingHorizontal: 20,
+        
       },
       contactCard: {
         flexDirection: "row",
