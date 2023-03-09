@@ -25,6 +25,7 @@ import { GetUserInfo } from '../api/GetUsersAPI';
 import { GetUserExperience } from '../api/UserExperienceAPI';
 import { GetUserSkills } from '../api/UserSkillsAPI';
 import ContactModal from '../Components/contacts.Component'
+import ApplicationModal from '../Components/application.Component';
 
 interface User {
   id: number;
@@ -177,6 +178,7 @@ const UserProfile = ({route}:{route:any}) => {
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleApplication, setModalVisibleApplication] = useState(false);
 
   let name = route.params.username
   let password = route.params.password
@@ -323,8 +325,12 @@ const UserProfile = ({route}:{route:any}) => {
   const openContacts = ()=>{
     setModalVisible(true);
   }
+  const openApplications = ()=>{
+    setModalVisibleApplication(true);
+  }
   const handleCloseModal = () => {
     setModalVisible(false);
+    setModalVisibleApplication(false);
   }; 
   
   return (
@@ -383,6 +389,23 @@ const UserProfile = ({route}:{route:any}) => {
                                       screen={2}
                                       email={user.email}
                             ></ContactModal>
+                            </View>
+                            <View>
+                            <TouchableOpacity
+                              activeOpacity={0.8}
+                              //onPress={}
+                              style={styles.contactsButtons}>
+                                <Ionicons size={35} name="file-tray-full-outline" style={styles.icon} color={"rgb(145, 140, 224)"} onPress={() => openApplications()}/>
+                              <Text style={styles.headerButtonText}>
+                                Applications
+                              </Text>
+                            </TouchableOpacity>
+                            <ApplicationModal
+                                      isVisible={modalVisibleApplication}
+                                      handleCloseModal={handleCloseModal}
+                                      screen={3}
+                                      userID={user.userID}
+                            ></ApplicationModal>
                             </View>
                         </View>
                     </View>

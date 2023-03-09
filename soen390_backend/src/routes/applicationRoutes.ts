@@ -122,7 +122,7 @@ application.get("/getApplicationHistory/:userID", async (req: Request, res: Resp
 });
 application.post("/remove/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
-    let postingID: string = req.query.postingID as string;
+    let postingID = req.query.postingID as string
     try {
         const application: Application = await deleteApplication(userID, postingID);
         const status: number = application[0];
