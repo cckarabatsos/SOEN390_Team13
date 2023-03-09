@@ -51,7 +51,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           return res.data;
         });
       console.log(response);
-      if (response == 200) {
+      if (response === 200) {
         return true;
       } else {
         return false;
@@ -99,7 +99,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               borderRadius: "none",
               backgroundColor: "#D9D9D9",
               color: "#9606D9",
-          
             }}
           >
             <div>&nbsp;{t("CoverLetterText")}</div>

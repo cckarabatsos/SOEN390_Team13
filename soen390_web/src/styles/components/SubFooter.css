@@ -2,7 +2,7 @@
     display: inline-block;
     /* flex-grow: 1; */
     cursor: pointer;
-    height: 50px;
+    height: 7vh;
     max-width: 100%;
     margin-left: -50%;
 }
@@ -30,6 +30,10 @@
 
 }
 
-.First{
-
+.footer{
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 50vh;
+    background-color: wh#010101;
+    border-radius: 229px;
 }

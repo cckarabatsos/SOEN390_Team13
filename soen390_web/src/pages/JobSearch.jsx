@@ -1,16 +1,11 @@
-import React, { useEffect } from "react";
-import Footer from "../components/Footer";
-import SubFooter from "../components/SubFooter";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import JobPostingComponent from "../components/JobPostingComponent";
 import JobSearchBar from "../components/JobSearchBar";
-import JobsOverview from "../models/JobsOverview.ts";
 import Modal from "../components/Modal";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-
+import JobsOverview from "../models/JobsOverview.ts";
 
 export default function JobSearch() {
- 
   const [modalOpen, setModalOpen] = useState(false);
   const [jobPosterID, setjobPosterID] = useState(false);
   const [position, setPosition] = useState(false);
@@ -24,44 +19,46 @@ export default function JobSearch() {
   const { t } = useTranslation();
   const [jobDisplay, setJobDisplay] = useState([]);
 
-
-useEffect(() => {
+  useEffect(() => {
     console.log(jobs);
-    var jobArray=[]
-    
+    var jobArray = [];
 
-    for( var i =0; i<jobs.length;i++){
-        jobArray.push(new JobsOverview(jobs[i].position,jobs[i].location,jobs[i].company,jobs[i].contract,i,20,jobs[i].description,jobs[i].email))
-
-
+    for (var i = 0; i < jobs.length; i++) {
+      jobArray.push(
+        new JobsOverview(
+          jobs[i].position,
+          jobs[i].location,
+          jobs[i].company,
+          jobs[i].contract,
+          i,
+          20,
+          jobs[i].description,
+          jobs[i].email
+        )
+      );
     }
 
-    console.log(jobArray)
+    console.log(jobArray);
 
-    setJobDisplay(jobArray)
-    
-    
+    setJobDisplay(jobArray);
   }, [jobs]);
 
   return (
     <div>
       <div>
-        <h2>
-        {t("JobSearchingJourneyText")}
-        </h2>
-        <JobSearchBar 
-        setJobs={setJobs}/>
+        <h2>{t("JobSearchingJourneyText")}</h2>
+        <JobSearchBar setJobs={setJobs} />
         <h1>{t("DesiredJobText")}</h1>
         {modalOpen && (
           <Modal
             setOpenModal={setModalOpen}
-            viewDesc={jobDisplay[jobPosterID ].description}
+            viewDesc={jobDisplay[jobPosterID].description}
             viewPosition={jobDisplay[jobPosterID].position}
             viewLocation={jobDisplay[jobPosterID].location}
             viewCompany={jobDisplay[jobPosterID].company}
             viewEmail={jobDisplay[jobPosterID].email}
             viewContract={jobDisplay[jobPosterID].contract}
-            viewSalary={jobDisplay[jobPosterID ].salary}
+            viewSalary={jobDisplay[jobPosterID].salary}
           />
         )}
 
@@ -78,9 +75,6 @@ useEffect(() => {
           ></JobPostingComponent>
         ))}
       </div>
-
-      <SubFooter />
-      <Footer />
     </div>
   );
 }

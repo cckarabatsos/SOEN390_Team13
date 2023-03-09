@@ -37,7 +37,12 @@ export const user_schema = yup
                     documents: yup.array(yup.string()).default([]),
                     postingids: yup.array(yup.string()).default([]),
                 })
-                .required("Field Is required when its a recruiter"),
+                .required("Field is required when its a recruiter"),
+            otherwise: yup
+                .object({
+                    applied: yup.array(yup.string()).default([])
+                })
+                .required("Field is required when its a normal user")
         }),
         employees: yup
             .array(yup.string())
