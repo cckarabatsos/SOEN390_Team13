@@ -3,7 +3,7 @@
 		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
 		"name": "SOEN390",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19175436"
+		"_exporter_id": "25472351"
 	},
 	"item": [
 		{
@@ -1177,7 +1177,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"reportID\":\"tfveQRQ6aPo5AyLGex3o\",\r\n    \"reportedID\": \"3Ri6yXlYSo7rCQk4t4ks\",\r\n    \"banned\": false\r\n}",
+							"raw": "{\r\n    \"reportID\":\"EKbDtTB9c4uA6GTHXxxp\",\r\n    \"reportedID\": \"3Ri6yXlYSo7rCQk4t4ks\",\r\n    \"banned\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1194,6 +1194,32 @@
 							"path": [
 								"reports",
 								"verdictReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteReport",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/reports/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
 							]
 						}
 					},
