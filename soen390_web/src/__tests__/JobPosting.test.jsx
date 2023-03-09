@@ -52,7 +52,7 @@ describe("JobPostingComponent", () => {
       />
     );
 
-    userEvent.click(screen.getByRole("button", { name: "More Info" }));
+    userEvent.click(screen.getByRole("button", { name: "MoreInfoText" }));
 
     expect(setJobTest).toHaveBeenCalledTimes(1);
     expect(setJobTest).toHaveBeenCalledWith(job.jobPosterID);
