@@ -41,11 +41,20 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        let pic = user.picture
-            ? user.picture
-            : await ref
-                  .child("Profile Pictures/blank_profile_pic.png")
-                  .getDownloadURL();
+        let pic;
+        if (user.picture) {
+            pic = user.picture;
+        } else {
+            if (user.isCompany) {
+                pic = await ref
+                    .child("Profile Pictures/blank_company_pic.jpg")
+                    .getDownloadURL();
+            } else {
+                pic = await ref
+                    .child("Profile Pictures/blank_profile_pic.png")
+                    .getDownloadURL();
+            }
+        }
         user.picture = pic;
         var document = await db.collection("users").add({
             ...user,
@@ -79,7 +88,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                            " job postings successfully deleted."
+                        " job postings successfully deleted."
                     );
                 }
             }
