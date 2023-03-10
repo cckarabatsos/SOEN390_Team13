@@ -1,7 +1,7 @@
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-import { Application, /*application_schema*/ } from "../models/Application";
+import { Application, application_schema } from "../models/Application";
 import { jobposting_schema } from "../models/jobPosting";
 import { user_schema } from "../models/User";
 import { findJobpostingWithID } from "./jobPostingServices";
@@ -87,14 +87,14 @@ export const retrieveLastApplication = async (userID: string) => {
             return {};
         } else {
             let applicationID = casted_user.jobpostings.applied[nbrApplications - 1].split(",")[0];
-            let application = findApplicationWithID(applicationID);
+            let application = await findApplicationWithID(applicationID);
             if (application === undefined) {
                 console.log("Application not found.");
                 return null;
             }
-            // Need to see why cast_application gives error
-            // let casted_application = application_schema.cast(application);
-            return application;
+
+            let casted_application = application_schema.cast(application);
+            return casted_application;
         }
     } catch (error) {
         console.log(error);
@@ -156,7 +156,9 @@ export const retrieveApplicationHistory = async (userID: string) => {
         casted_user.jobpostings.applied.forEach((str: string) => {
             jobPostingIDs.push(str.split(",")[1]);
         });
-
+        if (jobPostingIDs.length === 0) {
+            return [];
+        }
         jobpostingsRef = jobpostingsRef
             .where("postingID", "in", jobPostingIDs);
 
