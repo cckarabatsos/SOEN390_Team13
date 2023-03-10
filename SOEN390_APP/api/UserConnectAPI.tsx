@@ -26,12 +26,10 @@ export async function followCompanyAPI(emailReceiver: String, emailSender: Strin
   try {
     const response = await axios.get(api.BACKEND_API + "/user/api/follow", {
       params: {
-        receiverEmail: emailReceiver,
-        senderEmail: emailSender
+        receiverID: emailReceiver,
+        senderID: emailSender
       },
     });
-
-
     if (response.status == 200) {
       return true;
     } else {
