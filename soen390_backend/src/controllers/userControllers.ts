@@ -135,10 +135,16 @@ export async function editAccount(
     id: string
 ) {
     try {
-        if (currProfile.email != newProfile.email) {
-            throw Error;
+        if (currProfile.email !== newProfile.email) {
+            throw new Error("Email cannot be changed.");
         }
-        newProfile.password = await hash(newProfile.password, saltRounds);
+        if (!newProfile.password) {
+            newProfile.password = currProfile.password;
+        } else if (newProfile.password === currProfile.password) {
+            newProfile.password = currProfile.password;
+        } else {
+            newProfile.password = await hash(newProfile.password, saltRounds);
+        }
         console.log(newProfile);
         currProfile = newProfile;
         updateUser(currProfile, id);
