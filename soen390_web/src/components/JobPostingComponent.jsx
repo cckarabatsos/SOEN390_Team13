@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/components/JobPostingComponent.css";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 function JobPostingComponent(props) {
@@ -13,6 +12,7 @@ function JobPostingComponent(props) {
   const setJob = props.setJob;
   const { t } = useTranslation();
 
+  // display job postings, position, company, location, contract
   return (
     <div className="container">
       <div>
