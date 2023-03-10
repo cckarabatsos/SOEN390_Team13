@@ -330,7 +330,7 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
             } else {
                 console.log("Proceed check 1");
             }
-            if (receiverUser.contacts.includes(senderID)) {
+            if (receiverUser.followers.includes(senderID)) {
                 throw new Error("Already following");
             } else {
                 console.log("Proceed check 2 ");
