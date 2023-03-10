@@ -210,8 +210,13 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
                 newProfile,
                 ID
             ).then();
-            const { password, ...newUser } = await newSettings[1];
-            res.status(200).json(newUser);
+            const [statusCode, response] = newSettings;
+            if (statusCode === 200) {
+                const { password, ...newUser } = await response;
+                res.status(200).json(newUser);
+            } else {
+                res.status(statusCode).json(response);
+            }
         }
     } catch (err: any) {
         res.status(400);

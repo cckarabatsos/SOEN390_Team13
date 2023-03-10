@@ -130,15 +130,16 @@ describe("Test User Routes", function () {
     });
     describe("Post user/api/posting/:email", async function () {
         const payload = {
-            email: "LinkedOutInc@gmail.com",
             location: "MTL",
-            position: "CEO",
-            salary: "200k/yr",
+            position: "intern",
+            salary: "0k/yr",
             company: "LinkedOutInc",
-            contract: "4 years",
             description:
                 "Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing",
-            category: "Big boss",
+            remote: true,
+            contract: false,
+            duration: "4 years",
+            type: "internship",
         };
         const badEmail = "lamoutre24@gmail.123124141";
         it("responds with 404 if the email does not exist", async function () {
@@ -150,7 +151,7 @@ describe("Test User Routes", function () {
                 .expect(404);
         });
         const notRecruiterEmail = "dzm.fiodarau@gmail.com";
-        it("responds with 400 if the user is not a recruiter", async function () {
+        it("responds with 400 if the user is not a company", async function () {
             await request(url)
                 .post(`/user/api/posting/${notRecruiterEmail}`)
                 .set("Content-Type", "application/json")
@@ -159,7 +160,7 @@ describe("Test User Routes", function () {
                 .expect(400);
         });
 
-        it("responds with 200 if the user is a recruiter", async function () {
+        it("responds with 200 if the user is a company", async function () {
             const goodEmail = "LinkedOutInc@gmail.com1";
             const payload = {
                 location: "MTL",
@@ -258,6 +259,55 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
     });
+    let newPayload = {
+        isCompany: false,
+        currentCompany: "Concordia University",
+        currentPosition: "Student",
+        bio: "I am Liam and I want to be an engineer.",
+        coverLetter: "",
+        resume: "",
+        picture: "",
+        publicKey: "",
+        privateKey: "",
+        email: randomEmail1,
+        password: "123",
+        name: "Edit test :)",
+    };
+    let badPayload = {
+        isCompany: false,
+        currentCompany: "Concordia University",
+        currentPosition: "Student",
+        bio: "I am Liam and I want to be an engineer.",
+        coverLetter: "",
+        resume: "",
+        picture: "",
+        publicKey: "",
+        privateKey: "",
+        email: randomEmail1 + 123,
+        password: "123",
+        name: "Edit test :)",
+    };
+
+    describe("Get user/edit/:email", function () {
+        it("responds with 200 when you can accept an invite", async function () {
+            await request(url)
+                .post(`/user/edit/${randomEmail1}`)
+                .send(newPayload)
+                .expect(200);
+        });
+        it("responds with 404 when you cannot find the user", async function () {
+            await request(url)
+                .post(`/user/edit/${randomEmail1}1`)
+                .send(newPayload)
+                .expect(404);
+        });
+        it("responds with 400 when there is a field error", async function () {
+            await request(url)
+                .post(`/user/edit/${randomEmail1}`)
+                .send(badPayload)
+                .expect(400);
+        });
+    });
     describe("Get user/api/manageInvite", function () {
         it("responds with 200 when you can accept an invite", async function () {
             await request(url)
@@ -272,7 +322,6 @@ describe("Test User Routes", function () {
                     `/user/api/manageInvite?invitedEmail=${randomEmail1}&senderEmail=${randomEmail2}&isAccept=true`
                 )
                 .expect(404);
-            console.log(response1.body);
         });
     });
 
