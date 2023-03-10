@@ -44,13 +44,17 @@ const { t } = useTranslation();
         <div>
           <button
             onClick={() => {
-              setOpenModal(false);
+              
+              // state of modal set to closed when cancel button is clicked
+              setOpenModal(false); 
             }}
             id="cancelBtn"
           >
-            {t("CancelText")}
+            {t("CancelText")} 
           </button>
-          <Link id="applyBtn" style={{width:"150px", height:"45px",
+          
+          <Link // Link component for the apply button
+          id="applyBtn" style={{width:"150px", height:"45px",
         display: "inline-block", textDecoration: "none", 
         border: "2px solid #8f8aff", color: "black", 
         backgroundColor:"white",
