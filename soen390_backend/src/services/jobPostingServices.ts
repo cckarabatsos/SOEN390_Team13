@@ -15,7 +15,7 @@ export const findJobpostingWithID = async (postingID: string) => {
 };
 export const storeJobPosting = async (newJobPosting: Jobposting) => {
     try {
-        let user = findUserWithID(newJobPosting.jobPosterID);
+        let user = await findUserWithID(newJobPosting.jobPosterID);
         let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({
             email: newJobPosting.email,
