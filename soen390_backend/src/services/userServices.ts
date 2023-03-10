@@ -68,17 +68,20 @@ export const deleteUserWithId = async (userID: string) => {
             if (data.jobpostings) {
                 const batch = db.batch();
                 console.log(data.jobpostings.postingids);
-                data.jobpostings.postingids.forEach((postingID: string) => {
-                    const postingRef = db
-                        .collection("jobpostings")
-                        .doc(postingID);
-                    batch.delete(postingRef);
-                });
-                await batch.commit();
-                console.log(
-                    data.jobpostings.postingids.length +
-                        " job postings successfully deleted."
-                );
+                if (data.jobpostings.postingids) {
+                    data.jobpostings.postingids.forEach((postingID: string) => {
+                        const postingRef = db
+                            .collection("jobpostings")
+                            .doc(postingID);
+                        batch.delete(postingRef);
+                    });
+
+                    await batch.commit();
+                    console.log(
+                        data.jobpostings.postingids.length +
+                            " job postings successfully deleted."
+                    );
+                }
             }
             db.collection("users")
                 .doc(userID)
@@ -305,7 +308,8 @@ export async function sendUserInvitation(
 
         // update receiver pendinginvitation filed
 
-        db.collection("users")
+        await db
+            .collection("users")
             .doc(receiverUser.data.userID)
             .update({
                 pendingInvitations:
@@ -321,7 +325,6 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
     const receiverUser = await findUserWithID(receiverID);
     try {
         if (senderUser && receiverUser) {
-            console.log(senderUser.isCompany);
             if (senderUser.isCompany) {
                 throw new Error("Sender is a company");
             } else {
@@ -345,7 +348,6 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
     }
 }
 export async function unFollowCompanyInv(senderID: string, receiverID: string) {
-    console.log(senderID);
     const receiverUser = await findUserWithID(receiverID);
     try {
         if (receiverUser) {
@@ -356,9 +358,10 @@ export async function unFollowCompanyInv(senderID: string, receiverID: string) {
                         contacts:
                             firebase.firestore.FieldValue.arrayRemove(senderID),
                     });
+            } else {
+                console.log("You dont even follow that company????");
+                throw Error;
             }
-        } else {
-            console.log("You dont even follow that company????");
         }
     } catch (error) {
         console.log(error);
@@ -376,7 +379,6 @@ export async function manageUserInvitation(
         if (isAccept) {
             senderUser = await new Promise((resolve, _) => {
                 findUserWithEmail(senderEmail, (user) => {
-                    // console.log(user);
                     if (user == null) {
                         resolve(null);
                     } else {
@@ -385,12 +387,9 @@ export async function manageUserInvitation(
                 });
             });
         }
-
         var invitedUser: any;
-
         invitedUser = await new Promise((resolve, _) => {
             findUserWithEmail(invitedEmail, (user) => {
-                // console.log(user);
                 if (user == null) {
                     resolve(null);
                 } else {
@@ -398,13 +397,10 @@ export async function manageUserInvitation(
                 }
             });
         });
-        console.log(invitedUser);
-        console.log(senderUser);
         // check 1: check if enderEmail is in invitedUser pendingInvitation list
         if (
             !(invitedUser.data as User).pendingInvitations.includes(senderEmail)
         ) {
-            //console.log("error receiver already invited by sender");
             throw error("error sender user email not int he invided user list");
         } else {
             console.log("proceed check 1");

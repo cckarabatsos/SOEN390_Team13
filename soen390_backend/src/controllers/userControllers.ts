@@ -22,7 +22,7 @@ import {
     user_schema,
 } from "../models/User";
 import { hash } from "bcrypt";
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
 const saltRounds = 4;
@@ -49,15 +49,18 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
+    if (user.name === "" || user.email === "" || user.password === "") {
+        throw new Error("User name cannot be empty");
+    }
     let casted_user: User;
     try {
         casted_user = await user_schema.cast(user, {
             stripUnknown: false,
         });
-        console.log(casted_user);
+        // console.log(casted_user);
     } catch (error) {
-        // The object is invalid
         console.error(error);
+        return [404, { msg: "Cast error" }];
     }
     casted_user.password = await hash(casted_user.password, saltRounds);
     user = await new Promise((resolve, _) => {
@@ -133,18 +136,10 @@ export async function editAccount(
 ) {
     try {
         if (currProfile.email != newProfile.email) {
-            const userArr: User = await getUserWithEmail(
-                newProfile.email
-            ).then();
-            if (userArr[1] == null) {
-                currProfile.email = newProfile.email;
-            } else {
-                return [
-                    404,
-                    { msg: "Email is already affiliated to an account" },
-                ];
-            }
+            throw Error;
         }
+        newProfile.password = await hash(newProfile.password, saltRounds);
+        console.log(newProfile);
         currProfile = newProfile;
         updateUser(currProfile, id);
     } catch (err: any) {
@@ -266,27 +261,11 @@ export async function getFilteredCompaniesController(filter: UserFilter) {
     }
 }
 export async function generateAccessToken(username: any) {
-    console.log(await process.env.TOKEN_SECRET);
+    // console.log(await process.env.TOKEN_SECRET);
     //console.log(process.env.TOKEN_SECRET!);
     return sign(username, process.env.TOKEN_SECRET!, { expiresIn: "28800000" });
 }
-export function verifyJWT(req: Request, res: Response, next: NextFunction) {
-    console.log(req.cookies);
-    const { FrontendUser } = req.cookies;
-    try {
-        const { iat, exp, ...payload } = jwt.verify(
-            FrontendUser,
-            process.env.TOKEN_SECRET!
-        ) as User;
-        req.cookies.user = payload; //Maybe not good will need to recheck
-        next();
-    } catch (err: any) {
-        res.status(401).json("Invalid Session");
-    }
-}
-export function hasUser(request: Request): request is Request & { user: any } {
-    return "user" in request;
-}
+
 export function hasFile(request: Request): request is Request & { file: any } {
     return "file" in request;
 }

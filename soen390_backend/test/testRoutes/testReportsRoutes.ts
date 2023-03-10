@@ -40,7 +40,6 @@ describe("Test Report Routes", function () {
                 .send(payload)
                 .expect(200);
             ID = response.body;
-            console.log(ID);
         });
         it("responds with a 400 when the payload is invalid", async function () {
             const invalidPayload = {
@@ -72,7 +71,6 @@ describe("Test Report Routes", function () {
                 .send(payload)
                 .expect(200);
             ID = response.body;
-            console.log(ID);
             const newPayload = {
                 reportID: `${ID}`,
                 reportedID: "3Ri6yXlYSo7rCQk4t4ks",
