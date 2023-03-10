@@ -3,6 +3,10 @@ import api from "../config.json";
 
 export async function JobSearch(category, text) {
 
+  //switch statement to check which category has been selected,
+  //make request to backend API to search for jobs based on location,
+  // company, position, type, remote
+  // includes a default case
   switch(category){
     
     case 'location': 
