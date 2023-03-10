@@ -375,6 +375,22 @@ describe("Test User Routes", function () {
                 .expect(400);
         });
     });
+    describe("Get user/api/searchCompanies", function () {
+        it("responds with 200 when you can search with your fields", async function () {
+            await request(url)
+                .get(
+                    `/user/api/searchCompanies?name=${name}&email=${email}&limit=${GLimit}&skip=${skip}`
+                )
+                .expect(200);
+        });
+        it("responds with 400 bad request when one of the fields is wrong", async function () {
+            await request(url)
+                .get(
+                    `/user/api/searchCompanies?name=${name}&email=${email}&limit=${BLimit}&skip=${skip}`
+                )
+                .expect(400);
+        });
+    });
     describe("Get user/api/follow", function () {
         it("responds with 200 when you can follow a company", async function () {
             let companyID = "i2iLvPkBHmkV43PufHVp";
