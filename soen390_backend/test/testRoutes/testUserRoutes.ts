@@ -339,9 +339,40 @@ describe("Test User Routes", function () {
                     `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.co`
                 )
                 .expect(404);
+        });
+    });
+
+    describe("Get user/api/getContacts", function () {
+        it("responds with 200 when you can get the contacts", async function () {
             await request(url)
-                .post(`/user/delete/${response1.body.registeredUser[1]}`)
+                .get(`/user/api/getContacts?userEmail=dzm.fiodarau@gmail.com`)
                 .expect(200);
+        });
+        it("responds with 404 when the account doesnt exist", async function () {
+            await request(url)
+                .get(`/user/api/getContacts?userEmail=dzm.fiodarau@gmail.co`)
+                .expect(404);
+        });
+    });
+    let name = "";
+    let email = "";
+    let GLimit = 1;
+    let BLimit = "";
+    let skip = 0;
+    describe("Get user/api/search", function () {
+        it("responds with 200 when you can search with your fields", async function () {
+            await request(url)
+                .get(
+                    `/user/api/search?name=${name}&email=${email}&limit=${GLimit}&skip=${skip}`
+                )
+                .expect(200);
+        });
+        it("responds with 400 bad request when one of the fields is wrong", async function () {
+            await request(url)
+                .get(
+                    `/user/api/search?name=${name}&email=${email}&limit=${BLimit}&skip=${skip}`
+                )
+                .expect(400);
         });
     });
     describe("Get user/api/follow", function () {
@@ -378,6 +409,9 @@ describe("Test User Routes", function () {
                     `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
                 )
                 .expect(404);
+            await request(url)
+                .post(`/user/delete/${response1.body.registeredUser[1]}`)
+                .expect(200);
             await request(url)
                 .post(`/user/delete/${response2.body.registeredUser[1]}`)
                 .expect(200);
