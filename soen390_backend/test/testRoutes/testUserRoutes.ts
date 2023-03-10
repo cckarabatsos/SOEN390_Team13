@@ -418,7 +418,7 @@ describe("Test User Routes", function () {
                 )
                 .expect(200);
         });
-        it("responds with 404 when you already follow a company", async function () {
+        it("responds with 404 when you already unFollowed a company", async function () {
             let companyID = "i2iLvPkBHmkV43PufHVp";
             await request(url)
                 .get(

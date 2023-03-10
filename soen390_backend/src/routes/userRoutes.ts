@@ -401,7 +401,8 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
-//Route used to update all fields this is not to be used in final versions
+
+// Route used to update all fields this is not to be used in final versions
 // user.get("/updateFields", (_: Request, res: Response) => {
 //     const db = firebase.firestore();
 //     const batch = db.batch();
@@ -410,18 +411,21 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 //         .get()
 //         .then((querySnapshot) => {
 //             querySnapshot.forEach((doc) => {
-//                 batch.update(doc.ref, { isAdmin: false });
+//                 batch.update(doc.ref, { follows: [] });
 //             });
 
 //             return batch.commit();
 //         })
 //         .then(() => {
-//             res.status(200).send("isAdmin field added to all user documents");
+//             res.status(200).send(
+//                 "isAdmin and follows fields added to all user documents"
+//             );
 //         })
 //         .catch((error) => {
-//             console.error("Error adding reporting_status field:", error);
-//             res.status(500).send("Error adding reporting_status field");
+//             console.error("Error adding isAdmin and follows fields:", error);
+//             res.status(500).send("Error adding isAdmin and follows fields");
 //         });
 // });
-//Exporting the user as a module
+
+// Exporting the user as a module
 module.exports = user;
