@@ -29,7 +29,7 @@ const Footer = () => {
       >
         <CssBaseline />
         <Toolbar className="border">
-          {isMobile ? <DrawerComponent /> : <span className="navlinks"></span>}
+          {/* {isMobile ? <DrawerComponent /> : <span className="navlinks"></span>} */}
           <h2>Linked Out @ 2023 </h2>
         </Toolbar>
       </AppBar>

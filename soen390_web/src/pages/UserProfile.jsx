@@ -46,7 +46,7 @@ function UserProfile(props) {
       return UserCoverLetter;
     };
 
-    if (UserCoverLetter !== null) {
+    if (UserCoverLetter && UserCoverLetter !== null) {
       getCoverLetter().then((coverLetter) => {
         setCoverletter(coverLetter);
         const url = coverLetter;
@@ -63,10 +63,11 @@ function UserProfile(props) {
       return UserResume;
     };
 
-    if (UserResume !== null) {
+    if (UserResume && UserResume !== null) {
       getResume().then((resume) => {
         setResume(resume);
         const url = resume;
+
         setResumeFilename(
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
@@ -229,10 +230,10 @@ function UserProfile(props) {
                   className="grid-container"
                   style={{ marginLeft: "1em" }}
                 >
-                  <Grid iten xs={6}>
+                  <Grid item xs={6}>
                     <div className="header">{t("SkillsText")}</div>
                   </Grid>
-                  <Grid iten xs={6}>
+                  <Grid item xs={6}>
                     <AddSkillDialog />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
@@ -295,10 +296,10 @@ function UserProfile(props) {
                   className="grid-container"
                   style={{ marginLeft: "1em" }}
                 >
-                  <Grid iten xs={6}>
+                  <Grid item xs={6}>
                     <div className="header">{t("DocumentsText")}</div>
                   </Grid>
-                  <Grid iten xs={6}>
+                  <Grid item xs={6}>
                     <AddDocumentsDialog setFileData={setFileData} />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
@@ -315,7 +316,7 @@ function UserProfile(props) {
                   className="grid-container"
                   style={{ marginLeft: "1em" }}
                 >
-                  <Grid iten xs={12}>
+                  <Grid item xs={12}>
                     {coverletter !== "" && (
                       <>
                         <Typography className="file-type">
