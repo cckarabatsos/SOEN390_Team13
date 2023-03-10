@@ -64,9 +64,7 @@ describe("User Controllers", function () {
     });
     describe("# getUserWithEmail", function () {
         it("return a user with most fields except password and return a 200 status", async function () {
-            let data: any = await getUserWithEmail(
-                "matthew.beaulieu631@gmail.com"
-            );
+            let data: any = await getUserWithEmail("LinkedOutInc@gmail.com1");
             let user: any = data[1];
             let status: any = data[0];
             Object.entries(testUserFrontend).forEach(([field, value]) => {

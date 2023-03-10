@@ -47,7 +47,7 @@ reports.get("/batchReports", async (req: Request, res: Response) => {
     try {
         const userID: string = req.query.userID as string;
         const user: User = await getUserWithID(userID);
-        console.log(user[1].isAdmin);
+
         if (user[1].isAdmin) {
             const data: any = await getBatchReports();
             if (data[0] == 200) {
@@ -72,7 +72,7 @@ reports.post("/verdictReport", async (req: Request, res: Response) => {
         const reportedID: string = req.body.reportedID;
         const banned: boolean = req.body.banned;
         const data: any = await userVerdict(reportID, reportedID, banned);
-        console.log(data);
+
         res.status(data[0]);
         res.json(data[1]);
     } catch (err: any) {
