@@ -15,6 +15,20 @@ export async function GetUsersAPI(data:any) {
   }
 }
 
+export async function GetCompanyAPI(data:any) {
+  try {
+    const response = await axios.get(api.BACKEND_API + "/user/api/searchCompanies", {
+      params: {
+        filter: data
+      },
+    });
+    return response.data[1];
+  } catch (error) {
+    console.log("error", error);
+    return false;
+  }
+}
+
   export async function GetUserInfo(data:any) {
     try {
       const response = await axios.get(api.BACKEND_API + "/user/id/" + data);

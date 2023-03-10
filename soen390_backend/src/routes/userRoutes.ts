@@ -395,7 +395,7 @@ user.get("/api/search", async (req: Request, res: Response) => {
         filter[key] = value;
     }
 
-    console.log(req.query);
+    //console.log(req.query);
     try {
         let status,
             data = await getFilteredUsersController(filter);

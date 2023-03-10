@@ -19,6 +19,7 @@ interface User {
   company: string;
   image: string;
   email: string
+  isCompany: boolean
 }
 
 
@@ -54,7 +55,7 @@ const PeopleScreen = ({route}:{route:any}) => {
   const { v4: uuidv4 } = require('uuid');
 
   const buildObject = (jsonObject:any) => {
-    const { name, currentPosition, currentCompany, email } = jsonObject;
+    const { name, currentPosition, currentCompany, email,isCompany } = jsonObject;
     const obj = {
       id: uuidv4(),
       name: name,
@@ -63,7 +64,8 @@ const PeopleScreen = ({route}:{route:any}) => {
       company: currentCompany,
       email: email,
       //image: jsonObject.picture
-      image: 'https://randomuser.me/api/portraits/men/1.jpg'
+      image: 'https://randomuser.me/api/portraits/men/1.jpg',
+      isCompany: isCompany
     }
     return obj;
   }
@@ -163,6 +165,7 @@ return(
 
 
   const renderItem = ({ item }: { item: User }) => {
+    if(!item.isCompany)
     return (
       <View style={styles.userContainer}> 
         <Image style={styles.userImage} source={{ uri: item.image }} />
