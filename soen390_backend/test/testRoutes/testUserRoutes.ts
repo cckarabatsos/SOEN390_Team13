@@ -2,6 +2,7 @@ import * as mocha from "mocha";
 import request from "supertest";
 import { expect } from "chai";
 import app from "../../src/index";
+
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
@@ -31,6 +32,14 @@ describe("Test User Routes", function () {
     after(function () {
         server.close();
     });
+    describe("Post user/id/:userID", function () {
+        it("responds with 200 if the userID is valid", async function () {
+            await request(url).get(`/user/id/${id}`).expect(200);
+        });
+        it("responds with 404 if the userID is invalid", async function () {
+            await request(url).get(`/user/id/L`).expect(404);
+        });
+    });
     describe("Get user/api/login", function () {
         it("responds with 404 when user not found", async function () {
             await request(url)
@@ -41,7 +50,7 @@ describe("Test User Routes", function () {
         it("responds with a 401 when invalid email or password is provided", async function () {
             await request(url)
                 .get(
-                    "/user/api/login?email=LinkedOutInc@gmail.com&password=pass123"
+                    "/user/api/login?email=LinkedOutInc@gmail.com1&password=pass123"
                 )
                 .expect(401);
         });
@@ -66,46 +75,56 @@ describe("Test User Routes", function () {
         });
     });
     describe("Get user/api/register", function () {
-        it("responds with 404 when user submit without filling out the name field", async function () {
+        it("responds with 400 when user submit without filling out the name field", async function () {
             await request(url)
-                .get("/user/api/register")
+                .post("/user/api/register")
                 .send({
                     email: "test@example.com",
                     password: "password",
                     name: "",
                 })
-                .expect(404);
+                .expect(400);
         });
 
-        it("responds with 404 when user submit without filling out the password field", async function () {
+        it("responds with 400 when user submit without filling out the password field", async function () {
             await request(url)
-                .get("/user/api/register")
+                .post("/user/api/register")
                 .send({
                     email: "test@example.com",
                     password: "",
                     name: "Matthew aime les test",
                 })
-                .expect(404);
+                .expect(400);
         });
-        it("responds with 404 when user submit without filling out the email field", async function () {
+        it("responds with 400 when user submit without filling out the email field", async function () {
             await request(url)
-                .get("/user/api/register")
+                .post("/user/api/register")
                 .send({
                     email: "",
                     password: "Test123!",
                     name: "Matthew aime les test",
                 })
-                .expect(404);
+                .expect(400);
         });
 
         it("responds with 401 when user submit with an already registered email", async function () {
+            const payload = {
+                name: "Joe",
+                password: "mama",
+                email: "LinkedOutInc@gmail.com1",
+                privateKey: "",
+                publicKey: "",
+                picture: "",
+                resume: "",
+                coverLetter: "",
+                bio: "Admin account",
+                currentPosition: "Admin",
+                currentCompany: "LinkedOutInc",
+                isCompany: false,
+            };
             await request(url)
-                .get("/user/api/register")
-                .send({
-                    email: "test@test.com",
-                    password: "Test123!",
-                    name: "yoy yoy",
-                })
+                .post("/user/api/register")
+                .send(payload)
                 .expect(401);
         });
     });
@@ -130,7 +149,7 @@ describe("Test User Routes", function () {
                 .set("Accept", "application/json")
                 .expect(404);
         });
-        const notRecruiterEmail = "poda4@gmail.com";
+        const notRecruiterEmail = "dzm.fiodarau@gmail.com";
         it("responds with 400 if the user is not a recruiter", async function () {
             await request(url)
                 .post(`/user/api/posting/${notRecruiterEmail}`)
@@ -139,8 +158,21 @@ describe("Test User Routes", function () {
                 .send(payload)
                 .expect(400);
         });
-        const goodEmail = "LinkedOutInc@gmail.com";
+
         it("responds with 200 if the user is a recruiter", async function () {
+            const goodEmail = "LinkedOutInc@gmail.com1";
+            const payload = {
+                location: "MTL",
+                position: "intern",
+                salary: "0k/yr",
+                company: "LinkedOutInc",
+                description:
+                    "Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing",
+                remote: true,
+                contract: false,
+                duration: "4 years",
+                type: "internship",
+            };
             await request(url)
                 .post(`/user/api/posting/${goodEmail}`)
                 .set("Content-Type", "application/json")
@@ -177,12 +209,13 @@ describe("Test User Routes", function () {
         });
     });
 
-    describe("Get userser/api/sendInvite", async function () {
-        const randomEmail1 = makeid(10);
-        const randomEmail2 = makeid(10);
-
-        const payload = {
-            isRecruiter: false,
+    let response2: any;
+    let response1: any;
+    const randomEmail1 = makeid(10);
+    const randomEmail2 = makeid(10);
+    describe("Get user/api/sendInvite", async function () {
+        let payload = {
+            isCompany: false,
             currentCompany: "Concordia University",
             currentPosition: "Student",
             bio: "I am Liam and I want to be an engineer.",
@@ -195,9 +228,8 @@ describe("Test User Routes", function () {
             password: "123",
             name: "bog test",
         };
-
-        const payload2 = {
-            isRecruiter: false,
+        let payload2 = {
+            isCompany: false,
             currentCompany: "Concordia University",
             currentPosition: "Student",
             bio: "I am Liam and I want to be an engineer.",
@@ -210,20 +242,12 @@ describe("Test User Routes", function () {
             password: "123",
             name: "bog test",
         };
-
-        it("responds with 404 if user already invited", async function () {
-            await request(url)
-                .get(
-                    `/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=bog5@test.com`
-                )
-                .expect(404);
-        });
         it("responds with 200 for 2 non friends user", async function () {
-            var user1: any = await request(url)
+            response1 = await request(url)
                 .post(`/user/api/register`)
                 .send(payload)
                 .expect(200);
-            var user2: any = await request(url)
+            response2 = await request(url)
                 .post(`/user/api/register`)
                 .send(payload2)
                 .expect(200);
@@ -232,11 +256,81 @@ describe("Test User Routes", function () {
                     `/user/api/sendInvite?receiverEmail=${randomEmail1}&senderEmail=${randomEmail2}`
                 )
                 .expect(200);
+        });
+    });
+    describe("Get user/api/manageInvite", function () {
+        it("responds with 200 when you can accept an invite", async function () {
             await request(url)
-                .post(`/user/delete/${user1._body.registeredUser[1]}`)
+                .get(
+                    `/user/api/manageInvite?invitedEmail=${randomEmail1}&senderEmail=${randomEmail2}&isAccept=true`
+                )
                 .expect(200);
+        });
+        it("responds with 404 when you already accepted the user", async function () {
             await request(url)
-                .post(`/user/delete/${user2._body.registeredUser[1]}`)
+                .get(
+                    `/user/api/manageInvite?invitedEmail=${randomEmail1}&senderEmail=${randomEmail2}&isAccept=true`
+                )
+                .expect(404);
+            console.log(response1.body);
+        });
+    });
+
+    describe("Get user/api/getPendingInvitations", function () {
+        it("responds with 200 when you can get the invitations", async function () {
+            await request(url)
+                .get(
+                    `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.com`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when the account doesnt exist", async function () {
+            await request(url)
+                .get(
+                    `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.co`
+                )
+                .expect(404);
+            await request(url)
+                .post(`/user/delete/${response1.body.registeredUser[1]}`)
+                .expect(200);
+        });
+    });
+    describe("Get user/api/follow", function () {
+        it("responds with 200 when you can follow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/follow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when you already follow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/follow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(404);
+        });
+    });
+    describe("Get user/api/unFollow", function () {
+        it("responds with 200 when you can unFollow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when you already follow a company", async function () {
+            let companyID = "i2iLvPkBHmkV43PufHVp";
+            await request(url)
+                .get(
+                    `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
+                )
+                .expect(404);
+            await request(url)
+                .post(`/user/delete/${response2.body.registeredUser[1]}`)
                 .expect(200);
         });
     });

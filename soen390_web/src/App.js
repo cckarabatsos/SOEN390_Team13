@@ -1,19 +1,21 @@
-import "../src/App.css";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "../src/App.css";
+import JobSearch from "./pages/JobSearch";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import UserProfile from "./pages/UserProfile";
-import JobSearch from "./pages/JobSearch";
 //import UserProfile from "./pages/UserProfile";
-import UserNetworking from "./pages/UserNetworking";
+import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
-import UserConnection from "./pages/UserConnection";
+import SubFooter from "./components/SubFooter";
+import Admin from "./pages/Admin";
 import Contacts from "./pages/Contacts";
 import JobApplication from "./pages/JobApplication";
 import MessagingPage from "./pages/MessagingPage";
 import NewsFeedPage from "./pages/NewsFeedPage";
-import Admin from "./pages/Admin";
+import UserConnection from "./pages/UserConnection";
+import UserNetworking from "./pages/UserNetworking";
 
 const AppWrapper = () => {
   const [userData, setUseData] = useState({});
@@ -55,6 +57,8 @@ const AppWrapper = () => {
           <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
           <Route path="/Admin" element={<Admin />} />
         </Routes>
+        <SubFooter />
+        <Footer />
       </Router>
     </div>
   );

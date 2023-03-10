@@ -3,6 +3,13 @@
     src: url(../../assets/Inter-Regular.ttf);
 }
 
+.file-type{
+    text-align: left;
+    padding-left: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
 .foreground-colour{
     background-color: rgba(217, 217, 217, 0.7);
     height: 100%;

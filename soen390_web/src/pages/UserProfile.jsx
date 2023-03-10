@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import picture from "../assets/default_picture.jpg";
+import profilepicture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
 import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
 import Concordia from "../assets/UserProfileImages/Concordia.png";
@@ -15,9 +15,19 @@ import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
 
+import { GetFile } from "../api/UserStorageApi";
+import ProfileFileItem from "../components/ProfileFileItem";
+import { useTranslation } from "react-i18next";
+
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
-  const [userData, setUseData] = React.useState({});
+  const [userData, setUserData] = React.useState({});
+  const [resume, setResume] = React.useState();
+  const [coverletter, setCoverletter] = React.useState();
+  const [picture, setpicture] = React.useState();
+  const [coverletterFilename, setCoverletterFilename] = React.useState();
+  const [resumeFilename, setResumeFilename] = React.useState();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -29,14 +39,55 @@ function UserProfile(props) {
     setEnable(false);
   };
 
+  const setFileData = () => {
+    let UserCoverLetter = "";
+    const getCoverLetter = async () => {
+      UserCoverLetter = await GetFile(userData.userID, "coverletter");
+      return UserCoverLetter;
+    };
+
+    if (UserCoverLetter !== null) {
+      getCoverLetter().then((coverLetter) => {
+        setCoverletter(coverLetter);
+        const url = coverLetter;
+        setCoverletterFilename(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
+      });
+      console.log(coverletterFilename);
+    }
+
+    let UserResume = "";
+    const getResume = async () => {
+      UserResume = await GetFile(userData.userID, "resume");
+      return UserResume;
+    };
+
+    if (UserResume !== null) {
+      getResume().then((resume) => {
+        setResume(resume);
+        const url = resume;
+        setResumeFilename(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
+        console.log(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
+        console.log("resume:", resume);
+      });
+    }
+  };
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
-      setUseData(JSON.parse(localStorage.getItem("isAuth")));
+      setUserData(JSON.parse(localStorage.getItem("isAuth")));
     } else {
       navigate("/");
     }
-  }, [navigate]);
+
+    setFileData();
+  }, [navigate, userData.userID]);
 
   return (
     <>
@@ -48,7 +99,11 @@ function UserProfile(props) {
           }}
         >
           <div className="foreground-colour">
-            <img className="profile-pic" alt="profile-pic" src={picture}></img>
+            <img
+              className="profile-pic"
+              alt="profile-pic"
+              src={profilepicture}
+            ></img>
             <Grid container spacing={2}>
               <Grid className="name" item xs={12}>
                 {userData.name}
@@ -58,7 +113,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                  Education
+                  {t("EducationText")}
                   <AddEducationDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
@@ -110,7 +165,7 @@ function UserProfile(props) {
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
-                  Experience
+                  {t("ExperienceText")}
                   <AddExperienceDialog />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
@@ -175,7 +230,7 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={6}>
-                    <div className="header">Skills</div>
+                    <div className="header">{t("SkillsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
                     <AddSkillDialog />
@@ -241,16 +296,48 @@ function UserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid iten xs={6}>
-                    <div className="header">Personal Documents</div>
+                    <div className="header">{t("DocumentsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
-                    <AddDocumentsDialog />
+                    <AddDocumentsDialog setFileData={setFileData} />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
                     </IconButton>
                   </Grid>
                 </Grid>
                 <hr className="line"></hr>
+                <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  className="grid-container"
+                  style={{ marginLeft: "1em" }}
+                >
+                  <Grid iten xs={12}>
+                    {coverletter !== "" && (
+                      <>
+                        <Typography className="file-type">
+                          Cover Letter
+                        </Typography>
+                        <ProfileFileItem
+                          file={coverletter}
+                          filename={coverletterFilename}
+                        />
+                      </>
+                    )}
+                    {resume !== "" && (
+                      <>
+                        <Typography className="file-type">Resume</Typography>
+                        <ProfileFileItem
+                          file={resume}
+                          filename={resumeFilename}
+                        />
+                      </>
+                    )}
+                  </Grid>
+                </Grid>
               </Grid>
 
               <Grid item xs={6}>
@@ -272,9 +359,6 @@ function UserProfile(props) {
           </div>
         </div>
       </div>
-
-      <SubFooter />
-      <Footer />
     </>
   );
 }

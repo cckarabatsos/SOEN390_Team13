@@ -2,7 +2,6 @@ import React from "react";
 import SubFooter from "../components/SubFooter";
 import Footer from "../components/Footer";
 import "../styles/components/userconnection.css";
-import { Button } from "@material-ui/core";
 import { Grid } from "@material-ui/core";
 import UserConnectionComponent from "../components/UserConectionComponent";
 import {
@@ -11,6 +10,7 @@ import {
   DeclineInvitations,
 } from "../api/userConectionApi";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const UserConnection = () => {
   const [userData, setUseData] = React.useState({});
@@ -18,7 +18,7 @@ const UserConnection = () => {
   const [users, setUsers] = useState([]);
 
   const [currentEmail, setCurrentEmail] = useState("");
-
+  const { t } = useTranslation();
   const getInvitations = async (email) => {
     var responce = await GetPendingInvitations(email);
     console.log(responce);
@@ -58,30 +58,27 @@ const UserConnection = () => {
   console.log(users.length);
   return (
     <div data-testid="userconnection-1">
-    <>
-      <h1 className="center">Request Center</h1>
-      <div className="request-section">
-        <Grid container spacing={2}>
-          {users.map((aUser) => (
-            <Grid item xs={6}>
-              <UserConnectionComponent
-                image={aUser.image}
-                name={aUser.name}
-                job={aUser.currentPosition}
-                location={aUser.location}
-                currentEmail={currentEmail}
-                senderEmail={aUser.email}
-                accept={handleAccept}
-                decline={handleDecline}
-              ></UserConnectionComponent>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-
-      <SubFooter />
-      <Footer />
-    </>
+      <>
+        <h1 className="center">{t("RequestCenterText")}</h1>
+        <div className="request-section">
+          <Grid container spacing={2}>
+            {users.map((aUser) => (
+              <Grid item xs={6}>
+                <UserConnectionComponent
+                  image={aUser.image}
+                  name={aUser.name}
+                  job={aUser.currentPosition}
+                  location={aUser.location}
+                  currentEmail={currentEmail}
+                  senderEmail={aUser.email}
+                  accept={handleAccept}
+                  decline={handleDecline}
+                ></UserConnectionComponent>
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+      </>
     </div>
   );
 };

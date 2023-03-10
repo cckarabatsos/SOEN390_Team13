@@ -15,12 +15,13 @@ import {
     getInvitationsOrContacts,
     getFilteredUsersController,
     generateAccessToken,
-    verifyJWT,
-    hasUser,
     getAccountFile,
     uploadAccountFile,
     hasFile,
     removeAccountFile,
+    getFilteredCompaniesController,
+    followCompany,
+    unFollowCompany,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -35,14 +36,9 @@ user.get("/id/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     //console.log(userID);
     try {
-        let status,
-            data = await getUserWithID(userID);
-        res.json({ data });
-        if (status == 200) {
-            res.sendStatus(200);
-        } else if (status == 404) {
-            res.sendStatus(404);
-        }
+        let data: any = await getUserWithID(userID);
+        res.status(data[0]);
+        res.json(data[1]).end();
     } catch (err: any) {
         res.status(400);
         res.json({ errType: err.Name, errMsg: err.message });
@@ -87,17 +83,7 @@ user.get("/api/login", async (req: Request, res: Response) => {
     }
     return user;
 });
-user.post("/api/session", [verifyJWT], async (req: Request, res: Response) => {
-    try {
-        if (hasUser(req)) {
-            return res.status(200).json(req.user);
-        } else {
-            throw { msg: "no user" };
-        }
-    } catch (err: any) {
-        return res.status(400).json({ errType: err.name, errMsg: err.message });
-    }
-});
+
 user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -105,8 +91,7 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
         const accountFile: any = await getAccountFile(userID, type);
         const status: number = accountFile[0];
         if (status == 200) {
-            res.sendStatus(200);
-            res.json(accountFile[1]);
+            res.status(200).json(accountFile[1]);
         } else if (status == 404) {
             res.sendStatus(404);
         }
@@ -115,6 +100,7 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
 user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -143,7 +129,9 @@ user.post("/api/register", async (req: Request, res: Response) => {
                 Response: "Success",
                 registeredUser,
             });
-        } else if (status !== 404) {
+        } else if (status === 404) {
+            res.status(404).send("User name cannot be empty");
+        } else {
             res.sendStatus(status);
         }
     } catch (err: any) {
@@ -237,6 +225,17 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
     let senderEmail = req.query.senderEmail as string;
 
     let data = await sendInvite(receiverEmail, senderEmail);
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+user.get("/api/follow", async (req: Request, res: Response) => {
+    let receiverID = (await req.query.receiverID) as string;
+    let senderID = (await req.query.senderID) as string;
+
+    let data = await followCompany(senderID, receiverID);
 
     if (data[0] == 200) {
         res.sendStatus(200);
@@ -244,7 +243,18 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+user.get("/api/unFollow", async (req: Request, res: Response) => {
+    let receiverID = (await req.query.receiverID) as string;
+    let senderID = (await req.query.senderID) as string;
 
+    let data = await unFollowCompany(senderID, receiverID);
+
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
 user.get("/api/manageInvite", async (req: Request, res: Response) => {
     let invitedEmail = req.query.invitedEmail as string;
     let senderEmail = req.query.senderEmail as string;
@@ -255,7 +265,6 @@ user.get("/api/manageInvite", async (req: Request, res: Response) => {
     } else {
         isAccept = false;
     }
-
     let data = await manageInvite(
         senderEmail,
         invitedEmail,
@@ -288,10 +297,7 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
 
     if (data[0] == 200) {
         res.status(200);
-        res.json({
-            Response: "Success",
-            data,
-        });
+        res.status(200).json(data);
     } else {
         res.sendStatus(404);
     }
@@ -317,17 +323,14 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     if (req.body.type) {
         type = req.body.type;
     }
-    console.log(email);
     const userArr: User = await getUserWithEmail(email).then();
-    console.log(userArr);
     const status = userArr[0];
     if (status == 404) {
         res.status(404).json({ errMsg: "That user doesnt exists" });
-    } else if (!userArr[1].data.isRecruiter) {
-        console.log(userArr[1].isRecruiter);
-        console.log("That user is not even a recruiter");
+    } else if (!userArr[1].data.isCompany) {
+        console.log("That user is not even a company");
         res.status(400);
-        res.json({ errMsg: "That user is not a recruiter" });
+        res.json({ errMsg: "That user is not a company" });
     } else {
         try {
             let data: any = await createJobPosting(
@@ -358,7 +361,7 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     }
 });
 //Exporting the user as a module
-module.exports = user;
+
 //****************End User invitation route section ***********88
 
 user.get("/api/search", async (req: Request, res: Response) => {
@@ -368,7 +371,6 @@ user.get("/api/search", async (req: Request, res: Response) => {
         filter[key] = value;
     }
 
-    console.log(req.query);
     try {
         let status,
             data = await getFilteredUsersController(filter);
@@ -385,3 +387,50 @@ user.get("/api/search", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+user.get("/api/searchCompanies", async (req: Request, res: Response) => {
+    var filter: any = {};
+
+    for (const [key, value] of Object.entries(req.query)) {
+        filter[key] = value;
+    }
+
+    try {
+        let status,
+            data = await getFilteredCompaniesController(filter);
+        res.json(data);
+        res.status(200);
+        if (status == 200) {
+            res.sendStatus(200);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
+//Route used to update all fields this is not to be used in final versions
+// user.get("/updateFields", (_: Request, res: Response) => {
+//     const db = firebase.firestore();
+//     const batch = db.batch();
+//     const usersRef = db.collection("users");
+//     usersRef
+//         .get()
+//         .then((querySnapshot) => {
+//             querySnapshot.forEach((doc) => {
+//                 batch.update(doc.ref, { isAdmin: false });
+//             });
+
+//             return batch.commit();
+//         })
+//         .then(() => {
+//             res.status(200).send("isAdmin field added to all user documents");
+//         })
+//         .catch((error) => {
+//             console.error("Error adding reporting_status field:", error);
+//             res.status(500).send("Error adding reporting_status field");
+//         });
+// });
+//Exporting the user as a module
+module.exports = user;

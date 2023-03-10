@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/components/JobPostingComponent.css";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
-
+import { useTranslation } from "react-i18next";
 function JobPostingComponent(props) {
   const position = props.position;
   const location = props.location;
@@ -11,6 +11,7 @@ function JobPostingComponent(props) {
   const viewDesc = props.viewDesc;
   const jobPosterID = props.jobPosterID;
   const setJob = props.setJob;
+  const { t } = useTranslation();
 
   return (
     <div className="container">
@@ -28,7 +29,7 @@ function JobPostingComponent(props) {
               backgroundColor: "#a640f4b9",
             }}
           >
-            More Info
+            {t("MoreInfoText")}
           </Button>
         </div>
 

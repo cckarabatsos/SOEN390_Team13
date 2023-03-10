@@ -46,16 +46,25 @@ export const deleteJobPostingWithId = async (
                 error.code = "401";
                 throw error;
             }
-            db.collection("jobpostings")
-                .doc(postingID)
-                .delete()
-                .then(() => {
-                    console.log(
-                        "Job Posting with ID " +
-                            postingID +
-                            "successfully deleted."
-                    );
+            db.collection("jobpostings").doc(postingID).delete();
+            const userRef = db.collection("users").doc(data.jobPosterID);
+            const userSnapshot = await userRef.get();
+            const postingIds =
+                userSnapshot.data()?.jobpostings?.postingids ?? [];
+            const index = postingIds.indexOf(postingID);
+            if (index > -1) {
+                const applied = userSnapshot.data()?.jobpostings?.applied ?? [];
+                applied.splice(index, 1);
+                const documents =
+                    userSnapshot.data()?.jobpostings?.documents ?? [];
+                documents.splice(index, 1);
+                await userRef.update({
+                    "jobpostings.postingids":
+                        firebase.firestore.FieldValue.arrayRemove(postingID),
+                    "jobpostings.applied": applied,
+                    "jobpostings.documents": documents,
                 });
+            }
         }
     } catch (error) {
         console.log(error);
@@ -63,6 +72,7 @@ export const deleteJobPostingWithId = async (
     }
     return data;
 };
+
 export const filterJobPostings = async (filter: Filter) => {
     let jobPostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("jobpostings");
@@ -100,10 +110,13 @@ export const filterJobPostings = async (filter: Filter) => {
     if (filter.limit) {
         jobPostingsRef = jobPostingsRef.limit(filter.limit);
     }
-    if (filter.skip) {
-        jobPostingsRef = jobPostingsRef.startAfter(filter.skip);
+    if (filter.skip > 0) {
+        const lastVisible = await jobPostingsRef.get().then((snapshot) => {
+            const lastDoc = snapshot.docs[filter.skip - 1];
+            return lastDoc;
+        });
+        jobPostingsRef = jobPostingsRef.startAfter(lastVisible);
     }
-
     const snapshot = await jobPostingsRef.get();
     const jobPostings = snapshot.docs.map((doc) => ({
         id: doc.id,
