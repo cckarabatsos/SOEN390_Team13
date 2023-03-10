@@ -21,3 +21,14 @@ export async function UpoadSingleFile(userID: String, file: String) {
     return false;
   }
 }
+export async function editUserProfile(email: string, newProfile: any): Promise<any> {
+  console.log(email)
+  console.log(newProfile)
+  try {
+    const response = await axios.post(api.BACKEND_API + "/user/edit/" + email, newProfile);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

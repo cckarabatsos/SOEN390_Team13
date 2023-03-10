@@ -188,9 +188,7 @@ const UserProfile = ({route}:{route:any}) => {
   let userID = route.params.userID
 
   const handleGetUser = async () => {
-    console.log("INSIDE---------------------------------")
     const user = await GetUserInfo(userID)
-    console.log(user)
     setUser(user);
   }
 
@@ -277,9 +275,9 @@ const UserProfile = ({route}:{route:any}) => {
               isExpanded: false,
               category_name: 'Profile',
               subcategory: [
-                {key: 1, input: "Name",text: name},
-                {key: 3, input: "Email",text: email},
-                {key: 4, input: "Password",text: password},
+                {key: 1, input: "Name",text: name, userID: userID},
+                {key: 3, input: "Email",text: email, userID: userID},
+                {key: 4, input: "Password",text: password, userID: userID},
               ],
             },
           {

@@ -11,20 +11,25 @@ import {
   KeyboardAvoidingView,
   Modal,
 } from "react-native";
+import { useEffect } from "react";
 import React, { Key, useState } from "react";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { SwipeListView } from "react-native-swipe-list-view";
 import PopUPForm from "../PopUPForm.Component";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { GetUserInfo } from "../../api/GetUsersAPI";
+import { editUserProfile } from "../../api/UserProfileAPI";
 
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
-  const { key, text, input } = data;
+  const { key, text, input, userID } = data;
   const [name, setName] = useState(text);
   const [newName, setNewName] = useState("");
+  const [user, setUser] = useState({});
   const [input1, setInput1] = useState(input);
+  const [userUpdated, setUserUpdated] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
@@ -43,13 +48,35 @@ export default function Basic({ data }) {
     }
   };
 
+  const handleGetUser = async () => {
+    const user1 = await GetUserInfo(userID);
+    setUser(user1);
+  };
+
+  useEffect(() => {
+    handleGetUser();
+  }, []);
+
   const editRow = (rowMap, rowKey) => {
-    console.log("Edit Data");
     setModalVisible(true);
   };
 
-  const handleSubmit = () => {
-    setModalVisible(false);
+  const handleEditUserProfile = async (emailOld, user) => {
+    await editUserProfile(emailOld, user);
+  };
+
+  const handleSubmit = async () => {
+    console.log(input1);
+    const emailOld = user.email;
+    let updatedUser = {};
+    if (input1 === "Name")
+      updatedUser = { ...user, name: newName }; // update the name attribute
+    else if (input1 === "Email") updatedUser = { ...user, email: newName };
+    else if (input1 == "Password") updatedUser = { ...user, password: newName };
+
+    await handleEditUserProfile(emailOld, updatedUser);
+
+    //setModalVisible(false);
     if (newName !== "") {
       setName(newName);
       Toast.show({
@@ -57,6 +84,7 @@ export default function Basic({ data }) {
         textBody: input1 + " changed",
       });
     }
+    setUserUpdated(true);
   };
 
   const onRowDidOpen = (rowKey) => {
