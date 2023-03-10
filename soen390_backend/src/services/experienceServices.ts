@@ -5,6 +5,7 @@ import { Experience /*experience_schema*/ } from "../models/Experience";
 import { findUserWithID } from "./userServices";
 
 const db = firebase.firestore();
+const ref = firebase.storage().ref();
 
 export const findExperienceWithID = async (experienceID: string) => {
     try {
@@ -18,11 +19,19 @@ export const findExperienceWithID = async (experienceID: string) => {
     }
     return snapShot.data();
 };
-export const storeExperience = async (experience: Experience) => {
+export const storeExperience = async (experience: Experience, companyID: string) => {
     try {
         let user = await findUserWithID(experience.ownerID);
         if (user === undefined) {
             return null;
+        }
+        let company = await findUserWithID(companyID);
+        if (company === undefined || !company.isCompany) {
+            experience.logo = await ref
+                .child("Profile Pictures/blank_company_pic.jpg")
+                .getDownloadURL();;
+        } else {
+            experience.logo = company.picture;
         }
         var document = await db.collection("experiences").add({
             atPresent: experience.atPresent,
@@ -31,6 +40,7 @@ export const storeExperience = async (experience: Experience) => {
             company: experience.company,
             position: experience.position,
             type: experience.type,
+            logo: experience.logo,
             ownerID: experience.ownerID,
         });
         await document.update({ experienceID: document.id });
