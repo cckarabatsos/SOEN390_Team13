@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 function JobSearchBar({ setJobs }) {
  
+  // initialize state vars, handle text input change
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
   const { t } = useTranslation();
@@ -13,11 +14,13 @@ function JobSearchBar({ setJobs }) {
     setText(e.target.value);
   };
 
+  //handle category selection change
   const handleChange = (e) => {
     setCategory(e.target.value);
     console.log(e.target.value);
   };
 
+  //handle job search
   const handleSearch = async () => {
     console.log("text: " + text + " category: " + category);
   
@@ -27,6 +30,7 @@ function JobSearchBar({ setJobs }) {
     setJobs(jobs)
   };
 
+  // render job search bar, search button, dropdown filter to select category
   return (
     <div className="input-box">
       <i className="uil uil-search"></i>
