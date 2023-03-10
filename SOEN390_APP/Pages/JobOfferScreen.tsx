@@ -23,6 +23,7 @@ import {
     position: string;
     salary: string;
     title: string;
+    logo: string;
   }
   
   
@@ -58,7 +59,7 @@ import {
     const { v4: uuidv4 } = require('uuid');
   
     const buildObject = (jsonObject:any) => {
-      const { type, company, contract, description, email, jobPosterID, location, position, PostingID, salary } = jsonObject;
+      const { type, company, contract, description, email, jobPosterID, location, position, PostingID, salary, logo } = jsonObject;
       // Check if location already exists in the allUsers array
       const locationExists = allUsers.some(user => user.loc === location);
 
@@ -84,7 +85,8 @@ import {
         category: type,
         position: position,
         salary: salary,
-        title: position
+        title: position,
+        logo: logo|| 'https://picsum.photos/id/5/200/200',
           }
             // Update the locations state with the new locations array
       setLocations(prevLocations => [...prevLocations, ...newLocations.filter(loc => !prevLocations.includes(loc))]);
@@ -146,7 +148,7 @@ return(
           </TouchableOpacity>
         </View>
         <View style={styles.modalHeader}>
-          <Image style={styles.logoModal} source={{ uri: item.image }} />
+          <Image style={styles.logoModal} source={{ uri: item.logo }} />
           <Text style={styles.modalHeaderText}>{item.position}</Text>
           <Text style={styles.modalBodyText}>{item.text}</Text>
           <Text style={styles.modalBodyMessage}>{item.loc}</Text>
@@ -187,7 +189,7 @@ return(
   const renderItem = ({ item }: { item: JobOffer }) => {
     return (
       <View style={styles.userContainer}> 
-        <Image style={styles.userImage} source={{ uri: item.image }} />
+        <Image style={styles.userImage} source={{ uri: item.logo }} />
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{item.title}</Text>
           <Text style={styles.userOccupation}>{item.text}</Text>

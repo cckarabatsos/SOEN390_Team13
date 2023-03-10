@@ -34,6 +34,7 @@ export default function Basic({ data }) {
     startDate,
     type,
     endDate,
+    logo,
   } = data;
   const [name, setName] = useState(position);
   const [program, setProgram] = useState(company);
@@ -100,10 +101,7 @@ export default function Basic({ data }) {
       underlayColor={"#AAA"}
     >
       <View style={{ flexDirection: "row" }}>
-        <Image
-          style={styles.logo}
-          source={require("../Images/logInBackground.png")}
-        />
+        <Image style={styles.logo} source={{ uri: logo }} />
         <View>
           <Text style={styles.titleText}>{name}</Text>
           <Text style={styles.smallText}>{program}</Text>

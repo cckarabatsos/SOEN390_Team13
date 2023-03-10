@@ -15,6 +15,7 @@ import {
 import React from 'react'
 import { useEffect, useState } from "react";
 import Basic from '../Components/SwipeList.Component/SwipeListBasic.Component';
+import Files from '../Components/SwipeList.Component/SwipeListFiles.Component';
 import StandaloneRowSkills from '../Components/SwipeList.Component/SwipeListSkills.Component';
 import StandaloneRowExperience from '../Components/SwipeList.Component/SwipeListExperience.Component';
 import StandaloneRowEducation from '../Components/SwipeList.Component/SwipeListEducation.Component';
@@ -26,6 +27,7 @@ import { GetUserExperience } from '../api/UserExperienceAPI';
 import { GetUserSkills } from '../api/UserSkillsAPI';
 import ContactModal from '../Components/contacts.Component'
 import ApplicationModal from '../Components/application.Component';
+import { GetFile } from '../api/UserFileAPI';
 
 interface User {
   id: number;
@@ -171,6 +173,34 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
             </View>
             );
                       }
+                      else if (item.category_name == "Files"){
+                        return (
+                  <View>
+                   {/*Header of the Expandable List Item*/}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={onClickFunction}
+                style={styles.header}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                  <Text style={styles.headerText}>
+                    {item.category_name}
+                  </Text>
+                  <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+                </View>
+              </TouchableOpacity>
+                  <View
+                    style={{
+                      height: layoutHeight,
+                      overflow: 'hidden',
+                    }}>
+                    {/*Content under the header of the Expandable List Item*/}
+                    {item.subcategory.map((item:any, key:any) =>(
+                      <Files data = {item}/>
+                    ))}
+                  </View>
+                  </View>
+                  );
+                            }
         };
         
 
@@ -211,7 +241,7 @@ const UserProfile = ({route}:{route:any}) => {
   }
 
   const buildObjectExperience = (jsonObject:any) => {
-    const {experienceID, company, atPresent, ownerID, position, startDate, type,endDate } = jsonObject;
+    const {experienceID, company, atPresent, ownerID, position, startDate, type,endDate, logo } = jsonObject;
     const obj = {
       experienceID: experienceID,
       atPresent: atPresent,
@@ -220,7 +250,8 @@ const UserProfile = ({route}:{route:any}) => {
       position: position,
       startDate: startDate,
       endDate: endDate,
-      type: type
+      type: type,
+      logo: logo|| 'https://picsum.photos/id/5/200/200',
     }
     return obj;
   }
@@ -236,7 +267,7 @@ const UserProfile = ({route}:{route:any}) => {
   }
 
   const buildObjectEducation = (jsonObject:any) => {
-    const {experienceID, company, atPresent, ownerID, position, startDate, type,endDate } = jsonObject;
+    const {experienceID, company, atPresent, ownerID, position, startDate, type,endDate, logo } = jsonObject;
     const obj = {
       experienceID: experienceID,
       atPresent: atPresent,
@@ -245,7 +276,8 @@ const UserProfile = ({route}:{route:any}) => {
       position: position,
       startDate: startDate,
       endDate: endDate,
-      type: type
+      type: type,
+      logo: logo|| 'https://picsum.photos/id/5/200/200',
     }
     return obj;
   }
@@ -302,6 +334,14 @@ const UserProfile = ({route}:{route:any}) => {
               isExpanded: false,
               category_name: 'Skills',
               subcategory: [],
+            },
+            {
+              isExpanded: false,
+              category_name: 'Files',
+              subcategory: [
+                {key: 1, input: "Cover Letter", userID: userID},
+                {key: 2, input: "Resume", userID: userID},
+              ],
             },
         ];
 
