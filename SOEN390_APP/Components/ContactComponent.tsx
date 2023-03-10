@@ -15,7 +15,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ContactsComponent(props:any) {
-  const image = props.image;
+  const image = props.image || 'https://randomuser.me/api/portraits/men/1.jpg';
 
   const name = props.name;
 

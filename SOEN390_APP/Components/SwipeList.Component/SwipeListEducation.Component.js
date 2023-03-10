@@ -116,12 +116,6 @@ export default function Basic({ data }) {
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnLeft]}
-        onPress={() => editRow(rowMap, data.item.key)}
-      >
-        <Text style={styles.backTextWhite}>Edit</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         onPress={() => deleteRow(rowMap, data.item.key)}
       >
@@ -155,7 +149,7 @@ export default function Basic({ data }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-150}
+        rightOpenValue={-75}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}

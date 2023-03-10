@@ -65,9 +65,8 @@ const ExpandableComponent = ({item, onClickFunction, email}:any) => {
   );
         }
         else{
-           return (
+           /* return (
       <View>
-      {/*Header of the Expandable List Item*/}
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={onClickFunction}
@@ -83,13 +82,12 @@ const ExpandableComponent = ({item, onClickFunction, email}:any) => {
           height: layoutHeight,
           overflow: 'hidden',
         }}>
-        {/*Content under the header of the Expandable List Item*/}
         {item.subcategory.map((item:any, key:any) =>(
           <JobRequestRow data = {item}/>
         ))}
       </View>
     </View>
-  );
+  ); */
         }
 };
 

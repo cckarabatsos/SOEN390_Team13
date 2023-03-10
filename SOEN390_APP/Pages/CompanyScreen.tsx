@@ -35,6 +35,7 @@ const CompanyScreen = ({route}:{route:any}) => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
   let email:String = route.params.email
+  let userID1:string = route.params.userID
 
   let empty = {}
 
@@ -65,7 +66,7 @@ const CompanyScreen = ({route}:{route:any}) => {
       company: currentCompany,
       email: email,
       //image: jsonObject.picture
-      image: 'https://randomuser.me/api/portraits/men/1.jpg',
+      image: jsonObject.picture || 'https://picsum.photos/seed/picsum/200/300',
       isCompany: isCompany,
       userID: userID
     }
@@ -73,20 +74,20 @@ const CompanyScreen = ({route}:{route:any}) => {
     return obj;
   }
 
-  const connectWithUser = async (user_name: String, user_email: String) => {
+  const connectWithUser = async (user_name: String, user_email: String, name:string) => {
     setModalVisible(false);
 
-    let responce = followCompanyAPI(user_email, email)
+    let responce = followCompanyAPI(user_email, user_name)
     if(await responce)
     Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: "REQUEST SENT",
-        textBody: "Following: "+ user_name,
+        textBody: "Following: "+ name,
       });
       else 
       Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: "REQUEST PENDING",
+        type: ALERT_TYPE.WARNING,
+        title: "Already Following",
       });
     }
 
@@ -155,7 +156,7 @@ return(
             <View style={styles.modalFooterButton}>
               <TouchableOpacity
                 style={styles.buttonModal}
-                onPress={() => connectWithUser(user.name, user.email)}
+                onPress={() => connectWithUser(userID1, user.userID, user.name)}
               >
                 <Text style={styles.backTextWhite}>Follow</Text>
               </TouchableOpacity>
@@ -173,12 +174,10 @@ return(
         <Image style={styles.userImage} source={{ uri: item.image }} />
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{item.name}</Text>
-          <Text style={styles.userOccupation}>{item.occupation}</Text>
-          <Text style={styles.userLocation}>{item.location}</Text>
-          <Text style={styles.userCompany}>{item.company}</Text>
+          <Text style={styles.userCompany}>{item.email}</Text>
         </View>
         <TouchableOpacity style={styles.followButton} onPress={() => {
-                connectWithUser(item.name, item.email)}}>
+                connectWithUser(userID1, item.userID, item.name)}}>
       <Text style={styles.followButtonText}>Follow</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
@@ -201,7 +200,7 @@ return(
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search for people by name"
+          placeholder="Search for Companies"
           value={searchTerm}
           onChangeText={setSearchTerm}
         />
@@ -210,7 +209,7 @@ return(
         </TouchableOpacity>
       </View>
       <View style={styles.filterContainer}>
-  <Picker
+{/*   <Picker
     selectedValue={selectedOccupation}
     onValueChange={itemValue => setSelectedOccupation(itemValue)}
     style={styles.filterPicker}
@@ -229,7 +228,7 @@ return(
     <Picker.Item style={styles.pickerItem} label="New York" value="New York" />
     <Picker.Item style={styles.pickerItem} label="San Francisco" value="San Francisco" />
     <Picker.Item style={styles.pickerItem} label="London" value="London" />
-  </Picker>
+  </Picker> */}
   {modalRender(user)}
 </View>
       <FlatList

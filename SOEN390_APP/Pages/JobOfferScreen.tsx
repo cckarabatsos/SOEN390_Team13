@@ -35,7 +35,8 @@ import {
     const [job, setJob] = useState({});
     const [data, setData] = useState([]);
     const [allUsers, setAllUsers] = useState<JobOffer[]>([]);
-
+    const [locations, setLocations] = useState<string[]>([]);
+    const [positions, setPositions] = useState<string[]>([]);
 
     let empty = ""
 
@@ -58,10 +59,23 @@ import {
   
     const buildObject = (jsonObject:any) => {
       const { type, company, contract, description, email, jobPosterID, location, position, PostingID, salary } = jsonObject;
+      // Check if location already exists in the allUsers array
+      const locationExists = allUsers.some(user => user.loc === location);
+
+      // Add location to the locations array if it doesn't already exist
+      const newLocations = locationExists ? [] : [location, ...locations];
+
+            // Check if location already exists in the allUsers array
+            const positionExists = allUsers.some(user => user.position === position);
+
+            // Add location to the locations array if it doesn't already exist
+            const newPositions = positionExists ? [] : [position, ...positions];
+      
+
       const obj = {
         key: uuidv4(),
         text: company,
-        image: 'https://picsum.photos/id/5/200/200',
+        image: jsonObject.picture || 'https://picsum.photos/id/5/200/200',
         userID: jobPosterID,
         message: description,
         loc: location,
@@ -70,8 +84,13 @@ import {
         category: type,
         position: position,
         salary: salary,
-        title: type
-      }
+        title: position
+          }
+            // Update the locations state with the new locations array
+      setLocations(prevLocations => [...prevLocations, ...newLocations.filter(loc => !prevLocations.includes(loc))]);
+
+           // Update the locations state with the new locations array
+      setPositions(prevPositions => [...prevPositions, ...newPositions.filter(loc => !prevPositions.includes(position))]);
       return obj;
     }
 
@@ -172,7 +191,7 @@ return(
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{item.title}</Text>
           <Text style={styles.userOccupation}>{item.text}</Text>
-          <Text style={styles.userLocation}>{item.position}</Text>
+          <Text style={styles.userLocation}>{item.loc}</Text>
           <Text style={styles.userCompany}>{item.salary}</Text>
         </View>
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
@@ -204,26 +223,27 @@ return(
         </TouchableOpacity>
       </View>
       <View style={styles.filterContainer}>
-  <Picker
-    selectedValue={selectedCategory}
-    onValueChange={itemValue => setSelectedCategory(itemValue)}
-    style={styles.filterPicker}
-  >
-    <Picker.Item style={styles.pickerItemDefault} label="Select Category" value={null} />
-    <Picker.Item style={styles.pickerItem} label="Engineering" value="Engineering" />
-    <Picker.Item style={styles.pickerItem} label="Marketing" value="Marketing" />
-    <Picker.Item style={styles.pickerItem} label="Manager" value="Manager" />
-  </Picker>
-  <Picker
-    selectedValue={selectedLocation}
-    onValueChange={itemValue => setSelectedLocation(itemValue)}
-    style={styles.filterPicker}
-  >
-    <Picker.Item style={styles.pickerItemDefault} label="Select location" value={null} />
-    <Picker.Item style={styles.pickerItem} label="MTL" value="MTL" />
-    <Picker.Item style={styles.pickerItem} label="San Francisco" value="San Francisco" />
-    <Picker.Item style={styles.pickerItem} label="LA" value="LA" />
-  </Picker>
+      <Picker
+      selectedValue={selectedCategory}
+      style={styles.filterPicker}
+      onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+    >
+      <Picker.Item label="Select Category" value="" />
+      {positions.map((position) => (
+        <Picker.Item style={styles.pickerItem} key={position} label={position} value={position} />
+      ))}
+    </Picker>
+
+      <Picker
+      selectedValue={selectedLocation}
+      style={styles.filterPicker}
+      onValueChange={(itemValue) => setSelectedLocation(itemValue)}
+    >
+      <Picker.Item label="Select a location" value="" />
+      {locations.map((location) => (
+        <Picker.Item style={styles.pickerItem} key={location} label={location} value={location} />
+      ))}
+    </Picker>
   {modalRender(job)}
 </View>
       <FlatList
