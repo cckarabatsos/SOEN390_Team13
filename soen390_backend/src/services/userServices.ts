@@ -338,8 +338,14 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
             db.collection("users")
                 .doc(receiverID)
                 .update({
-                    contacts:
+                    followers:
                         firebase.firestore.FieldValue.arrayUnion(senderID),
+                });
+            db.collection("users")
+                .doc(senderID)
+                .update({
+                    follows:
+                        firebase.firestore.FieldValue.arrayUnion(receiverID),
                 });
         }
     } catch (error) {
@@ -351,12 +357,20 @@ export async function unFollowCompanyInv(senderID: string, receiverID: string) {
     const receiverUser = await findUserWithID(receiverID);
     try {
         if (receiverUser) {
-            if (receiverUser.contacts.includes(senderID)) {
+            if (receiverUser.followers.includes(senderID)) {
                 db.collection("users")
                     .doc(receiverID)
                     .update({
-                        contacts:
+                        followers:
                             firebase.firestore.FieldValue.arrayRemove(senderID),
+                    });
+                db.collection("users")
+                    .doc(senderID)
+                    .update({
+                        follows:
+                            firebase.firestore.FieldValue.arrayRemove(
+                                receiverID
+                            ),
                     });
             } else {
                 console.log("You dont even follow that company????");
