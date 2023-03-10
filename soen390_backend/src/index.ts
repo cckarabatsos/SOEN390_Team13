@@ -53,6 +53,8 @@ const application = require("./routes/applicationRoutes");
 app.use("/application", application);
 const reports = require("./routes/reportRoutes");
 app.use("/reports", reports);
+const messages = require("./routes/messagesRoutes");
+app.use("/messages", messages);
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {
     res.send("Hi!");
