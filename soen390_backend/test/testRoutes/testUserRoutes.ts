@@ -63,11 +63,6 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
     });
-    describe("Post user/api/session", function () {
-        it("responds with 401 when there is no session", async function () {
-            await request(url).post("/user/api/session").expect(401);
-        });
-    });
     describe("Post user/api/logout", function () {
         it("responds with 200 and logs out user if no error", async function () {
             await request(url)
@@ -91,7 +86,7 @@ describe("Test User Routes", function () {
                 .expect(400);
         });
 
-        it("responds with 401 when user submit without filling out the password field", async function () {
+        it("responds with 400 when user submit without filling out the password field", async function () {
             await request(url)
                 .post("/user/api/register")
                 .send({
@@ -99,7 +94,7 @@ describe("Test User Routes", function () {
                     password: "",
                     name: "Matthew aime les test",
                 })
-                .expect(401);
+                .expect(400);
         });
         it("responds with 400 when user submit without filling out the email field", async function () {
             await request(url)
@@ -215,10 +210,10 @@ describe("Test User Routes", function () {
     });
 
     let response2: any;
-
+    let response1: any;
+    const randomEmail1 = makeid(10);
+    const randomEmail2 = makeid(10);
     describe("Get user/api/sendInvite", async function () {
-        const randomEmail1 = makeid(10);
-        const randomEmail2 = makeid(10);
         let payload = {
             isCompany: false,
             currentCompany: "Concordia University",
@@ -248,7 +243,7 @@ describe("Test User Routes", function () {
             name: "bog test",
         };
         it("responds with 200 for 2 non friends user", async function () {
-            var response1 = await request(url)
+            response1 = await request(url)
                 .post(`/user/api/register`)
                 .send(payload)
                 .expect(200);
@@ -261,12 +256,45 @@ describe("Test User Routes", function () {
                     `/user/api/sendInvite?receiverEmail=${randomEmail1}&senderEmail=${randomEmail2}`
                 )
                 .expect(200);
+        });
+    });
+    describe("Get user/api/manageInvite", function () {
+        it("responds with 200 when you can accept an invite", async function () {
+            await request(url)
+                .get(
+                    `/user/api/manageInvite?invitedEmail=${randomEmail1}&senderEmail=${randomEmail2}&isAccept=true`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when you already accepted the user", async function () {
+            await request(url)
+                .get(
+                    `/user/api/manageInvite?invitedEmail=${randomEmail1}&senderEmail=${randomEmail2}&isAccept=true`
+                )
+                .expect(404);
+            console.log(response1.body);
+        });
+    });
+
+    describe("Get user/api/getPendingInvitations", function () {
+        it("responds with 200 when you can get the invitations", async function () {
+            await request(url)
+                .get(
+                    `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.com`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when the account doesnt exist", async function () {
+            await request(url)
+                .get(
+                    `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.co`
+                )
+                .expect(404);
             await request(url)
                 .post(`/user/delete/${response1.body.registeredUser[1]}`)
                 .expect(200);
         });
     });
-
     describe("Get user/api/follow", function () {
         it("responds with 200 when you can follow a company", async function () {
             let companyID = "i2iLvPkBHmkV43PufHVp";

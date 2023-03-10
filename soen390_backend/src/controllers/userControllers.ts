@@ -49,7 +49,7 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
-    if (user.name === "" || user.email === "") {
+    if (user.name === "" || user.email === "" || user.password === "") {
         throw new Error("User name cannot be empty");
     }
     let casted_user: User;

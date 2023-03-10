@@ -352,7 +352,6 @@ export async function unFollowCompanyInv(senderID: string, receiverID: string) {
     try {
         if (receiverUser) {
             if (receiverUser.contacts.includes(senderID)) {
-                console.log("HI");
                 db.collection("users")
                     .doc(receiverID)
                     .update({
@@ -388,9 +387,7 @@ export async function manageUserInvitation(
                 });
             });
         }
-
         var invitedUser: any;
-
         invitedUser = await new Promise((resolve, _) => {
             findUserWithEmail(invitedEmail, (user) => {
                 if (user == null) {

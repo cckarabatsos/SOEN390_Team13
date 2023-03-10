@@ -37,11 +37,8 @@ user.get("/id/:userID", async (req: Request, res: Response) => {
     //console.log(userID);
     try {
         let data: any = await getUserWithID(userID);
-        if (data[0] == 200) {
-            res.sendStatus(200);
-        } else if (data[0] == 404) {
-            res.sendStatus(404);
-        }
+        res.status(data[0]);
+        res.json(data[1]).end();
     } catch (err: any) {
         res.status(400);
         res.json({ errType: err.Name, errMsg: err.message });
@@ -268,7 +265,6 @@ user.get("/api/manageInvite", async (req: Request, res: Response) => {
     } else {
         isAccept = false;
     }
-
     let data = await manageInvite(
         senderEmail,
         invitedEmail,
