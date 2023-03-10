@@ -270,14 +270,22 @@ const UserProfile = ({route}:{route:any}) => {
     }
     return obj;
   }
+
+  let bio = user.bio
+  let currentPosition = user.currentPosition
+  let currentCompany = user.currentCompany
+  let image = user.picture || 'https://randomuser.me/api/portraits/men/1.jpg'
+
         const CONTENT = [
           {
               isExpanded: false,
               category_name: 'Profile',
               subcategory: [
                 {key: 1, input: "Name",text: name, userID: userID},
-                {key: 3, input: "Email",text: email, userID: userID},
                 {key: 4, input: "Password",text: password, userID: userID},
+                {key: 2, input: "Bio",text: bio, userID: userID},
+                {key: 3, input: "Current Company",text: currentCompany, userID: userID},
+                {key: 5, input: "Current Position",text: currentPosition, userID: userID},
               ],
             },
           {
@@ -339,7 +347,7 @@ const UserProfile = ({route}:{route:any}) => {
                 <View style={styles.logoContainer}>
                   <Image
                   style={styles.logo}
-                  source={{ uri: user.picture }}
+                  source={{ uri: image }}
                   />
                   
                 </View>
@@ -370,6 +378,7 @@ const UserProfile = ({route}:{route:any}) => {
                       </View>
                       <View>
                           <Text style={styles.textMed}> {user.currentCompany + " " + user.currentPosition} </Text>
+                          <Text style={styles.textMed}> {user.email} </Text>
                           <Text style={styles.textSmall}> {user.bio} </Text>
                           <View>
                             <TouchableOpacity

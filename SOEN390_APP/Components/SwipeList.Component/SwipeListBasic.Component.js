@@ -71,8 +71,12 @@ export default function Basic({ data }) {
     let updatedUser = {};
     if (input1 === "Name")
       updatedUser = { ...user, name: newName }; // update the name attribute
-    else if (input1 === "Email") updatedUser = { ...user, email: newName };
+    else if (input1 === "Bio") updatedUser = { ...user, bio: newName };
     else if (input1 == "Password") updatedUser = { ...user, password: newName };
+    else if (input1 == "Current Company")
+      updatedUser = { ...user, currentCompany: newName };
+    else if (input1 == "Current Position")
+      updatedUser = { ...user, currentPosition: newName };
 
     await handleEditUserProfile(emailOld, updatedUser);
 
@@ -85,6 +89,7 @@ export default function Basic({ data }) {
       });
     }
     setUserUpdated(true);
+    setModalVisible(false);
   };
 
   const onRowDidOpen = (rowKey) => {
