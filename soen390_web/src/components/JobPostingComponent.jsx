@@ -16,7 +16,7 @@ function JobPostingComponent(props) {
   return (
     <div className="container">
       <div>
-        <div className="button-moreinfo-position">
+        <div className="button-moreinfo-position"> 
           <Button
             className="button-moreinfo"
             variant="contained"

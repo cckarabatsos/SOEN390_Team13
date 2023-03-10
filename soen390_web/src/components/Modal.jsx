@@ -29,7 +29,7 @@ const { t } = useTranslation();
           </button>
         </div>
         <div className="title">
-          <h1>Postion: {viewPosition}</h1>
+          <h1>Position: {viewPosition}</h1>
         </div>
         <div className="body">
           <p style={{ fontSize: "24px"}}>{viewCompany}</p>

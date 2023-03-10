@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import JobSearch from '../pages/JobSearch';
+import JobPostingComponent from '../components/JobPostingComponent';
 
 describe('JobSearch', () => {
 
@@ -31,5 +32,37 @@ describe('JobSearch', () => {
         fireEvent.click(jobPosting);
       });
 
+      const job = {
+        jobPosterID: 1,
+        position: 'Position',
+        location: 'Location',
+        company: 'Company',
+        contract: 'Contract',
+      };
+    
+      it('should render the job information correctly', () => {
+        render(
+          <JobPostingComponent
+            key={job.jobPosterID}
+            position={job.position}
+            location={job.location}
+            company={job.company}
+            contract={job.contract}
+            
+          />
+        );
+    
+        const positionElement = screen.getByText(job.position);
+        expect(positionElement).toBeInTheDocument();
+    
+        const locationElement = screen.getByText(job.location);
+        expect(locationElement).toBeInTheDocument();
+    
+        const companyElement = screen.getByText(job.company);
+        expect(companyElement).toBeInTheDocument();
+    
+        const contractElement = screen.getByText(job.contract);
+        expect(contractElement).toBeInTheDocument();
+      });
 });
 
