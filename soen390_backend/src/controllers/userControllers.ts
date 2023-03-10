@@ -136,18 +136,10 @@ export async function editAccount(
 ) {
     try {
         if (currProfile.email != newProfile.email) {
-            const userArr: User = await getUserWithEmail(
-                newProfile.email
-            ).then();
-            if (userArr[1] == null) {
-                currProfile.email = newProfile.email;
-            } else {
-                return [
-                    404,
-                    { msg: "Email is already affiliated to an account" },
-                ];
-            }
+            throw Error;
         }
+        newProfile.password = await hash(newProfile.password, saltRounds);
+        console.log(newProfile);
         currProfile = newProfile;
         updateUser(currProfile, id);
     } catch (err: any) {
