@@ -3,7 +3,7 @@
 		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
 		"name": "SOEN390",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19175436"
+		"_exporter_id": "25472351"
 	},
 	"item": [
 		{
@@ -490,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Poda\",\r\n    \"password\": \"matthewisthebest\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"bog4@test.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,7 +512,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "poda4@gmail.com"
+									"value": "bog4@test.com"
 								}
 							]
 						}
@@ -891,7 +891,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
+							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\",\r\n    \"companyID\": \"i2iLvPkBHmkV43PufHVp\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1257,6 +1257,19 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Create New Conversation",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
