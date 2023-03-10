@@ -11,10 +11,22 @@ import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import { Select, MenuItem } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
+import { addExperience } from "../api/UserProfileApi";
+import Checkbox from "@mui/material/Checkbox";
 
 const years = Array.from({ length: 51 }, (_, i) => 1980 + i);
 
-function AddEducationDialog() {
+function AddEducationDialog(userID) {
+  const [atPresent, setAtPresent] = React.useState(false);
+  const [startDate, setStartDate] = React.useState();
+  const [startMonth, setStartMonth] = React.useState();
+  const [startYear, setStartYear] = React.useState();
+  const [endDate, setEndDate] = React.useState(null);
+  const [endMonth, setEndMonth] = React.useState(null);
+  const [endYear, setEndYear] = React.useState(null);
+  const [company, setCompany] = React.useState();
+  const [position, setPosition] = React.useState();
+
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
   const handleClickOpen = () => {
@@ -22,10 +34,31 @@ function AddEducationDialog() {
   };
 
   const handleClose = () => {
+    if ((atPresent, startMonth, startYear, company, position)) handleFormData();
     setOpen(false);
   };
 
-  const [selectedYear, setSelectedYear] = useState(null);
+  // userID, atPresent, startDate, endDate, company, position, type
+  const addEducation = () => {
+    addExperience(
+      userID,
+      atPresent,
+      startDate,
+      endDate,
+      company,
+      position,
+      "Work"
+    );
+  };
+
+  const handleFormData = () => {
+    setStartDate(startMonth + " " + startYear);
+    if (endMonth && endYear != null) {
+      setEndDate(endMonth + " " + endYear);
+    }
+    addEducation();
+  };
+
   return (
     <span data-testid="experience-1">
       <>
@@ -35,7 +68,7 @@ function AddEducationDialog() {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{t("AddExpText")}</DialogTitle>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("PositionText")}
+            {t("PositionText")}
           </DialogContentText>
           <DialogContent>
             <TextField
@@ -43,13 +76,14 @@ function AddEducationDialog() {
               className="inputRounded"
               margin="dense"
               label={t("PositionText")}
-              type="university"
+              type="position"
               variant="outlined"
               size="small"
+              onChange={(e) => setPosition(e.target.value)}
             />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("CompanyText")}
+            {t("CompanyText")}
           </DialogContentText>
           <DialogContent>
             <TextField
@@ -57,31 +91,24 @@ function AddEducationDialog() {
               className="inputRounded"
               margin="dense"
               label={t("CompanyText")}
-              type="program"
+              type="Company"
               variant="outlined"
               size="small"
+              onChange={(e) => setCompany(e.target.value)}
             />
           </DialogContent>
-          <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("LocationText")}
+          <DialogContentText>
+            I am currently working for this position
           </DialogContentText>
           <DialogContent>
-            <TextField
-              autoFocus
-              className="inputRounded"
-              margin="dense"
-              label={t("LocationText")}
-              type="location"
-              variant="outlined"
-              size="small"
-            />
+            <Checkbox onChange={(e) => setAtPresent(e.target.value)} />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("StartDateText")}
+            {t("StartDateText")}
           </DialogContentText>
           <DialogContent>
-            <Select value={1}>
-            <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
+            <Select value={1} onChange={(e) => setStartMonth(e.target.value)}>
+              <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
               <MenuItem value={2}> {t("FebruaryText")}</MenuItem>
               <MenuItem value={3}>{t("MarchText")}</MenuItem>
               <MenuItem value={4}>{t("AprilText")}</MenuItem>
@@ -97,7 +124,7 @@ function AddEducationDialog() {
             <Select
               style={{ marginLeft: "10px" }}
               value={2023}
-              onChange={(e) => setSelectedYear(e.target.value)}
+              onChange={(e) => setStartYear(e.target.value)}
             >
               {years.map((year) => (
                 <MenuItem key={year} value={year}>
@@ -107,11 +134,11 @@ function AddEducationDialog() {
             </Select>
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("EndDateText")}
+            {t("EndDateText")}
           </DialogContentText>
           <DialogContent>
-            <Select value={1}>
-            <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
+            <Select value={1} onChange={(e) => setEndMonth(e.target.value)}>
+              <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
               <MenuItem value={2}> {t("FebruaryText")}</MenuItem>
               <MenuItem value={3}>{t("MarchText")}</MenuItem>
               <MenuItem value={4}>{t("AprilText")}</MenuItem>
@@ -127,7 +154,7 @@ function AddEducationDialog() {
             <Select
               style={{ marginLeft: "10px" }}
               value={2023}
-              onChange={(e) => setSelectedYear(e.target.value)}
+              onChange={(e) => setEndYear(e.target.value)}
             >
               {years.map((year) => (
                 <MenuItem key={year} value={year}>
@@ -146,7 +173,7 @@ function AddEducationDialog() {
               }}
               onClick={handleClose}
             >
-               {t("CancelText")}
+              {t("CancelText")}
             </Button>
             <Button
               className="button"
