@@ -1,5 +1,7 @@
 import { Filter, Jobposting } from "../models/jobPosting";
 import firebase from "firebase";
+import { findUserWithID } from "./userServices";
+import { user_schema } from "../models/User";
 
 const db = firebase.firestore();
 export const findJobpostingWithID = async (postingID: string) => {
@@ -13,6 +15,8 @@ export const findJobpostingWithID = async (postingID: string) => {
 };
 export const storeJobPosting = async (newJobPosting: Jobposting) => {
     try {
+        let user = findUserWithID(newJobPosting.jobPosterID);
+        let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({
             email: newJobPosting.email,
             location: newJobPosting.location,
@@ -24,6 +28,7 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
             contract: newJobPosting.contract,
             duration: newJobPosting.duration,
             type: newJobPosting.type,
+            logo: casted_user.picture,
             jobPosterID: newJobPosting.jobPosterID,
         });
         await document.update({ postingID: document.id });
