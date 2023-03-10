@@ -128,6 +128,8 @@ describe("Test User Routes", function () {
                 .expect(401);
         });
     });
+    let jobpostingPayload: any;
+    const goodEmail = "LinkedOutInc@gmail.com1";
     describe("Post user/api/posting/:email", async function () {
         const payload = {
             location: "MTL",
@@ -161,7 +163,6 @@ describe("Test User Routes", function () {
         });
 
         it("responds with 200 if the user is a company", async function () {
-            const goodEmail = "LinkedOutInc@gmail.com1";
             const payload = {
                 location: "MTL",
                 position: "intern",
@@ -174,14 +175,34 @@ describe("Test User Routes", function () {
                 duration: "4 years",
                 type: "internship",
             };
-            await request(url)
+            const postingResponse = await request(url)
                 .post(`/user/api/posting/${goodEmail}`)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .send(payload)
                 .expect(200);
+            jobpostingPayload = {
+                docID: postingResponse.body,
+            };
+            console.log(jobpostingPayload);
         });
     });
+
+    describe("Get jobposting/remove/:email", function () {
+        it("responds with 200 when you can remove a certain jobposting", async function () {
+            await request(url)
+                .post(`/jobposting/remove/${goodEmail}`)
+                .send(jobpostingPayload)
+                .expect(200);
+        });
+        it("responds with 404 when you already unFollowed a company", async function () {
+            await request(url)
+                .post(`/jobposting/remove/${goodEmail}`)
+                .send(jobpostingPayload)
+                .expect(404);
+        });
+    });
+
     describe("Get user/accountFile/:userID", async function () {
         it("responds with 404 if wrong type", async function () {
             await request(url)
