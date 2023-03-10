@@ -210,8 +210,13 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
                 newProfile,
                 ID
             ).then();
-            const { password, ...newUser } = await newSettings[1];
-            res.status(200).json(newUser);
+            const [statusCode, response] = newSettings;
+            if (statusCode === 200) {
+                const { password, ...newUser } = await response;
+                res.status(200).json(newUser);
+            } else {
+                res.status(statusCode).json(response);
+            }
         }
     } catch (err: any) {
         res.status(400);
@@ -360,17 +365,11 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
         }
     }
 });
-//Exporting the user as a module
-
-//****************End User invitation route section ***********88
-
 user.get("/api/search", async (req: Request, res: Response) => {
     var filter: any = {};
-
     for (const [key, value] of Object.entries(req.query)) {
         filter[key] = value;
     }
-
     try {
         let status,
             data = await getFilteredUsersController(filter);
@@ -379,9 +378,6 @@ user.get("/api/search", async (req: Request, res: Response) => {
         if (status == 200) {
             res.sendStatus(200);
         }
-        if (status == 404) {
-            res.sendStatus(404);
-        }
     } catch (err: any) {
         res.status(400);
         res.json({ errType: err.name, errMsg: err.message });
@@ -389,11 +385,9 @@ user.get("/api/search", async (req: Request, res: Response) => {
 });
 user.get("/api/searchCompanies", async (req: Request, res: Response) => {
     var filter: any = {};
-
     for (const [key, value] of Object.entries(req.query)) {
         filter[key] = value;
     }
-
     try {
         let status,
             data = await getFilteredCompaniesController(filter);
@@ -401,9 +395,6 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
         res.status(200);
         if (status == 200) {
             res.sendStatus(200);
-        }
-        if (status == 404) {
-            res.sendStatus(404);
         }
     } catch (err: any) {
         res.status(400);
