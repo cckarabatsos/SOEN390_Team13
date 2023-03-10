@@ -32,7 +32,8 @@ export async function GetCompanyAPI(data:any) {
   export async function GetUserInfo(data:any) {
     try {
       const response = await axios.get(api.BACKEND_API + "/user/id/" + data);
-      return response.data.data[1];
+      
+      return response.data;
     } catch (error) {
       console.log("error", error);
       return false;
