@@ -13,7 +13,7 @@ const award: Award = {
     name: "award",
     description: "this is a test award.",
     timestamp: "09-02-2010",
-    ownerID: userID
+    ownerID: userID,
 };
 
 describe("Test Award Routes", function () {
