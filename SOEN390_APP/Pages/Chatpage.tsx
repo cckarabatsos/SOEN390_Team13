@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
-const ChatPage = ({route}:{route:any}) => {
+const ChatPage = ({ route, navigation }:any) => {
   const { chatData } = route.params;
   let name = chatData.name
   let image = require("../Components/Images/google-icon.png")
@@ -23,11 +23,15 @@ const ChatPage = ({route}:{route:any}) => {
   ]);
   const [input, setInput] = useState('');
 
+  const goBack = () => {
+    navigation.goBack();
+  };
+
  const sendMessage = () => {
   setMessages([
     ...messages,
-    { id: messages.length + 1, text: input, sentByUser: true, senderName: 'You' },
-    { id: messages.length + 2, text: 'Response message', sentByUser: false, senderName: 'Friend' },
+    { id: messages.length + 1, text: input, sendByUser: true, name: 'You', image: image },
+    { id: messages.length + 2, text: 'Response message', sendByUser: false, name: 'Friend', image: image },
   ]);
   setInput('');
 };
@@ -38,17 +42,23 @@ const ChatPage = ({route}:{route:any}) => {
   }
   return (
     <View style={styles.container}>
-     
+           <View style={styles.header}>
+        <TouchableOpacity onPress={goBack}>
+          <Ionicons name="arrow-back-outline" size={28} color="#555" />
+        </TouchableOpacity>
+        <Image style={styles.profileImage} source={{ uri: chatData.image }} />
+        <Text style={styles.name}>{chatData.name}</Text>
+      </View>
 
 <FlatList
   data={messages}
   renderItem={({ item }) => (
     <View style={[
       styles.messageBox,
-      item.sentByUser ? styles.senderMessageBox : styles.receiverMessageBox,
+      item.sendByUser ? styles.senderMessageBox : styles.receiverMessageBox,
     ]}>
-      <Text style={item.sentByUser ? styles.senderMessageName : styles.receiverMessageName}>
-        {item.sentByUser ? 'You' : item.senderName}
+      <Text style={item.sendByUser ? styles.senderMessageName : styles.receiverMessageName}>
+        {item.sendByUser ? 'You' : item.name}
       </Text>
       <Text style={styles.messageText}>{item.text}</Text>
     </View>
@@ -141,6 +151,26 @@ const styles = StyleSheet.create({
     fileButton: {
     padding: 8,
     marginRight: 8,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  profileImage: {
+    width: 35,
+    height: 35,
+    borderRadius: 17.5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#555',
   },
 });
 

@@ -23,7 +23,17 @@ export default function ContactsComponent(props:any) {
 
   const location = props.location;
 
+  const currentEmail = props.currentEmail
+  const contactEmail = props.contactEmail
+
   //console.log(image);
+
+  const handleSendMessageRequest = ()=>{
+    
+  }
+  const handleRemoveFriend = ()=>{
+    
+  }
 
   return (
     <View style={styles.container}>
@@ -33,10 +43,16 @@ export default function ContactsComponent(props:any) {
       <View style={styles.column}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.job}>{job}</Text>
-        <Text style={styles.location}>{location}</Text>
+        <Text style={styles.location}>{contactEmail}</Text>
       </View>
-      <TouchableOpacity
-            onPress={props.handleCloseModal}
+            <TouchableOpacity
+              onPress={() => handleSendMessageRequest()}
+              style={styles.closeButtonMessageContainer}
+            >
+              <Ionicons name="chatbubble-outline" size={25} color={"green"}></Ionicons>        
+            </TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => handleRemoveFriend()}
             style={styles.closeButtonContainer}
           >
             <Ionicons name="person-remove-outline" size={25} color={"red"}></Ionicons>        
@@ -79,9 +95,13 @@ const styles = StyleSheet.create({
   closeButtonContainer: {
     paddingLeft: 10,
     paddingRight: 10,
-    borderRadius: 20,
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+
+  },
+  closeButtonMessageContainer: {
+    flex: 1,
+    alignItems: 'flex-end',  
 
   },
 });

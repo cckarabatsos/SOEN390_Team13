@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation, route}: { navigation: any, route:any }) => {
 
 
 function BottomNav({route}:{route:any}){
-  console.log(route.params)
+  //console.log(route.params)
   return(
     <Tab.Navigator screenOptions={({ route }) => ({
       
@@ -131,7 +131,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home"  component={BottomNav} options={({ route }) => ({
             headerLargeTitle: true,
-            title: route.params.username,
+            title: "Log-Out",
 })}/>      
  
       </Stack.Navigator>

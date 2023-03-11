@@ -64,7 +64,7 @@ export default function Files({ data }) {
   }, []);
 
   const uploadFile = (rowMap, rowKey) => {
-    setModalVisible(true);
+    //setModalVisible(true);
   };
 
   const downloadFile = async (input) => {

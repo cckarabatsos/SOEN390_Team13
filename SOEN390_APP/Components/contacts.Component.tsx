@@ -54,6 +54,7 @@ const renderContacts = ({item}:any) => (
       job={item.currentPosition}
       location={item.location}
       currentEmail={currentEmail}
+      contactEmail={item.email}
     />
   );
 
