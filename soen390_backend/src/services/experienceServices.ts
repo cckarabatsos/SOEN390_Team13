@@ -1,3 +1,6 @@
+/**
+ * Service methods for Experience entity of the database
+ */
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
@@ -7,6 +10,12 @@ import { findUserWithID } from "./userServices";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 
+/**
+ * Finds experience with specified ID in the database
+ *
+ * @param experienceID 
+ * @returns snapshot of the found experience or undefined
+ */
 export const findExperienceWithID = async (experienceID: string) => {
     try {
         var snapShot = await db
@@ -19,6 +28,13 @@ export const findExperienceWithID = async (experienceID: string) => {
     }
     return snapShot.data();
 };
+
+/**
+ * Stores a new Experience document in the database
+ * 
+ * @param experience 
+ * @returns ID of the created document or null
+ */
 export const storeExperience = async (experience: Experience, companyID: string) => {
     try {
         let user = await findUserWithID(experience.ownerID);
@@ -51,6 +67,13 @@ export const storeExperience = async (experience: Experience, companyID: string)
     }
     return document.id;
 };
+
+/**
+ * Deletes experience with specified ID from the database
+ * 
+ * @param experienceID 
+ * @returns information of the deleted experience or null
+ */
 export const deleteExperienceWithId = async (experienceID: string) => {
     try {
         var data: any = await findExperienceWithID(experienceID);
@@ -74,6 +97,15 @@ export const deleteExperienceWithId = async (experienceID: string) => {
     }
     return data;
 };
+
+/**
+ * Retrieves all experiences of specified type that are associated with the 
+ * user having the specified ID
+ * 
+ * @param userID 
+ * @param type "Work" or "Education"
+ * @returns array of experiences or null
+ */
 export const retrieveExperiences = async (userID: string, type: string) => {
     let user = await findUserWithID(userID);
     if (user === undefined || (type !== "Education" && type !== "Work")) {

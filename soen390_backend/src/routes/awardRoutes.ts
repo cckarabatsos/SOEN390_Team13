@@ -1,9 +1,15 @@
+/**
+ * Routes for Award entity of the database
+ */
 import express, { Request, Response } from "express";
 import { deleteAward, createAward, getAwards } from "../controllers/awardControllers";
 import { Award } from "../models/Award";
 const award = express.Router();
 award.use(express.json());
 
+/**
+ * Route that stores a new award to database
+ */
 award.post("/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
     let name: string = req.body.name;
@@ -29,6 +35,10 @@ award.post("/:ownerID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that removes an award from database
+ */
 award.post("/remove/:docID", async (req: Request, res: Response) => {
     let awardID = req.params.docID;
     try {
@@ -48,6 +58,10 @@ award.post("/remove/:docID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that retrieves all awards associated with a user
+ */
 award.get("/get/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     try {

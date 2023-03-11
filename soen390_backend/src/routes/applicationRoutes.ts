@@ -1,3 +1,6 @@
+/**
+ * Routes for Application entity of the database
+ */
 import express, { Request, Response } from "express";
 import { createApplication, getApplications, getLastApplication, getApplicationHistory, deleteApplication }
     from "../controllers/applicationControllers";
@@ -5,6 +8,9 @@ import { Application } from "../models/Application";
 const application = express.Router();
 application.use(express.json());
 
+/**
+ * Route that stores a new application to database
+ */
 application.post("/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
     let email: string = req.body.email;
@@ -68,6 +74,10 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that gets the last application of a user
+ */
 application.get("/getLastApplication/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
     try {
@@ -85,6 +95,10 @@ application.get("/getLastApplication/:userID", async (req: Request, res: Respons
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that retrieves all applications that were sent for a specific job posting
+ */
 application.get("/getApplications/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
     let postingID: string = req.query.postingID as string;
@@ -103,6 +117,10 @@ application.get("/getApplications/:userID", async (req: Request, res: Response) 
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that gets the application history of a user
+ */
 application.get("/getApplicationHistory/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     try {
@@ -120,6 +138,10 @@ application.get("/getApplicationHistory/:userID", async (req: Request, res: Resp
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that removes an application from database
+ */
 application.post("/remove/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
     let postingID: string = req.query.postingID as string;
