@@ -1,3 +1,6 @@
+/**
+ * Model for the Application entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const application_schema = yup

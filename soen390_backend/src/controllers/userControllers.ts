@@ -1,3 +1,6 @@
+/**
+ * Controller methods for User entity of the database
+ */
 import {
     findUserWithID,
     findUserWithEmail,
@@ -27,6 +30,13 @@ import jwt from "jsonwebtoken";
 const { sign } = jwt;
 const saltRounds = 4;
 dotenv.config();
+
+/**
+ * Tries to retrieve user with specified ID from database
+ *
+ * @param userID
+ * @returns status and response message
+ */
 export async function getUserWithID(userID: string) {
     let user = await findUserWithID(userID);
     let casted_user = await user_schema.cast(user);
@@ -37,6 +47,12 @@ export async function getUserWithID(userID: string) {
         return [404, { msg: "User not found" }];
     }
 }
+/**
+ * Tries to retrieve user with specified Email from database
+ *
+ * @param email
+ * @returns status and response message
+ */
 export async function getUserWithEmail(email: string) {
     return new Promise((resolve, _) => {
         findUserWithEmail(email, (user) => {
@@ -48,6 +64,12 @@ export async function getUserWithEmail(email: string) {
         });
     });
 }
+/**
+ * Cast a user and send it to the database
+ *
+ * @param User:any (json object)
+ * @returns status and response message
+ */
 export async function registerUser(user: any) {
     if (user.name === "" || user.email === "" || user.password === "") {
         throw new Error("User name cannot be empty");
@@ -84,6 +106,12 @@ export async function registerUser(user: any) {
         return [401, { msg: "Email was already found in the database" }];
     }
 }
+/**
+ * Delete a user with a certainID from the database
+ *
+ * @param UserID
+ * @returns status and response message
+ */
 export async function deleteUser(userID: string) {
     let user = await deleteUserWithId(userID);
     let casted_user = await user_schema.cast(user);
@@ -94,6 +122,15 @@ export async function deleteUser(userID: string) {
         return [404, { msg: "User not found" }];
     }
 }
+
+/**
+ * Tries to upload an account file to database
+ *
+ * @param userID
+ * @param type
+ * @param file
+ * @returns status and response message
+ */
 export async function uploadAccountFile(
     userID: string,
     type: string,
@@ -107,6 +144,14 @@ export async function uploadAccountFile(
         return [200, url];
     }
 }
+
+/**
+ * Tries to remove specified account file from database
+ *
+ * @param userID
+ * @param type
+ * @returns status and response message
+ */
 export async function removeAccountFile(userID: string, type: string) {
     let success = await deleteAccountFile(userID, type);
     if (success === null) {
@@ -115,6 +160,14 @@ export async function removeAccountFile(userID: string, type: string) {
         return [200, success];
     }
 }
+
+/**
+ * Tries to retrieve specified account file from database
+ *
+ * @param userID
+ * @param type
+ * @returns status and repsonse message
+ */
 export async function getAccountFile(userID: string, type: string) {
     let downloadUrl = await findAccountFile(userID, type);
     if (downloadUrl === null) {
@@ -129,6 +182,13 @@ export async function comparePasswords(pwd: string, password: string) {
     // console.log(match);
     return match;
 }
+/**
+ * Send an account to the database and edit the old account
+ * @param currProfile
+ * @param newProfile
+ * @param id
+ * @returns currProfile
+ */
 export async function editAccount(
     currProfile: User,
     newProfile: any,
@@ -153,7 +213,12 @@ export async function editAccount(
     }
     return [200, currProfile];
 }
-
+/**
+ * Send an inviteto a user not a company
+ * @param receiverEmail
+ * @param senderEmail
+ * @returns
+ */
 export async function sendInvite(receiverEmail: string, senderEmail: string) {
     try {
         await sendUserInvitation(receiverEmail, senderEmail);
@@ -163,6 +228,12 @@ export async function sendInvite(receiverEmail: string, senderEmail: string) {
 
     return [200, { msg: "Invitation sent" }];
 }
+/**
+ * follow a company
+ * @param receiverEmail
+ * @param senderEmail
+ * @returns
+ */
 export async function followCompany(
     receiverEmail: string,
     senderEmail: string
@@ -176,6 +247,12 @@ export async function followCompany(
     return [200, { msg: "Invitation sent" }];
 }
 
+/**
+ * unFollow a company
+ * @param receiverEmail
+ * @param senderEmail
+ * @returns
+ */
 export async function unFollowCompany(
     receiverEmail: string,
     senderEmail: string
@@ -188,7 +265,13 @@ export async function unFollowCompany(
 
     return [200, { msg: "Invitation sent" }];
 }
-
+/**
+ * Accept or decline a user invite
+ * @param senderEmail
+ * @param invitedEmail
+ * @param isAccept
+ * @returns
+ */
 export async function manageInvite(
     senderEmail: string,
     invitedEmail: string,
@@ -207,7 +290,12 @@ export async function manageInvite(
         return [200, { msg: "Invitation Declined " }];
     }
 }
-
+/**
+ * Get the invitations or contacts that are associated with an email
+ * @param userEmail
+ * @param contact
+ * @returns
+ */
 export async function getInvitationsOrContacts(
     userEmail: string,
     contact: boolean
@@ -223,6 +311,11 @@ export async function getInvitationsOrContacts(
 
     return [200, userList];
 }
+/**
+ * Validate a userfilter schema with the
+ * @param filter
+ * @returns
+ */
 
 function validateUserFilter(filter: UserFilter) {
     let error_data: any = { errMsg: "", errType: "" };
@@ -235,6 +328,11 @@ function validateUserFilter(filter: UserFilter) {
     }
     return [false, {}];
 }
+/**
+ * Get filtered users via a userFilter
+ * @param filter :UserFilter
+ * @returns filteredUsers
+ */
 
 export async function getFilteredUsersController(filter: UserFilter) {
     let stripped_filer = user_filter_schema.cast(filter, {
@@ -251,6 +349,11 @@ export async function getFilteredUsersController(filter: UserFilter) {
         return [200, users];
     }
 }
+/**
+ * Get filtered companies via a userFilter
+ * @param filter :UserFilter
+ * @returns filteredCompanies
+ */
 export async function getFilteredCompaniesController(filter: UserFilter) {
     let stripped_filer = user_filter_schema.cast(filter, {
         stripUnknown: true,
@@ -266,12 +369,21 @@ export async function getFilteredCompaniesController(filter: UserFilter) {
         return [200, users];
     }
 }
+/**
+ * Generate a JWT access token
+ * @param username
+ * @returns
+ */
 export async function generateAccessToken(username: any) {
     // console.log(await process.env.TOKEN_SECRET);
     //console.log(process.env.TOKEN_SECRET!);
     return sign(username, process.env.TOKEN_SECRET!, { expiresIn: "28800000" });
 }
-
+/**
+ * Add a file to the request type
+ * @param request
+ * @returns
+ */
 export function hasFile(request: Request): request is Request & { file: any } {
     return "file" in request;
 }

@@ -1,3 +1,6 @@
+/**
+ * Model for the Experience entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const experience_schema = yup
@@ -15,7 +18,7 @@ export const experience_schema = yup
         company: yup.string().required(),
         position: yup.string().required(),
         type: yup.string().required(),
-        logo: yup.string().required(),
+        logo: yup.string(),
         ownerID: yup.string().required(),
     })
     .required();

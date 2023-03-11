@@ -5,6 +5,7 @@ import {
   createNewConversationController,
   SendNewMessage,
   GetUpdatedMessages,
+  GetActiveConversations
 } from "../controllers/messagesController";
 const messages = express.Router();
 messages.use(express.json());
@@ -162,4 +163,28 @@ messages.get("/sendMessage", async (req, res) => {
 //     });
 //   }
 // });
+
+
+
+messages.get("/getActiveConversation", async (req, res) => {
+    try {
+      const email  = req.query.email as string;
+      if (!email) {
+        return res.status(400).json({
+          message: "Please provide an email address",
+        });
+      }
+      const activeConvos = await GetActiveConversations(email);
+      
+      return res.status(200).json({
+        message: "Messages retrieved successfully",
+        activeConvos,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  });
 module.exports = messages;

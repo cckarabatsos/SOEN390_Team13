@@ -1,7 +1,11 @@
 import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
-import { chatMessage, messagesListElement } from "../models/Messages";
+import {
+  chatMessage,
+  messagesListElement,
+  conversationListElement,
+} from "../models/Messages";
 const db = firebase.firestore();
 //const ref = firebase.storage().ref();
 
@@ -436,5 +440,61 @@ export async function getUpdatedMessages(
   } catch (error) {
     console.error(`Error occurred in sendMessage: ${error}`);
     throw error;
+  }
+}
+
+export async function getActiveConversations(email: string) {
+  try {
+    // retrive sender email
+    let sender: any;
+    sender = await new Promise((resolve, _) => {
+      findUserWithEmail(email, (user) => {
+        // console.log(user);
+        if (user == null) {
+          resolve(null);
+        } else {
+          resolve(user);
+        }
+      });
+    });
+
+    // fetch the conversation og the active user
+    let conversation = await db
+      .collection("conversations")
+      .where("userArray", "array-contains", sender.data["userID"])
+      .get();
+
+    let convo = conversation.docs.map(
+      (doc: { data: () => any; id: string }) => ({
+        data: doc.data(),
+        id: doc.id,
+      })
+    );
+
+    console.log(convo);
+
+    let conversationList: conversationListElement[] = [];
+
+    for (var i = 0; i < convo.length; i++) {
+      let msgToFetch = convo[i].data["messages"].length;
+      if (msgToFetch > 0) {
+        msgToFetch = msgToFetch - 1;
+
+        let messageRef = await convo[i].data["messages"][msgToFetch].get();
+        let element: conversationListElement = {
+          ActiveUser: convo[i].data["userArray"],
+          message: messageRef.data() as chatMessage,
+        };
+        
+        conversationList.push(element);
+      }
+    }
+
+    return conversationList;
+  } catch (error) {
+
+    console.error(`Error occurred in conversation list: ${error}`);
+    throw error;
+
   }
 }

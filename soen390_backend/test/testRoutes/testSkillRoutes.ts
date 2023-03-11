@@ -1,7 +1,11 @@
 import * as mocha from "mocha";
 import app from "../../src/index";
 import request from "supertest";
-import { deleteSkillWithId, retrieveSkills, storeSkill } from "../../src/services/skillServices";
+import {
+    deleteSkillWithId,
+    retrieveSkills,
+    storeSkill,
+} from "../../src/services/skillServices";
 import { Skill } from "../../src/models/Skill";
 const it = mocha.it;
 const url = "http://localhost:4000";
