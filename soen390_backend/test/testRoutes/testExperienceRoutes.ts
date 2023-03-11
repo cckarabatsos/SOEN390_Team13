@@ -7,7 +7,6 @@ const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
-const companyID = "i2iLvPkBHmkV43PufHVp";
 const badUserID = "5";
 const postExperience: Experience = {
     atPresent: false,
@@ -16,7 +15,7 @@ const postExperience: Experience = {
     endDate: "21-06-2018",
     position: "Student",
     type: "Education",
-    ownerID: userID
+    ownerID: userID,
 };
 const experience: Experience = {
     atPresent: false,

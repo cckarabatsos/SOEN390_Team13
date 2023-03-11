@@ -10,7 +10,11 @@ import { User, user_schema, UserFilter } from "../models/User";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
-
+/**
+ * Query the db to get a user via their ID
+ * @param userID
+ * @returns user
+ */
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -20,6 +24,11 @@ export const findUserWithID = async (userID: string) => {
     }
     return snapShot.data();
 };
+/**
+ * Query the db to get a user via their Email
+ * @param userID
+ * @returns
+ */
 export const findUserWithEmail = (
     email: string,
     callback: (data: any) => void
@@ -40,6 +49,11 @@ export const findUserWithEmail = (
             throw new Error(error.message);
         });
 };
+/**
+ * Store a user in the DB
+ * @param user
+ * @returns document.ID
+ */
 
 export const storeUser = async (user: User) => {
     try {
@@ -71,7 +85,11 @@ export const storeUser = async (user: User) => {
     }
     return document.id;
 };
-
+/**
+ * Delete a certain User via their ID
+ * @param userID
+ * @returns the old user dta
+ */
 export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
@@ -260,16 +278,17 @@ export const findAccountFile = async (userID: string, type: string) => {
  * @param snapshot
  * @returns
  */
-function processData(snapshot: any) {
+export function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
         data: doc.data(),
         id: doc.id,
     }));
-    if (data !== null) {
-        return data[0];
-    } else {
+    console.log(data);
+    if (data === null || data.length === 0) {
         console.log("ERROR");
-        throw error;
+        throw new Error("snapshot is empty");
+    } else {
+        return data[0];
     }
 }
 /**
