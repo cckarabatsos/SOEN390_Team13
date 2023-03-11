@@ -77,6 +77,7 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
         },
       });
       console.log("------------------------" )
+      console.log(response.data.activeConvos)
       console.log(response.data.activeConvos[1])
       console.log("------------------------" )
       if (response.status == 200) {

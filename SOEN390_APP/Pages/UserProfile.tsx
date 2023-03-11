@@ -435,6 +435,7 @@ const UserProfile = ({route}:{route:any}) => {
                                       handleCloseModal={handleCloseModal}
                                       screen={2}
                                       email={user.email}
+                                      
                             ></ContactModal>
                             </View>
                             <View>

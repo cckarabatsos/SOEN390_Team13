@@ -15,6 +15,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CreateConversation } from "../api/MessagesAPI";
 
+
 export default function ContactsComponent(props:any) {
   const image = props.image || 'https://randomuser.me/api/portraits/men/1.jpg';
 
@@ -32,6 +33,7 @@ export default function ContactsComponent(props:any) {
   const handleSendMessageRequest = async (emailUser:string, emailContact:string)=>{
     console.log()
     await CreateConversation(emailUser, emailContact);
+    
   }
   const handleRemoveFriend = ()=>{
     

@@ -31,6 +31,7 @@ type ConversationType = {
 const Messages  = ({ route, navigation }:any) => {
   const Stack = createNativeStackNavigator();
   let emailUser = route.params.email
+  let userID = route.params.userID
   
   const [conversations, setConversations] = useState<ConversationType[]>([]);
   const [allMessages, setAllMessages] = useState([]);
@@ -40,7 +41,6 @@ const Messages  = ({ route, navigation }:any) => {
   
   const handleGetConversations = async () => {
     const message = await GetActiveConversations(emailUser);
-  
     const newObjectsArray = await Promise.all(message.map(buildObject));
     setConversations(newObjectsArray);
       
@@ -65,14 +65,31 @@ const Messages  = ({ route, navigation }:any) => {
     }
   
   const buildObject = async (jsonObject:any) => {
-    const { email, message } = jsonObject;
-    const user = await handleGetUserInfo(message.senderId)
+    const { ActiveUser, message } = jsonObject;
+    console.log("sss")
+    console.log(ActiveUser)
+    let activeUser:string = ""
+    let message1 =""
+    let timestamp1 =""
+
+    ActiveUser.forEach((element: any) => {
+      if(element!==userID){
+        activeUser = element
+      }
+    });
+
+    if(message!=null){
+      message1=message.content
+      timestamp1 = message.timestamp
+    }
+
+    const user = await handleGetUserInfo(activeUser)
     const obj = {
       id: uuidv4(),
       name: user.name,
       image: user.picture|| 'https://randomuser.me/api/portraits/men/1.jpg',
-      lastMessage: message.content,
-      timestamp: message.timestamp, 
+      lastMessage: message1,
+      timestamp: timestamp1, 
       email: user.email,
       emailUser: emailUser
     }

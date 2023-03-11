@@ -14,21 +14,10 @@ export async function GetApplicationsHistory(userID:string) {
 }
 
 export async function RemoveApplication(userID:string, postingID:string) {
-  console.log("INSIDE REMOVEAPPLICTION" )
-  console.log(userID, postingID)
   try {
-    const response = await axios.post(api.BACKEND_API + "/application/remove/" + userID, {
-      params: {
-        postingID: postingID
-      },
-    });
-    if (response.status == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    const response = await axios.post(api.BACKEND_API + '/application/remove/' + userID + "?postingID=" + postingID);
+    return response.data;
   } catch (error) {
-    console.error("error Remove Application", error);
-    return false;
+    console.error(error);
   }
 }
