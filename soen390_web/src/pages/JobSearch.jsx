@@ -6,6 +6,8 @@ import Modal from "../components/Modal";
 import JobsOverview from "../models/JobsOverview.ts";
 
 export default function JobSearch() {
+
+  // define state variables with useState hook
   const [modalOpen, setModalOpen] = useState(false);
   const [jobPosterID, setjobPosterID] = useState(false);
   const [position, setPosition] = useState(false);
@@ -19,6 +21,7 @@ export default function JobSearch() {
   const { t } = useTranslation();
   const [jobDisplay, setJobDisplay] = useState([]);
 
+  // useEffect to create jobDisplay array whenever jobs array changes
   useEffect(() => {
     console.log(jobs);
     var jobArray = [];
@@ -31,7 +34,7 @@ export default function JobSearch() {
           jobs[i].company,
           jobs[i].contract,
           i,
-          20,
+          20,  //jobs[i].salary
           jobs[i].description,
           jobs[i].email
         )
@@ -43,12 +46,19 @@ export default function JobSearch() {
     setJobDisplay(jobArray);
   }, [jobs]);
 
+  // render JobSearch component 
+  // map over jobDisplay array and render JobPostingComponent for each job
+        
   return (
     <div>
-      <div>
-        <h2>{t("JobSearchingJourneyText")}</h2>
+      <div data-testid="job-posting">
+        <div className="jobSearchingText">
+        <p>{t("JobSearchingJourneyText")}</p>
+        </div>
+        <div className="desiredJobText">
+        <p>{t("DesiredJobText")}</p>
+        </div>
         <JobSearchBar setJobs={setJobs} />
-        <h1>{t("DesiredJobText")}</h1>
         {modalOpen && (
           <Modal
             setOpenModal={setModalOpen}
