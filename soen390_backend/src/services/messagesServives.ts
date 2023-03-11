@@ -485,16 +485,19 @@ export async function getActiveConversations(email: string) {
           ActiveUser: convo[i].data["userArray"],
           message: messageRef.data() as chatMessage,
         };
-        
+        conversationList.push(element);
+      } else {
+        let element: conversationListElement = {
+          ActiveUser: convo[i].data["userArray"],
+          message: null,
+        };
         conversationList.push(element);
       }
     }
 
     return conversationList;
   } catch (error) {
-
     console.error(`Error occurred in conversation list: ${error}`);
     throw error;
-
   }
 }
