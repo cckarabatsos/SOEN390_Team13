@@ -219,7 +219,7 @@ console.log(Application)
               <TableCell align="left">{row.location}</TableCell>
               <TableCell align="left">{row.company}</TableCell>
               <TableCell align="left">{row.contract}</TableCell>
-              <TableCell align="left"><ActionButton></ActionButton></TableCell>
+              <TableCell align="left"><ActionButton postingID={row.postingID}></ActionButton></TableCell>
             </TableRow>
           ))}
         </TableBody>

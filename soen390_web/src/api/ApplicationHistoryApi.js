@@ -29,13 +29,15 @@ export async function removeApplication(userID, postingID) {
   }
 }
 
-export const handleWithdrawApplication = async (userID, postingID) => {
+export const handleWithdrawApplication = async (postingID) => {
   try {
     const data = JSON.parse(localStorage.getItem("isAuth"));
-    const id = "5";
+  
+    let id = "5";
     if (data != null) {
       id = data.userID;
     }
+    console.log(api.BACKEND_API + '/application/remove/' + id + "?postingID=" + postingID)
     const response = await axios.post(api.BACKEND_API + '/application/remove/' + id + "?postingID=" + postingID);
     return response.data;
   } catch (error) {
