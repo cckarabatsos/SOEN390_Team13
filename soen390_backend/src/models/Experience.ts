@@ -1,3 +1,6 @@
+/**
+ * Model for the Experience entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const experience_schema = yup

@@ -1,3 +1,6 @@
+/**
+ * Routes for User entity of the database
+ */
 import express, { Request, Response } from "express";
 import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
@@ -84,6 +87,9 @@ user.get("/api/login", async (req: Request, res: Response) => {
     return user;
 });
 
+/**
+ * ROute that gets specified type of account file for a user
+ */
 user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -101,6 +107,9 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * Route that removes the specified type of account file for a user
+ */
 user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -169,6 +178,10 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that stores specified type of account file to database
+ */
 user.post(
     "/uploadAccountFile/:userID",
     upload.single("file"),

@@ -1,3 +1,6 @@
+/**
+ * Controller methods for User entity of the database
+ */
 import {
     findUserWithID,
     findUserWithEmail,
@@ -27,6 +30,13 @@ import jwt from "jsonwebtoken";
 const { sign } = jwt;
 const saltRounds = 4;
 dotenv.config();
+
+/**
+ * Tries to retrieve user with specified ID from database
+ * 
+ * @param userID 
+ * @returns status and response message
+ */
 export async function getUserWithID(userID: string) {
     let user = await findUserWithID(userID);
     let casted_user = await user_schema.cast(user);
@@ -94,6 +104,15 @@ export async function deleteUser(userID: string) {
         return [404, { msg: "User not found" }];
     }
 }
+
+/**
+ * Tries to upload an account file to database
+ * 
+ * @param userID 
+ * @param type 
+ * @param file 
+ * @returns status and response message
+ */
 export async function uploadAccountFile(
     userID: string,
     type: string,
@@ -107,6 +126,14 @@ export async function uploadAccountFile(
         return [200, url];
     }
 }
+
+/**
+ * Tries to remove specified account file from database
+ * 
+ * @param userID
+ * @param type 
+ * @returns status and response message
+ */
 export async function removeAccountFile(userID: string, type: string) {
     let success = await deleteAccountFile(userID, type);
     if (success === null) {
@@ -115,6 +142,14 @@ export async function removeAccountFile(userID: string, type: string) {
         return [200, success];
     }
 }
+
+/**
+ * Tries to retrieve specified account file from database
+ * 
+ * @param userID 
+ * @param type 
+ * @returns status and repsonse message
+ */
 export async function getAccountFile(userID: string, type: string) {
     let downloadUrl = await findAccountFile(userID, type);
     if (downloadUrl === null) {
