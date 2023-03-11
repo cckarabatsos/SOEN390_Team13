@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import {
   createNewConversationController,
   SendNewMessage,
-  GetAllMessages,
+  GetUpdatedMessages
 } from "../controllers/messagesController";
 const messages = express.Router();
 messages.use(express.json());
@@ -53,7 +53,7 @@ messages.get("/getAllMessages", async (req, res) => {
         message: "Please provide an email address",
       });
     }
-    const usersChat = await GetAllMessages(senderEmail, userEmails);
+    const usersChat = await GetUpdatedMessages(senderEmail, userEmails, 0);
     return res.status(200).json({
       message: "Messages retrieved successfully",
       usersChat,
@@ -71,16 +71,18 @@ messages.get("/getAllMessages", async (req, res) => {
 //outputs the missing messages along with their sender email address
 messages.get("/updateMessages", async (req, res) => {
   try {
-    const { email } = req.query;
-    if (!email) {
+    const userEmails: string[] = JSON.parse(req.query.userEmails as string);
+    const senderEmail = req.query.senderEmail as string;
+    const messagesLength:number = parseInt(req.query.messagesLength as string);
+    if (!userEmails) {
       return res.status(400).json({
         message: "Please provide an email address",
       });
     }
-    const jobPostings = "hello 3";
+    const usersChat = await GetUpdatedMessages(senderEmail, userEmails, messagesLength);
     return res.status(200).json({
       message: "Messages retrieved successfully",
-      jobPostings,
+      usersChat,
     });
   } catch (error) {
     console.log(error);
@@ -89,9 +91,9 @@ messages.get("/updateMessages", async (req, res) => {
     });
   }
 });
-// this reoute will be use to send a massage within the conversatiuon entity
-//input: receive the converdation entity members list and the sender email.
-// output the boolean true of false depoending if the message was sucessfully sent
+// This route is used to send a message within a conversation entity
+// Input: the conversation entity members' list and the sender email.
+// Output: a boolean value indicating whether the message was successfully sent or not.
 messages.get("/sendMessage", async (req, res) => {
   console.log("in sendMessage");
   try {
@@ -99,20 +101,19 @@ messages.get("/sendMessage", async (req, res) => {
     const emails: string[] = JSON.parse(req.query.emails as string);
     const message = req.query.message as string;
 
-    console.log(senderEmail);
-    console.log(emails);
-    console.log(message);
-    if (!emails || !message || !senderEmail) {
-      return res.status(400).json({
-        message:
-          "Please provide an valid sender email address, all emails in the conversation or a non null message",
-      });
-    }
-    const messageConfirmation = await SendNewMessage(senderEmail, emails, message);
-    return res.status(200).json({
-      message: "Message sent successfully",
-      messageConfirmation,
-    });
+    // Error detection for missing or invalid inputs
+if (!emails || !message || !senderEmail || !Array.isArray(emails) || emails.length < 2) {
+  return res.status(400).json({
+    message:
+      "Please provide a valid sender email address, all emails in the conversation, and a non-null message",
+  });
+}
+
+const messageConfirmation = await SendNewMessage(senderEmail, emails, message);
+return res.status(200).json({
+  message: "Message sent successfully",
+  messageConfirmation,
+});
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -144,5 +145,4 @@ messages.get("/getMessages", async (req, res) => {
     });
   }
 });
-
 module.exports = messages;

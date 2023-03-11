@@ -11,17 +11,6 @@ const db = firebase.firestore();
 
 //  dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
-
-/*
-
-to do:
-
-in the "send message" function, correct the logic for the "wrap" variable.
-Add extensive error checking and return a specific error type for each associated error.
-
-*/
-
-
 const orderIds = (arr: string[]): string[] => {
   const len = arr.length;
 
@@ -94,29 +83,30 @@ async function fetchConversation(userIds: string[]) {
   }
 }
 
-
 /**
  * Creates a new conversation document in the database with the given user IDs and an empty messages array.
  * @param userIds An array of user IDs to include in the conversation.
  * @returns A promise that resolves to the newly created conversation document.
  */
-async function createConversation(userIds: string[]): Promise<firebase.firestore.DocumentData> {
-    try {
-      const conversationData = await db.collection("conversations").add({
-        messages: [],
-        userArray: userIds,
-      });
-  
-      if (!conversationData) {
-        throw new Error("Failed to create conversation.");
-      }
-  
-      return conversationData;
-    } catch (error) {
-      console.error(`Failed to create conversation: ${(error as Error).message}`);
-      throw error;
+async function createConversation(
+  userIds: string[]
+): Promise<firebase.firestore.DocumentData> {
+  try {
+    const conversationData = await db.collection("conversations").add({
+      messages: [],
+      userArray: userIds,
+    });
+
+    if (!conversationData) {
+      throw new Error("Failed to create conversation.");
     }
+
+    return conversationData;
+  } catch (error) {
+    console.error(`Failed to create conversation: ${(error as Error).message}`);
+    throw error;
   }
+}
 
 export async function initiateConversation(userEmails: string[]) {
   let userList = true;
@@ -200,7 +190,7 @@ export async function sendMessage(
     console.log(userIds);
 
     const conversation = await fetchConversation(userIds);
-  
+
     let conversationId: string;
 
     if (conversation.length === 0) {
@@ -251,13 +241,15 @@ export async function sendMessage(
         ),
       });
 
-   
     return true;
   } catch (error) {
     console.error(`Error occurred in sendMessage: ${error}`);
     throw error;
   }
 }
+
+
+
 
 export async function getMessages(senderEmail: string, userEmails: string[]) {
   console.log(userEmails);
@@ -308,7 +300,7 @@ export async function getMessages(senderEmail: string, userEmails: string[]) {
     let messagesRef = conversation[0].data["messages"];
     console.log(sender.data["userID"]);
 
-    var listOfMessages:messagesListElement[] = [];
+    var listOfMessages: messagesListElement[] = [];
 
     for (var i = 0; i < messagesRef.length; i++) {
       let snapShot: any = await messagesRef[i].get();
@@ -323,19 +315,128 @@ export async function getMessages(senderEmail: string, userEmails: string[]) {
       }
 
       //convert to readable Date javascript object for timestamp
-      chat.timestamp = (chat.timestamp as firebase.firestore.Timestamp).toDate();
+      chat.timestamp = (
+        chat.timestamp as firebase.firestore.Timestamp
+      ).toDate();
 
       //populates the return message list:
-      var messageWrapper: messagesListElement={
-
-        email:senderEmail,
-        message:chat
-
-      }
+      var messageWrapper: messagesListElement = {
+        email: senderEmail,
+        message: chat,
+      };
       listOfMessages.push(messageWrapper);
     }
     return listOfMessages;
   } catch (error) {
     throw new Error("Error in getMessages: " + (error as Error).message);
+  }
+}
+
+
+/**
+
+Asynchronously retrieves any new messages sent to a conversation and marks them as read for the recipient.
+
+@param senderEmail - The email address of the sender of the messages
+
+@param userEmails - An array of email addresses of the users participating in the conversation
+
+@param messagesLength - The length of the message array last retrieved by the recipient
+
+@returns - An array of messages that were sent after the messagesLength index, wrapped in a messagesListElement object containing the email of the sender and the message content
+
+or an empty array if there are no new messages to retrieve or if there was an error
+*/
+
+export async function getUpdatedMessages(
+  senderEmail: string,
+  userEmails: string[],
+  messagesLength: number
+) {
+  try {
+    // get user ids from the array of
+
+    let userIds: string[] = new Array();
+
+    for (var i = 0; i < userEmails.length; i++) {
+      var anUser: any;
+      console.log(userEmails[i]);
+
+      anUser = await new Promise((resolve, _) => {
+        findUserWithEmail(userEmails[i], (user) => {
+          // console.log(user);
+          if (user == null) {
+            resolve(null);
+          } else {
+            resolve(user);
+          }
+        });
+      });
+
+      if (anUser.data) {
+        userIds.push(anUser.data["userID"]);
+      }
+    }
+    userIds = orderIds(userIds);
+
+    let conversation = await fetchConversation(userIds);
+
+    if(conversation.length!=1){
+
+        return []
+    }
+    // fetch the sender userID from the database
+    let sender: any;
+    sender = await new Promise((resolve, _) => {
+      findUserWithEmail(senderEmail, (user) => {
+        // console.log(user);
+        if (user == null) {
+          resolve(null);
+        } else {
+          resolve(user);
+        }
+      });
+    });
+
+    let messagesRef = conversation[0].data["messages"];
+
+    if( messagesRef.length== messagesLength ){
+
+        return []
+    }
+    var listOfMessages: messagesListElement[] = [];
+
+    for (var i = messagesLength; i < messagesRef.length; i++) {
+        let snapShot: any = await messagesRef[i].get();
+        let chat: chatMessage = snapShot.data() as chatMessage;
+  
+        //if its not the owner of the sent mesage set the read flag to true
+        if (chat.senderId != sender.data["userID"] && chat.isRead == false) {
+          chat.isRead = true;
+          await db.collection("chats").doc(snapShot.id).update({
+            isRead: true,
+          });
+        }
+  
+        //convert to readable Date javascript object for timestamp
+        chat.timestamp = (
+          chat.timestamp as firebase.firestore.Timestamp
+        ).toDate();
+  
+        //populates the return message list:
+        var messageWrapper: messagesListElement = {
+          email: senderEmail,
+          message: chat,
+        };
+        listOfMessages.push(messageWrapper);
+      }
+      return listOfMessages;
+
+  } catch (error) {
+
+    console.error(`Error occurred in sendMessage: ${error}`);
+    throw error;
+
+
   }
 }
