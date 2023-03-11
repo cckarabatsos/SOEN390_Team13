@@ -13,7 +13,7 @@ const ref = firebase.storage().ref();
 /**
  * Finds experience with specified ID in the database
  *
- * @param experienceID 
+ * @param experienceID
  * @returns snapshot of the found experience or undefined
  */
 export const findExperienceWithID = async (experienceID: string) => {
@@ -28,27 +28,26 @@ export const findExperienceWithID = async (experienceID: string) => {
     }
     return snapShot.data();
 };
-
 /**
  * Stores a new Experience document in the database
- * 
- * @param experience 
+ *
+ * @param experience
  * @returns ID of the created document or null
  */
-export const storeExperience = async (experience: Experience, companyID: string) => {
+export const storeExperience = async (experience: Experience) => {
     try {
         let user = await findUserWithID(experience.ownerID);
-        if (user === undefined) {
+        if (
+            user === undefined ||
+            (experience.type !== "Education" && experience.type !== "Work")
+        ) {
             return null;
         }
-        let company = await findUserWithID(companyID);
-        if (company === undefined || !company.isCompany) {
-            experience.logo = await ref
-                .child("Profile Pictures/blank_company_pic.jpg")
-                .getDownloadURL();;
-        } else {
-            experience.logo = company.picture;
-        }
+
+        experience.logo =
+            experience.type === "Education"
+                ? await ref.child("Logos/education_logo.png").getDownloadURL()
+                : await ref.child("Logos/work_logo.png").getDownloadURL();
         var document = await db.collection("experiences").add({
             atPresent: experience.atPresent,
             startDate: experience.startDate,
@@ -70,8 +69,8 @@ export const storeExperience = async (experience: Experience, companyID: string)
 
 /**
  * Deletes experience with specified ID from the database
- * 
- * @param experienceID 
+ *
+ * @param experienceID
  * @returns information of the deleted experience or null
  */
 export const deleteExperienceWithId = async (experienceID: string) => {
@@ -84,8 +83,8 @@ export const deleteExperienceWithId = async (experienceID: string) => {
                 .then(() => {
                     console.log(
                         "Experience with ID " +
-                        experienceID +
-                        " successfully deleted."
+                            experienceID +
+                            " successfully deleted."
                     );
                 });
         } else {
@@ -99,10 +98,10 @@ export const deleteExperienceWithId = async (experienceID: string) => {
 };
 
 /**
- * Retrieves all experiences of specified type that are associated with the 
+ * Retrieves all experiences of specified type that are associated with the
  * user having the specified ID
- * 
- * @param userID 
+ *
+ * @param userID
  * @param type "Work" or "Education"
  * @returns array of experiences or null
  */
