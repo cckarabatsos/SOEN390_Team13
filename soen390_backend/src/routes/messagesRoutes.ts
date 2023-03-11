@@ -1,26 +1,26 @@
 import express from "express";
 
 import dotenv from "dotenv";
-import { createNewConversationController } from "../controllers/messagesController";
+import {
+  createNewConversationController,
+  SendNewMessage,
+} from "../controllers/messagesController";
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
-
 
 // This route will be used to create a new conversation between 2 or more users
 // receives an array of user email addresses
 // output true if the conversation was sucessfully created
 messages.get("/createConversation", async (req, res) => {
-    console.log("in createConversation");
+  console.log("in createConversation");
 
   try {
-    const userEmails:string[] = JSON.parse(req.query.emails as string);
+    const userEmails: string[] = JSON.parse(req.query.emails as string);
 
     //console.log(userEmails)
-    
-    if (userEmails.length < 2) {
 
-      
+    if (userEmails.length < 2) {
       return res.status(400).json({
         message: "Please provide at least 2 user emails",
       });
@@ -34,11 +34,10 @@ messages.get("/createConversation", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error: "+ (error as Error).message
+      message: "Internal server error: " + (error as Error).message,
     });
   }
 });
-
 
 // this route will be used to return the list of messages within a conversatiuon entity.
 // receives the email address of the conversatiuon entity
@@ -90,18 +89,26 @@ messages.get("/updateMessages", async (req, res) => {
 // this reoute will be use to send a massage within the conversatiuon entity
 //input: receive the converdation entity members list and the sender email.
 // output the boolean true of false depoending if the message was sucessfully sent
-messages.post("/sendMessage", async (req, res) => {
+messages.get("/sendMessage", async (req, res) => {
+  console.log("in sendMessage");
   try {
-    const { email } = req.body;
-    if (!email) {
+    const senderEmail = req.query.senderEmail as string;
+    const emails: string[] = JSON.parse(req.query.emails as string);
+    const message = req.query.message as string;
+
+    console.log(senderEmail);
+    console.log(emails);
+    console.log(message);
+    if (!emails || !message || !senderEmail) {
       return res.status(400).json({
-        message: "Please provide an email address",
+        message:
+          "Please provide an valid sender email address, all emails in the conversation or a non null message",
       });
     }
-    const jobPostings =  "hello 4";
+    const messageConfirmation = await SendNewMessage(senderEmail, emails, message);
     return res.status(200).json({
       message: "Message sent successfully",
-      jobPostings,
+      messageConfirmation,
     });
   } catch (error) {
     console.log(error);
@@ -122,7 +129,7 @@ messages.get("/getMessages", async (req, res) => {
         message: "Please provide an email address",
       });
     }
-    const jobPostings =  "hello 5";
+    const jobPostings = "hello 5";
     return res.status(200).json({
       message: "Messages retrieved successfully",
       jobPostings,
@@ -136,6 +143,3 @@ messages.get("/getMessages", async (req, res) => {
 });
 
 module.exports = messages;
-
-
-
