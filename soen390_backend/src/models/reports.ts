@@ -1,3 +1,6 @@
+/**
+ * Model for the Report relationship
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const report_schema = yup

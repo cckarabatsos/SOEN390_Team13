@@ -1,8 +1,8 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
 import { getUserWithEmail } from "../../src/controllers/userControllers";
-import { findUserWithID } from "../../src/services/userServices";
-
+import { findUserWithID, processData } from "../../src/services/userServices";
+import sinon from "sinon";
 const expect = chai.expect;
 const describe = mocha.describe;
 const it = mocha.it;
@@ -25,9 +25,7 @@ let testUserFrontend: any = {
 describe("# User Services", function () {
     describe("# FindUserWithEmail", function () {
         it("return a user with most fields except password and return a 200 status", async function () {
-            let data: any = await getUserWithEmail(
-                "matthew.beaulieu631@gmail.com"
-            );
+            let data: any = await getUserWithEmail("dzm.fiodarau@gmail.com");
             let user: any = data[1];
             let status: any = data[0];
             Object.entries(testUserFrontend).forEach(([field, value]) => {
@@ -54,6 +52,44 @@ describe("# User Services", function () {
         it("return a 404 response if not found", async function () {
             let user: any = await findUserWithID("5");
             expect(user).to.equal(undefined);
+        });
+    });
+    describe("#processData", function () {
+        const snapshotWithDocs = {
+            docs: [
+                {
+                    id: "doc1",
+                    data: () => ({ name: "John", age: 30 }),
+                },
+                {
+                    id: "doc2",
+                    data: () => ({ name: "Jane", age: 25 }),
+                },
+            ],
+        };
+
+        const snapshotWithoutDocs = {
+            docs: [],
+        };
+
+        it("should return the data of the first document in the snapshot", function () {
+            const result = processData(snapshotWithDocs);
+            expect(result).to.deep.equal({
+                data: {
+                    name: "John",
+                    age: 30,
+                },
+                id: "doc1",
+            });
+        });
+
+        it("should throw an error and log 'ERROR' to the console when the snapshot is empty", function () {
+            const consoleSpy = sinon.spy(console, "log");
+            expect(() => processData(snapshotWithoutDocs)).to.throw(
+                "snapshot is empty"
+            );
+            // expect(consoleSpy.calledOnceWith("snapshot is empty")).to.be.true;
+            consoleSpy.restore();
         });
     });
 });

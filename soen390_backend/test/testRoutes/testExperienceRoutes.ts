@@ -7,7 +7,6 @@ const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
-const companyID = "i2iLvPkBHmkV43PufHVp";
 const badUserID = "5";
 const postExperience: Experience = {
     atPresent: false,
@@ -17,7 +16,6 @@ const postExperience: Experience = {
     position: "Student",
     type: "Education",
     ownerID: userID,
-    companyID: "i2iLvPkBHmkV43PufHVp",
 };
 const experience: Experience = {
     atPresent: false,
@@ -27,7 +25,6 @@ const experience: Experience = {
     position: "Student",
     type: "Education",
     ownerID: userID,
-    companyID: "i2iLvPkBHmkV43PufHVp",
 };
 
 describe("Test Experience Routes", function () {
@@ -76,7 +73,7 @@ describe("Test Experience Routes", function () {
     });
     describe("Post experience/remove/:docID", function () {
         it("responds with 200 when experience removed for a specific user", async function () {
-            let experienceID = await storeExperience(experience, companyID);
+            let experienceID = await storeExperience(experience);
             await request(url)
                 .post(`/experience/remove/${experienceID}`)
                 .expect(200);

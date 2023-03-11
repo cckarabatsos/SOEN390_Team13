@@ -11,6 +11,10 @@ import { User } from "../models/User";
 
 const reports = express.Router();
 reports.use(express.json());
+/**
+ * Post a new report for a certain reportedID,
+ * has the reason and the person that reported (reporterID)
+ */
 reports.post("/newReport", async (req: Request, res: Response) => {
     try {
         const reportedID: string = req.body.reportedID;
@@ -30,6 +34,9 @@ reports.post("/newReport", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+/**
+ * Route that deletes a certain ID
+ */
 reports.delete("/:id", async (req: Request, res: Response) => {
     try {
         const reportId: string = req.params.id;
@@ -42,7 +49,9 @@ reports.delete("/:id", async (req: Request, res: Response) => {
         res.status(400).json({ errType: err.Name, errMsg: err.message });
     }
 });
-
+/**
+ * Route that gets a couple of reports
+ */
 reports.get("/batchReports", async (req: Request, res: Response) => {
     try {
         const userID: string = req.query.userID as string;
@@ -66,6 +75,9 @@ reports.get("/batchReports", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+/**
+ * Route that sends a certain report for the verdict of a user
+ */
 reports.post("/verdictReport", async (req: Request, res: Response) => {
     try {
         const reportID: string = req.body.reportID;

@@ -12,7 +12,7 @@ export function GoogleSignin({ setIsAuth }) {
 }
 
 export async function SignInUser(reqEmail, reqPassword) {
-    console.log("hello");
+    
     try {
         const response = await axios.get(api.BACKEND_API + "/user/api/login", {
             params: {
@@ -20,7 +20,6 @@ export async function SignInUser(reqEmail, reqPassword) {
                 password: reqPassword,
             },
         });
-        console.log("hello2");
         console.log(response);
         return response;
     } catch (error) {
