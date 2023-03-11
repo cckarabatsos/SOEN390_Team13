@@ -12,6 +12,16 @@ const db = firebase.firestore();
 //  dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
 
+/*
+
+to do:
+
+in the "send message" function, correct the logic for the "wrap" variable.
+Add extensive error checking and return a specific error type for each associated error.
+
+*/
+
+
 const orderIds = (arr: string[]): string[] => {
   const len = arr.length;
 
@@ -84,6 +94,30 @@ async function fetchConversation(userIds: string[]) {
   }
 }
 
+
+/**
+ * Creates a new conversation document in the database with the given user IDs and an empty messages array.
+ * @param userIds An array of user IDs to include in the conversation.
+ * @returns A promise that resolves to the newly created conversation document.
+ */
+async function createConversation(userIds: string[]): Promise<firebase.firestore.DocumentData> {
+    try {
+      const conversationData = await db.collection("conversations").add({
+        messages: [],
+        userArray: userIds,
+      });
+  
+      if (!conversationData) {
+        throw new Error("Failed to create conversation.");
+      }
+  
+      return conversationData;
+    } catch (error) {
+      console.error(`Failed to create conversation: ${(error as Error).message}`);
+      throw error;
+    }
+  }
+
 export async function initiateConversation(userEmails: string[]) {
   let userList = true;
   try {
@@ -119,14 +153,7 @@ export async function initiateConversation(userEmails: string[]) {
       throw new Error();
     }
 
-    db.collection("conversations")
-      .add({
-        messages: [],
-        userArray: userIds,
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      });
+    createConversation(userIds);
   } catch (error) {
     throw new Error("Error in initiateConversation");
   }
@@ -134,6 +161,13 @@ export async function initiateConversation(userEmails: string[]) {
   return userList;
 }
 
+/**
+ * Sends a chat message to a group of users.
+ * @param senderEmail The email address of the user sending the message.
+ * @param userEmails An array of email addresses of the conversation thne user is included.
+ * @param message The content of the chat message.
+ * @returns A promise that resolves to true if the message was sent successfully.
+ */
 export async function sendMessage(
   senderEmail: string,
   userEmails: string[],
@@ -165,11 +199,20 @@ export async function sendMessage(
     userIds = orderIds(userIds);
     console.log(userIds);
 
-    //fetch the conversation in questiuon
-    let conversation = await fetchConversation(userIds);
+    const conversation = await fetchConversation(userIds);
+  
+    let conversationId: string;
 
-    if (conversation.length != 1) {
-      throw new Error("cannot fecth coresponding conversation");
+    if (conversation.length === 0) {
+      // If no conversation exists, create a new one
+      const newConversation = await createConversation(userIds);
+      conversationId = newConversation.id;
+    } else if (conversation.length === 1) {
+      // If a conversation exists, use the existing one
+      conversationId = conversation[0].id;
+    } else {
+      // If multiple conversations exist, throw an error
+      throw new Error("Multiple conversations found.");
     }
 
     // retrive sender email
@@ -201,18 +244,18 @@ export async function sendMessage(
 
     await db
       .collection("conversations")
-      .doc(conversation[0].id)
+      .doc(conversationId)
       .update({
         messages: firebase.firestore.FieldValue.arrayUnion(
           db.doc("chats/" + document.id)
         ),
       });
 
-    console.log(conversation[0].id);
+   
     return true;
   } catch (error) {
-    console.log("error occured in sendMessage");
-    throw new Error((error as Error).message);
+    console.error(`Error occurred in sendMessage: ${error}`);
+    throw error;
   }
 }
 
