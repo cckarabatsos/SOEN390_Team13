@@ -13,6 +13,7 @@ import {
   Image,
 } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { CreateConversation } from "../api/MessagesAPI";
 
 export default function ContactsComponent(props:any) {
   const image = props.image || 'https://randomuser.me/api/portraits/men/1.jpg';
@@ -28,8 +29,9 @@ export default function ContactsComponent(props:any) {
 
   //console.log(image);
 
-  const handleSendMessageRequest = ()=>{
-    
+  const handleSendMessageRequest = async (emailUser:string, emailContact:string)=>{
+    console.log()
+    await CreateConversation(emailUser, emailContact);
   }
   const handleRemoveFriend = ()=>{
     
@@ -46,7 +48,7 @@ export default function ContactsComponent(props:any) {
         <Text style={styles.location}>{contactEmail}</Text>
       </View>
             <TouchableOpacity
-              onPress={() => handleSendMessageRequest()}
+              onPress={() => handleSendMessageRequest(currentEmail,contactEmail)}
               style={styles.closeButtonMessageContainer}
             >
               <Ionicons name="chatbubble-outline" size={25} color={"green"}></Ionicons>        
