@@ -22,7 +22,7 @@ const Footer = () => {
         position="static"
         style={{
           background: "#BDBABA",
-          position: "fixed",
+          position: "static",
           bottom: 0,
           width: "100%",
         }}

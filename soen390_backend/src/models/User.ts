@@ -1,3 +1,6 @@
+/**
+ * Model for the User entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const user_schema = yup
@@ -15,7 +18,10 @@ export const user_schema = yup
         currentPosition: yup.string(),
         pendingInvitations: yup.array(yup.string()).required().default([]),
         contacts: yup.array(yup.string()).required().default([]),
+        follows: yup.array(yup.string()).required().default([]),
         isCompany: yup.boolean().required().default(false),
+        reportingStatus: yup.string().required().default("never_reported"), // never_reported || reported_once || banned
+        isAdmin: yup.boolean().required().default(false),
         currentCompany: yup.string().when("isCompany", {
             is: true,
             then: yup
@@ -40,11 +46,18 @@ export const user_schema = yup
                 .required("Field is required when its a recruiter"),
             otherwise: yup
                 .object({
-                    applied: yup.array(yup.string()).default([])
+                    applied: yup.array(yup.string()).default([]),
                 })
-                .required("Field is required when its a normal user")
+                .required("Field is required when its a normal user"),
         }),
         employees: yup
+            .array(yup.string())
+            .when("isCompany", {
+                is: true,
+                then: yup.array(yup.string()).default([]),
+            })
+            .required("Field Is required when its a recruiter"),
+        followers: yup
             .array(yup.string())
             .when("isCompany", {
                 is: true,
@@ -57,6 +70,9 @@ export const user_schema = yup
 export const finalUserSchema = user_schema.shape({
     userID: yup.string().required(),
 });
+/*
+ *Model for the userfilter schema used when filtering users and companies in search
+ */
 export const user_filter_schema = yup.object().shape({
     name: yup.string(),
     email: yup.string(),

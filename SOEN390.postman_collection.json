@@ -125,7 +125,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/search?name=&email=test@test.com&limit=10&skip=1",
+							"raw": "http://localhost:7000/user/api/search?name=&email=&limit=1&skip=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -143,15 +143,15 @@
 								},
 								{
 									"key": "email",
-									"value": "test@test.com"
+									"value": ""
 								},
 								{
 									"key": "limit",
-									"value": "10"
+									"value": "1"
 								},
 								{
 									"key": "skip",
-									"value": "1"
+									"value": "0"
 								}
 							]
 						}
@@ -229,6 +229,41 @@
 					"response": []
 				},
 				{
+					"name": "ManageInvite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/manageInvite?invitedEmail=Wx5hUY1FbJ&senderEmail=Qzm8c1439z&isAccept=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"manageInvite"
+							],
+							"query": [
+								{
+									"key": "invitedEmail",
+									"value": "Wx5hUY1FbJ"
+								},
+								{
+									"key": "senderEmail",
+									"value": "Qzm8c1439z"
+								},
+								{
+									"key": "isAccept",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "followCompany",
 					"request": {
 						"method": "GET",
@@ -265,7 +300,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/unFollow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"raw": "http://localhost:7000/user/api/unFollow?senderID=zwq5eGRzlnc1AsmAWKj2&receiverID=I9WE1blHEGTP0KkI4zVL",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -279,7 +314,7 @@
 							"query": [
 								{
 									"key": "senderID",
-									"value": "v1M1tUnMZUQsFy6UUteh"
+									"value": "zwq5eGRzlnc1AsmAWKj2"
 								},
 								{
 									"key": "receiverID",
@@ -296,7 +331,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=bog@test.com",
+							"raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -310,8 +345,28 @@
 							"query": [
 								{
 									"key": "userEmail",
-									"value": "bog@test.com"
+									"value": "dzm.fiodarau@gmail.com"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateFields",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/updateFields",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"updateFields"
 							]
 						}
 					},
@@ -357,7 +412,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"worldwide\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"worldwide\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"worldwide\",\r\n    \"isCompany\": true\r\n}",
+							"raw": "{\r\n    \"name\": \"worldwide\",\r\n    \"password\": \"pass123!\",\r\n    \"email\": \"worldwide2\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"Currently a recruiter for LinkedOutInc\",\r\n    \"currentPosition\": \"Recruiter\",\r\n    \"currentCompany\": \"worldwide\",\r\n    \"isCompany\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -435,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Poda\",\r\n    \"password\": \"matthewisthebest\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"OLIOLI\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -457,7 +512,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "poda4@gmail.com"
+									"value": "OLIMOLI"
 								}
 							]
 						}
@@ -518,7 +573,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/jobposting/filter/products?category&skip=0&limit=10",
+							"raw": "http://localhost:7000/jobposting/filter/products?location=mtl&company&position&type=internship&skip=0&limit=10&remote=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -531,8 +586,20 @@
 							],
 							"query": [
 								{
-									"key": "category",
+									"key": "location",
+									"value": "mtl"
+								},
+								{
+									"key": "company",
 									"value": null
+								},
+								{
+									"key": "position",
+									"value": null
+								},
+								{
+									"key": "type",
+									"value": "internship"
 								},
 								{
 									"key": "skip",
@@ -541,6 +608,10 @@
 								{
 									"key": "limit",
 									"value": "10"
+								},
+								{
+									"key": "remote",
+									"value": "true"
 								}
 							]
 						}
@@ -591,7 +662,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"docID\":\"v3wE2KtJEUTA8bbg4skM\"\r\n}",
+							"raw": "{\r\n    \"docID\":\"6Vlp5h0yMG7I8CwAMoT6\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -613,7 +684,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "worldwide"
+									"value": "LinkedOutInc@gmail.com1"
 								}
 							]
 						}
@@ -707,7 +778,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "5"
 								}
 							]
 						}
@@ -774,7 +845,7 @@
 							"variable": [
 								{
 									"key": "docID",
-									"value": "5"
+									"value": "KeUBpyfu3FBFZRwmGdJ6"
 								}
 							]
 						}
@@ -881,14 +952,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/skill/get/:userID",
+							"raw": "http://localhost:7000/experience/get/:userID",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "7000",
 							"path": [
-								"skill",
+								"experience",
 								"get",
 								":userID"
 							],
@@ -896,6 +967,422 @@
 								{
 									"key": "userID",
 									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "Post Application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dzm.fiodarau@gmail.com\",\r\n    \"firstName\": \"Dzmitry\",\r\n    \"lastName\": \"Fiodarau\",\r\n    \"phone\": \"514-123-1234\",\r\n    \"address\": \"123, Nowhere St.\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Montreal\",\r\n    \"area\": \"H8J 4H1\",\r\n    \"province\": \"QC\",\r\n    \"school\": \"Concordia\",\r\n    \"schoolCountry\": \"Canada\",\r\n    \"schoolDegree\": \"Bachelor of Engineering\",\r\n    \"schoolEnd\": \"01-05-2024\",\r\n    \"schoolMajor\": \"Software Engineering\",\r\n    \"timestamp\": \"05-03-2023\",\r\n    \"postingID\": \"B9edMZe4tjUEAFcimWUu\",\r\n    \"attachResume\": false,\r\n    \"attachCoverLetter\": true,\r\n    \"experience\": [\"Ville de Montreal,Marketing Intern,May 2021,Sept 2021\",\"Nventive,Developer Intern,May 2022,Dec 2022\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/application/:ownerID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								":ownerID"
+							],
+							"variable": [
+								{
+									"key": "ownerID",
+									"value": "fS0PjwOmmPRWbSZxzva9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/remove/:userID?postingID=QnO8p53hTIJpiomXbccm",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"remove",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "postingID",
+									"value": "QnO8p53hTIJpiomXbccm"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "fS0PjwOmmPRWbSZxzva9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Applications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/getApplications/:userID?postingID=B9edMZe4tjUEAFcimWUu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"getApplications",
+								":userID"
+							],
+							"query": [
+								{
+									"key": "postingID",
+									"value": "B9edMZe4tjUEAFcimWUu"
+								}
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "i2iLvPkBHmkV43PufHVp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Last Application",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/getLastApplication/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"getLastApplication",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Application History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/getApplicationHistory/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"getApplicationHistory",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "batchReports",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/reports/batchReports?userID=lZioJzyfCxPy28CTyT9E",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								"batchReports"
+							],
+							"query": [
+								{
+									"key": "userID",
+									"value": "lZioJzyfCxPy28CTyT9E"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NewReports",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportedID\": \"3Ri6yXlYSo7rCQk4t4ks\",\r\n    \"reason\": \"It's Inappropriate\",\r\n    \"reporterID\": \"i2iLvPkBHmkV43PufHVp\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/reports/newReport",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								"newReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verdictReport",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportID\":\"EKbDtTB9c4uA6GTHXxxp\",\r\n    \"reportedID\": \"3Ri6yXlYSo7rCQk4t4ks\",\r\n    \"banned\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/reports/verdictReport",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								"verdictReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteReport",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/reports/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"reports",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Create New Conversation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/createConversation?emails=[\"msg1@test.com\",\"msg3@test.com\"]",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"createConversation"
+							],
+							"query": [
+								{
+									"key": "emails",
+									"value": "[\"msg1@test.com\",\"msg3@test.com\"]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/sendMessage?senderEmail=msg1@test.com&emails=[\"msg1@test.com\",\"msg3@test.com\"]&message=ca va?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"sendMessage"
+							],
+							"query": [
+								{
+									"key": "senderEmail",
+									"value": "msg1@test.com"
+								},
+								{
+									"key": "emails",
+									"value": "[\"msg1@test.com\",\"msg3@test.com\"]"
+								},
+								{
+									"key": "message",
+									"value": "ca va?"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/getAllMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"getAllMessages"
+							],
+							"query": [
+								{
+									"key": "userEmails",
+									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
+								},
+								{
+									"key": "senderEmail",
+									"value": "msg1@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/updateMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com&messagesLength=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"updateMessages"
+							],
+							"query": [
+								{
+									"key": "userEmails",
+									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
+								},
+								{
+									"key": "senderEmail",
+									"value": "msg1@test.com"
+								},
+								{
+									"key": "messagesLength",
+									"value": "0"
 								}
 							]
 						}

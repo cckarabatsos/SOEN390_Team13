@@ -1,9 +1,15 @@
+/**
+ * Routes for Skill entity of the database
+ */
 import express, { Request, Response } from "express";
 import { deleteSkill, createSkill, getSkills } from "../controllers/skillControllers";
 import { Skill } from "../models/Skill";
 const skill = express.Router();
 skill.use(express.json());
 
+/**
+ * Route that stores a new skill to database
+ */
 skill.post("/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
     let name: string = req.body.name;
@@ -28,6 +34,10 @@ skill.post("/:ownerID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that removes a skill from database
+ */
 skill.post("/remove/:docID", async (req: Request, res: Response) => {
     let skillID = req.params.docID;
     try {
@@ -47,6 +57,10 @@ skill.post("/remove/:docID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * ROute that gets skills associated with user from database
+ */
 skill.get("/get/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     try {

@@ -1,4 +1,6 @@
-//thx saad
+/**
+ * Service methods for User entity of the database
+ */
 import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
@@ -8,7 +10,11 @@ import { User, user_schema, UserFilter } from "../models/User";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
-
+/**
+ * Query the db to get a user via their ID
+ * @param userID
+ * @returns user
+ */
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -18,6 +24,11 @@ export const findUserWithID = async (userID: string) => {
     }
     return snapShot.data();
 };
+/**
+ * Query the db to get a user via their Email
+ * @param userID
+ * @returns
+ */
 export const findUserWithEmail = (
     email: string,
     callback: (data: any) => void
@@ -38,14 +49,28 @@ export const findUserWithEmail = (
             throw new Error(error.message);
         });
 };
+/**
+ * Store a user in the DB
+ * @param user
+ * @returns document.ID
+ */
 
 export const storeUser = async (user: User) => {
     try {
-        let pic = user.picture
-            ? user.picture
-            : await ref
-                .child("Profile Pictures/blank_profile_pic.png")
-                .getDownloadURL();
+        let pic;
+        if (user.picture) {
+            pic = user.picture;
+        } else {
+            if (user.isCompany) {
+                pic = await ref
+                    .child("Profile Pictures/blank_company_pic.jpg")
+                    .getDownloadURL();
+            } else {
+                pic = await ref
+                    .child("Profile Pictures/blank_profile_pic.png")
+                    .getDownloadURL();
+            }
+        }
         user.picture = pic;
         var document = await db.collection("users").add({
             ...user,
@@ -60,7 +85,11 @@ export const storeUser = async (user: User) => {
     }
     return document.id;
 };
-
+/**
+ * Delete a certain User via their ID
+ * @param userID
+ * @returns the old user dta
+ */
 export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
@@ -68,17 +97,20 @@ export const deleteUserWithId = async (userID: string) => {
             if (data.jobpostings) {
                 const batch = db.batch();
                 console.log(data.jobpostings.postingids);
-                data.jobpostings.postingids.forEach((postingID: string) => {
-                    const postingRef = db
-                        .collection("jobpostings")
-                        .doc(postingID);
-                    batch.delete(postingRef);
-                });
-                await batch.commit();
-                console.log(
-                    data.jobpostings.postingids.length +
-                    " job postings successfully deleted."
-                );
+                if (data.jobpostings.postingids) {
+                    data.jobpostings.postingids.forEach((postingID: string) => {
+                        const postingRef = db
+                            .collection("jobpostings")
+                            .doc(postingID);
+                        batch.delete(postingRef);
+                    });
+
+                    await batch.commit();
+                    console.log(
+                        data.jobpostings.postingids.length +
+                            " job postings successfully deleted."
+                    );
+                }
             }
             db.collection("users")
                 .doc(userID)
@@ -96,6 +128,15 @@ export const deleteUserWithId = async (userID: string) => {
 
     return data;
 };
+
+/**
+ * Stores an account file for specified user
+ *
+ * @param userID
+ * @param type
+ * @param file
+ * @returns download URL of uploaded file or null
+ */
 export const storeAccountFile = async (
     userID: string,
     type: string,
@@ -153,6 +194,13 @@ export const storeAccountFile = async (
     return null;
 };
 
+/**
+ * Removes specified account file for specified user
+ *
+ * @param userID
+ * @param type
+ * @returns "Success" or null
+ */
 export const deleteAccountFile = async (userID: string, type: string) => {
     try {
         var user: any = await findUserWithID(userID);
@@ -191,6 +239,13 @@ export const deleteAccountFile = async (userID: string, type: string) => {
     return null;
 };
 
+/**
+ * Retrieves specified account file for specified user
+ *
+ * @param userID
+ * @param type
+ * @returns downloadURL of specified file or null
+ */
 export const findAccountFile = async (userID: string, type: string) => {
     try {
         var user: any = await findUserWithID(userID);
@@ -218,39 +273,29 @@ export const findAccountFile = async (userID: string, type: string) => {
     }
     return null;
 };
-
-function processData(snapshot: any) {
+/**
+ * Helper function to processData within a snapshot
+ * @param snapshot
+ * @returns
+ */
+export function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
         data: doc.data(),
         id: doc.id,
     }));
-    if (data !== null) {
-        return data[0];
-    } else {
+    console.log(data);
+    if (data === null || data.length === 0) {
         console.log("ERROR");
-        throw error;
+        throw new Error("snapshot is empty");
+    } else {
+        return data[0];
     }
 }
-
-//helper function to create userNodes
-// async function createUserNode(user: UserNode) {
-//   try {
-//     var document = await db.collection("users").add({
-//       name: user.name,
-//       email: user.email,
-//       picture: user.picture,
-//       userID: "",
-//     });
-
-//     await document.update({ userID: document.id });
-
-//     console.log("UserNode successfully registered with id: " + document.id);
-//   } catch (error) {
-//     console.log(error);
-//     throw error;
-//   }
-//   return document.id;
-// }
+/**
+ * Send an invitation to a users
+ * @param receiverEmail
+ * @param senderEmail
+ */
 
 export async function sendUserInvitation(
     receiverEmail: string,
@@ -325,7 +370,8 @@ export async function sendUserInvitation(
 
         // update receiver pendinginvitation filed
 
-        db.collection("users")
+        await db
+            .collection("users")
             .doc(receiverUser.data.userID)
             .update({
                 pendingInvitations:
@@ -336,18 +382,23 @@ export async function sendUserInvitation(
         throw new Error("this is an invitation error");
     }
 }
+/**
+ * Function that verifies the integrity of a follows requests towards a company
+ * and then follows that company once it passes all tests.
+ * @param senderID
+ * @param receiverID
+ */
 export async function followCompanyInv(senderID: string, receiverID: string) {
     const senderUser = await findUserWithID(senderID);
     const receiverUser = await findUserWithID(receiverID);
     try {
         if (senderUser && receiverUser) {
-            console.log(senderUser.isCompany);
             if (senderUser.isCompany) {
                 throw new Error("Sender is a company");
             } else {
                 console.log("Proceed check 1");
             }
-            if (receiverUser.contacts.includes(senderID)) {
+            if (receiverUser.followers.includes(senderID)) {
                 throw new Error("Already following");
             } else {
                 console.log("Proceed check 2 ");
@@ -355,8 +406,14 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
             db.collection("users")
                 .doc(receiverID)
                 .update({
-                    contacts:
+                    followers:
                         firebase.firestore.FieldValue.arrayUnion(senderID),
+                });
+            db.collection("users")
+                .doc(senderID)
+                .update({
+                    follows:
+                        firebase.firestore.FieldValue.arrayUnion(receiverID),
                 });
         }
     } catch (error) {
@@ -364,28 +421,47 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
         throw new Error("this is a following error");
     }
 }
+/**
+ * Function that verifies the integrity of an unFollow request towards a company
+ * and then unfollow that company once it passes all tests.
+ * @param senderID
+ * @param receiverID
+ */
 export async function unFollowCompanyInv(senderID: string, receiverID: string) {
-    console.log(senderID);
     const receiverUser = await findUserWithID(receiverID);
     try {
         if (receiverUser) {
-            if (receiverUser.contacts.includes(senderID)) {
+            if (receiverUser.followers.includes(senderID)) {
                 db.collection("users")
                     .doc(receiverID)
                     .update({
-                        contacts:
+                        followers:
                             firebase.firestore.FieldValue.arrayRemove(senderID),
                     });
+                db.collection("users")
+                    .doc(senderID)
+                    .update({
+                        follows:
+                            firebase.firestore.FieldValue.arrayRemove(
+                                receiverID
+                            ),
+                    });
+            } else {
+                console.log("You dont even follow that company????");
+                throw Error;
             }
-        } else {
-            console.log("You dont even follow that company????");
         }
     } catch (error) {
         console.log(error);
         throw new Error("this is a following error");
     }
 }
-
+/**
+ * Manage a certain userInvitation
+ * @param senderEmail
+ * @param invitedEmail
+ * @param isAccept
+ */
 export async function manageUserInvitation(
     senderEmail: string,
     invitedEmail: string,
@@ -396,7 +472,6 @@ export async function manageUserInvitation(
         if (isAccept) {
             senderUser = await new Promise((resolve, _) => {
                 findUserWithEmail(senderEmail, (user) => {
-                    // console.log(user);
                     if (user == null) {
                         resolve(null);
                     } else {
@@ -405,12 +480,9 @@ export async function manageUserInvitation(
                 });
             });
         }
-
         var invitedUser: any;
-
         invitedUser = await new Promise((resolve, _) => {
             findUserWithEmail(invitedEmail, (user) => {
-                // console.log(user);
                 if (user == null) {
                     resolve(null);
                 } else {
@@ -418,13 +490,10 @@ export async function manageUserInvitation(
                 }
             });
         });
-        console.log(invitedUser);
-        console.log(senderUser);
         // check 1: check if enderEmail is in invitedUser pendingInvitation list
         if (
             !(invitedUser.data as User).pendingInvitations.includes(senderEmail)
         ) {
-            //console.log("error receiver already invited by sender");
             throw error("error sender user email not int he invided user list");
         } else {
             console.log("proceed check 1");
@@ -462,6 +531,12 @@ export async function manageUserInvitation(
         throw new Error("this is a Manage Invitation request error");
     }
 }
+/**
+ * Get user invitation or contact depending on what is requested from the routes
+ * @param email
+ * @param contact
+ * @returns
+ */
 
 export async function getUserInvitationsOrContacts(
     email: string,
@@ -518,10 +593,16 @@ export async function getUserInvitationsOrContacts(
 export function updateUser(newProfile: User, id: string) {
     db.collection("users").doc(id).update(newProfile);
 }
-
+/**
+ * getFilteredusers from the DB depending on the filters that are set
+ * @param filter
+ * @param company
+ * @returns
+ */
 export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
+    userRef = userRef.where("isAdmin", "==", false);
     if (company === false) {
         userRef = userRef.where("isCompany", "==", false);
     } else {
@@ -545,8 +626,12 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     if (filter.limit) {
         userRef = userRef.limit(filter.limit);
     }
-    if (filter.skip) {
-        userRef = userRef.startAfter(filter.skip);
+    if (filter.skip > 0) {
+        const lastVisible = await userRef.get().then((snapshot) => {
+            const lastDoc = snapshot.docs[filter.skip - 1];
+            return lastDoc;
+        });
+        userRef = userRef.startAfter(lastVisible);
     }
 
     const snapshot = await userRef.get();
@@ -557,6 +642,11 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     }));
     return users;
 }
+/**
+ * Update the complete postings of a company whenever you add a new posting
+ * @param postingID
+ * @param jobPosterID
+ */
 
 export async function updateCompanyPostings(
     postingID: string,

@@ -1,3 +1,6 @@
+/**
+ * Model for the Job Posting entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const jobposting_schema = yup
@@ -28,6 +31,7 @@ export const jobposting_schema = yup
         remote: yup.boolean().required(),
         description: yup.string().required(),
         email: yup.string().required(),
+        logo: yup.string(),
         jobPosterID: yup.string().required(),
     })
     .required();

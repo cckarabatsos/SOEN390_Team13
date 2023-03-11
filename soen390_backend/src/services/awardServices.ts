@@ -1,3 +1,6 @@
+/**
+ * Service methods for Award entity of the database
+ */
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
@@ -6,6 +9,12 @@ import { findUserWithID } from "./userServices";
 
 const db = firebase.firestore();
 
+/**
+ * Finds award with specified ID in the database
+ *
+ * @param awardID 
+ * @returns snapshot of the found award or undefined
+ */
 export const findAwardWithID = async (awardID: string) => {
     try {
         var snapShot = await db.collection("awards").doc(awardID).get();
@@ -15,6 +24,13 @@ export const findAwardWithID = async (awardID: string) => {
     }
     return snapShot.data();
 };
+
+/**
+ * Stores a new Award document in the database
+ * 
+ * @param award 
+ * @returns ID of the created document or null
+ */
 export const storeAward = async (award: Award) => {
     try {
         let user = await findUserWithID(award.ownerID);
@@ -36,6 +52,13 @@ export const storeAward = async (award: Award) => {
     }
     return document.id;
 };
+
+/**
+ * Deletes award with specified ID from the database
+ * 
+ * @param awardID 
+ * @returns information of the deleted award or null
+ */
 export const deleteAwardWithId = async (awardID: string) => {
     try {
         var data: any = await findAwardWithID(awardID);
@@ -60,6 +83,13 @@ export const deleteAwardWithId = async (awardID: string) => {
     }
     return data;
 };
+
+/**
+ * Retrieves all awards that are associated with the user having the specified ID
+ * 
+ * @param userID 
+ * @returns array of awards or null
+ */
 export const retrieveAwards = async (userID: string) => {
     let user = await findUserWithID(userID);
     if (user === undefined) {

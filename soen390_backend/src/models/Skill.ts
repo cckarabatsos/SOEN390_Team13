@@ -1,3 +1,6 @@
+/**
+ * Model for the Skill entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const skill_schema = yup

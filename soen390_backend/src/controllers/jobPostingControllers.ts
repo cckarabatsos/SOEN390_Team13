@@ -10,6 +10,21 @@ import {
     storeJobPosting,
 } from "../services/jobPostingServices";
 import { updateCompanyPostings } from "../services/userServices";
+/**
+ * Create a job posting from a certain company
+ * @param email
+ * @param location
+ * @param position
+ * @param salary
+ * @param company
+ * @param description
+ * @param remote
+ * @param contract
+ * @param duration
+ * @param type
+ * @param jobPosterID
+ * @returns postingID
+ */
 export async function createJobPosting(
     email: string,
     location: string,
@@ -48,6 +63,13 @@ export async function createJobPosting(
         throw err;
     }
 }
+/**
+ * Deletes a jobPostingID with a certain safety feature making sure that the
+ * jobPosting comes from the good company
+ * @param jobPostingID
+ * @param email
+ * @returns
+ */
 export async function deleteJobPosting(jobPostingID: string, email: string) {
     let jobPosting = await deleteJobPostingWithId(jobPostingID, email);
     let castedJobPosting: Jobposting = await jobposting_schema.cast(jobPosting);
@@ -58,6 +80,11 @@ export async function deleteJobPosting(jobPostingID: string, email: string) {
         return [404, { msg: "Job posting not found" }];
     }
 }
+/**
+ * Get a couple of jobPostings via a Filter
+ * @param filter
+ * @returns
+ */
 export async function getFilteredJobPostings(filter: Filter) {
     let strippedJobFilter = filter_schema.validateSync(filter, {
         stripUnknown: true,
@@ -67,11 +94,16 @@ export async function getFilteredJobPostings(filter: Filter) {
     if (err) {
         return [400, error_data];
     } else {
-        let products = await filterJobPostings(strippedJobFilter);
+        let jobPostings = await filterJobPostings(strippedJobFilter);
         // parse_links(products);
-        return [200, products];
+        return [200, jobPostings];
     }
 }
+/**
+ * Validate the jobPosting filter
+ * @param filter
+ * @returns
+ */
 function validateFilterData(filter: Filter) {
     let error_data: any = { errMsg: "", errType: "" };
     try {
