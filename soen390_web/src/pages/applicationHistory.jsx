@@ -177,16 +177,21 @@ const getApplications = async (ID) => {
 
 
 
+ 
+useEffect(() => {
+  const getApplications = async (ID) => {
+    const response = await getAllApplication(ID);
+    console.log(response[0]);
+    if (response[0]) {
+      setApplication(response);
+    }
+  };
 
-  console.log('hellooooooooooooooooooooooo')
   const data = JSON.parse(localStorage.getItem("isAuth"));
   if (data != null) {
-   // setUseData(JSON.parse(localStorage.getItem("isAuth")));
-    //setCurrentID(data.userID);
-  } else {
-   // setUseData(false);
+    getApplications(data.userID);
   }
-  getApplications(data.userID);
+}, []); // empty dependency array to run only once
 
 
 
