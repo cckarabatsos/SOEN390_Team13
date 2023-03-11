@@ -1,4 +1,6 @@
-//thx saad
+/**
+ * Service methods for User entity of the database
+ */
 import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
@@ -108,6 +110,15 @@ export const deleteUserWithId = async (userID: string) => {
 
     return data;
 };
+
+/**
+ * Stores an account file for specified user
+ * 
+ * @param userID 
+ * @param type 
+ * @param file 
+ * @returns download URL of uploaded file or null
+ */
 export const storeAccountFile = async (
     userID: string,
     type: string,
@@ -165,6 +176,13 @@ export const storeAccountFile = async (
     return null;
 };
 
+/**
+ * Removes specified account file for specified user
+ * 
+ * @param userID 
+ * @param type 
+ * @returns "Success" or null
+ */
 export const deleteAccountFile = async (userID: string, type: string) => {
     try {
         var user: any = await findUserWithID(userID);
@@ -203,6 +221,13 @@ export const deleteAccountFile = async (userID: string, type: string) => {
     return null;
 };
 
+/**
+ * Retrieves specified account file for specified user
+ * 
+ * @param userID 
+ * @param type 
+ * @returns downloadURL of specified file or null
+ */
 export const findAccountFile = async (userID: string, type: string) => {
     try {
         var user: any = await findUserWithID(userID);
