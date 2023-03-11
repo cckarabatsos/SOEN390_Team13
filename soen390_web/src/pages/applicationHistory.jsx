@@ -134,6 +134,9 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import ActionButton from '../components/ActionButton';
+import { useEffect, useState } from "react";
+import { getAllApplication } from "../api/ApplicationHistoryApi";
+
 
 function createData(
   position ,
@@ -145,6 +148,9 @@ function createData(
   return { position, location, company, contract,JobId };
 }
 
+
+
+
 const rows = [
   createData('Software Engineer', 'Montreal', 6.0, 24, 4.0,1),
   createData('Backend Developer', 'San Francisco', 9.0, 37, 4.3,2),
@@ -155,6 +161,38 @@ const rows = [
 
 
 export default function BasicTable() {
+  /* const [userData, setUseData] = useState({});
+
+const [currentID, setCurrentID] = useState(""); */
+const [application, setApplication] = useState([]); 
+var Application = []
+const getApplications = async (ID) => {
+  var responce = await getAllApplication(ID);
+  console.log(responce[0]);
+
+ // setApplication(responce);
+ if (responce[0]) {setApplication(responce)}
+ 
+};
+
+
+
+
+  console.log('hellooooooooooooooooooooooo')
+  const data = JSON.parse(localStorage.getItem("isAuth"));
+  if (data != null) {
+   // setUseData(JSON.parse(localStorage.getItem("isAuth")));
+    //setCurrentID(data.userID);
+  } else {
+   // setUseData(false);
+  }
+  getApplications(data.userID);
+
+
+
+
+
+console.log(Application)
   return (
     <TableContainer component={Paper} sx={{ width: '65%', margin: '0 auto' }} >
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -173,7 +211,7 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {application.map((row) => (
             <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

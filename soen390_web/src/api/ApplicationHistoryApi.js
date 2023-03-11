@@ -5,23 +5,19 @@ import { auth, provider } from "../firebaseConfig";
 
 
 
-export async function removeApplication(userID) {
-  console.log(userID);
+export async function getAllApplication(userID) {
   try {
-    const response = await axios.get(api.BACKEND_API + "/user/api/login", {
-      params: {
-        email: reqEmail,
-        
-      },
-    });
-    console.log("hello2");
-    console.log(response);
-    return response;
+    const response = await axios.get(api.BACKEND_API + '/application/getApplicationHistory/'
+    + userID
+    );
+    //console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return false;
   }
 }
+
 
 export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
   try {
