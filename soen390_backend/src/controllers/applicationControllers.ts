@@ -7,32 +7,32 @@ import {
     retrieveLastApplication,
     retrieveApplications,
     retrieveApplicationHistory,
-    deleteApplicationWithId
+    deleteApplicationWithId,
 } from "../services/applicationServices";
 
 /**
  * Tries to store new Application document in the database
- * 
- * @param email 
- * @param firstName 
- * @param lastName 
- * @param phone 
- * @param address 
- * @param address2 
- * @param city 
- * @param area 
- * @param province 
- * @param school 
- * @param schoolCountry 
- * @param schoolDegree 
- * @param schoolEnd 
- * @param schoolMajor 
- * @param timestamp 
- * @param postingID 
- * @param attachResume 
- * @param attachCoverLetter 
- * @param experience 
- * @param ownerID 
+ *
+ * @param email
+ * @param firstName
+ * @param lastName
+ * @param phone
+ * @param address
+ * @param address2
+ * @param city
+ * @param area
+ * @param province
+ * @param school
+ * @param schoolCountry
+ * @param schoolDegree
+ * @param schoolEnd
+ * @param schoolMajor
+ * @param timestamp
+ * @param postingID
+ * @param attachResume
+ * @param attachCoverLetter
+ * @param experience
+ * @param ownerID
  * @returns status and res message
  */
 export async function createApplication(
@@ -78,16 +78,17 @@ export async function createApplication(
             attachResume,
             attachCoverLetter,
             experience,
-            ownerID
+            ownerID,
         });
         let application = await storeApplication(newApplication);
         if (application === "alreadyApplied") {
-            return [400, { msg: "User has already applied to this job posting." }];
-        }
-        else if (application !== null) {
+            return [
+                400,
+                { msg: "User has already applied to this job posting." },
+            ];
+        } else if (application !== null) {
             return [200, application];
-        }
-        else {
+        } else {
             return [404, { msg: "Experience not stored" }];
         }
     } catch (err: any) {
@@ -97,8 +98,8 @@ export async function createApplication(
 
 /**
  * Tries to retrieve last application associated with specified user
- * 
- * @param userID 
+ *
+ * @param userID
  * @returns status and res message
  */
 export async function getLastApplication(userID: string) {
@@ -113,9 +114,9 @@ export async function getLastApplication(userID: string) {
 
 /**
  * Tries to retrieve all applications for specified company and job posting
- * 
- * @param userID 
- * @param postingID 
+ *
+ * @param userID
+ * @param postingID
  * @returns status and res message
  */
 export async function getApplications(userID: string, postingID: string) {
@@ -130,8 +131,8 @@ export async function getApplications(userID: string, postingID: string) {
 
 /**
  * Tries to retrieve all job postings to which the specified user has applied
- * 
- * @param userID 
+ *
+ * @param userID
  * @returns status and res message
  */
 export async function getApplicationHistory(userID: string) {
@@ -146,9 +147,9 @@ export async function getApplicationHistory(userID: string) {
 
 /**
  * Tries to delete application of the specified user to the specified job posting
- * 
- * @param userID 
- * @param postingID 
+ *
+ * @param userID
+ * @param postingID
  * @returns status and res message
  */
 export async function deleteApplication(userID: string, postingID: string) {

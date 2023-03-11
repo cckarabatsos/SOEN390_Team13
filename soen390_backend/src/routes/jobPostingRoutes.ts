@@ -5,7 +5,10 @@ import {
 } from "../controllers/jobPostingControllers";
 const jobposting = express.Router();
 jobposting.use(express.json());
-
+/**
+ * Route that removes a certain job posting (postID) with a safety measure that makes sure
+ * that it is the right company that removes the postID
+ */
 jobposting.post("/remove/:email", async (req: Request, res: Response) => {
     let email = req.params.email;
     let postID = req.body.docID;
@@ -21,6 +24,9 @@ jobposting.post("/remove/:email", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+/**
+ * Route to get back a couple of products
+ */
 jobposting.get("/filter/products", async (req: Request, res: Response) => {
     var filter: any = {};
     for (const [key, value] of Object.entries(req.query)) {

@@ -90,7 +90,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                        " job postings successfully deleted."
+                            " job postings successfully deleted."
                     );
                 }
             }
@@ -113,10 +113,10 @@ export const deleteUserWithId = async (userID: string) => {
 
 /**
  * Stores an account file for specified user
- * 
- * @param userID 
- * @param type 
- * @param file 
+ *
+ * @param userID
+ * @param type
+ * @param file
  * @returns download URL of uploaded file or null
  */
 export const storeAccountFile = async (
@@ -178,9 +178,9 @@ export const storeAccountFile = async (
 
 /**
  * Removes specified account file for specified user
- * 
- * @param userID 
- * @param type 
+ *
+ * @param userID
+ * @param type
  * @returns "Success" or null
  */
 export const deleteAccountFile = async (userID: string, type: string) => {
@@ -223,9 +223,9 @@ export const deleteAccountFile = async (userID: string, type: string) => {
 
 /**
  * Retrieves specified account file for specified user
- * 
- * @param userID 
- * @param type 
+ *
+ * @param userID
+ * @param type
  * @returns downloadURL of specified file or null
  */
 export const findAccountFile = async (userID: string, type: string) => {
@@ -255,7 +255,11 @@ export const findAccountFile = async (userID: string, type: string) => {
     }
     return null;
 };
-
+/**
+ * Helper function to processData within a snapshot
+ * @param snapshot
+ * @returns
+ */
 function processData(snapshot: any) {
     let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
         data: doc.data(),
@@ -268,6 +272,11 @@ function processData(snapshot: any) {
         throw error;
     }
 }
+/**
+ * Send an invitation to a users
+ * @param receiverEmail
+ * @param senderEmail
+ */
 
 export async function sendUserInvitation(
     receiverEmail: string,
@@ -354,6 +363,12 @@ export async function sendUserInvitation(
         throw new Error("this is an invitation error");
     }
 }
+/**
+ * Function that verifies the integrity of a follows requests towards a company
+ * and then follows that company once it passes all tests.
+ * @param senderID
+ * @param receiverID
+ */
 export async function followCompanyInv(senderID: string, receiverID: string) {
     const senderUser = await findUserWithID(senderID);
     const receiverUser = await findUserWithID(receiverID);
@@ -387,6 +402,12 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
         throw new Error("this is a following error");
     }
 }
+/**
+ * Function that verifies the integrity of an unFollow request towards a company
+ * and then unfollow that company once it passes all tests.
+ * @param senderID
+ * @param receiverID
+ */
 export async function unFollowCompanyInv(senderID: string, receiverID: string) {
     const receiverUser = await findUserWithID(receiverID);
     try {
@@ -416,7 +437,12 @@ export async function unFollowCompanyInv(senderID: string, receiverID: string) {
         throw new Error("this is a following error");
     }
 }
-
+/**
+ * Manage a certain userInvitation
+ * @param senderEmail
+ * @param invitedEmail
+ * @param isAccept
+ */
 export async function manageUserInvitation(
     senderEmail: string,
     invitedEmail: string,
@@ -486,6 +512,12 @@ export async function manageUserInvitation(
         throw new Error("this is a Manage Invitation request error");
     }
 }
+/**
+ * Get user invitation or contact depending on what is requested from the routes
+ * @param email
+ * @param contact
+ * @returns
+ */
 
 export async function getUserInvitationsOrContacts(
     email: string,
@@ -542,7 +574,12 @@ export async function getUserInvitationsOrContacts(
 export function updateUser(newProfile: User, id: string) {
     db.collection("users").doc(id).update(newProfile);
 }
-
+/**
+ * getFilteredusers from the DB depending on the filters that are set
+ * @param filter
+ * @param company
+ * @returns
+ */
 export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
@@ -586,6 +623,11 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     }));
     return users;
 }
+/**
+ * Update the complete postings of a company whenever you add a new posting
+ * @param postingID
+ * @param jobPosterID
+ */
 
 export async function updateCompanyPostings(
     postingID: string,
