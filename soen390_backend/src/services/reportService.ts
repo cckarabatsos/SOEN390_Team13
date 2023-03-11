@@ -1,6 +1,11 @@
 import firebase from "firebase";
 import { Report } from "../models/reports";
 const db = firebase.firestore();
+/**
+ * Function to store a newReport in the database
+ * @param newReport
+ * @returns document.id
+ */
 export const storeReport = async (newReport: Report) => {
     try {
         var document = await db.collection("reports").add({
@@ -14,6 +19,10 @@ export const storeReport = async (newReport: Report) => {
     }
     return document.id;
 };
+/**
+ * Function to get A couple of Reports
+ * @returns
+ */
 export const getReports = async () => {
     try {
         const querySnapshot = await db.collection("reports").limit(10).get();
@@ -26,6 +35,13 @@ export const getReports = async () => {
         throw new Error("Error getting reports: " + error.message);
     }
 };
+/**
+ * Apply a certain verdict to a report
+ * @param reportID
+ * @param reportedID
+ * @param banned
+ * @returns
+ */
 export const applyVerdict = async (
     reportID: string,
     reportedID: string,
@@ -82,7 +98,11 @@ export const applyVerdict = async (
         return [400, { msg: err.message }];
     }
 };
-
+/**
+ * Delete a certain report via its ID
+ * @param reportId
+ * @returns
+ */
 export const deleteReportById = async (reportId: string) => {
     try {
         const reportRef = db.collection("reports").doc(reportId);

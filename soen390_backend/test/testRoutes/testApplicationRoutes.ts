@@ -28,7 +28,10 @@ const postApplication = {
     postingID: postingID,
     attachResume: false,
     attachCoverLetter: true,
-    experience: ["Ville de Montreal,Marketing Intern,May 2021,Sept 2021", "Nventive,Developer Intern,May 2022,Dec 2022"]
+    experience: [
+        "Ville de Montreal,Marketing Intern,May 2021,Sept 2021",
+        "Nventive,Developer Intern,May 2022,Dec 2022",
+    ],
 };
 
 describe("Test Application Routes", function () {
@@ -87,22 +90,30 @@ describe("Test Application Routes", function () {
     describe("Get application/getApplications/:userID", function () {
         it("responds with 200 when applications for a specific company and job posting", async function () {
             await request(url)
-                .get(`/application/getApplications/${companyID}?postingID=${postingID}`)
+                .get(
+                    `/application/getApplications/${companyID}?postingID=${postingID}`
+                )
                 .expect(200);
         });
         it("responds with a 404 when user with passed id does not exist", async function () {
             await request(url)
-                .get(`/application/getApplications/${badUserID}?postingID=${postingID}`)
+                .get(
+                    `/application/getApplications/${badUserID}?postingID=${postingID}`
+                )
                 .expect(404);
         });
         it("responds with a 404 when user with passed id is not a company", async function () {
             await request(url)
-                .get(`/application/getApplications/${userID}?postingID=${postingID}`)
+                .get(
+                    `/application/getApplications/${userID}?postingID=${postingID}`
+                )
                 .expect(404);
         });
         it("responds with a 404 when posting with passed posting ID is not associated with passed company", async function () {
             await request(url)
-                .get(`/application/getApplications/${companyID}?postingID=${badUserID}`)
+                .get(
+                    `/application/getApplications/${companyID}?postingID=${badUserID}`
+                )
                 .expect(404);
         });
     });

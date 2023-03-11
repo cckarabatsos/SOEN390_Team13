@@ -1,6 +1,18 @@
+/**
+ * Controller methods for Award entity of the database
+ */
 import { Award, award_schema } from "../models/Award";
 import { storeAward, deleteAwardWithId, retrieveAwards } from "../services/awardServices";
 
+/**
+ * Tries to store new Award document in the database
+ * 
+ * @param name 
+ * @param description 
+ * @param timestamp 
+ * @param ownerID 
+ * @returns status and res message
+ */
 export async function createAward(
     name: string,
     description: string,
@@ -21,6 +33,13 @@ export async function createAward(
         throw err;
     }
 }
+
+/**
+ * Tries to delete award with specified ID from the database
+ * 
+ * @param awardID 
+ * @returns status and res message
+ */
 export async function deleteAward(awardID: string) {
     let award = await deleteAwardWithId(awardID);
     if (award === null) {
@@ -34,6 +53,13 @@ export async function deleteAward(awardID: string) {
         return [404, { msg: "Award not found" }];
     }
 }
+
+/**
+ * Tries to retrieve all awards associated with specified user
+ * 
+ * @param userID 
+ * @returns status and res message
+ */
 export async function getAwards(userID: string) {
     let awards = await retrieveAwards(userID);
     console.log(awards);

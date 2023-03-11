@@ -1,10 +1,21 @@
+/**
+ * Routes for Application entity of the database
+ */
 import express, { Request, Response } from "express";
-import { createApplication, getApplications, getLastApplication, getApplicationHistory, deleteApplication }
-    from "../controllers/applicationControllers";
+import {
+    createApplication,
+    getApplications,
+    getLastApplication,
+    getApplicationHistory,
+    deleteApplication,
+} from "../controllers/applicationControllers";
 import { Application } from "../models/Application";
 const application = express.Router();
 application.use(express.json());
 
+/**
+ * Route that stores a new application to database
+ */
 application.post("/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
     let email: string = req.body.email;
@@ -47,18 +58,19 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
             attachResume,
             attachCoverLetter,
             experience,
-            ownerID);
+            ownerID
+        );
         const status: number = application[0];
         if (status == 200) {
             res.status(200);
             res.json({
                 Response: "Success",
-                application
+                application,
             });
         } else if (status == 400) {
             res.status(400);
             res.json({
-                application
+                application,
             });
         } else if (status == 404) {
             res.sendStatus(status);
@@ -68,63 +80,96 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-application.get("/getLastApplication/:userID", async (req: Request, res: Response) => {
-    let userID: string = req.params.userID;
-    try {
-        const application: Application = await getLastApplication(userID);
-        const status: number = application[0];
-        if (status == 200) {
-            res.status(200);
-            res.json(application[1]);
+
+/**
+ * Route that gets the last application of a user
+ */
+application.get(
+    "/getLastApplication/:userID",
+    async (req: Request, res: Response) => {
+        let userID: string = req.params.userID;
+        try {
+            const application: Application = await getLastApplication(userID);
+            const status: number = application[0];
+            if (status == 200) {
+                res.status(200);
+                res.json(application[1]);
+            }
+            if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.name, errMsg: err.message });
         }
-        if (status == 404) {
-            res.sendStatus(404);
-        }
-    } catch (err: any) {
-        res.status(400);
-        res.json({ errType: err.name, errMsg: err.message });
     }
-});
-application.get("/getApplications/:userID", async (req: Request, res: Response) => {
-    let userID: string = req.params.userID;
-    let postingID: string = req.query.postingID as string;
-    try {
-        const application: Application = await getApplications(userID, postingID);
-        const status: number = application[0];
-        if (status == 200) {
-            res.status(200);
-            res.json(application[1]);
+);
+
+/**
+ * Route that retrieves all applications that were sent for a specific job posting
+ */
+application.get(
+    "/getApplications/:userID",
+    async (req: Request, res: Response) => {
+        let userID: string = req.params.userID;
+        let postingID: string = req.query.postingID as string;
+        try {
+            const application: Application = await getApplications(
+                userID,
+                postingID
+            );
+            const status: number = application[0];
+            if (status == 200) {
+                res.status(200);
+                res.json(application[1]);
+            }
+            if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.name, errMsg: err.message });
         }
-        if (status == 404) {
-            res.sendStatus(404);
-        }
-    } catch (err: any) {
-        res.status(400);
-        res.json({ errType: err.name, errMsg: err.message });
     }
-});
-application.get("/getApplicationHistory/:userID", async (req: Request, res: Response) => {
-    let userID = req.params.userID;
-    try {
-        const application: Application = await getApplicationHistory(userID);
-        const status: number = application[0];
-        if (status == 200) {
-            res.status(200);
-            res.json(application[1]);
+);
+
+/**
+ * Route that gets the application history of a user
+ */
+application.get(
+    "/getApplicationHistory/:userID",
+    async (req: Request, res: Response) => {
+        let userID = req.params.userID;
+        try {
+            const application: Application = await getApplicationHistory(
+                userID
+            );
+            const status: number = application[0];
+            if (status == 200) {
+                res.status(200);
+                res.json(application[1]);
+            }
+            if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.name, errMsg: err.message });
         }
-        if (status == 404) {
-            res.sendStatus(404);
-        }
-    } catch (err: any) {
-        res.status(400);
-        res.json({ errType: err.name, errMsg: err.message });
     }
-});
+);
+
+/**
+ * Route that removes an application from database
+ */
 application.post("/remove/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
     let postingID: string = req.query.postingID as string;
     try {
-        const application: Application = await deleteApplication(userID, postingID);
+        const application: Application = await deleteApplication(
+            userID,
+            postingID
+        );
         const status: number = application[0];
         if (status == 200) {
             res.status(200);

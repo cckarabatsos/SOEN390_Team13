@@ -1,3 +1,6 @@
+/**
+ * Routes for User entity of the database
+ */
 import express, { Request, Response } from "express";
 import { createJobPosting } from "../controllers/jobPostingControllers";
 //import { UserImportBuilder } from "firebase-admin/lib/auth/user-import-builder";
@@ -84,6 +87,9 @@ user.get("/api/login", async (req: Request, res: Response) => {
     return user;
 });
 
+/**
+ * ROute that gets specified type of account file for a user
+ */
 user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -101,6 +107,9 @@ user.get("/accountFile/:userID", async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * Route that removes the specified type of account file for a user
+ */
 user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type: string = req.query.type as string;
@@ -118,7 +127,9 @@ user.post("/removeAccountFile/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-
+/**
+ * Route to register on the website
+ */
 user.post("/api/register", async (req: Request, res: Response) => {
     try {
         const registeredUser: User = await registerUser(req.body);
@@ -139,6 +150,9 @@ user.post("/api/register", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+/**
+ * Route to logout from the website
+ */
 user.post("/api/logout", async (req: Request, res: Response) => {
     try {
         res.cookie("FrontendUser", "", {
@@ -152,6 +166,9 @@ user.post("/api/logout", async (req: Request, res: Response) => {
         return res.status(400).json({ errType: err.Name, errMsg: err.message });
     }
 });
+/**
+ * Route that deletes a user with his ID
+ */
 user.post("/delete/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     //console.log(userID);
@@ -169,6 +186,10 @@ user.post("/delete/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that stores specified type of account file to database
+ */
 user.post(
     "/uploadAccountFile/:userID",
     upload.single("file"),
@@ -192,7 +213,9 @@ user.post(
         }
     }
 );
-
+/**
+ * Route that edits a user using his email
+ */
 user.post("/edit/:email", async (req: Request, res: Response) => {
     try {
         let email: string = req.params.email;
@@ -223,7 +246,9 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
-
+/**
+ * Route to send an invite to a user
+ */
 //***********User invitation routes section***********************
 user.get("/api/sendInvite", async (req: Request, res: Response) => {
     let receiverEmail = req.query.receiverEmail as string;
@@ -236,6 +261,9 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+/**
+ * Route to follow a company
+ */
 user.get("/api/follow", async (req: Request, res: Response) => {
     let receiverID = (await req.query.receiverID) as string;
     let senderID = (await req.query.senderID) as string;
@@ -248,6 +276,9 @@ user.get("/api/follow", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+/**
+ * Route to unfollow a company
+ */
 user.get("/api/unFollow", async (req: Request, res: Response) => {
     let receiverID = (await req.query.receiverID) as string;
     let senderID = (await req.query.senderID) as string;
@@ -260,6 +291,9 @@ user.get("/api/unFollow", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+/**
+ * Route to accept or decline an invite between two users
+ */
 user.get("/api/manageInvite", async (req: Request, res: Response) => {
     let invitedEmail = req.query.invitedEmail as string;
     let senderEmail = req.query.senderEmail as string;
@@ -282,7 +316,9 @@ user.get("/api/manageInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
-
+/**
+ * Route to get the pending invitations of a user
+ */
 user.get("/api/getPendingInvitations", async (req: Request, res: Response) => {
     let userEmail = req.query.userEmail as string;
 
@@ -294,7 +330,9 @@ user.get("/api/getPendingInvitations", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
-
+/**
+ * Route to get the contacts of a user
+ */
 user.get("/api/getContacts", async (req: Request, res: Response) => {
     let userEmail = req.query.userEmail as string;
 
@@ -307,10 +345,9 @@ user.get("/api/getContacts", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
-
-//****************End User invitation route section *************//
-
-//****************Start Job Posting route ********************//
+/**
+ * Post a jobPosting as a Company Account
+ */
 user.post("/api/posting/:email", async (req: Request, res: Response) => {
     let email: string = req.params.email;
     let location: string = req.body.location.toLowerCase();
@@ -365,6 +402,9 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
         }
     }
 });
+/**
+ * Search users with a filter
+ */
 user.get("/api/search", async (req: Request, res: Response) => {
     var filter: any = {};
     for (const [key, value] of Object.entries(req.query)) {
@@ -383,6 +423,9 @@ user.get("/api/search", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+/**
+ * Search companies with a filter
+ */
 user.get("/api/searchCompanies", async (req: Request, res: Response) => {
     var filter: any = {};
     for (const [key, value] of Object.entries(req.query)) {

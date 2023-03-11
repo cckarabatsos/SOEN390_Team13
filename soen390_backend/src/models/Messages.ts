@@ -1,5 +1,5 @@
 import firebase from "firebase";
-
+// Model for the chatMessage entity
 export type chatMessage = {
   content: string;
   isRead: boolean;

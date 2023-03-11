@@ -1,3 +1,6 @@
+/**
+ * Service methods for Application entity of the database
+ */
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
@@ -9,6 +12,12 @@ import { findUserWithID, updateUser } from "./userServices";
 
 const db = firebase.firestore();
 
+/**
+ * Finds application with specified ID in the database
+ *
+ * @param applicationID 
+ * @returns snapshot of the found application or undefined
+ */
 export const findApplicationWithID = async (applicationID: string) => {
     try {
         var snapShot = await db
@@ -21,6 +30,13 @@ export const findApplicationWithID = async (applicationID: string) => {
     }
     return snapShot.data();
 };
+
+/**
+ * Stores a new Application document in the database
+ * 
+ * @param application 
+ * @returns ID of the created document or null
+ */
 export const storeApplication = async (application: Application) => {
     try {
         let user = await findUserWithID(application.ownerID);
@@ -70,6 +86,12 @@ export const storeApplication = async (application: Application) => {
     return document.id;
 };
 
+/**
+ * Retrieves the last application associated with the user having the specified ID
+ * 
+ * @param userID 
+ * @returns application or null
+ */
 export const retrieveLastApplication = async (userID: string) => {
     try {
         let user = await findUserWithID(userID);
@@ -102,6 +124,13 @@ export const retrieveLastApplication = async (userID: string) => {
     }
 };
 
+/**
+ * Retrieves all applications that the company received for a specific job posting
+ * 
+ * @param userID 
+ * @param postingID
+ * @returns array of applications or null
+ */
 export const retrieveApplications = async (userID: string, postingID: string) => {
     try {
         let user = await findUserWithID(userID);
@@ -137,6 +166,13 @@ export const retrieveApplications = async (userID: string, postingID: string) =>
     }
 };
 
+/**
+ * Retrieves all job postings to which the user having the specified ID
+ * has applied to
+ * 
+ * @param userID 
+ * @returns array of job postings or null
+ */
 export const retrieveApplicationHistory = async (userID: string) => {
     try {
         let user = await findUserWithID(userID);
@@ -174,6 +210,13 @@ export const retrieveApplicationHistory = async (userID: string) => {
     }
 };
 
+/**
+ * Deletes application of the user to the specified job posting
+ * 
+ * @param userID 
+ * @param postingID 
+ * @returns "Success" or null
+ */
 export const deleteApplicationWithId = async (userID: string, postingID: string) => {
     try {
         let user = await findUserWithID(userID);
