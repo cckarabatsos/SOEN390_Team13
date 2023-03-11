@@ -7,7 +7,7 @@ application.use(express.json());
 
 application.post("/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
-    let email: boolean = req.body.email;
+    let email: string = req.body.email;
     let firstName: string = req.body.firstName;
     let lastName: string = req.body.lastName;
     let phone: string = req.body.phone;
@@ -56,7 +56,7 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
                 application
             });
         } else if (status == 400) {
-            res.status(200);
+            res.status(400);
             res.json({
                 application
             });

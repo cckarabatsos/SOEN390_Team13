@@ -8,7 +8,7 @@ import {
 } from "../services/applicationServices";
 
 export async function createApplication(
-    email: boolean,
+    email: string,
     firstName: string,
     lastName: string,
     phone: string,
