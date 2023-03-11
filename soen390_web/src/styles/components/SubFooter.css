@@ -2,34 +2,37 @@
     display: inline-block;
     /* flex-grow: 1; */
     cursor: pointer;
-    height: 50px;
+    height: 7vh;
     max-width: 100%;
     margin-left: -50%;
 }
 
 .Section1{
-    margin-left: 7%;
-    padding: 30px;
+    margin-left: 7%;    
     font-size: 90%;
     color: black;
     padding-top: 10px;
 }
 
 .Section2{
-    padding: 30px;
+    margin-left: 2%;
     color: black;
     font-size: 90%;
     padding-top: 10px;
 }
 
 .Section3{
-    padding: 30px;
+    margin-left: 2%;
     color: black;
     font-size: 90%;
     padding-top: 10px;
 
 }
 
-.First{
-
+.footer{
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 50vh;
+    background-color: wh#010101;
+    border-radius: 229px;
 }

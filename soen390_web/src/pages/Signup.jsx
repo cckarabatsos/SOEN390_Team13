@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
+import { useTranslation } from "react-i18next";
 
 function SignUp(props) {
   const [fNameInput, setfNameInput] = React.useState("");
@@ -20,6 +21,8 @@ function SignUp(props) {
   const [passwordMismatch, setPasswordMismatch] = React.useState(false);
 
   let navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const registerUser = async () => {
     if (confirmPasswordInput === passwordInput) {
@@ -49,28 +52,26 @@ function SignUp(props) {
 
   return (
     <div data-testid="signup-1">
-      <>
-        <div className="background-color">
-          <div
-            className="signup"
-            style={{
-              backgroundImage: `url(${background})`,
-            }}
-          >
-            <div className="form-group">
-              <div>
-                <h1 data-testid="signuptitle-1">Sign Up</h1>
-                <Grid container spacing={2}>
-                  <Grid className="field-name" item xs={4}>
-                    First Name
-                  </Grid>
-                  <Grid className="field-input" item xs={8}>
-                    <div className="input-margin">
+      <div>
+        <div
+          className="signup"
+          style={{ backgroundImage: `url(${background})` }}
+        >
+          <p className="signuptitle" data-testid="signuptitle-1">
+            One step away from a remarkable career
+          </p>
+          <div className="form-group">
+            <Grid container spacing={1}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={8}>
+                  <div className="name-field">{t("FirstNameText")}</div>
+                  <div className="field-input">
+                    <div className="margin-input">
                       <TextField
                         autoFocus
-                        className="inputRounded"
+                        className="Roundedinput"
                         margin="dense"
-                        label="First Name"
+                        label={t("FirstNameText")}
                         type="name"
                         variant="outlined"
                         size="small"
@@ -78,17 +79,17 @@ function SignUp(props) {
                         onChange={(e) => setfNameInput(e.target.value)}
                       />
                     </div>
-                  </Grid>
-                  <Grid className="field-name" item xs={4}>
-                    Last Name
-                  </Grid>
-                  <Grid className="field-input" item xs={8}>
-                    <div className="input-margin">
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <div className="name-field">{t("LastNameText")}</div>
+                  <div className="field-input">
+                    <div className="margin-input">
                       <TextField
                         autoFocus
-                        className="inputRounded"
+                        className="Roundedinput"
                         margin="dense"
-                        label="Last Name"
+                        label={t("LastNameText")}
                         type="name"
                         variant="outlined"
                         size="small"
@@ -96,17 +97,17 @@ function SignUp(props) {
                         onChange={(e) => setlNameInput(e.target.value)}
                       />
                     </div>
-                  </Grid>
-                  <Grid className="field-name" item xs={4}>
-                    Email Address
-                  </Grid>
-                  <Grid className="field-input" item xs={8}>
-                    <div className="input-margin">
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <div className="name-field">{t("emailText")}</div>
+                  <div className="field-input">
+                    <div className="margin-input">
                       <TextField
                         autoFocus
-                        className="inputRounded"
+                        className="Roundedinput"
                         margin="dense"
-                        label="Email Address"
+                        label={t("emailText")}
                         type="email"
                         variant="outlined"
                         size="small"
@@ -114,17 +115,17 @@ function SignUp(props) {
                         onChange={(e) => setEmailInput(e.target.value)}
                       />
                     </div>
-                  </Grid>
-                  <Grid className="field-name" item xs={4}>
-                    Create Password
-                  </Grid>
-                  <Grid className="field-input" item xs={8}>
-                    <div className="input-margin">
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <div className="name-field">{t("CreatePasswordText")}</div>
+                  <div className="field-input">
+                    <div className="margin-input">
                       <TextField
                         autoFocus
-                        className="inputRounded"
+                        className="Roundedinput"
                         margin="dense"
-                        label="Create Password"
+                        label={t("CreatePasswordText")}
                         type="password"
                         variant="outlined"
                         size="small"
@@ -132,17 +133,17 @@ function SignUp(props) {
                         onChange={(e) => setPasswordInput(e.target.value)}
                       />
                     </div>
-                  </Grid>
-                  <Grid className="field-name" item xs={4}>
-                    Confirm Password
-                  </Grid>
-                  <Grid className="field-input" item xs={6}>
-                    <div className="input-margin">
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <div className="name-field">{t("ConfirmPasswordText")}</div>
+                  <div className="field-input">
+                    <div className="margin-input">
                       <TextField
-                        className="inputRounded"
                         autoFocus
+                        className="Roundedinput"
                         margin="dense"
-                        label="Confirm Password"
+                        label={t("ConfirmPasswordText")}
                         type="password"
                         variant="outlined"
                         size="small"
@@ -152,62 +153,48 @@ function SignUp(props) {
                         }
                       />
                     </div>
-                  </Grid>
-                  {passwordMismatch ? (
-                    <Grid item xs={12} style={{ color: "red" }}>
-                      Passwords do not Match
-                    </Grid>
-                  ) : (
-                    <></>
-                  )}
-                  {registerError ? (
-                    <Grid item xs={12} style={{ color: "red" }}>
-                      User already has an account
-                    </Grid>
-                  ) : (
-                    <></>
-                  )}
-                  <Grid className="cancel" item xs={6}>
-                    <Button
-                      className="button"
-                      variant="contained"
-                      style={{
-                        borderRadius: 27,
-                        backgroundColor: "rgba(100, 69, 227, 0.85)",
-                      }}
-                      onClick={() => navigate("/")}
-                    >
-                      Cancel
-                    </Button>
-                  </Grid>
-                  <Grid className="login" item xs={6}>
-                    <Button
-                      className="button"
-                      variant="contained"
-                      disabled={fieldsEmpty()}
-                      style={{
-                        borderRadius: 27,
-                        backgroundColor: "rgba(100, 69, 227, 0.85)",
-                      }}
-                      onClick={registerUser}
-                    >
-                      Sign Up
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <GoogleLogin />
-                  </Grid>
-                  <Grid item xs={12}>
-                    Already have an account? Login <Link to="/">here!</Link>
-                  </Grid>
+                  </div>
                 </Grid>
-              </div>
-            </div>
+              </Grid>
+              {passwordMismatch ? (
+                <Grid item xs={12} style={{ color: "red" }}>
+                  {t("MismatchPasswordText")}
+                </Grid>
+              ) : (
+                <></>
+              )}
+              {registerError ? (
+                <Grid item xs={12} style={{ color: "red" }}>
+                  {t("AccountExitsText")}
+                </Grid>
+              ) : (
+                <></>
+              )}
+              <Grid className="login" item xs={12}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  disabled={fieldsEmpty()}
+                  style={{
+                    borderRadius: 27,
+                    backgroundColor: "#6C63FF",
+                    width: 270,
+                  }}
+                  onClick={registerUser}
+                >
+                  {t("SignUpText")}
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <GoogleLogin />
+              </Grid>
+              <Grid item xs={12}>
+                {t("AlreadyAccountText")} <Link to="/">{t("HereText")}</Link>
+              </Grid>
+            </Grid>
           </div>
         </div>
-        <SubFooter />
-        <Footer />
-      </>
+      </div>
     </div>
   );
 }

@@ -15,6 +15,7 @@ export const experience_schema = yup
         company: yup.string().required(),
         position: yup.string().required(),
         type: yup.string().required(),
+        logo: yup.string().required(),
         ownerID: yup.string().required(),
     })
     .required();

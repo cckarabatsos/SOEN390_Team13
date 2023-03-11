@@ -24,10 +24,9 @@ function MainTitle(props) {
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
     setIsAuth(success.data);
-    if (success.status === 200){
-       navigate("/UserProfile")
+    if (success.status === 200) {
+      navigate("/UserProfile");
     } else {
-
       setIncorrectLogin(true);
       console.log("Login Fail");
     }
@@ -41,20 +40,17 @@ function MainTitle(props) {
 
   return (
     <div data-testid="login-1">
-      <>
-        <div className="background-color">
-          <div
-            className="background"
-            style={{
-              backgroundImage: `url(${background})`,
-            }}
-          >
-            <div className="login-form">
+      <div className="background-color">
+        <div
+          className="background"
+          style={{ backgroundImage: `url(${background})` }}
+        >
+          <h3 className="signuptitle">Your shortcut to career success</h3>
+          <div className="login-form">
+            <Grid container spacing={1}>
               <Grid container spacing={2}>
-                <Grid className="field-name" item xs={4}>
-                  {t("emailText")}
-                </Grid>
                 <Grid className="field-input" item xs={8}>
+                  <div className="field-name">{t("emailText")}</div>
                   <div className="input-margin">
                     <TextField
                       data-testid="email-1"
@@ -70,10 +66,9 @@ function MainTitle(props) {
                     />
                   </div>
                 </Grid>
-                <Grid className="field-name" item xs={4}>
-                  {t("passwordText")}
-                </Grid>
-                <Grid className="field-input" item xs={6}>
+
+                <Grid className="field-input" item xs={8}>
+                  <div className="field-name"> {t("passwordText")} </div>
                   <div className="input-margin">
                     <TextField
                       data-testid="password-1"
@@ -89,20 +84,7 @@ function MainTitle(props) {
                     />
                   </div>
                 </Grid>
-                <Grid className="cancel" item xs={6}>
-                  <Button
-                    className="button"
-                    variant="contained"
-                    style={{
-                      borderRadius: 27,
-                      backgroundColor: "rgba(100, 69, 227, 0.85)",
-                    }}
-                    onClick={() => navigate("/")}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
-                <Grid className="login" item xs={6}>
+                <Grid className="login" item xs={12}>
                   <Button
                     className="button"
                     variant="contained"
@@ -110,46 +92,44 @@ function MainTitle(props) {
                     style={{
                       borderRadius: 27,
                       backgroundColor: "rgba(100, 69, 227, 0.85)",
+                      width: 270,
                     }}
                   >
-                    Login
+                    {t("LoginText")}
                   </Button>
                 </Grid>
                 {incorrectLogin && (
                   <Grid item xs={12}>
-                
-                  <div
-                    style={{
-                      
-                      backgroundColor: "red",
-                      color: "white",
-                      padding: "10px",
-                      borderRadius: "10px",
-                      maxWidth: "400px",
-                      margin: "0 auto",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                     minHeight: "50px",
-                    }}
-                  >
-                    You have entered the wrong email or the wrong password
-                  </div>
-                </Grid>
+                    <div
+                      style={{
+                        backgroundColor: "red",
+                        color: "white",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        maxWidth: "400px",
+                        margin: "0 auto",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "50px",
+                      }}
+                    >
+                      You have entered the wrong email or the wrong password
+                    </div>
+                  </Grid>
                 )}
                 <Grid item xs={12}>
                   <GoogleLogin />
                 </Grid>
                 <Grid item xs={12}>
-                  Don't have an account? Sign up <Link to="/Signup">here!</Link>
+                  {t("NoAccountText")}{" "}
+                  <Link to="/Signup">{t("ClickHereText")}</Link>
                 </Grid>
               </Grid>
-            </div>
+            </Grid>
           </div>
         </div>
-        <SubFooter />
-        <Footer />
-      </>
+      </div>
     </div>
   );
 }

@@ -28,6 +28,7 @@ export const jobposting_schema = yup
         remote: yup.boolean().required(),
         description: yup.string().required(),
         email: yup.string().required(),
+        logo: yup.string(),
         jobPosterID: yup.string().required(),
     })
     .required();

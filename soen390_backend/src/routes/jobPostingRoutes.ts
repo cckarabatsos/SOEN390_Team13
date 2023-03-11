@@ -10,12 +10,10 @@ jobposting.post("/remove/:email", async (req: Request, res: Response) => {
     let email = req.params.email;
     let postID = req.body.docID;
     try {
-        let status,
-            data = await deleteJobPosting(postID, email);
-        res.json({ data });
-        if (status == 200) {
+        let data = await deleteJobPosting(postID, email);
+        if (data[0] == 200) {
             res.sendStatus(200);
-        } else if (status == 404) {
+        } else if (data[0] == 404) {
             res.sendStatus(404);
         }
     } catch (err: any) {

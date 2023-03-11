@@ -1,5 +1,7 @@
 import { Filter, Jobposting } from "../models/jobPosting";
 import firebase from "firebase";
+import { findUserWithID } from "./userServices";
+import { user_schema } from "../models/User";
 
 const db = firebase.firestore();
 export const findJobpostingWithID = async (postingID: string) => {
@@ -13,6 +15,8 @@ export const findJobpostingWithID = async (postingID: string) => {
 };
 export const storeJobPosting = async (newJobPosting: Jobposting) => {
     try {
+        let user = await findUserWithID(newJobPosting.jobPosterID);
+        let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({
             email: newJobPosting.email,
             location: newJobPosting.location,
@@ -24,6 +28,7 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
             contract: newJobPosting.contract,
             duration: newJobPosting.duration,
             type: newJobPosting.type,
+            logo: casted_user.picture,
             jobPosterID: newJobPosting.jobPosterID,
         });
         await document.update({ postingID: document.id });
@@ -46,16 +51,25 @@ export const deleteJobPostingWithId = async (
                 error.code = "401";
                 throw error;
             }
-            db.collection("jobpostings")
-                .doc(postingID)
-                .delete()
-                .then(() => {
-                    console.log(
-                        "Job Posting with ID " +
-                            postingID +
-                            "successfully deleted."
-                    );
+            db.collection("jobpostings").doc(postingID).delete();
+            const userRef = db.collection("users").doc(data.jobPosterID);
+            const userSnapshot = await userRef.get();
+            const postingIds =
+                userSnapshot.data()?.jobpostings?.postingids ?? [];
+            const index = postingIds.indexOf(postingID);
+            if (index > -1) {
+                const applied = userSnapshot.data()?.jobpostings?.applied ?? [];
+                applied.splice(index, 1);
+                const documents =
+                    userSnapshot.data()?.jobpostings?.documents ?? [];
+                documents.splice(index, 1);
+                await userRef.update({
+                    "jobpostings.postingids":
+                        firebase.firestore.FieldValue.arrayRemove(postingID),
+                    "jobpostings.applied": applied,
+                    "jobpostings.documents": documents,
                 });
+            }
         }
     } catch (error) {
         console.log(error);
@@ -63,6 +77,7 @@ export const deleteJobPostingWithId = async (
     }
     return data;
 };
+
 export const filterJobPostings = async (filter: Filter) => {
     let jobPostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("jobpostings");
@@ -85,7 +100,7 @@ export const filterJobPostings = async (filter: Filter) => {
         const prefix = filter.position.toLowerCase();
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         jobPostingsRef = jobPostingsRef
-            .where("positon", ">=", prefix)
+            .where("position", ">=", prefix)
             .where("position", "<", prefixEnd);
     }
 
@@ -100,10 +115,13 @@ export const filterJobPostings = async (filter: Filter) => {
     if (filter.limit) {
         jobPostingsRef = jobPostingsRef.limit(filter.limit);
     }
-    if (filter.skip) {
-        jobPostingsRef = jobPostingsRef.startAfter(filter.skip);
+    if (filter.skip > 0) {
+        const lastVisible = await jobPostingsRef.get().then((snapshot) => {
+            const lastDoc = snapshot.docs[filter.skip - 1];
+            return lastDoc;
+        });
+        jobPostingsRef = jobPostingsRef.startAfter(lastVisible);
     }
-
     const snapshot = await jobPostingsRef.get();
     const jobPostings = snapshot.docs.map((doc) => ({
         id: doc.id,

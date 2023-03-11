@@ -3,9 +3,10 @@ import axios from "axios";
 import { Button, Typography } from "@mui/material";
 import "../styles/components/FileUpload.css";
 import api from "../config.json";
-
+import { useTranslation } from "react-i18next";
 const FileUpload = ({ files, setFiles, removeFile }) => {
   const [userData, setUserData] = React.useState({});
+  const { t } = useTranslation();
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
@@ -50,7 +51,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           return res.data;
         });
       console.log(response);
-      if (response == 200) {
+      if (response === 200) {
         return true;
       } else {
         return false;
@@ -100,7 +101,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               color: "#9606D9",
             }}
           >
-            <div>&nbsp;Cover Letter</div>
+            <div>&nbsp;{t("CoverLetterText")}</div>
             <input
               hidden
               accept="image/png, image/jpeg, .pdf"
@@ -121,7 +122,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
               color: "#9606D9",
             }}
           >
-            <div>&nbsp;Picture</div>
+            <div>&nbsp;{t("PictureText")}</div>
             <input
               hidden
               accept="image/png, image/jpeg, .pdf"
@@ -130,7 +131,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
             />
           </Button>
         </div>
-        <Typography className="main">Supported files</Typography>
+        <Typography className="main">{t("FilesText")}</Typography>
         <Typography className="info">PDF, JPG, PNG</Typography>
       </div>
     </>

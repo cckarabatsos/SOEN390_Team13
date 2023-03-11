@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/components/Modal.css";
+import { useTranslation } from "react-i18next";
 
 function Modal({
   setOpenModal,
@@ -11,7 +12,11 @@ function Modal({
   viewContract,
   viewEmail,
   viewCompany,
-}) {
+  
+}) 
+{
+const { t } = useTranslation();
+
   return (
     <div className="modalBackground">
       <div className="modalContainer">
@@ -42,9 +47,13 @@ function Modal({
             }}
             id="cancelBtn"
           >
-            Cancel
+            {t("CancelText")}
           </button>
-          <Link id="applyBtn"  to="/JobApplication"> Apply </Link>
+          <Link id="applyBtn" style={{width:"150px", height:"45px",
+        display: "inline-block", textDecoration: "none", 
+        backgroundColor: "cornflowerblue", color: "white", 
+        borderRadius: "8px", textAlign: "center", 
+        lineHeight: "45px" }}  to="/JobApplication"> {t("ApplyText")} </Link>
         </div>
       </div>
     </div>

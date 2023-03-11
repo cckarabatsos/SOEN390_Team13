@@ -1,7 +1,6 @@
 //thx saad
 import { error } from "console";
 import firebase from "firebase";
-//import { string } from "yup";
 import "firebase/storage";
 import { User, user_schema, UserFilter } from "../models/User";
 // import { database } from "firebase-admin";
@@ -9,6 +8,7 @@ import { User, user_schema, UserFilter } from "../models/User";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
+
 export const findUserWithID = async (userID: string) => {
     try {
         var snapShot = await db.collection("users").doc(userID).get();
@@ -41,28 +41,23 @@ export const findUserWithEmail = (
 
 export const storeUser = async (user: User) => {
     try {
-        let pic: string = user.picture
-            ? user.picture
-            : await ref
-                  .child("Profile Pictures/blank_profile_pic.png")
-                  .getDownloadURL();
-
+        let pic;
+        if (user.picture) {
+            pic = user.picture;
+        } else {
+            if (user.isCompany) {
+                pic = await ref
+                    .child("Profile Pictures/blank_company_pic.jpg")
+                    .getDownloadURL();
+            } else {
+                pic = await ref
+                    .child("Profile Pictures/blank_profile_pic.png")
+                    .getDownloadURL();
+            }
+        }
+        user.picture = pic;
         var document = await db.collection("users").add({
-            name: user.name,
-            password: user.password,
-            email: user.email,
-            privateKey: user.privateKey,
-            publicKey: user.publicKey,
-            picture: pic,
-            resume: user.resume,
-            coverLetter: user.coverLetter,
-            bio: user.bio,
-            currentPosition: user.currentPosition,
-            currentCompany: user.currentCompany,
-            isRecruiter: user.isRecruiter,
-            userID: "",
-            pendingInvitations: [],
-            contacts: [],
+            ...user,
         });
 
         await document.update({ userID: document.id });
@@ -79,6 +74,24 @@ export const deleteUserWithId = async (userID: string) => {
     try {
         var data: any = await findUserWithID(userID);
         if (data !== undefined) {
+            if (data.jobpostings) {
+                const batch = db.batch();
+                console.log(data.jobpostings.postingids);
+                if (data.jobpostings.postingids) {
+                    data.jobpostings.postingids.forEach((postingID: string) => {
+                        const postingRef = db
+                            .collection("jobpostings")
+                            .doc(postingID);
+                        batch.delete(postingRef);
+                    });
+
+                    await batch.commit();
+                    console.log(
+                        data.jobpostings.postingids.length +
+                        " job postings successfully deleted."
+                    );
+                }
+            }
             db.collection("users")
                 .doc(userID)
                 .delete()
@@ -92,6 +105,7 @@ export const deleteUserWithId = async (userID: string) => {
         console.log(error);
         throw error;
     }
+
     return data;
 };
 export const storeAccountFile = async (
@@ -116,7 +130,7 @@ export const storeAccountFile = async (
                 type = type[0];
             }
             console.log(type);
-            deleteAccountFile(userID, type);
+            // deleteAccountFile(userID, type); Commented out because of applications implementation
             if (type.toUpperCase() == "RESUME") {
                 folder = "Resumes/";
             } else if (type.toUpperCase() == "COVERLETTER") {
@@ -126,7 +140,7 @@ export const storeAccountFile = async (
             } else {
                 return null;
             }
-            console.log(file.originalname);
+            console.log();
             const uploadTask = await ref
                 .child(folder + userID + " - " + file.originalname)
                 .put(buffer, metadata);
@@ -230,26 +244,6 @@ function processData(snapshot: any) {
     }
 }
 
-//helper function to create userNodes
-// async function createUserNode(user: UserNode) {
-//   try {
-//     var document = await db.collection("users").add({
-//       name: user.name,
-//       email: user.email,
-//       picture: user.picture,
-//       userID: "",
-//     });
-
-//     await document.update({ userID: document.id });
-
-//     console.log("UserNode successfully registered with id: " + document.id);
-//   } catch (error) {
-//     console.log(error);
-//     throw error;
-//   }
-//   return document.id;
-// }
-
 export async function sendUserInvitation(
     receiverEmail: string,
     senderEmail: string
@@ -285,47 +279,46 @@ export async function sendUserInvitation(
                 "cannot find desired receiver or sender when trying to send invitation"
             );
         }
-
-        //check 1: check is receiver is not already in the pendings of sender
+        //check 1: check if either of them are a company
         if (
-            (senderUser.data as User).pendingInvitations.includes(receiverEmail)
+            (senderUser.data as User).isCompany == true ||
+            (receiverUser.data as User).isCompany == true
         ) {
-            //console.log("error sender already invited by receiver");
-            throw error("error sender already invited by receiver");
+            throw error("One of them is a company");
         } else {
             console.log("proceed check 1");
         }
+        if (
+            (senderUser.data as User).pendingInvitations.includes(receiverEmail)
+        ) {
+            //check 2: check is receiver is not already in the pendings of sender
+            //console.log("error sender already invited by receiver");
+            throw error("error sender already invited by receiver");
+        } else {
+            console.log("proceed check 2");
+        }
 
-        //check 2: check if sendter is not already in the pendings of receiver
+        //check 3: check if sendter is not already in the pendings of receiver
         if (
             (receiverUser.data as User).pendingInvitations.includes(senderEmail)
         ) {
             //console.log("error receiver already invited by sender");
             throw error("error receiver already invited by sender");
         } else {
-            console.log("proceed check 2");
+            console.log("proceed check 3");
         }
 
-        // console.log(
-        //   "sender name: " + senderUser.data.name + " Id: " + senderUser.data.userID
-        // );
-        // console.log(
-        //   "sender name: " +
-        //     receiverUser.data.name +
-        //     " Id: " +
-        //     receiverUser.data.userID
-        // );
-
-        //check 3 : check if sender and receiver are already contacts
+        //check 4 : check if sender and receiver are already contacts
         if ((senderUser.data as User).contacts.includes(receiverEmail)) {
             throw error("error sender and receiver are already friends");
         } else {
-            console.log("proceed check 3");
+            console.log("proceed check 4");
         }
 
         // update receiver pendinginvitation filed
 
-        db.collection("users")
+        await db
+            .collection("users")
             .doc(receiverUser.data.userID)
             .update({
                 pendingInvitations:
@@ -334,6 +327,68 @@ export async function sendUserInvitation(
     } catch (error) {
         console.log(error);
         throw new Error("this is an invitation error");
+    }
+}
+export async function followCompanyInv(senderID: string, receiverID: string) {
+    const senderUser = await findUserWithID(senderID);
+    const receiverUser = await findUserWithID(receiverID);
+    try {
+        if (senderUser && receiverUser) {
+            if (senderUser.isCompany) {
+                throw new Error("Sender is a company");
+            } else {
+                console.log("Proceed check 1");
+            }
+            if (receiverUser.followers.includes(senderID)) {
+                throw new Error("Already following");
+            } else {
+                console.log("Proceed check 2 ");
+            }
+            db.collection("users")
+                .doc(receiverID)
+                .update({
+                    followers:
+                        firebase.firestore.FieldValue.arrayUnion(senderID),
+                });
+            db.collection("users")
+                .doc(senderID)
+                .update({
+                    follows:
+                        firebase.firestore.FieldValue.arrayUnion(receiverID),
+                });
+        }
+    } catch (error) {
+        console.log(error);
+        throw new Error("this is a following error");
+    }
+}
+export async function unFollowCompanyInv(senderID: string, receiverID: string) {
+    const receiverUser = await findUserWithID(receiverID);
+    try {
+        if (receiverUser) {
+            if (receiverUser.followers.includes(senderID)) {
+                db.collection("users")
+                    .doc(receiverID)
+                    .update({
+                        followers:
+                            firebase.firestore.FieldValue.arrayRemove(senderID),
+                    });
+                db.collection("users")
+                    .doc(senderID)
+                    .update({
+                        follows:
+                            firebase.firestore.FieldValue.arrayRemove(
+                                receiverID
+                            ),
+                    });
+            } else {
+                console.log("You dont even follow that company????");
+                throw Error;
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        throw new Error("this is a following error");
     }
 }
 
@@ -347,7 +402,6 @@ export async function manageUserInvitation(
         if (isAccept) {
             senderUser = await new Promise((resolve, _) => {
                 findUserWithEmail(senderEmail, (user) => {
-                    // console.log(user);
                     if (user == null) {
                         resolve(null);
                     } else {
@@ -356,12 +410,9 @@ export async function manageUserInvitation(
                 });
             });
         }
-
         var invitedUser: any;
-
         invitedUser = await new Promise((resolve, _) => {
             findUserWithEmail(invitedEmail, (user) => {
-                // console.log(user);
                 if (user == null) {
                     resolve(null);
                 } else {
@@ -369,13 +420,10 @@ export async function manageUserInvitation(
                 }
             });
         });
-        console.log(invitedUser);
-        console.log(senderUser);
         // check 1: check if enderEmail is in invitedUser pendingInvitation list
         if (
             !(invitedUser.data as User).pendingInvitations.includes(senderEmail)
         ) {
-            //console.log("error receiver already invited by sender");
             throw error("error sender user email not int he invided user list");
         } else {
             console.log("proceed check 1");
@@ -470,22 +518,39 @@ export function updateUser(newProfile: User, id: string) {
     db.collection("users").doc(id).update(newProfile);
 }
 
-export async function getFilteredUsers(filter: UserFilter) {
+export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
         db.collection("users");
-
+    userRef = userRef.where("isAdmin", "==", false);
+    if (company === false) {
+        userRef = userRef.where("isCompany", "==", false);
+    } else {
+        userRef = userRef.where("isCompany", "==", true);
+    }
     if (filter.name) {
-        userRef = userRef.where("name", "==", filter.name);
+        const prefix = filter.name.toLowerCase();
+        const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
+        userRef = userRef
+            .where("name", ">=", prefix)
+            .where("name", "<", prefixEnd);
     }
 
     if (filter.email) {
-        userRef = userRef.where("email", "==", filter.email);
+        const prefix = filter.email.toLowerCase();
+        const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
+        userRef = userRef
+            .where("email", ">=", prefix)
+            .where("email", "<", prefixEnd);
     }
     if (filter.limit) {
         userRef = userRef.limit(filter.limit);
     }
-    if (filter.skip) {
-        userRef = userRef.startAfter(filter.skip);
+    if (filter.skip > 0) {
+        const lastVisible = await userRef.get().then((snapshot) => {
+            const lastDoc = snapshot.docs[filter.skip - 1];
+            return lastDoc;
+        });
+        userRef = userRef.startAfter(lastVisible);
     }
 
     const snapshot = await userRef.get();
@@ -495,4 +560,25 @@ export async function getFilteredUsers(filter: UserFilter) {
         ...doc.data(),
     }));
     return users;
+}
+
+export async function updateCompanyPostings(
+    postingID: string,
+    jobPosterID: string
+) {
+    const jobPosterRef = db.collection("users").doc(jobPosterID);
+    const jobPosterDoc = await jobPosterRef.get();
+    const jobPostings = jobPosterDoc.get("jobpostings");
+
+    // Add the new posting ID to the posting IDs array
+    jobPostings.postingids.push(postingID);
+
+    // Add an empty string to the applied array for the new posting
+    jobPostings.applied.push("");
+    // Add an empty string to the documents array for the new posting
+    jobPostings.documents.push("");
+    // Update the jobpostings object in the user document
+    await jobPosterRef.update({
+        jobpostings: jobPostings,
+    });
 }

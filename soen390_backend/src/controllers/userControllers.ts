@@ -11,6 +11,8 @@ import {
     getUserInvitationsOrContacts,
     getFilteredUsers,
     deleteAccountFile,
+    followCompanyInv,
+    unFollowCompanyInv,
 } from "../services/userServices";
 import dotenv from "dotenv";
 import {
@@ -20,7 +22,7 @@ import {
     user_schema,
 } from "../models/User";
 import { hash } from "bcrypt";
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;
 const saltRounds = 4;
@@ -47,9 +49,19 @@ export async function getUserWithEmail(email: string) {
     });
 }
 export async function registerUser(user: any) {
-    let casted_user: User = await user_schema.cast(user, {
-        stripUnknown: false,
-    });
+    if (user.name === "" || user.email === "" || user.password === "") {
+        throw new Error("User name cannot be empty");
+    }
+    let casted_user: User;
+    try {
+        casted_user = await user_schema.cast(user, {
+            stripUnknown: false,
+        });
+        // console.log(casted_user);
+    } catch (error) {
+        console.error(error);
+        return [404, { msg: "Cast error" }];
+    }
     casted_user.password = await hash(casted_user.password, saltRounds);
     user = await new Promise((resolve, _) => {
         findUserWithEmail(casted_user.email, (user) => {
@@ -123,25 +135,18 @@ export async function editAccount(
     id: string
 ) {
     try {
-        if (currProfile.email != newProfile.email) {
-            const userArr: User = await getUserWithEmail(
-                newProfile.email
-            ).then();
-            if (userArr[1] == null) {
-                currProfile.email = newProfile.email;
-            } else {
-                return [
-                    404,
-                    { msg: "Email is already affiliated to an account" },
-                ];
-            }
+        if (currProfile.email !== newProfile.email) {
+            throw new Error("Email cannot be changed.");
         }
-        currProfile.email = newProfile.email;
-        currProfile.password = newProfile.password;
-        currProfile.bio = newProfile.bio;
-        currProfile.currentCompany = newProfile.currentCompany;
-        currProfile.currentPosition = newProfile.currentPosition;
-        currProfile.name = newProfile.name;
+        if (!newProfile.password) {
+            newProfile.password = currProfile.password;
+        } else if (newProfile.password === currProfile.password) {
+            newProfile.password = currProfile.password;
+        } else {
+            newProfile.password = await hash(newProfile.password, saltRounds);
+        }
+        console.log(newProfile);
+        currProfile = newProfile;
         updateUser(currProfile, id);
     } catch (err: any) {
         return [400, { msg: "missing field" }];
@@ -152,6 +157,31 @@ export async function editAccount(
 export async function sendInvite(receiverEmail: string, senderEmail: string) {
     try {
         await sendUserInvitation(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
+export async function followCompany(
+    receiverEmail: string,
+    senderEmail: string
+) {
+    try {
+        await followCompanyInv(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
+
+export async function unFollowCompany(
+    receiverEmail: string,
+    senderEmail: string
+) {
+    try {
+        await unFollowCompanyInv(receiverEmail, senderEmail);
     } catch (error) {
         return [404, { msg: (error as Error).message }];
     }
@@ -215,34 +245,33 @@ export async function getFilteredUsersController(filter: UserFilter) {
     if (err) {
         return [400, error_data];
     } else {
-        let users = await getFilteredUsers(stripped_filer);
+        let users = await getFilteredUsers(stripped_filer, false);
+
+        // parse_links(products);
+        return [200, users];
+    }
+}
+export async function getFilteredCompaniesController(filter: UserFilter) {
+    let stripped_filer = user_filter_schema.cast(filter, {
+        stripUnknown: true,
+    });
+
+    let [err, error_data] = validateUserFilter(stripped_filer);
+    if (err) {
+        return [400, error_data];
+    } else {
+        let users = await getFilteredUsers(stripped_filer, true);
 
         // parse_links(products);
         return [200, users];
     }
 }
 export async function generateAccessToken(username: any) {
-    console.log(await process.env.TOKEN_SECRET);
+    // console.log(await process.env.TOKEN_SECRET);
     //console.log(process.env.TOKEN_SECRET!);
     return sign(username, process.env.TOKEN_SECRET!, { expiresIn: "28800000" });
 }
-export function verifyJWT(req: Request, res: Response, next: NextFunction) {
-    console.log(req.cookies);
-    const { FrontendUser } = req.cookies;
-    try {
-        const { iat, exp, ...payload } = jwt.verify(
-            FrontendUser,
-            process.env.TOKEN_SECRET!
-        ) as User;
-        req.cookies.user = payload; //Maybe not good will need to recheck
-        next();
-    } catch (err: any) {
-        res.status(401).json("Invalid Session");
-    }
-}
-export function hasUser(request: Request): request is Request & { user: any } {
-    return "user" in request;
-}
+
 export function hasFile(request: Request): request is Request & { file: any } {
     return "file" in request;
 }

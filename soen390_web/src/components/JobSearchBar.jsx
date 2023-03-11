@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import "../styles/components/JobSearchBar.css";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
+import { useTranslation } from "react-i18next";
 
 function JobSearchBar({ setJobs }) {
-  const navigate = useNavigate();
-  
+ 
   const [category, setCategory] = useState("location");
   const [text, setText] = useState("");
-
+  const { t } = useTranslation();
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
@@ -20,10 +19,10 @@ function JobSearchBar({ setJobs }) {
   };
 
   const handleSearch = async () => {
-    console.log("text: " + text + " category " + category);
-
-    var jobs = await JobSearch(text);
-
+    console.log("text: " + text + " category: " + category);
+  
+    var jobs = await JobSearch(category, text);
+  
     console.log(jobs);
     setJobs(jobs)
   };
@@ -34,9 +33,10 @@ function JobSearchBar({ setJobs }) {
       <div>
         <input
           type="text"
-          placeholder="Search here..."
+          placeholder={t("SearchText")}
           value={text}
           onChange={handleTextChange}
+          
         />
         <Button
           className="button"
@@ -44,27 +44,33 @@ function JobSearchBar({ setJobs }) {
           onClick={handleSearch}
           style={{
             borderRadius: 27,
+            display: "inline-block", width: "125px", 
             backgroundColor: "#a640f4b9",
           }}
         >
-          Search
+          {t("SearchText")}
         </Button>
-
+        
         <select
           category="category"
           id="category"
           className="buttonfilter"
           style={{
             borderRadius: 27,
+            display: "inline-block", 
+            width: "160px", 
+            marginRight: "140px",
             backgroundColor: "#a640f4b9",
           }}
           value={category}
           onChange={handleChange}
         >
-          <option value="Location">Location</option>
-          <option value="Company">Company</option>
-          <option value="Position">Position</option>
-          <option value="Contract">Contract</option>
+          
+          <option value="location">{t("LocationText")}</option>
+          <option value="company">{t("CompanyText")}</option>
+          <option value="position">{t("PositionText")}</option>
+          <option value="type">{t("TypeText")}</option>
+          <option valye="remote">{t("RemoteText")}</option>
         </select>
       </div>
     </div>

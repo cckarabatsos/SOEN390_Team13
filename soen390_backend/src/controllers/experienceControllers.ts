@@ -12,13 +12,14 @@ export async function createExperience(
     company: string,
     position: string,
     type: string,
-    ownerID: string
+    ownerID: string,
+    companyID: string
 ) {
     try {
         let newExperience: Experience = experience_schema.cast({
             atPresent, startDate, endDate, company, position, type, ownerID
         });
-        let experience = await storeExperience(newExperience);
+        let experience = await storeExperience(newExperience, companyID);
         if (experience !== null) {
             return [200, experience];
         }
@@ -36,7 +37,7 @@ export async function deleteExperience(experienceID: string) {
     }
     let castedExperience: Experience = await experience_schema.cast(experience);
 
-    if (experience) {
+    if (experience !== null) {
         return [200, castedExperience];
     } else {
         return [404, { msg: "Experience not found" }];

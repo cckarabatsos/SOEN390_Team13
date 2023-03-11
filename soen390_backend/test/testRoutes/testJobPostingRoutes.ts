@@ -14,15 +14,19 @@ describe("Test Job Posting Routes", function () {
     });
 
     describe("Get jobposting/filter/products", function () {
-        it("responds with 200 when the filter is not good but query everything", async function () {
-            await request(url).get("/jobposting/filter/products?").expect(200);
-        });
         it("responds with a 200 and return job postings", async function () {
             await request(url)
                 .get(
-                    "/jobposting/filter/products?category=Big boss&skip=0&limit=10"
+                    "/jobposting/filter/products?location=mtl&company&position&type=internship&skip=0&limit=10&remote=true"
                 )
                 .expect(200);
+        });
+        it("responds with a 400", async function () {
+            await request(url)
+                .get(
+                    "/jobposting/filter/products?location=mtl&company&position&type=internship&skip=0&limit=b&remote=true"
+                )
+                .expect(400);
         });
     });
 });

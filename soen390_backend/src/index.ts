@@ -37,25 +37,6 @@ app.get("/api", async (_: Request, res: Response) => {
 
 //Requiring routes for different request types
 
-// These are to be added when we add the module exports for them in due time
-//const awardRouter = require("./routes/awardRoutes");
-//app.use("/award", awardRouter);
-
-// const chat = require("./routes/chat_routes");
-// app.use("/chat", chat);
-
-// const experience = require("./routes/experience_routes");
-// app.use("/experience", experience);
-
-// const follows = require("./routes/follows_routes");
-// app.use("/follows", follows);
-
-// const post = require("./routes/post_routes");
-// app.use("/post", post);
-
-// const skill = require("./routes/user_routes");
-// app.use("/skill", skill);
-
 //Adding jobposting routes
 const jobposting = require("./routes/jobPostingRoutes");
 app.use("/jobposting", jobposting);
@@ -68,7 +49,10 @@ const experience = require("./routes/experienceRoutes");
 app.use("/experience", experience);
 const award = require("./routes/awardRoutes");
 app.use("/award", award);
-
+const application = require("./routes/applicationRoutes");
+app.use("/application", application);
+const reports = require("./routes/reportRoutes");
+app.use("/reports", reports);
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {
     res.send("Hi!");
