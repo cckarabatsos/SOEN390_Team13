@@ -5,7 +5,6 @@ import {messagesListElement } from "../models/Messages";
 dotenv.config();
 
 export async function createNewConversationController(usersEmail: string[]) {
-  console.log("in ctearet new conversation controller?");
   let success = false;
   console.log(usersEmail);
   try {

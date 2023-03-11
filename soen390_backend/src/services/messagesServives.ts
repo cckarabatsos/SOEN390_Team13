@@ -2,15 +2,10 @@ import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
 import { chatMessage, messagesListElement } from "../models/Messages";
-//import { type } from "os";
-//import { User } from "../models/User";
-//import { Conversation, conversation_schema } from "../models/Messages";
-//import { Message } from "../models/Messages";
 const db = firebase.firestore();
 //const ref = firebase.storage().ref();
 
 //  dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
-
 
 // This is a helper function that takes an array of string IDs and sorts them in ascending order using bubble sort algorithm.
 // The function mutates the original array and returns it sorted.
@@ -261,9 +256,6 @@ export async function sendMessage(
   }
 }
 
-
-
-
 export async function getMessages(senderEmail: string, userEmails: string[]) {
   console.log(userEmails);
 
@@ -345,7 +337,6 @@ export async function getMessages(senderEmail: string, userEmails: string[]) {
   }
 }
 
-
 /**
 
 Asynchronously retrieves any new messages sent to a conversation and marks them as read for the recipient.
@@ -394,9 +385,8 @@ export async function getUpdatedMessages(
 
     let conversation = await fetchConversation(userIds);
 
-    if(conversation.length!=1){
-
-        return []
+    if (conversation.length != 1) {
+      return [];
     }
     // fetch the sender userID from the database
     let sender: any;
@@ -413,43 +403,38 @@ export async function getUpdatedMessages(
 
     let messagesRef = conversation[0].data["messages"];
 
-    if( messagesRef.length== messagesLength ){
-
-        return []
+    if (messagesRef.length == messagesLength) {
+      return [];
     }
     var listOfMessages: messagesListElement[] = [];
 
     for (var i = messagesLength; i < messagesRef.length; i++) {
-        let snapShot: any = await messagesRef[i].get();
-        let chat: chatMessage = snapShot.data() as chatMessage;
-  
-        //if its not the owner of the sent mesage set the read flag to true
-        if (chat.senderId != sender.data["userID"] && chat.isRead == false) {
-          chat.isRead = true;
-          await db.collection("chats").doc(snapShot.id).update({
-            isRead: true,
-          });
-        }
-  
-        //convert to readable Date javascript object for timestamp
-        chat.timestamp = (
-          chat.timestamp as firebase.firestore.Timestamp
-        ).toDate();
-  
-        //populates the return message list:
-        var messageWrapper: messagesListElement = {
-          email: senderEmail,
-          message: chat,
-        };
-        listOfMessages.push(messageWrapper);
+      let snapShot: any = await messagesRef[i].get();
+      let chat: chatMessage = snapShot.data() as chatMessage;
+
+      //if its not the owner of the sent mesage set the read flag to true
+      if (chat.senderId != sender.data["userID"] && chat.isRead == false) {
+        chat.isRead = true;
+        await db.collection("chats").doc(snapShot.id).update({
+          isRead: true,
+        });
       }
-      return listOfMessages;
 
+      //convert to readable Date javascript object for timestamp
+      chat.timestamp = (
+        chat.timestamp as firebase.firestore.Timestamp
+      ).toDate();
+
+      //populates the return message list:
+      var messageWrapper: messagesListElement = {
+        email: senderEmail,
+        message: chat,
+      };
+      listOfMessages.push(messageWrapper);
+    }
+    return listOfMessages;
   } catch (error) {
-
     console.error(`Error occurred in sendMessage: ${error}`);
     throw error;
-
-
   }
 }
