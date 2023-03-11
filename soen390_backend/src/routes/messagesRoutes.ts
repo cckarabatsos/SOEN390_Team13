@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import {
   createNewConversationController,
   SendNewMessage,
-  GetUpdatedMessages
+  GetUpdatedMessages,
 } from "../controllers/messagesController";
 const messages = express.Router();
 messages.use(express.json());
@@ -66,28 +66,37 @@ messages.get("/getAllMessages", async (req, res) => {
   }
 });
 
-// this route will be used to update the curent conversation with mising messages that are in the database but not received on the front end yet
-// receive the cuttent messages lenth and the list of emails of the conversatiuon entity
-//outputs the missing messages along with their sender email address
+// This route will be used to update the current conversation with missing messages that are in the database but not received by the client yet. 
+// It receives the current messages length and the list of emails of the conversation entity, and outputs the missing messages along with the respective sender email address.
 messages.get("/updateMessages", async (req, res) => {
   try {
+    // Extract the required data from the request query
     const userEmails: string[] = JSON.parse(req.query.userEmails as string);
     const senderEmail = req.query.senderEmail as string;
-    const messagesLength:number = parseInt(req.query.messagesLength as string);
-    if (!userEmails) {
+    const messagesLength: number = parseInt(req.query.messagesLength as string);
+    // Validate the input
+    if (!userEmails || !senderEmail || messagesLength<0) {
       return res.status(400).json({
-        message: "Please provide an email address",
+        message: "Please provide all required data",
       });
     }
-    const usersChat = await GetUpdatedMessages(senderEmail, userEmails, messagesLength);
+
+    // Get the missing messages from the database
+    const missingMessages = await GetUpdatedMessages(
+      senderEmail,
+      userEmails,
+      messagesLength
+    );
+
+    // Return the missing messages
     return res.status(200).json({
-      message: "Messages retrieved successfully",
-      usersChat,
+      message: "Missing messages retrieved successfully",
+      missingMessages,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server error: " + (error as Error).message,
     });
   }
 });
@@ -102,18 +111,28 @@ messages.get("/sendMessage", async (req, res) => {
     const message = req.query.message as string;
 
     // Error detection for missing or invalid inputs
-if (!emails || !message || !senderEmail || !Array.isArray(emails) || emails.length < 2) {
-  return res.status(400).json({
-    message:
-      "Please provide a valid sender email address, all emails in the conversation, and a non-null message",
-  });
-}
+    if (
+      !emails ||
+      !message ||
+      !senderEmail ||
+      !Array.isArray(emails) ||
+      emails.length < 2
+    ) {
+      return res.status(400).json({
+        message:
+          "Please provide a valid sender email address, all emails in the conversation, and a non-null message",
+      });
+    }
 
-const messageConfirmation = await SendNewMessage(senderEmail, emails, message);
-return res.status(200).json({
-  message: "Message sent successfully",
-  messageConfirmation,
-});
+    const messageConfirmation = await SendNewMessage(
+      senderEmail,
+      emails,
+      message
+    );
+    return res.status(200).json({
+      message: "Message sent successfully",
+      messageConfirmation,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
