@@ -19,20 +19,21 @@ export const findExperienceWithID = async (experienceID: string) => {
     }
     return snapShot.data();
 };
-export const storeExperience = async (experience: Experience, companyID: string) => {
+export const storeExperience = async (experience: Experience) => {
     try {
         let user = await findUserWithID(experience.ownerID);
-        if (user === undefined) {
+        if (user === undefined || (experience.type !== "Education" && experience.type !== "Work")) {
             return null;
         }
-        let company = await findUserWithID(companyID);
-        if (company === undefined || !company.isCompany) {
-            experience.logo = await ref
-                .child("Profile Pictures/blank_company_pic.jpg")
-                .getDownloadURL();;
-        } else {
-            experience.logo = company.picture;
-        }
+
+        experience.logo = experience.type === "Education" ?
+            await ref
+                .child("Logos/education_logo.png")
+                .getDownloadURL()
+            :
+            await ref
+                .child("Logos/work_logo.png")
+                .getDownloadURL();
         var document = await db.collection("experiences").add({
             atPresent: experience.atPresent,
             startDate: experience.startDate,

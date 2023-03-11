@@ -12,7 +12,6 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
     let company: string = req.body.company;
     let position: string = req.body.position;
     let type: string = req.body.type;
-    let companyID: string = req.body.companyID;
     try {
         const experience: Experience = await createExperience(
             atPresent,
@@ -21,8 +20,8 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
             company,
             position,
             type,
-            ownerID,
-            companyID);
+            ownerID
+        );
         const status: number = experience[0];
         if (status == 200) {
             res.status(200);

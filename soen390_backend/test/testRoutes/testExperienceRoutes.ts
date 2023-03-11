@@ -16,8 +16,7 @@ const postExperience: Experience = {
     endDate: "21-06-2018",
     position: "Student",
     type: "Education",
-    ownerID: userID,
-    companyID: "i2iLvPkBHmkV43PufHVp",
+    ownerID: userID
 };
 const experience: Experience = {
     atPresent: false,
@@ -27,7 +26,6 @@ const experience: Experience = {
     position: "Student",
     type: "Education",
     ownerID: userID,
-    companyID: "i2iLvPkBHmkV43PufHVp",
 };
 
 describe("Test Experience Routes", function () {
@@ -76,7 +74,7 @@ describe("Test Experience Routes", function () {
     });
     describe("Post experience/remove/:docID", function () {
         it("responds with 200 when experience removed for a specific user", async function () {
-            let experienceID = await storeExperience(experience, companyID);
+            let experienceID = await storeExperience(experience);
             await request(url)
                 .post(`/experience/remove/${experienceID}`)
                 .expect(200);
