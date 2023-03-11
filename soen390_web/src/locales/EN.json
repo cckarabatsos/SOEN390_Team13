@@ -81,6 +81,29 @@
   "SearchByText" : "Search By",
   "UploadDocText" : "Upload Personal Documents",
   "SentenceText" :"Upload your CV, Cover letter, or anything else you wish your recruiters to look at!",
-  "UpFileText" :"Upload File"
+  "UpFileText" :"Upload File",
+  "GeneralInformation*" : "General Information",
+  "Address*" : "Address*",
+  "Address2" : "Address 2",
+  "City*" : "City*",
+  "Province*" : "Province*",
+  "AreaCode*" : "Area Code*",
+  "PhoneNumber*" : "Phone Number*",
+  "HigherEducation" : "Higer Education",
+  "SchoolName*" : "School Name*",
+  "Degree*" : "Degree*",
+  "DegreeStatus*" : "Degree Status*",
+  "Major*" : "Major*",
+  "Country*" : "Country*",
+  "Work Experience" : "Work Experience",
+  "Company*" : "Company*",
+  "JobTitle*" : "Job Title*",
+  "Start*" : "Start*",
+  "End*" : "End*",
+  "importcv" : "Import CV",
+  "Apply" : "Apply",
+  "FirstName*" : "First Name*",
+  "LastName*" : "Last Name*"
+
   
 }
