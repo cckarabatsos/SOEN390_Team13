@@ -45,44 +45,44 @@ function MainTitle(props) {
         >
           <h3 className="signuptitle">Your shortcut to career success</h3>
           <div className="login-form">
-            <Grid container spacing={1}>
-              <Grid container spacing={2}>
-                <Grid className="field-input" item xs={8}>
-                  <div className="field-name">{t("emailText")}</div>
-                  <div className="input-margin">
-                    <TextField
-                      data-testid="email-1"
-                      autoFocus
-                      className="inputRounded"
-                      margin="dense"
-                      label={t("emailText")}
-                      type="email"
-                      variant="outlined"
-                      size="small"
-                      value={emailInput}
-                      onChange={(e) => setEmailInput(e.target.value)}
-                    />
-                  </div>
-                </Grid>
+            {/* <Grid container spacing={1}> */}
+            <Grid container spacing={2}>
+              <Grid className="field-input" item xs={12}>
+                <div className="field-name">{t("emailText")}</div>
+                <div className="input-margin">
+                  <TextField
+                    data-testid="email-1"
+                    autoFocus
+                    className="inputRounded"
+                    margin="dense"
+                    type="email"
+                    variant="outlined"
+                    size="small"
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                  />
+                </div>
+              </Grid>
 
-                <Grid className="field-input" item xs={8}>
-                  <div className="field-name"> {t("passwordText")} </div>
-                  <div className="input-margin">
-                    <TextField
-                      data-testid="password-1"
-                      className="inputRounded"
-                      autoFocus
-                      margin="dense"
-                      label={t("passwordText")}
-                      type="password"
-                      variant="outlined"
-                      size="small"
-                      value={passwordInput}
-                      onChange={(e) => setPasswordInput(e.target.value)}
-                    />
-                  </div>
-                </Grid>
-                <Grid className="login" item xs={12}>
+              <Grid className="field-input" item xs={12}>
+                <div className="field-name"> {t("passwordText")} </div>
+                <div className="input-margin">
+                  <TextField
+                    data-testid="password-1"
+                    className="inputRounded"
+                    autoFocus
+                    margin="dense"
+                    type="password"
+                    variant="outlined"
+                    size="small"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                  />
+                </div>
+              </Grid>
+
+              <Grid className="login" item xs={12}>
+                <div className="login-button">
                   <Button
                     className="button"
                     variant="contained"
@@ -90,41 +90,61 @@ function MainTitle(props) {
                     style={{
                       borderRadius: 27,
                       backgroundColor: "rgba(100, 69, 227, 0.85)",
-                      width: 270,
+                      color: "white",
+                      boxShadow: "none",
                     }}
                   >
                     {t("LoginText")}
                   </Button>
-                </Grid>
-                {incorrectLogin && (
-                  <Grid item xs={12}>
-                    <div
-                      style={{
-                        backgroundColor: "red",
-                        color: "white",
-                        padding: "10px",
-                        borderRadius: "10px",
-                        maxWidth: "400px",
-                        margin: "0 auto",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minHeight: "50px",
-                      }}
-                    >
-                      You have entered the wrong email or the wrong password
-                    </div>
-                  </Grid>
-                )}
+                </div>
+              </Grid>
+              {incorrectLogin && (
                 <Grid item xs={12}>
-                  <GoogleLogin />
+                  <div
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      padding: "10px",
+                      borderRadius: "10px",
+                      maxWidth: "400px",
+                      margin: "0 auto",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      minHeight: "50px",
+                    }}
+                  >
+                    You have entered the wrong email or the wrong password
+                  </div>
                 </Grid>
-                <Grid item xs={12}>
-                  {t("NoAccountText")}{" "}
-                  <Link to="/Signup">{t("ClickHereText")}</Link>
-                </Grid>
+              )}
+              <Grid item xs={12}>
+                <div className="or-container">
+                  <div className="or-line">or</div>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <div className="login-with-google-button">
+                  <Button
+                    className="button"
+                    variant="contained"
+                    style={{
+                      borderRadius: 27,
+                      backgroundColor: "rgba(108, 99, 255, 0.25)",
+                      border: "1px solid #6C63FF",
+                      boxShadow: "none",
+                    }}
+                  >
+                    Login with google
+                  </Button>
+                  <div className="account-text">
+                    {t("NoAccountText")}{" "}
+                    <Link to="/Signup">{t("ClickHereText")}</Link>
+                  </div>
+                </div>
               </Grid>
             </Grid>
+            {/* </Grid> */}
           </div>
         </div>
       </div>
