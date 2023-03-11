@@ -1,3 +1,6 @@
+/**
+ * Model for the User entity
+ */
 import * as yup from "yup";
 //Some types are to be changed later
 export const user_schema = yup
