@@ -14,3 +14,12 @@ export type chatMessage = {
   email:string,
   message:chatMessage
   }
+
+  export type conversationListElement={
+    
+    ActiveUser:string[]
+    message: chatMessage
+
+
+
+  }
