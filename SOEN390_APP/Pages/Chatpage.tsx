@@ -26,8 +26,8 @@ const ChatPage = ({ route, navigation }:any) => {
   const { chatData } = route.params;
   let name = chatData.name
   let image = require("../Components/Images/google-icon.png")
-  let emailUser = "oli@hotmail.com"
-  let emailContact = "test@test.com"
+  let emailUser = chatData.emailUser
+  let emailContact = chatData.email
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [allMessages, setAllMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -53,7 +53,7 @@ const ChatPage = ({ route, navigation }:any) => {
   //const { v4: uuidv4 } = require('uuid');
 const handleGetUserInfo = async(userID:string) =>{
   const userInfo = await GetUserInfo(userID)
-  console.log(userInfo)
+  //console.log(userInfo)
   return userInfo
 }
 
@@ -72,20 +72,13 @@ const handleGetUserInfo = async(userID:string) =>{
   }
 
   const handleIsSentByUser = (userName:string) =>{
-    console.log(userName, name)
+    //console.log(userName, name)
     if(userName==="test test")
       return true
     else return false
   }
 
- const sendMessage1 = () => {
-  setMessages([
-    ...messages,
-    { id: messages.length + 1, text: input, sendByUser: true, name: 'You', image: image },
-    { id: messages.length + 2, text: 'Response message', sendByUser: false, name: 'Friend', image: image },
-  ]);
-  setInput('');
-};
+
 
 const handleSendMessage = async (message:string) => {
   await SendMessage(emailUser,emailContact, message)

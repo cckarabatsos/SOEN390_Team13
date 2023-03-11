@@ -71,18 +71,18 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
     //console.log(emailUser, emailContact)
     //console.log(JSON.stringify([emailUser, emailContact]))
     try {
-      const response = await axios.get(api.BACKEND_API + "/messages/getAllMessages/", {
+      const response = await axios.get(api.BACKEND_API + "/messages/getActiveConversation/", {
         params: {
             email: emailUser
         },
       });
       console.log("------------------------" )
-      console.log(response.data)
+      console.log(response.data.activeConvos[1])
       console.log("------------------------" )
       if (response.status == 200) {
-        return response.data;
+        return response.data.activeConvos[1];
       } else {
-        return response.data;
+        return response.data.activeConvos[1];
       }
     } catch (error) {
       console.error("error Remove Application", error);
