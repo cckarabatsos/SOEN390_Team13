@@ -11,6 +11,9 @@ const db = firebase.firestore();
 
 //  dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
+
+// This is a helper function that takes an array of string IDs and sorts them in ascending order using bubble sort algorithm.
+// The function mutates the original array and returns it sorted.
 const orderIds = (arr: string[]): string[] => {
   const len = arr.length;
 
@@ -25,6 +28,11 @@ const orderIds = (arr: string[]): string[] => {
   return arr;
 };
 
+// This method finds a user in the Firestore database collection "users" using the user's email address.
+// It takes in the email as a string and a callback function to handle the result.
+// If a user with the provided email is found, the callback function is called with the user's data as an argument.
+// If a user with the provided email is not found, the callback function is called with a null argument.
+// If there is an error getting the user document, an error is thrown.
 const findUserWithEmail = (email: string, callback: (data: any) => void) => {
   db.collection("users")
     .where("email", "==", email)
@@ -43,6 +51,8 @@ const findUserWithEmail = (email: string, callback: (data: any) => void) => {
     });
 };
 
+// This function processes the snapshot returned from Firebase and extracts the data and id of the first document in the array.
+// It returns an object with the extracted data and id. If the data is null, it logs an error and throws an exception.
 function processData(snapshot: any) {
   let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
     data: doc.data(),
@@ -56,6 +66,9 @@ function processData(snapshot: any) {
   }
 }
 
+// This is an async function that fetches the conversation between users with the specified user IDs from the Firestore database.
+// It searches the "conversations" collection in the database and filters for documents where the "userArray" field matches the specified user IDs.
+// The function returns an array of conversation objects, where each object contains the conversation data and ID.
 async function fetchConversation(userIds: string[]) {
   try {
     let conversation = await db
