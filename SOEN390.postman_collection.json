@@ -3,7 +3,7 @@
 		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
 		"name": "SOEN390",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25472351"
+		"_exporter_id": "19175436"
 	},
 	"item": [
 		{
@@ -125,7 +125,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/search?name=&email=&limit=10&skip=3",
+							"raw": "http://localhost:7000/user/api/search?name=&email=&limit=1&skip=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -147,11 +147,11 @@
 								},
 								{
 									"key": "limit",
-									"value": "10"
+									"value": "1"
 								},
 								{
 									"key": "skip",
-									"value": "3"
+									"value": "0"
 								}
 							]
 						}
@@ -490,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"bog4@test.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"OLIOLI\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -512,7 +512,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "bog4@test.com"
+									"value": "OLIMOLI"
 								}
 							]
 						}
@@ -662,7 +662,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"docID\":\"v3wE2KtJEUTA8bbg4skM\"\r\n}",
+							"raw": "{\r\n    \"docID\":\"6Vlp5h0yMG7I8CwAMoT6\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -684,7 +684,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "worldwide"
+									"value": "LinkedOutInc@gmail.com1"
 								}
 							]
 						}
@@ -891,7 +891,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\",\r\n    \"companyID\": \"i2iLvPkBHmkV43PufHVp\"\r\n}",
+							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1006,7 +1006,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "fS0PjwOmmPRWbSZxzva9"
 								}
 							]
 						}
@@ -1019,7 +1019,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/application/remove/:userID?postingID=B9edMZe4tjUEAFcimWUu",
+							"raw": "http://localhost:7000/application/remove/:userID?postingID=QnO8p53hTIJpiomXbccm",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1033,13 +1033,13 @@
 							"query": [
 								{
 									"key": "postingID",
-									"value": "B9edMZe4tjUEAFcimWUu"
+									"value": "QnO8p53hTIJpiomXbccm"
 								}
 							],
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "fS0PjwOmmPRWbSZxzva9"
 								}
 							]
 						}
@@ -1269,7 +1269,123 @@
 					"name": "Create New Conversation",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/createConversation?emails=[\"msg1@test.com\",\"msg3@test.com\"]",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"createConversation"
+							],
+							"query": [
+								{
+									"key": "emails",
+									"value": "[\"msg1@test.com\",\"msg3@test.com\"]"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/sendMessage?senderEmail=msg1@test.com&emails=[\"msg1@test.com\",\"msg3@test.com\"]&message=ca va?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"sendMessage"
+							],
+							"query": [
+								{
+									"key": "senderEmail",
+									"value": "msg1@test.com"
+								},
+								{
+									"key": "emails",
+									"value": "[\"msg1@test.com\",\"msg3@test.com\"]"
+								},
+								{
+									"key": "message",
+									"value": "ca va?"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/getAllMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"getAllMessages"
+							],
+							"query": [
+								{
+									"key": "userEmails",
+									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
+								},
+								{
+									"key": "senderEmail",
+									"value": "msg1@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/updateMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com&messagesLength=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"updateMessages"
+							],
+							"query": [
+								{
+									"key": "userEmails",
+									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
+								},
+								{
+									"key": "senderEmail",
+									"value": "msg1@test.com"
+								},
+								{
+									"key": "messagesLength",
+									"value": "0"
+								}
+							]
+						}
 					},
 					"response": []
 				}

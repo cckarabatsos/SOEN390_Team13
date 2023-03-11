@@ -70,6 +70,9 @@ export const user_schema = yup
 export const finalUserSchema = user_schema.shape({
     userID: yup.string().required(),
 });
+/*
+ *Model for the userfilter schema used when filtering users and companies in search
+ */
 export const user_filter_schema = yup.object().shape({
     name: yup.string(),
     email: yup.string(),

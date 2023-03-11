@@ -5,7 +5,14 @@ import {
     getReports,
     storeReport,
 } from "../services/reportService";
-
+/**
+ * Create a new report on a certain user
+ * (reportedID) with a certain reason
+ * @param reportedID
+ * @param reason
+ * @param reporterID
+ * @returns
+ */
 export async function createNewReport(
     reportedID: string,
     reason: string,
@@ -27,6 +34,10 @@ export async function createNewReport(
         throw err;
     }
 }
+/**
+ * Get a batch of reports
+ * @returns
+ */
 export async function getBatchReports() {
     try {
         let data = await getReports();
@@ -39,6 +50,13 @@ export async function getBatchReports() {
         throw err;
     }
 }
+/**
+ * Apply a verdict to a user
+ * @param reportID
+ * @param reportedID
+ * @param banned
+ * @returns status of the users
+ */
 export async function userVerdict(
     reportID: string,
     reportedID: string,
@@ -56,6 +74,11 @@ export async function userVerdict(
         return [400, { msg: err.message }];
     }
 }
+/**
+ * Delete a Report from the db
+ * @param reportID
+ * @returns
+ */
 export async function deleteReport(reportID: string) {
     const result = await deleteReportById(reportID);
     if (result) {

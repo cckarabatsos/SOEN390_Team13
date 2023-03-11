@@ -2,7 +2,11 @@
  * Routes for Experience entity of the database
  */
 import express, { Request, Response } from "express";
-import { createExperience, deleteExperience, getExperiences } from "../controllers/experienceControllers";
+import {
+    createExperience,
+    deleteExperience,
+    getExperiences,
+} from "../controllers/experienceControllers";
 import { Experience } from "../models/Experience";
 const experience = express.Router();
 experience.use(express.json());
@@ -33,7 +37,7 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
             res.status(200);
             res.json({
                 Response: "Success",
-                experience
+                experience,
             });
         } else if (status == 404) {
             res.sendStatus(status);
@@ -56,7 +60,7 @@ experience.post("/remove/:docID", async (req: Request, res: Response) => {
             res.status(200);
             res.json({
                 Response: "Success",
-                experience
+                experience,
             });
         } else if (status == 404) {
             res.sendStatus(404);
