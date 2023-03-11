@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
-import { initiateConversation,sendMessage } from "../services/messagesServives";
+import { initiateConversation,sendMessage,getMessages } from "../services/messagesServives";
+import {messagesListElement } from "../models/Messages";
 
 dotenv.config();
 
@@ -33,3 +34,19 @@ export async function SendNewMessage(
 
   return [200, confirmation];
 }
+
+export async function GetAllMessages(
+    senderEmail: string,
+    usersEmail: string[],
+  ) {
+      
+      let messagesList:any;
+    try {
+      messagesList = await getMessages(senderEmail, usersEmail) as messagesListElement[];
+    } catch (error) {
+      console.log((error as Error).message);
+      throw new Error((error as Error).message);
+    }
+  
+    return [200, messagesList];
+  }

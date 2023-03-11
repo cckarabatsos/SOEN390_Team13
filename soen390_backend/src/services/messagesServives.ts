@@ -1,6 +1,8 @@
 import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
+import { chatMessage, messagesListElement } from "../models/Messages";
+//import { type } from "os";
 //import { User } from "../models/User";
 //import { Conversation, conversation_schema } from "../models/Messages";
 //import { Message } from "../models/Messages";
@@ -8,6 +10,7 @@ const db = firebase.firestore();
 //const ref = firebase.storage().ref();
 
 //  dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
+
 
 const orderIds = (arr: string[]): string[] => {
   const len = arr.length;
@@ -137,9 +140,6 @@ export async function sendMessage(
   message: string
 ) {
   try {
-    console.log(senderEmail);
-    console.log(message);
-    console.log(userEmails);
     //fetch the ids of each user email
 
     let userIds: string[] = new Array();
@@ -185,7 +185,7 @@ export async function sendMessage(
       });
     });
 
-    let chat = {
+    let chat: chatMessage = {
       content: message,
       isRead: false,
       senderId: sender.data["userID"] as string,
@@ -212,7 +212,87 @@ export async function sendMessage(
     return true;
   } catch (error) {
     console.log("error occured in sendMessage");
-    throw new Error((error as Error).message)
+    throw new Error((error as Error).message);
   }
+}
 
+export async function getMessages(senderEmail: string, userEmails: string[]) {
+  console.log(userEmails);
+
+  try {
+    // get user ids from the array of
+
+    let userIds: string[] = new Array();
+
+    for (var i = 0; i < userEmails.length; i++) {
+      var anUser: any;
+      console.log(userEmails[i]);
+
+      anUser = await new Promise((resolve, _) => {
+        findUserWithEmail(userEmails[i], (user) => {
+          // console.log(user);
+          if (user == null) {
+            resolve(null);
+          } else {
+            resolve(user);
+          }
+        });
+      });
+
+      if (anUser.data) {
+        userIds.push(anUser.data["userID"]);
+      }
+    }
+    userIds = orderIds(userIds);
+
+    // fetch the sender userID from the database
+    let sender: any;
+    sender = await new Promise((resolve, _) => {
+      findUserWithEmail(senderEmail, (user) => {
+        // console.log(user);
+        if (user == null) {
+          resolve(null);
+        } else {
+          resolve(user);
+        }
+      });
+    });
+
+    //fetch the conversation entity shared among the users
+
+    let conversation = await fetchConversation(userIds);
+
+    let messagesRef = conversation[0].data["messages"];
+    console.log(sender.data["userID"]);
+
+    var listOfMessages:messagesListElement[] = [];
+
+    for (var i = 0; i < messagesRef.length; i++) {
+      let snapShot: any = await messagesRef[i].get();
+      let chat: chatMessage = snapShot.data() as chatMessage;
+
+      //if its not the owner of the sent mesage set the read flag to true
+      if (chat.senderId != sender.data["userID"] && chat.isRead == false) {
+        chat.isRead = true;
+        await db.collection("chats").doc(snapShot.id).update({
+          isRead: true,
+        });
+      }
+
+      //convert to readable Date javascript object for timestamp
+      chat.timestamp = (chat.timestamp as firebase.firestore.Timestamp).toDate();
+
+      //populates the return message list:
+      var messageWrapper: messagesListElement={
+
+        email:senderEmail,
+        message:chat
+
+      }
+      listOfMessages.push(messageWrapper);
+    }
+    return listOfMessages;
+  } catch (error) {
+    throw new Error("Error in getMessages: " + (error as Error).message);
+  }
 }

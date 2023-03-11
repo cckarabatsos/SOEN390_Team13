@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import {
   createNewConversationController,
   SendNewMessage,
+  GetAllMessages,
 } from "../controllers/messagesController";
 const messages = express.Router();
 messages.use(express.json());
@@ -44,16 +45,18 @@ messages.get("/createConversation", async (req, res) => {
 //outputs the list of messages along with their sender email address
 messages.get("/getAllMessages", async (req, res) => {
   try {
-    const { email } = req.query;
-    if (!email) {
+    const userEmails: string[] = JSON.parse(req.query.userEmails as string);
+    const senderEmail = req.query.senderEmail as string;
+
+    if (!userEmails) {
       return res.status(400).json({
         message: "Please provide an email address",
       });
     }
-    const jobPostings = "hello 2";
+    const usersChat = await GetAllMessages(senderEmail, userEmails);
     return res.status(200).json({
       message: "Messages retrieved successfully",
-      jobPostings,
+      usersChat,
     });
   } catch (error) {
     console.log(error);
