@@ -151,13 +151,7 @@ function createData(
 
 
 
-const rows = [
-  createData('Software Engineer', 'Montreal', 6.0, 24, 4.0,1),
-  createData('Backend Developer', 'San Francisco', 9.0, 37, 4.3,2),
-  createData('UI designer', 'New york', 16.0, 24, 6.0,3),
-  createData('Data engineer', 'Laval', 3.7, 67, 4.3,4),
-  createData('QA analyst', 'Toronto', 16.0, 49, 3.9,5),
-];
+
 
 
 export default function BasicTable() {

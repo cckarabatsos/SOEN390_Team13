@@ -18,29 +18,22 @@ export async function getAllApplication(userID) {
   }
 }
 
-
-export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
+export async function removeApplication(userID, postingID) {
   try {
-    const response = await axios
-      .post(api.BACKEND_API + "/user/api/register", {
-        isRecruiter: false,
-        currentCompany: "Concordia University",
-        currentPosition: "Student",
-        bio: "I am Liam and I want to be an engineer.",
-        coverLetter: "",
-        resume: "",
-        picture: "",
-        publicKey: "",
-        privateKey: "",
-        email: emailIn,
-        password: passwordIn,
-        name: firstNameIn + " " + lastNameIn,
-      })
-      .then((res) => {
-        return res.data;
-      });
-    return response;
-  } catch (err) {
-    console.error("yo", err);
+    const response = await axios.post(api.BACKEND_API + '/application/remove/');
+    //console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("error", error);
+    return false;
   }
 }
+
+export const handleWithdrawApplication = async (userID, postingID) => {
+  try {
+    const response = await axios.post('/application/remove/');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
