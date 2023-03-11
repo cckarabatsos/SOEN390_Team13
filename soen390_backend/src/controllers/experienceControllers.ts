@@ -12,13 +12,14 @@ export async function createExperience(
     company: string,
     position: string,
     type: string,
-    ownerID: string
+    ownerID: string,
+    companyID: string
 ) {
     try {
         let newExperience: Experience = experience_schema.cast({
             atPresent, startDate, endDate, company, position, type, ownerID
         });
-        let experience = await storeExperience(newExperience);
+        let experience = await storeExperience(newExperience, companyID);
         if (experience !== null) {
             return [200, experience];
         }

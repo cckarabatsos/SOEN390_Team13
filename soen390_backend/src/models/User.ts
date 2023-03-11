@@ -15,6 +15,7 @@ export const user_schema = yup
         currentPosition: yup.string(),
         pendingInvitations: yup.array(yup.string()).required().default([]),
         contacts: yup.array(yup.string()).required().default([]),
+        follows: yup.array(yup.string()).required().default([]),
         isCompany: yup.boolean().required().default(false),
         reportingStatus: yup.string().required().default("never_reported"), // never_reported || reported_once || banned
         isAdmin: yup.boolean().required().default(false),
@@ -47,6 +48,13 @@ export const user_schema = yup
                 .required("Field is required when its a normal user"),
         }),
         employees: yup
+            .array(yup.string())
+            .when("isCompany", {
+                is: true,
+                then: yup.array(yup.string()).default([]),
+            })
+            .required("Field Is required when its a recruiter"),
+        followers: yup
             .array(yup.string())
             .when("isCompany", {
                 is: true,

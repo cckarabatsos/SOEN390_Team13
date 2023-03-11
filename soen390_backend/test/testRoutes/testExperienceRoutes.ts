@@ -7,7 +7,18 @@ const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
+const companyID = "i2iLvPkBHmkV43PufHVp";
 const badUserID = "5";
+const postExperience: Experience = {
+    atPresent: false,
+    company: "College Francais High School",
+    startDate: "01-09-2012",
+    endDate: "21-06-2018",
+    position: "Student",
+    type: "Education",
+    ownerID: userID,
+    companyID: "i2iLvPkBHmkV43PufHVp",
+};
 const experience: Experience = {
     atPresent: false,
     company: "College Francais High School",
@@ -16,6 +27,7 @@ const experience: Experience = {
     position: "Student",
     type: "Education",
     ownerID: userID,
+    companyID: "i2iLvPkBHmkV43PufHVp",
 };
 
 describe("Test Experience Routes", function () {
@@ -48,7 +60,7 @@ describe("Test Experience Routes", function () {
         it("responds with 200 when experience stored for a specific user", async function () {
             await request(url)
                 .post(`/experience/${userID}`)
-                .send(experience)
+                .send(postExperience)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .expect(200);
@@ -56,7 +68,7 @@ describe("Test Experience Routes", function () {
         it("responds with a 404 when user with passed id does not exist", async function () {
             await request(url)
                 .post(`/experience/${badUserID}`)
-                .send(experience)
+                .send(postExperience)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .expect(404);
@@ -64,7 +76,7 @@ describe("Test Experience Routes", function () {
     });
     describe("Post experience/remove/:docID", function () {
         it("responds with 200 when experience removed for a specific user", async function () {
-            let experienceID = await storeExperience(experience);
+            let experienceID = await storeExperience(experience, companyID);
             await request(url)
                 .post(`/experience/remove/${experienceID}`)
                 .expect(200);

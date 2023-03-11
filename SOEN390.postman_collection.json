@@ -229,6 +229,41 @@
 					"response": []
 				},
 				{
+					"name": "ManageInvite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/manageInvite?invitedEmail=Wx5hUY1FbJ&senderEmail=Qzm8c1439z&isAccept=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"manageInvite"
+							],
+							"query": [
+								{
+									"key": "invitedEmail",
+									"value": "Wx5hUY1FbJ"
+								},
+								{
+									"key": "senderEmail",
+									"value": "Qzm8c1439z"
+								},
+								{
+									"key": "isAccept",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "followCompany",
 					"request": {
 						"method": "GET",
@@ -265,7 +300,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/unFollow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"raw": "http://localhost:7000/user/api/unFollow?senderID=zwq5eGRzlnc1AsmAWKj2&receiverID=I9WE1blHEGTP0KkI4zVL",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -279,7 +314,7 @@
 							"query": [
 								{
 									"key": "senderID",
-									"value": "v1M1tUnMZUQsFy6UUteh"
+									"value": "zwq5eGRzlnc1AsmAWKj2"
 								},
 								{
 									"key": "receiverID",
@@ -296,7 +331,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=bog@test.com",
+							"raw": "http://localhost:7000/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -310,7 +345,7 @@
 							"query": [
 								{
 									"key": "userEmail",
-									"value": "bog@test.com"
+									"value": "dzm.fiodarau@gmail.com"
 								}
 							]
 						}
@@ -455,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Poda\",\r\n    \"password\": \"matthewisthebest\",\r\n    \"email\": \"LinkedOutInc@gmail.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"bog4@test.com\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isRecruiter\": \"false\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -477,7 +512,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "poda4@gmail.com"
+									"value": "bog4@test.com"
 								}
 							]
 						}
@@ -856,7 +891,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
+							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\",\r\n    \"companyID\": \"i2iLvPkBHmkV43PufHVp\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1222,6 +1257,19 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Create New Conversation",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
