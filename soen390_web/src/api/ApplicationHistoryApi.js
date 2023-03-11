@@ -8,7 +8,7 @@ import { auth, provider } from "../firebaseConfig";
 export async function getAllApplication(userID) {
   try {
     const response = await axios.get(api.BACKEND_API + '/application/getApplicationHistory/'
-    + userID
+      + userID
     );
     //console.log(response.data);
     return response.data;
@@ -31,7 +31,12 @@ export async function removeApplication(userID, postingID) {
 
 export const handleWithdrawApplication = async (userID, postingID) => {
   try {
-    const response = await axios.post('/application/remove/');
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    const id = "5";
+    if (data != null) {
+      id = data.userID;
+    }
+    const response = await axios.post(api.BACKEND_API + '/application/remove/' + id + "?postingID=" + postingID);
     return response.data;
   } catch (error) {
     console.error(error);

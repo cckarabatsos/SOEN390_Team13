@@ -7,7 +7,7 @@ import { Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { removeApplication } from "../api/ApplicationHistoryApi";
 import { handleWithdrawApplication } from "../api/ApplicationHistoryApi";
-import {modal} from "@mui/material";
+import { modal } from "@mui/material";
 
 function ActionButton({ userID, postingID }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,7 +28,7 @@ function ActionButton({ userID, postingID }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   React.useEffect(() => {
     const handleOutsideClick = (event) => {
       if (anchorEl && !anchorEl.contains(event.target)) {
@@ -56,7 +56,7 @@ function ActionButton({ userID, postingID }) {
       alert("Failed to withdraw application. Please try again.");
     }
   };
-  
+
   return (
     <>
       <Button sx={{ fontSize: '30px' }} onClick={handleClick}>
@@ -78,7 +78,7 @@ function ActionButton({ userID, postingID }) {
       </Popper>
     </>
   );
-  
+
 }
 
 export default ActionButton;
