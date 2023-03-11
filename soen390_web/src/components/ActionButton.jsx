@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { removeApplication } from "../api/ApplicationHistoryApi";
 import { handleWithdrawApplication } from "../api/ApplicationHistoryApi";
 import { modal } from "@mui/material";
-
+import { Dialog, DialogActions } from "@mui/material";
 function ActionButton({ userID, postingID }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [hoveredIndex, setHoveredIndex] = React.useState(-1);
@@ -48,14 +48,20 @@ function ActionButton({ userID, postingID }) {
 
   const handleWithdraw = async () => {
     try {
-      await handleWithdrawApplication(userID, postingID);
-      handleClose();
+      const confirmed = window.confirm("Are you sure you want to withdraw this application?");
+      if (!confirmed) {
+        return;
+      }
+  
+      await handleWithdrawApplication(postingID);
       alert("Application withdrawn successfully!");
+      window.location.reload(); // refresh the page to update the list of applications
     } catch (error) {
       console.error(error);
       alert("Failed to withdraw application. Please try again.");
     }
   };
+  
 
   return (
     <>
