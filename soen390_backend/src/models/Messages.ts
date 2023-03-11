@@ -15,5 +15,5 @@ export type messagesListElement = {
 
 export type conversationListElement = {
   ActiveUser: string[];
-  message: chatMessage;
+  message: chatMessage | null;
 };
