@@ -8,6 +8,15 @@ const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
 const badUserID = "5";
+const postExperience: Experience = {
+    atPresent: false,
+    company: "College Francais High School",
+    startDate: "01-09-2012",
+    endDate: "21-06-2018",
+    position: "Student",
+    type: "Education",
+    ownerID: userID,
+};
 const experience: Experience = {
     atPresent: false,
     company: "College Francais High School",
@@ -48,7 +57,7 @@ describe("Test Experience Routes", function () {
         it("responds with 200 when experience stored for a specific user", async function () {
             await request(url)
                 .post(`/experience/${userID}`)
-                .send(experience)
+                .send(postExperience)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .expect(200);
@@ -56,7 +65,7 @@ describe("Test Experience Routes", function () {
         it("responds with a 404 when user with passed id does not exist", async function () {
             await request(url)
                 .post(`/experience/${badUserID}`)
-                .send(experience)
+                .send(postExperience)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .expect(404);

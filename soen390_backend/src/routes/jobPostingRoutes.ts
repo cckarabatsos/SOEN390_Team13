@@ -5,17 +5,18 @@ import {
 } from "../controllers/jobPostingControllers";
 const jobposting = express.Router();
 jobposting.use(express.json());
-
+/**
+ * Route that removes a certain job posting (postID) with a safety measure that makes sure
+ * that it is the right company that removes the postID
+ */
 jobposting.post("/remove/:email", async (req: Request, res: Response) => {
     let email = req.params.email;
     let postID = req.body.docID;
     try {
-        let status,
-            data = await deleteJobPosting(postID, email);
-        res.json({ data });
-        if (status == 200) {
+        let data = await deleteJobPosting(postID, email);
+        if (data[0] == 200) {
             res.sendStatus(200);
-        } else if (status == 404) {
+        } else if (data[0] == 404) {
             res.sendStatus(404);
         }
     } catch (err: any) {
@@ -23,6 +24,9 @@ jobposting.post("/remove/:email", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+/**
+ * Route to get back a couple of products
+ */
 jobposting.get("/filter/products", async (req: Request, res: Response) => {
     var filter: any = {};
     for (const [key, value] of Object.entries(req.query)) {

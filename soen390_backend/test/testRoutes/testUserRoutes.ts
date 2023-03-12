@@ -128,17 +128,20 @@ describe("Test User Routes", function () {
                 .expect(401);
         });
     });
+    let jobpostingPayload: any;
+    const goodEmail = "LinkedOutInc@gmail.com1";
     describe("Post user/api/posting/:email", async function () {
         const payload = {
-            email: "LinkedOutInc@gmail.com",
             location: "MTL",
-            position: "CEO",
-            salary: "200k/yr",
+            position: "intern",
+            salary: "0k/yr",
             company: "LinkedOutInc",
-            contract: "4 years",
             description:
                 "Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing",
-            category: "Big boss",
+            remote: true,
+            contract: false,
+            duration: "4 years",
+            type: "internship",
         };
         const badEmail = "lamoutre24@gmail.123124141";
         it("responds with 404 if the email does not exist", async function () {
@@ -150,7 +153,7 @@ describe("Test User Routes", function () {
                 .expect(404);
         });
         const notRecruiterEmail = "dzm.fiodarau@gmail.com";
-        it("responds with 400 if the user is not a recruiter", async function () {
+        it("responds with 400 if the user is not a company", async function () {
             await request(url)
                 .post(`/user/api/posting/${notRecruiterEmail}`)
                 .set("Content-Type", "application/json")
@@ -159,8 +162,7 @@ describe("Test User Routes", function () {
                 .expect(400);
         });
 
-        it("responds with 200 if the user is a recruiter", async function () {
-            const goodEmail = "LinkedOutInc@gmail.com1";
+        it("responds with 200 if the user is a company", async function () {
             const payload = {
                 location: "MTL",
                 position: "intern",
@@ -173,14 +175,34 @@ describe("Test User Routes", function () {
                 duration: "4 years",
                 type: "internship",
             };
-            await request(url)
+            const postingResponse = await request(url)
                 .post(`/user/api/posting/${goodEmail}`)
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
                 .send(payload)
                 .expect(200);
+            jobpostingPayload = {
+                docID: postingResponse.body,
+            };
+            console.log(jobpostingPayload);
         });
     });
+
+    describe("Get jobposting/remove/:email", function () {
+        it("responds with 200 when you can remove a certain jobposting", async function () {
+            await request(url)
+                .post(`/jobposting/remove/${goodEmail}`)
+                .send(jobpostingPayload)
+                .expect(200);
+        });
+        it("responds with 404 when you already unFollowed a company", async function () {
+            await request(url)
+                .post(`/jobposting/remove/${goodEmail}`)
+                .send(jobpostingPayload)
+                .expect(404);
+        });
+    });
+
     describe("Get user/accountFile/:userID", async function () {
         it("responds with 404 if wrong type", async function () {
             await request(url)
@@ -258,6 +280,55 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
     });
+    let newPayload = {
+        isCompany: false,
+        currentCompany: "Concordia University",
+        currentPosition: "Student",
+        bio: "I am Liam and I want to be an engineer.",
+        coverLetter: "",
+        resume: "",
+        picture: "",
+        publicKey: "",
+        privateKey: "",
+        email: randomEmail1,
+        password: "123",
+        name: "Edit test :)",
+    };
+    let badPayload = {
+        isCompany: false,
+        currentCompany: "Concordia University",
+        currentPosition: "Student",
+        bio: "I am Liam and I want to be an engineer.",
+        coverLetter: "",
+        resume: "",
+        picture: "",
+        publicKey: "",
+        privateKey: "",
+        email: randomEmail1 + 123,
+        password: "123",
+        name: "Edit test :)",
+    };
+
+    describe("Get user/edit/:email", function () {
+        it("responds with 200 when you can accept an invite", async function () {
+            await request(url)
+                .post(`/user/edit/${randomEmail1}`)
+                .send(newPayload)
+                .expect(200);
+        });
+        it("responds with 404 when you cannot find the user", async function () {
+            await request(url)
+                .post(`/user/edit/${randomEmail1}1`)
+                .send(newPayload)
+                .expect(404);
+        });
+        it("responds with 400 when there is a field error", async function () {
+            await request(url)
+                .post(`/user/edit/${randomEmail1}`)
+                .send(badPayload)
+                .expect(400);
+        });
+    });
     describe("Get user/api/manageInvite", function () {
         it("responds with 200 when you can accept an invite", async function () {
             await request(url)
@@ -272,7 +343,6 @@ describe("Test User Routes", function () {
                     `/user/api/manageInvite?invitedEmail=${randomEmail1}&senderEmail=${randomEmail2}&isAccept=true`
                 )
                 .expect(404);
-            console.log(response1.body);
         });
     });
 
@@ -290,9 +360,56 @@ describe("Test User Routes", function () {
                     `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.co`
                 )
                 .expect(404);
+        });
+    });
+
+    describe("Get user/api/getContacts", function () {
+        it("responds with 200 when you can get the contacts", async function () {
             await request(url)
-                .post(`/user/delete/${response1.body.registeredUser[1]}`)
+                .get(`/user/api/getContacts?userEmail=dzm.fiodarau@gmail.com`)
                 .expect(200);
+        });
+        it("responds with 404 when the account doesnt exist", async function () {
+            await request(url)
+                .get(`/user/api/getContacts?userEmail=dzm.fiodarau@gmail.co`)
+                .expect(404);
+        });
+    });
+    let name = "";
+    let email = "";
+    let GLimit = 1;
+    let BLimit = "";
+    let skip = 0;
+    describe("Get user/api/search", function () {
+        it("responds with 200 when you can search with your fields", async function () {
+            await request(url)
+                .get(
+                    `/user/api/search?name=${name}&email=${email}&limit=${GLimit}&skip=${skip}`
+                )
+                .expect(200);
+        });
+        it("responds with 400 bad request when one of the fields is wrong", async function () {
+            await request(url)
+                .get(
+                    `/user/api/search?name=${name}&email=${email}&limit=${BLimit}&skip=${skip}`
+                )
+                .expect(400);
+        });
+    });
+    describe("Get user/api/searchCompanies", function () {
+        it("responds with 200 when you can search with your fields", async function () {
+            await request(url)
+                .get(
+                    `/user/api/searchCompanies?name=${name}&email=${email}&limit=${GLimit}&skip=${skip}`
+                )
+                .expect(200);
+        });
+        it("responds with 400 bad request when one of the fields is wrong", async function () {
+            await request(url)
+                .get(
+                    `/user/api/searchCompanies?name=${name}&email=${email}&limit=${BLimit}&skip=${skip}`
+                )
+                .expect(400);
         });
     });
     describe("Get user/api/follow", function () {
@@ -322,13 +439,16 @@ describe("Test User Routes", function () {
                 )
                 .expect(200);
         });
-        it("responds with 404 when you already follow a company", async function () {
+        it("responds with 404 when you already unFollowed a company", async function () {
             let companyID = "i2iLvPkBHmkV43PufHVp";
             await request(url)
                 .get(
                     `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
                 )
                 .expect(404);
+            await request(url)
+                .post(`/user/delete/${response1.body.registeredUser[1]}`)
+                .expect(200);
             await request(url)
                 .post(`/user/delete/${response2.body.registeredUser[1]}`)
                 .expect(200);

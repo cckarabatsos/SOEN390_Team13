@@ -1,7 +1,14 @@
 import { Filter, Jobposting } from "../models/jobPosting";
 import firebase from "firebase";
+import { findUserWithID } from "./userServices";
+import { user_schema } from "../models/User";
 
 const db = firebase.firestore();
+/**
+ * Find a certain jobPosting with its id
+ * @param postingID
+ * @returns A snapshot of the database
+ */
 export const findJobpostingWithID = async (postingID: string) => {
     try {
         var snapShot = await db.collection("jobpostings").doc(postingID).get();
@@ -11,8 +18,15 @@ export const findJobpostingWithID = async (postingID: string) => {
     }
     return snapShot.data();
 };
+/**
+ * Store a jobPosting item within the jobPosting database
+ * @param newJobPosting
+ * @returns document.id
+ */
 export const storeJobPosting = async (newJobPosting: Jobposting) => {
     try {
+        let user = await findUserWithID(newJobPosting.jobPosterID);
+        let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({
             email: newJobPosting.email,
             location: newJobPosting.location,
@@ -24,6 +38,7 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
             contract: newJobPosting.contract,
             duration: newJobPosting.duration,
             type: newJobPosting.type,
+            logo: casted_user.picture,
             jobPosterID: newJobPosting.jobPosterID,
         });
         await document.update({ postingID: document.id });
@@ -34,6 +49,12 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
     }
     return document.id;
 };
+/**
+ * Function to delete a certian jobPosting via its id
+ * @param postingID
+ * @param email
+ * @returns
+ */
 export const deleteJobPostingWithId = async (
     postingID: string,
     email: string
@@ -72,6 +93,11 @@ export const deleteJobPostingWithId = async (
     }
     return data;
 };
+/**
+ * Return a couple of jobPostings via a filter object
+ * @param filter
+ * @returns
+ */
 
 export const filterJobPostings = async (filter: Filter) => {
     let jobPostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
@@ -80,16 +106,17 @@ export const filterJobPostings = async (filter: Filter) => {
     if (filter.location) {
         const prefix = filter.location.toLowerCase();
         const prefixEnd = prefix + "\uf8ff";
-        jobPostingsRef = jobPostingsRef
+        jobPostingsRef = await jobPostingsRef
             .where("location", ">=", prefix)
             .where("location", "<", prefixEnd);
     }
     if (filter.company) {
-        const prefix = filter.company.toLowerCase();
+        const prefix = filter.company;
         const prefixEnd = prefix + "\uf8ff";
-        jobPostingsRef = jobPostingsRef
+        jobPostingsRef = await jobPostingsRef
             .where("company", ">=", prefix)
             .where("company", "<", prefixEnd);
+        //console.log(jobPostingsRef);
     }
     if (filter.position) {
         const prefix = filter.position.toLowerCase();
@@ -118,6 +145,8 @@ export const filterJobPostings = async (filter: Filter) => {
         jobPostingsRef = jobPostingsRef.startAfter(lastVisible);
     }
     const snapshot = await jobPostingsRef.get();
+
+
     const jobPostings = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),

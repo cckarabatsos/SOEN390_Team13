@@ -1,0 +1,184 @@
+.jobapplication{
+    background-repeat: no-repeat;
+    background-color: white;
+    height: 250vh;
+}
+
+.titlename{
+    font-family: "Roboto";
+    font-size: xx-large;
+    padding: 10px;
+}
+
+.formoutline{
+    background:  rgb(203, 200, 200);    
+    width: 55%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    padding: 5px;
+    
+}
+
+
+.header{
+    font-size: x-large;
+    color: #120564;
+    padding: 10px;
+}
+
+.dropdown{
+    width: 150%;
+    float: center;
+}
+
+.input .MuiOutlinedInput-root {
+    background: white;
+    border-radius: 30px;  
+    width: 350%;
+    border-color: #120564;
+    
+    
+  }
+  
+.input .MuiInputLabel-root {
+    position: absolute;  
+    transform: translate(14px, 14px) scale(1);
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.15;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 200ms, color 200ms;
+  }
+  
+.input .MuiInputLabel-shrink {
+    transform: translate(14px, 0) scale(0.75);
+  }
+
+  .input2 .MuiOutlinedInput-root {
+    background: white;
+    border-radius: 30px;  
+    width: 110%;
+    border-color: #120564;
+    
+  }
+  
+.input2 .MuiInputLabel-root {
+    position: absolute;  
+    transform: translate(14px, 14px) scale(1);
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.15;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 200ms, color 200ms;
+  }
+  
+.input2 .MuiInputLabel-shrink {
+    transform: translate(14px, 0) scale(0.75);
+  }
+
+  .label{
+    text-align: right;
+    color: red;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+.grid-container input {
+    padding: 10px;
+}
+
+.city{
+    margin-left: 18%;
+    width: 300%;
+}
+
+.province{
+    margin-left: 200%;
+    width: 300%;
+}
+
+.areacode{
+    margin-left: 380%;
+    width: 300%;
+}
+
+.start{
+    margin-left: 18%;
+    width: 300%;
+}
+
+.end{
+    margin-left: 350%;
+    width: 300%;
+}
+.buttons{
+    width: 150%;
+    margin-left: 70%;
+    padding: 20px;
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .jobapplication{
+    height: 300vh;
+    }
+    
+    .formoutline{
+    width: 90%;
+    }
+    
+    .dropdown{
+    width: 100%;
+    }
+    
+    .input .MuiOutlinedInput-root {
+    width: 100%;
+    }
+    
+    .input2 .MuiOutlinedInput-root {
+    width: 100%;
+    }
+    
+    .grid-container {
+    grid-template-columns: 1fr;
+    }
+    
+    .city{
+    margin-left: 0;
+    width: 100%;
+    }
+    
+    .province {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .areacode {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .start {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .end {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .buttons{
+        margin-left: 0;
+        width: 0%;
+    }
+    
+}

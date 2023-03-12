@@ -1,13 +1,17 @@
 import * as mocha from "mocha";
 import app from "../../src/index";
 import request from "supertest";
-import { storeSkill } from "../../src/services/skillServices";
+import {
+    deleteSkillWithId,
+    retrieveSkills,
+    storeSkill,
+} from "../../src/services/skillServices";
 import { Skill } from "../../src/models/Skill";
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
-const userID2 = "Fh2XqT92iexcowGTe4th";
+const userID2 = "0NS4CwuBHfd4rDPAIEuC";
 const badUserID = "5";
 const skill: Skill = {
     name: "skill",
@@ -33,6 +37,12 @@ describe("Test Skill Routes", function () {
     });
     describe("Post skill/:userID", function () {
         it("responds with 200 when skills for a specific user", async function () {
+            let skills = await retrieveSkills(userID2);
+            if (skills) {
+                if (skills.length == 10) {
+                    await deleteSkillWithId(skills[9].skillID);
+                }
+            }
             await request(url)
                 .post(`/skill/${userID2}`)
                 .send({ name: "skill" })
@@ -59,6 +69,12 @@ describe("Test Skill Routes", function () {
     });
     describe("Post skill/remove/:docID", function () {
         it("responds with 200 when skills for a specific user", async function () {
+            let skills = await retrieveSkills(userID2);
+            if (skills) {
+                if (skills.length == 10) {
+                    await deleteSkillWithId(skills[9].skillID);
+                }
+            }
             let skillID = await storeSkill(skill);
             await request(url).post(`/skill/remove/${skillID}`).expect(200);
         });

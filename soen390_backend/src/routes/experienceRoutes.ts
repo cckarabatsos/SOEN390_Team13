@@ -1,9 +1,19 @@
+/**
+ * Routes for Experience entity of the database
+ */
 import express, { Request, Response } from "express";
-import { createExperience, deleteExperience, getExperiences } from "../controllers/experienceControllers";
+import {
+    createExperience,
+    deleteExperience,
+    getExperiences,
+} from "../controllers/experienceControllers";
 import { Experience } from "../models/Experience";
 const experience = express.Router();
 experience.use(express.json());
 
+/**
+ * Route that stores new experience to database
+ */
 experience.post("/:ownerID", async (req: Request, res: Response) => {
     let ownerID: string = req.params.ownerID;
     let atPresent: boolean = req.body.atPresent;
@@ -20,13 +30,14 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
             company,
             position,
             type,
-            ownerID);
+            ownerID
+        );
         const status: number = experience[0];
         if (status == 200) {
             res.status(200);
             res.json({
                 Response: "Success",
-                experience
+                experience,
             });
         } else if (status == 404) {
             res.sendStatus(status);
@@ -36,6 +47,10 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that removes an experience from database
+ */
 experience.post("/remove/:docID", async (req: Request, res: Response) => {
     let experienceID = req.params.docID;
     try {
@@ -45,7 +60,7 @@ experience.post("/remove/:docID", async (req: Request, res: Response) => {
             res.status(200);
             res.json({
                 Response: "Success",
-                experience
+                experience,
             });
         } else if (status == 404) {
             res.sendStatus(404);
@@ -55,6 +70,10 @@ experience.post("/remove/:docID", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that gets experiences of specified type for a specific user
+ */
 experience.get("/get/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
     let type = req.query.type as string;

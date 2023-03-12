@@ -1,11 +1,20 @@
+/**
+ * Service methods for Skill entity of the database
+ */
 import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-import { Skill, /*skill_schema*/ } from "../models/Skill";
+import { Skill /*skill_schema*/ } from "../models/Skill";
 import { findUserWithID } from "./userServices";
 
 const db = firebase.firestore();
 
+/**
+ * Finds skill with specified ID in the database
+ *
+ * @param skillID
+ * @returns snapshot of the found skill or undefined
+ */
 export const findSkillWithID = async (skillID: string) => {
     try {
         var snapShot = await db.collection("skills").doc(skillID).get();
@@ -15,6 +24,12 @@ export const findSkillWithID = async (skillID: string) => {
     }
     return snapShot.data();
 };
+
+/**
+ * Stores a new Skill document in the database
+ * @param skill
+ * @returns ID of the created document or null
+ */
 export const storeSkill = async (skill: Skill) => {
     try {
         let user = await findUserWithID(skill.ownerID);
@@ -30,7 +45,7 @@ export const storeSkill = async (skill: Skill) => {
 
         var document = await db.collection("skills").add({
             name: skill.name,
-            ownerID: skill.ownerID
+            ownerID: skill.ownerID,
         });
         await document.update({ skillID: document.id });
         console.log("Skill successfully stored with id: " + document.id);
@@ -40,6 +55,13 @@ export const storeSkill = async (skill: Skill) => {
     }
     return document.id;
 };
+
+/**
+ * Deletes skill with specified ID from the database
+ *
+ * @param skillID
+ * @returns information of the deleted skill or null
+ */
 export const deleteSkillWithId = async (skillID: string) => {
     try {
         var data: any = await findSkillWithID(skillID);
@@ -49,13 +71,10 @@ export const deleteSkillWithId = async (skillID: string) => {
                 .delete()
                 .then(() => {
                     console.log(
-                        "Skill with ID " +
-                        skillID +
-                        " successfully deleted."
+                        "Skill with ID " + skillID + " successfully deleted."
                     );
                 });
-        }
-        else {
+        } else {
             return null;
         }
     } catch (error) {
@@ -64,6 +83,13 @@ export const deleteSkillWithId = async (skillID: string) => {
     }
     return data;
 };
+
+/**
+ * Retrieves all skills that are associated with the user having the specified ID
+ *
+ * @param userID
+ * @returns array of skills or null
+ */
 export const retrieveSkills = async (userID: string) => {
     let user = await findUserWithID(userID);
     if (user === undefined) {
@@ -73,15 +99,11 @@ export const retrieveSkills = async (userID: string) => {
         db.collection("skills");
 
     if (userID) {
-        skillsRef = skillsRef.where(
-            "ownerID",
-            "==",
-            userID
-        );
+        skillsRef = skillsRef.where("ownerID", "==", userID);
     }
     const snapshot = await skillsRef.get();
     const skills = snapshot.docs.map((doc) => ({
-        ...doc.data()
+        ...doc.data(),
     }));
     return skills;
 };

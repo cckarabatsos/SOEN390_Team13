@@ -3,10 +3,14 @@ import api from "../config.json";
 
 export async function JobSearch(category, text) {
 
+  //switch statement to check which category has been selected,
+  //make request to backend API to search for jobs based on location,
+  // company, position, type, remote
+  // includes a default case
   switch(category){
     
     case 'location': 
-      try {
+      try { 
         const response = await axios.get(
           api.BACKEND_API + "/jobposting/filter/products",
           {
@@ -23,8 +27,8 @@ export async function JobSearch(category, text) {
         console.error("error", error);
         return false;
       } 
-      case 'company': 
-        try {
+      case 'company':
+        try { 
           const response = await axios.get(
             api.BACKEND_API + "/jobposting/filter/products",
             {
@@ -95,5 +99,9 @@ export async function JobSearch(category, text) {
                 console.error("error", error);
                 return false;
               } 
-  } 
-}
+        
+              default:
+                console.error("Invalid category specified");
+                return false;
+          } 
+        }
