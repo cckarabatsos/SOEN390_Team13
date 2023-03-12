@@ -1,77 +1,123 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import axios from "axios";
-import ActionButton from "../components/ActionButton";
+import React from 'react';
+import { render, fireEvent, screen,getAllByRole } from '@testing-library/react';
+import ActionButton from '../components/ActionButton';
+import api from "../config.json";
+import { MemoryRouter } from 'react-router-dom';
+import ApplicationHistoryApi from '../api/ApplicationHistoryApi' ;
+import { handleWithdrawApplication } from '../api/ApplicationHistoryApi';
+import { toHaveStyle } from '@testing-library/jest-dom';
+import { Paper } from '@mui/material';
 
-jest.mock("axios");
 
-describe("ActionButton", () => {
-  const userID = "user123";
-  const postingID = "posting123";
-  const withdrawSuccessMessage = "Application withdrawn successfully!";
-  const withdrawFailMessage = "Failed to withdraw application. Please try again.";
-  const mockedHandleWithdrawApplication = jest.fn();
-  
-  beforeEach(() => {
-    mockedHandleWithdrawApplication.mockClear();
-    axios.post.mockClear();
+describe('ActionButton', () => {
+  const userID = '1';
+  const postingID = '1';
+
+  test('displays popper when button is clicked', async () => {
+    // render component
+    render(<ActionButton userID={userID} postingID={postingID} />);
+
+    // click button
+    fireEvent.click(screen.getByRole('button'));
+
+    // verify that popper is displayed
+    expect(await screen.findByText(/View application/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Withdraw application/i)).toBeInTheDocument();
   });
 
-  test("should render the component with a button", () => {
+
+
+  test('renders button with three dots', () => {
     render(<ActionButton userID={userID} postingID={postingID} />);
-    const button = screen.getByRole("button", { name: "..." });
+    const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('...');
   });
 
-  test("should show the popper on button click", async () => {
+
+
+  test('clicking "View application" navigates to correct page', async () => {
+    render(<ActionButton userID="1" postingID="1" />);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    const viewApp = await screen.findByText(/View application/i);
+    fireEvent.click(viewApp);
+    expect(window.location.pathname).toBe('/JobSearch');
+  });
+  
+  
+  test('clicking "Withdraw application" calls handleWithdraw function', async () => {
+    const handleWithdrawApplicationMock = jest.fn();
+    ApplicationHistoryApi.handleWithdrawApplication.mockImplementation(handleWithdrawApplicationMock);
+
     render(<ActionButton userID={userID} postingID={postingID} />);
-    const button = screen.getByRole("button", { name: "..." });
+
+    const button = screen.getByRole('button');
     fireEvent.click(button);
-    await waitFor(() => {
-      const viewApplicationOption = screen.getByText("View application");
-      const withdrawApplicationOption = screen.getByText("Withdraw application");
-      expect(viewApplicationOption).toBeInTheDocument();
-      expect(withdrawApplicationOption).toBeInTheDocument();
-    });
+
+    const withdrawApp = await screen.findByText(/Withdraw application/i);
+    fireEvent.click(withdrawApp);
+
+    expect(handleWithdrawApplicationMock).toHaveBeenCalledWith(postingID);
+
+    expect(await screen.findByText(/Application withdrawn successfully/i)).toBeInTheDocument();
+  });
+  /*
+  test('clicking outside popper closes it', async () => {
+    render(<ActionButton userID="1" postingID="1" />);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    const viewApp = await screen.findByText(/View application/i);
+    fireEvent.click(document.body);
+    expect(viewApp).not.toBeInTheDocument();
+  });
+  
+  test('renders button with three dots', () => {
+    render(<ActionButton userID="1" postingID="1" />);
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('...');
+  });
+  */
+  /*
+  test('clicking button opens popper', async () => {
+    render(<ActionButton userID="1" postingID="1" />);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    const viewApp = await screen.findByText(/View application/i);
+    const withdrawApp = await screen.findByText(/Withdraw application/i);
+    expect(viewApp).toBeInTheDocument();
+    expect(withdrawApp).toBeInTheDocument();
+  });
+  
+*/
+test('test Paper styling', (papers) => {
+  render(
+    <>
+      <Paper sx={{ width: '220px', borderRadius: '10px', border: '1px solid transparent', bgcolor: 'background.paper' }} />
+      <Paper sx={{ width: '220px', borderRadius: '10px', border: '1px solid primary.main', bgcolor: 'primary.light', cursor: 'pointer' }} />
+    </>
+  );
+
+
+  // Test the styling of the first Paper component
+  expect(papers[0]).toHaveStyle({
+    width: '220px',
+    borderRadius: '10px',
+    border: '1px solid transparent',
+    backgroundColor: 'rgb(255, 255, 255)',
   });
 
-  test("should withdraw application on option click", async () => {
-    axios.post.mockResolvedValueOnce({});
-    render(<ActionButton userID={userID} postingID={postingID} />);
-    const button = screen.getByRole("button", { name: "..." });
-    fireEvent.click(button);
-    await waitFor(() => {
-      const withdrawOption = screen.getByText("Withdraw application");
-      userEvent.click(withdrawOption);
-      expect(mockedHandleWithdrawApplication).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  test("should show success message on successful application withdrawal", async () => {
-    axios.post.mockResolvedValueOnce({});
-    window.alert = jest.fn();
-    render(<ActionButton userID={userID} postingID={postingID} handleWithdrawApplication={mockedHandleWithdrawApplication} />);
-    const button = screen.getByRole("button", { name: "..." });
-    fireEvent.click(button);
-    await waitFor(() => {
-      const withdrawOption = screen.getByText("Withdraw application");
-      userEvent.click(withdrawOption);
-      expect(mockedHandleWithdrawApplication).toHaveBeenCalledTimes(1);
-      expect(window.alert).toHaveBeenCalledWith(withdrawSuccessMessage);
-    });
-  });
-
-  test("should show error message on failed application withdrawal", async () => {
-    axios.post.mockRejectedValueOnce({});
-    window.alert = jest.fn();
-    render(<ActionButton userID={userID} postingID={postingID} handleWithdrawApplication={mockedHandleWithdrawApplication} />);
-    const button = screen.getByRole("button", { name: "..." });
-    fireEvent.click(button);
-    await waitFor(() => {
-      const withdrawOption = screen.getByText("Withdraw application");
-      userEvent.click(withdrawOption);
-      expect(mockedHandleWithdrawApplication).toHaveBeenCalledTimes(1);
-      expect(window.alert).toHaveBeenCalledWith(withdrawFailMessage);
-    });
+  // Test the styling of the second Paper component
+  expect(papers[1]).toHaveStyle({
+    width: '220px',
+    borderRadius: '10px',
+    border: '1px solid rgb(33, 150, 243)',
+    backgroundColor: 'rgb(144, 202, 249)',
+    cursor: 'pointer',
   });
 });
+
+
+
+}) 

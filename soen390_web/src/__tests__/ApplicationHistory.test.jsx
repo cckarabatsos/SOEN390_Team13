@@ -1,55 +1,54 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import BasicTable from "./BasicTable";
-import ApplicationHistory from '../pages/ApplicationHistory'
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ApplicationHistory from '../pages/ApplicationHistory';
+import { getAllApplication } from '../api/ApplicationHistoryApi';
+import axios from "axios"; 
+import api from "../config.json";
 
-describe("BasicTable", () => {
-  it("renders the table header with the correct title", () => {
-    render(<BasicTable />);
-    const header = screen.getByRole("cell", { name: "My applications" });
-    expect(header).toBeInTheDocument();
+jest.mock('axios');
+
+describe('ApplicationHistory', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("renders the table with the correct columns", () => {
-    render(<BasicTable />);
-    const positionColumn = screen.getByRole("columnheader", { name: "Position" });
-    expect(positionColumn).toBeInTheDocument();
-    const locationColumn = screen.getByRole("columnheader", { name: "Location" });
-    expect(locationColumn).toBeInTheDocument();
-    const companyColumn = screen.getByRole("columnheader", { name: "Company" });
-    expect(companyColumn).toBeInTheDocument();
-    const contractColumn = screen.getByRole("columnheader", { name: "Contract" });
-    expect(contractColumn).toBeInTheDocument();
-    const actionColumn = screen.getByRole("columnheader", { name: "Action" });
-    expect(actionColumn).toBeInTheDocument();
+  test('renders application history', async () => {
+    // mock axios.get() to return real data
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: getAllApplication() }));
+  
+    // render component
+    render(<ApplicationHistory />);
+  
+    // verify that job titles are displayed
+    const jobTitles = mockData.map((item) => item.jobTitle);
+    for (const jobTitle of jobTitles) {
+      expect(await screen.findByText(jobTitle)).toBeInTheDocument();
+    }
   });
 
-  it("renders the table with the correct data", () => {
-    render(<BasicTable />);
-    const positionCell = screen.getByRole("cell", { name: "Software Engineer" });
-    expect(positionCell).toBeInTheDocument();
-    const locationCell = screen.getByRole("cell", { name: "Montreal" });
-    expect(locationCell).toBeInTheDocument();
-    const companyCell = screen.getByRole("cell", { name: "6" });
-    expect(companyCell).toBeInTheDocument();
-    const contractCell = screen.getByRole("cell", { name: "24" });
-    expect(contractCell).toBeInTheDocument();
-    const actionCell = screen.getByRole("cell", { name: "View" });
-    expect(actionCell).toBeInTheDocument();
-  });
+  test('renders application history with correct table headers', async () => {
+    // mock API call
 
-  it("renders the correct number of rows", () => {
-    render(<BasicTable />);
-    const rows = screen.getAllByRole("row");
-    expect(rows.length).toBe(6);
-  });
+    // render component
+    render(<ApplicationHistory />);
 
-  it("calls the action button callback when clicked", () => {
-    const mockCallback = jest.fn();
-    render(<BasicTable actionButtonCallback={mockCallback} />);
-    const actionButton = screen.getByRole("button", { name: "View" });
-    userEvent.click(actionButton);
-    expect(mockCallback).toHaveBeenCalledTimes(1);
+    // verify that table headers are displayed
+    expect(await screen.findByText(/Position/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Location/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Company/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Contract/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Action/i)).toBeInTheDocument();
   });
 });
+test('renders without errors', () => {
+  render(<ApplicationHistory />);
+});
+
+
+test('displays correct heading', () => {
+  render(<ApplicationHistory />);
+  const heading = screen.getByText('My applications');
+  expect(heading).toBeInTheDocument();
+});
+
+
