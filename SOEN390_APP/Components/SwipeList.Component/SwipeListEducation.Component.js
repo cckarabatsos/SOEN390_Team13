@@ -11,29 +11,36 @@ import {
   KeyboardAvoidingView,
   Modal,
   Image,
-  Alert,
 } from "react-native";
 import React, { Key, useState } from "react";
 import { SwipeListView } from "react-native-swipe-list-view";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { RemoveUserExperience } from "../../api/UserExperienceAPI.tsx";
 import {
   ALERT_TYPE,
   Dialog,
   AlertNotificationRoot,
   Toast,
 } from "react-native-alert-notification";
-import {
-  AcceptInvitations,
-  DeclineInvitations,
-} from "../../api/UserRequestAPI";
-
 //import { auth } from '../firebaseConfig'
 
-export default function Basic({ data, email }) {
+export default function Basic({ data }) {
   //console.log(data);
-  //console.log(email);
-  const { key, text, image, userID, job, loc } = data;
-  const [name, setName] = useState(text);
+  const {
+    experienceID,
+    atPresent,
+    company,
+    ownerID,
+    position,
+    startDate,
+    type,
+    endDate,
+    logo,
+  } = data;
+  const [name, setName] = useState(position);
+  const [program, setProgram] = useState(company);
+  const [experienceIDs, setExperienceIDs] = useState(experienceID);
+  const [year, setYear] = useState(startDate);
+  const [yearEnd, setYearEnd] = useState(endDate);
   const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
@@ -44,53 +51,47 @@ export default function Basic({ data, email }) {
     setName(newName);
     // code to send new name to the database server
   };
+
+  const setDate = () => {
+    if (atPresent) return year + " - Present";
+    else return year + " - " + yearEnd;
+  };
+
   const closeRow = (rowMap, rowKey) => {
     if (rowMap[rowKey]) {
       rowMap[rowKey].closeRow();
     }
   };
 
-  const acceptRequest = (rowMap, rowKey, user_email, email) => {
-    let responce = AcceptInvitations(email, user_email);
-    if (responce)
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "ACCEPTED",
-        textBody: "Friend request accetped",
-      });
-    //ACCEPT IN BACKEND
-
-    closeRow(rowMap, rowKey, user_email, email);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
+  const editRow = (rowMap, rowKey) => {
+    console.log("Edit Data");
+    setModalVisible(true);
   };
 
-  const denyRequest = (rowMap, rowKey, user_email, email) => {
-    let responce = DeclineInvitations(email, user_email);
-    if (responce)
+  const deleteRow = (rowMap, rowKey) => {
+    let responce = RemoveUserExperience(experienceIDs);
+    if (responce) {
       Toast.show({
         type: ALERT_TYPE.SUCCESS,
-        title: "REFUSED",
-        textBody: "Friend request not accetped",
+        title: "Removed Experience",
       });
-    //ACCEPT IN BACKEND
+      //ACCEPT IN BACKEND
 
-    closeRow(rowMap, rowKey, user_email, email);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
+      closeRow(rowMap, rowKey);
+      const newData = [...listData];
+      const prevIndex = listData.findIndex((item) => item.key === rowKey);
+      newData.splice(prevIndex, 1);
+      setListData(newData);
+    }
   };
 
   const onRowDidOpen = (rowKey) => {
-    //console.log("This row opened", rowKey);
+    console.log("This row opened", rowKey);
   };
 
   const copyToClipBoard = () => {
-    //setModalVisible(true);
-    //Clipboard.setString(text)
+    console.log("Copied To Clipboard");
+    //Clipboard.setString(text)}
   };
 
   const renderItem = (data) => (
@@ -100,11 +101,11 @@ export default function Basic({ data, email }) {
       underlayColor={"#AAA"}
     >
       <View style={{ flexDirection: "row" }}>
-        <Image style={styles.logo} source={{ uri: image }} />
+        <Image style={styles.logo} source={{ uri: logo }} />
         <View>
           <Text style={styles.titleText}>{name}</Text>
-          <Text style={styles.smallText}>{job}</Text>
-          <Text style={styles.smallText}>{loc}</Text>
+          <Text style={styles.smallText}>{program}</Text>
+          <Text style={styles.smallText}>{setDate()}</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -113,24 +114,17 @@ export default function Basic({ data, email }) {
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnLeft]}
-        onPress={() => acceptRequest(rowMap, data.item.key, email, job)}
-      >
-        <Ionicons size={30} name="person-add-sharp" color={"green"} />
-      </TouchableOpacity>
-      <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        title={"toast notification"}
-        onPress={() => denyRequest(rowMap, data.item.key, email, job)}
+        onPress={() => deleteRow(rowMap, data.item.key)}
       >
-        <Ionicons size={30} name="md-person-remove-sharp" color={"red"} />
+        <Text style={styles.backTextWhite}>Delete</Text>
       </TouchableOpacity>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <TextInput
               style={styles.input}
-              placeholder={"Enter new " + text}
+              placeholder={"Enter new "}
               onChangeText={handleNameChange}
             />
             <View style={styles.modalContent}>
@@ -153,7 +147,7 @@ export default function Basic({ data, email }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-150}
+        rightOpenValue={-75}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
@@ -181,7 +175,7 @@ const styles = StyleSheet.create({
   },
   rowBack: {
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#DDD",
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -194,19 +188,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     width: 75,
-    borderRadius: 40,
   },
   backRightBtnLeft: {
-    backgroundColor: "#fff",
+    backgroundColor: "blue",
     right: 75,
-    borderColor: "green",
-    borderWidth: 2,
   },
   backRightBtnRight: {
-    backgroundColor: "#fff",
+    backgroundColor: "red",
     right: 0,
-    borderColor: "red",
-    borderWidth: 2,
   },
   modalContainer: {
     flex: 1,
@@ -257,14 +246,14 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 50,
-    marginRight: 15,
   },
   titleText: {
     fontSize: 15,
     fontWeight: "bold",
   },
-  textSmall: {
-    fontSize: 10,
-    color: "black",
+  smallText: {
+    fontSize: 14,
+    color: "gray",
+    marginLeft: 10,
   },
 });

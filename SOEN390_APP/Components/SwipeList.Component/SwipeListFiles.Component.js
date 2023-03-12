@@ -20,12 +20,14 @@ import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { GetUserInfo } from "../../api/GetUsersAPI";
 import { editUserProfile } from "../../api/UserProfileAPI";
+import { GetFile } from "../../api/UserFileAPI";
+//import RNFetchBlob from "rn-fetch-blob";
 
 //import { auth } from '../firebaseConfig'
 
-export default function Basic({ data }) {
-  const { key, text, input, userID } = data;
-  const [name, setName] = useState(text);
+export default function Files({ data }) {
+  const { key, input, userID } = data;
+  const [name, setName] = useState();
   const [newName, setNewName] = useState("");
   const [user, setUser] = useState({});
   const [input1, setInput1] = useState(input);
@@ -36,6 +38,10 @@ export default function Basic({ data }) {
       .fill("")
       .map((_, i) => ({ key: `${i}`, text: `item #${setName}` }))
   );
+  const [resume, setResume] = React.useState();
+  const [coverletter, setCoverletter] = React.useState();
+  const [coverletterFilename, setCoverletterFilename] = React.useState();
+  const [resumeFilename, setResumeFilename] = React.useState();
 
   const handleNameChange = (newName) => {
     setNewName(newName);
@@ -57,29 +63,60 @@ export default function Basic({ data }) {
     handleGetUser();
   }, []);
 
-  const editRow = (rowMap, rowKey) => {
-    setModalVisible(true);
+  const uploadFile = (rowMap, rowKey) => {
+    //setModalVisible(true);
   };
 
-  const handleEditUserProfile = async (emailOld, user) => {
-    await editUserProfile(emailOld, user);
+  const downloadFile = async (input) => {
+    if (input === "Cover Letter") {
+      let UserCoverLetter = "";
+      const getCoverLetter = async () => {
+        UserCoverLetter = await GetFile(user.userID, "coverletter");
+        return UserCoverLetter;
+      };
+
+      if (UserCoverLetter !== null) {
+        getCoverLetter().then((coverLetter) => {
+          setCoverletter(coverLetter);
+          const url = coverLetter;
+          setCoverletterFilename(
+            decodeURIComponent(url.split("/").pop().split("?")[0]).split(
+              " - "
+            )[1]
+          );
+        });
+        console.log(coverletterFilename);
+      }
+    } else if (input === "Resume") {
+      let UserResume = "";
+      const getResume = async () => {
+        UserResume = await GetFile(user.userID, "resume");
+        return UserResume;
+      };
+
+      if (UserResume !== null) {
+        getResume().then((resume) => {
+          setResume(resume);
+          const url = resume;
+          setResumeFilename(
+            decodeURIComponent(url.split("/").pop().split("?")[0]).split(
+              " - "
+            )[1]
+          );
+          console.log(
+            decodeURIComponent(url.split("/").pop().split("?")[0]).split(
+              " - "
+            )[1]
+          );
+          console.log("resume:", resume);
+        });
+      }
+    }
   };
+
+  const handleEditUserProfile = async (emailOld, user) => {};
 
   const handleSubmit = async () => {
-    console.log(input1);
-    const emailOld = user.email;
-    let updatedUser = {};
-    if (input1 === "Name")
-      updatedUser = { ...user, name: newName }; // update the name attribute
-    else if (input1 === "Bio") updatedUser = { ...user, bio: newName };
-    else if (input1 == "Password") updatedUser = { ...user, password: newName };
-    else if (input1 == "Current Company")
-      updatedUser = { ...user, currentCompany: newName };
-    else if (input1 == "Current Position")
-      updatedUser = { ...user, currentPosition: newName };
-
-    await handleEditUserProfile(emailOld, updatedUser);
-
     //setModalVisible(false);
     if (newName !== "") {
       setName(newName);
@@ -92,9 +129,7 @@ export default function Basic({ data }) {
     setModalVisible(false);
   };
 
-  const onRowDidOpen = (rowKey) => {
-    console.log("This row opened", rowKey);
-  };
+  const onRowDidOpen = (rowKey) => {};
 
   const copyToClipBoard = () => {
     Toast.show({
@@ -111,9 +146,8 @@ export default function Basic({ data }) {
       underlayColor={"#AAA"}
     >
       <View>
-        <Text>
-          {input1}: {name}
-        </Text>
+        <Text style={styles.textBold}>{input1}</Text>
+        <Ionicons size={25} name="document-outline" />
       </View>
     </TouchableHighlight>
   );
@@ -121,11 +155,18 @@ export default function Basic({ data }) {
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => editRow(rowMap, data.item.key)}
+        style={[styles.backRightBtn, styles.backRightBtnLeft]}
+        onPress={() => uploadFile(rowMap, data.item.key)}
       >
-        <Text style={styles.backTextWhite}>Edit</Text>
+        <Text style={styles.backTextWhite}>Upload</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.backRightBtn, styles.backRightBtnRight]}
+        onPress={() => downloadFile(input)}
+      >
+        <Text style={styles.backTextWhite}>Download</Text>
+      </TouchableOpacity>
+
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -164,7 +205,7 @@ export default function Basic({ data }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-75}
+        rightOpenValue={-150}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
@@ -188,6 +229,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 50,
     paddingStart: 20,
+    alignContent: "center",
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
   },
   rowBack: {
     alignItems: "center",
@@ -206,7 +251,7 @@ const styles = StyleSheet.create({
     width: 75,
   },
   backRightBtnLeft: {
-    backgroundColor: "blue",
+    backgroundColor: "orange",
     right: 75,
   },
   buttonModalClose: {
@@ -253,6 +298,6 @@ const styles = StyleSheet.create({
   },
   textBold: {
     fontWeight: "bold",
-    fontSize: 17,
+    fontSize: 18,
   },
 });

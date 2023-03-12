@@ -19,6 +19,7 @@ interface User {
   company: string;
   image: string;
   email: string
+  isCompany: boolean
 }
 
 
@@ -54,7 +55,7 @@ const PeopleScreen = ({route}:{route:any}) => {
   const { v4: uuidv4 } = require('uuid');
 
   const buildObject = (jsonObject:any) => {
-    const { name, currentPosition, currentCompany, email } = jsonObject;
+    const { name, currentPosition, currentCompany, email,isCompany } = jsonObject;
     const obj = {
       id: uuidv4(),
       name: name,
@@ -62,8 +63,8 @@ const PeopleScreen = ({route}:{route:any}) => {
       location: "New York",
       company: currentCompany,
       email: email,
-      //image: jsonObject.picture
-      image: 'https://randomuser.me/api/portraits/men/1.jpg'
+      isCompany: isCompany,
+      image: jsonObject.picture || 'https://randomuser.me/api/portraits/men/1.jpg',
     }
     return obj;
   }
@@ -163,13 +164,13 @@ return(
 
 
   const renderItem = ({ item }: { item: User }) => {
+    if(!item.isCompany)
     return (
       <View style={styles.userContainer}> 
         <Image style={styles.userImage} source={{ uri: item.image }} />
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{item.name}</Text>
           <Text style={styles.userOccupation}>{item.occupation}</Text>
-          <Text style={styles.userLocation}>{item.location}</Text>
           <Text style={styles.userCompany}>{item.company}</Text>
         </View>
         <TouchableOpacity style={styles.followButton} onPress={() => {
@@ -205,7 +206,7 @@ return(
         </TouchableOpacity>
       </View>
       <View style={styles.filterContainer}>
-  <Picker
+{/*   <Picker
     selectedValue={selectedOccupation}
     onValueChange={itemValue => setSelectedOccupation(itemValue)}
     style={styles.filterPicker}
@@ -224,7 +225,7 @@ return(
     <Picker.Item style={styles.pickerItem} label="New York" value="New York" />
     <Picker.Item style={styles.pickerItem} label="San Francisco" value="San Francisco" />
     <Picker.Item style={styles.pickerItem} label="London" value="London" />
-  </Picker>
+  </Picker> */}
   {modalRender(user)}
 </View>
       <FlatList

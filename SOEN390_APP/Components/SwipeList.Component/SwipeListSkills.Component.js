@@ -11,25 +11,20 @@ import {
   KeyboardAvoidingView,
   Modal,
 } from "react-native";
-import { useEffect } from "react";
 import React, { Key, useState } from "react";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { SwipeListView } from "react-native-swipe-list-view";
 import PopUPForm from "../PopUPForm.Component";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { GetUserInfo } from "../../api/GetUsersAPI";
-import { editUserProfile } from "../../api/UserProfileAPI";
-
+import { RemoveUserSkills } from "../../api/UserSkillsAPI";
 //import { auth } from '../firebaseConfig'
 
 export default function Basic({ data }) {
-  const { key, text, input, userID } = data;
-  const [name, setName] = useState(text);
+  const { name, ownerID, skillID } = data;
+  const [name1, setName] = useState(name);
   const [newName, setNewName] = useState("");
-  const [user, setUser] = useState({});
-  const [input1, setInput1] = useState(input);
-  const [userUpdated, setUserUpdated] = useState(false);
+  const [input1, setInput1] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [listData, setListData] = useState(
     Array(1)
@@ -48,48 +43,24 @@ export default function Basic({ data }) {
     }
   };
 
-  const handleGetUser = async () => {
-    const user1 = await GetUserInfo(userID);
-    setUser(user1);
-  };
-
-  useEffect(() => {
-    handleGetUser();
-  }, []);
-
   const editRow = (rowMap, rowKey) => {
-    setModalVisible(true);
+    console.log("Edit Data");
+    //setModalVisible(true);
   };
 
-  const handleEditUserProfile = async (emailOld, user) => {
-    await editUserProfile(emailOld, user);
-  };
-
-  const handleSubmit = async () => {
-    console.log(input1);
-    const emailOld = user.email;
-    let updatedUser = {};
-    if (input1 === "Name")
-      updatedUser = { ...user, name: newName }; // update the name attribute
-    else if (input1 === "Bio") updatedUser = { ...user, bio: newName };
-    else if (input1 == "Password") updatedUser = { ...user, password: newName };
-    else if (input1 == "Current Company")
-      updatedUser = { ...user, currentCompany: newName };
-    else if (input1 == "Current Position")
-      updatedUser = { ...user, currentPosition: newName };
-
-    await handleEditUserProfile(emailOld, updatedUser);
-
-    //setModalVisible(false);
-    if (newName !== "") {
-      setName(newName);
+  const deleteSkill = (rowMap, rowKey) => {
+    let responce = RemoveUserSkills(skillID);
+    if (responce)
       Toast.show({
         type: ALERT_TYPE.SUCCESS,
-        textBody: input1 + " changed",
+        title: "Removed Skill",
       });
-    }
-    setUserUpdated(true);
-    setModalVisible(false);
+
+    closeRow(rowMap, rowKey);
+    const newData = [...listData];
+    const prevIndex = listData.findIndex((item) => item.key === rowKey);
+    newData.splice(prevIndex, 1);
+    setListData(newData);
   };
 
   const onRowDidOpen = (rowKey) => {
@@ -112,7 +83,8 @@ export default function Basic({ data }) {
     >
       <View>
         <Text>
-          {input1}: {name}
+          {input1}
+          {name1}
         </Text>
       </View>
     </TouchableHighlight>
@@ -122,38 +94,10 @@ export default function Basic({ data }) {
     <View style={styles.rowBack}>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
-        onPress={() => editRow(rowMap, data.item.key)}
+        onPress={() => deleteSkill(rowMap, data.item.key)}
       >
-        <Text style={styles.backTextWhite}>Edit</Text>
+        <Text style={styles.backTextWhite}>Delete</Text>
       </TouchableOpacity>
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <View>
-              <TouchableOpacity
-                style={styles.buttonModalClose}
-                onPress={() => setModalVisible(false)}
-              >
-                <Ionicons size={30} name="close-outline" color={"red"} />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.textBold}>{input1}</Text>
-            <TextInput
-              style={styles.input}
-              placeholder={"Enter new " + input1}
-              onChangeText={handleNameChange}
-            />
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleSubmit()}
-              >
-                <Text style={styles.backTextWhite}>Submit</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 
@@ -206,7 +150,7 @@ const styles = StyleSheet.create({
     width: 75,
   },
   backRightBtnLeft: {
-    backgroundColor: "blue",
+    backgroundColor: "red",
     right: 75,
   },
   buttonModalClose: {
@@ -216,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   backRightBtnRight: {
-    backgroundColor: "blue",
+    backgroundColor: "red",
     right: 0,
   },
   modalContainer: {

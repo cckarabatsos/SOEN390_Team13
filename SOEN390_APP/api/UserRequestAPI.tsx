@@ -9,9 +9,7 @@ export async function UserRequest(email: String) {
         userEmail: email,
       },
     });
-
-
-    return response.data.data[1];
+    return response.data[1];
   } catch (error) {
     console.log("error", error);
     return false;
