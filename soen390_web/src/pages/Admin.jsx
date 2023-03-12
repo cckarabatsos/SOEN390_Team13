@@ -15,7 +15,7 @@ import Alert from "@mui/material/Alert";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getReports } from "../api/reportsApi";
+import { getReports, reportDecision } from "../api/reportsApi";
 
 const useStyles = makeStyles({
   table: {
@@ -27,6 +27,7 @@ function Admin(props) {
   const classes = useStyles();
   const [userData, setUserData] = useState({});
   const [users, setUsers] = useState([]);
+  const [reports, setReports] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Admin(props) {
           },
         ];
         setUsers(temp);
-        // setUsers(reports);
+        setReports(reports);
       } catch (error) {
         console.error(error);
       }
@@ -67,28 +68,14 @@ function Admin(props) {
     fetchData();
   }, []);
 
-  const handleApprove = (userId) => {
-    axios.put(`/api/users/${userId}/approve`).then(() => {
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, approved: true } : user
-        )
-      );
-      setAlertMessage(`User ${userId} has been approved!`);
-      setAlertOpen(true);
-    });
+  const handleApprove = async (reporterID, reportedID) => {
+    const sendApproval = await reportDecision(reporterID, reportedID, true);
+    console.log(sendApproval);
   };
 
-  const handleDisapprove = (userId) => {
-    axios.put(`/api/users/${userId}/disapprove`).then(() => {
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, approved: false } : user
-        )
-      );
-      setAlertMessage(`User ${userId} has been disapproved!`);
-      setAlertOpen(true);
-    });
+  const handleDisapprove = async (reporterID, reportedID) => {
+    const sendDisapproval = await reportDecision(reporterID, reportedID, true);
+    console.log(sendDisapproval);
   };
 
   const handleCloseAlert = (event, reason) => {
@@ -108,65 +95,41 @@ function Admin(props) {
         <Table className={classes.table} aria-label="user table">
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>ReportID</TableCell>
+              <TableCell>Reporter ID</TableCell>
+              <TableCell>Reported ID</TableCell>
+              <TableCell>Reason</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
+            {reports.map((report) => (
+              <TableRow key={report.reportID}>
                 <TableCell component="th" scope="row">
-                  {user.id}
+                  {report.reportID}
                 </TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
+                <TableCell>{report.reporterID}</TableCell>
+                <TableCell>{report.reportedID}</TableCell>
+                <TableCell>{report.reason}</TableCell>
                 <TableCell>
-                  {user.approved
-                    ? "Approved"
-                    : user.approved === false
-                    ? "Disapproved"
-                    : "Undecided"}
-                </TableCell>
-                <TableCell>
-                  {user.approved === false && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleApprove(user.id)}
-                    >
-                      Approve
-                    </Button>
-                  )}
-                  {user.approved === true && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => handleDisapprove(user.id)}
-                    >
-                      Disapprove
-                    </Button>
-                  )}
-                  {user.approved === undefined && (
-                    <>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleApprove(user.id)}
-                      >
-                        Approve
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => handleDisapprove(user.id)}
-                      >
-                        Disapprove
-                      </Button>
-                    </>
-                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      handleApprove(report.reporterID, report.reportedID)
+                    }
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() =>
+                      handleDisapprove(report.reporterID, report.reportedID)
+                    }
+                  >
+                    Disapprove
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

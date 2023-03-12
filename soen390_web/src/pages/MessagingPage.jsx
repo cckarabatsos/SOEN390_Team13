@@ -100,7 +100,7 @@ function Messages() {
   }, [location.search, users]);
 
   const handleUserClick = (user) => {
-    navigate(`/messages?userId=${user.id}`);
+    navigate(`/Messages/${user.id}`);
     setSelectedUser(user);
   };
 

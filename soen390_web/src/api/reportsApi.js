@@ -7,7 +7,25 @@ export async function getReports(reqUserId) {
       `${api.BACKEND_API}/reports/batchReports?userID=${reqUserId}`
     );
     console.log("yo", response);
-    return response;
+    return response.data;
+  } catch (error) {
+    console.error("error", error);
+    return false;
+  }
+}
+
+export async function reportDecision(reqReportId, reqReportedId, reqDecision) {
+  try {
+    const response = await axios
+      .post(`${api.BACKEND_API}/reports/verdictReport`, {
+        reportID: reqReportId,
+        reportedID: reqReportedId,
+        banned: reqDecision,
+      })
+      .then((res) => {
+        return res.data;
+      });
+    return response.data;
   } catch (error) {
     console.error("error", error);
     return false;
