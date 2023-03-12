@@ -87,14 +87,21 @@ describe("Test Messaging Routes", function () {
     });
 
     describe("Get messages/getActiveConversation", function () {
-        let usersEmails="[\"msg1@test.com\",\"msg2@test.com\"]"
-        let senderEmail = "msg1@test.com";
-        let wrongSenderEmail = "bad@test.com";
-        let wrongUsersEmails="[\"msg1001@test.com\",\"msg3@test.com\"]"
-        let wrongMsgLength=-1
+        
 
         it("responds with 200 if the the conversation emails exist, the sender email exist and is oits a non negative messages length ", async function () {
             await request(url).get(`/messages/getActiveConversation?email=oli@hotmail.com`).expect(200);
+        });
+
+    
+        
+    });
+
+    describe("Get messages/getActiveConversation", function () {
+        
+
+        it("responds with 500 if the the conversation emails does not exist and if the emails attacher are non valid ones ", async function () {
+            await request(url).get(`/messages/createConversation?emails=["msg1001@test.com","msg3@test.com"]`).expect(500);
         });
 
     
