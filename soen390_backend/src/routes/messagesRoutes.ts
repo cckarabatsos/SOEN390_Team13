@@ -140,32 +140,6 @@ messages.get("/sendMessage", async (req, res) => {
   }
 });
 
-// this route will freat the last messafe if a conversation. can be used as thumbnails
-// receives as input the list of user within the conversation
-// output the content of the last recorded messages in the conversation
-// messages.get("/getMessages", async (req, res) => {
-//   try {
-//     const { email } = req.query;
-//     if (!email) {
-//       return res.status(400).json({
-//         message: "Please provide an email address",
-//       });
-//     }
-//     const jobPostings = "hello 5";
-//     return res.status(200).json({
-//       message: "Messages retrieved successfully",
-//       jobPostings,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       message: "Internal server error",
-//     });
-//   }
-// });
-
-
-
 messages.get("/getActiveConversation", async (req, res) => {
     try {
       const email  = req.query.email as string;

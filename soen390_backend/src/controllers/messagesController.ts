@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import {
   initiateConversation,
   sendMessage,
-  getMessages,
   getUpdatedMessages,
   getActiveConversations,
 } from "../services/messagesServives";
@@ -46,23 +45,6 @@ export async function SendNewMessage(
   return [200, confirmation];
 }
 
-export async function GetAllMessages(
-  senderEmail: string,
-  usersEmail: string[]
-) {
-  let messagesList: any;
-  try {
-    messagesList = (await getMessages(
-      senderEmail,
-      usersEmail
-    )) as messagesListElement[];
-  } catch (error) {
-    console.log((error as Error).message);
-    throw new Error((error as Error).message);
-  }
-
-  return [200, messagesList];
-}
 
 export async function GetUpdatedMessages(
   senderEmail: string,
