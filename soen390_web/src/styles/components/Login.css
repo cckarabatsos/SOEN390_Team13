@@ -1,7 +1,4 @@
-@font-face {
-    font-family: 'Inter-regular';
-    src: url(../../assets/Inter-Regular.ttf);
-}
+
 
 .background{
   background-repeat: no-repeat;
@@ -40,12 +37,12 @@
 .inputRounded .MuiOutlinedInput-root {
     background: white;
     border-radius: 30px;  
-    width: 200%;
+    width: 400px;
     
   }
   
 .inputRounded .MuiInputLabel-root {
-    position: absolute;  
+    /* position: absolute;  
     transform: translate(14px, 14px) scale(1);
     color: rgba(0, 0, 0, 0.54);
     font-size: 16px;
@@ -53,39 +50,35 @@
     line-height: 1.15;
     pointer-events: none;
     z-index: 2;
-    transition: transform 200ms, color 200ms;
+    transition: transform 200ms, color 200ms; */
   }
   
 .inputRounded .MuiInputLabel-shrink {
-    transform: translate(14px, 0) scale(0.75);
+    /* transform: translate(14px, 0) scale(0.75); */
   }
 
 .field-name{
-    font-family: 'roboto';
+    font-family: Roboto;
     font-size: medium;    
-    color: #120564; 
-    margin-left: 30%;
+    margin-left: 23%;
+    text-align: left;
 }
 
 .field-input{
     text-align: left;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+
 }
 
 .input-margin{
-    
-    padding: 10px;
-    text-align: center;
+    /* text-align: center; */
+    margin-left: 20%;
 }
 
 .login-form{
     position: relative;
-    top: 20%;
+    top: 10%;
     
     width: 40%;
-    margin-left: 3%;
     
 }
 
@@ -94,15 +87,64 @@
     
 }
 
-.login{
+.login-button{
+    text-align: left;
+    margin-left: 20%;
+    margin-top: 30px;
+}
+
+.login-with-google-button{
+    text-align: left;
+    margin-left: 20%;
+    width: 400px;
+}
+
+.account-text{
+    position: relative;
+    width: 400px;
+    margin: 10px auto;
     text-align: center;
-    
-    
+}
+
+.or-container{
+    width: 400px;
+    margin-left: 20%;
+}
+
+.or-line{
+    position: relative;
+    max-width: 500px;
+    margin: 10px auto;
+    text-align: center;
+    color:rgba(108, 99, 255);
+}
+
+.or-line:before{
+    content:" ";
+    height: 2px;
+    width: 45%;
+    background-color: rgba(108, 99, 255, 0.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+
+.or-line:after{
+    content:" ";
+    height: 2px;
+    width: 45%;
+    background-color: rgba(108, 99, 255, 0.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
 }
 
 .button{
     box-shadow: none;
     background-color: dodgerblue;
+    width: 400px;
 }
 
 
@@ -113,26 +155,69 @@
         background-size: 70%;
         height: auto;
     }
+
     
-    .login-form {
-        width: 80%;
-        margin-left: 10%;
-        margin-right: 10%;
-    }
+.field-name{
+    font-family: Roboto;
+    font-size: medium;    
+    margin-left: 23%;
+    text-align: left;
+}
+
+.login-button{
+    text-align: left;
+    margin-left: 20%;
+    margin-top: 30px;
+}
+
+.login-with-google-button{
+    text-align: left;
+    margin-left: 20%;
+    width: 400px;
+}
+
+.account-text{
+    position: relative;
+    width: 400px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.or-container{
+    width: 400px;
+    margin-left: 20%;
+}
+
+.or-line{
+    position: relative;
+    max-width: 500px;
+    margin: 10px auto;
+    text-align: center;
+    color:rgba(108, 99, 255);
+}
+
+.or-line:before{
+    content:" ";
+    height: 2px;
+    width: 45%;
+    background-color: rgba(108, 99, 255, 0.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+
+.or-line:after{
+    content:" ";
+    height: 2px;
+    width: 45%;
+    background-color: rgba(108, 99, 255, 0.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+}
     
-    .name-field {
-        text-align: center;
-    }
-    
-    .inputRounded .MuiOutlinedInput-root {
-        width: 100%;
-    }
-  
-    .input-margin{
-      margin-right: 10em;
-      text-align: center;
-      width: 150%;
-    }
   }
   
   @media only screen and (max-width: 480px) {
@@ -140,17 +225,70 @@
         background-size: 100%;
     }
     
-    .login-form {
-        width: 90%;
-        margin-left: 5%;
-        margin-right: 5%;
-    }
     .inputRounded .MuiOutlinedInput-root {
-      width: 100%;
+      width: 310px;
   }
   .input-margin{
-    margin-right: 10em;
     text-align: center;
   }
+
+  .login-button{
+    text-align: left;
+    margin-left: 20%;
+    margin-top: 30px;
+}
+
+.login-with-google-button{
+    text-align: left;
+    margin-left: 20%;
+    width: 300px;
+}
+
+.account-text{
+    position: relative;
+    width: 300px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.or-container{
+    width: 300px;
+    margin-left: 20%;
+}
+
+.or-line{
+    position: relative;
+    max-width: 300px;
+    margin: 10px auto;
+    text-align: center;
+    color:rgba(108, 99, 255);
+}
+
+.or-line:before{
+    content:" ";
+    height: 2px;
+    width: 45%;
+    background-color: rgba(108, 99, 255, 0.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+
+.or-line:after{
+    content:" ";
+    height: 2px;
+    width: 45%;
+    background-color: rgba(108, 99, 255, 0.5);
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+}
+.button{
+    box-shadow: none;
+    background-color: dodgerblue;
+    width: 310px;
+}
   
   }

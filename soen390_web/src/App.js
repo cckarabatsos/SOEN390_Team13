@@ -15,6 +15,7 @@ import MessagingPage from "./pages/MessagingPage";
 import NewsFeedPage from "./pages/NewsFeedPage";
 import SubFooter from "./components/SubFooter";
 import Footer from "./components/Footer";
+import './assets/Roboto/Roboto-Regular.ttf'
 
 const AppWrapper = () => {
   const [userData, setUseData] = useState({});
