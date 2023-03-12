@@ -1,11 +1,11 @@
 import { Grid } from "@material-ui/core";
 import Box from "@mui/material/Box";
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { searchInfo } from "../api/userNetworkingApi";
 import FilterSelection from "../components/FilterSelection";
 import SearchBar from "../components/SearchBar";
 import SearchResultPagination from "../components/SearchResultPagination";
-import { searchInfo } from "../api/userNetworkingApi";
-import { useTranslation } from "react-i18next";
 
 const UserNetworking = () => {
   const searchBarRef = useRef(null);
