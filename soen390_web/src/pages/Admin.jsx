@@ -14,6 +14,8 @@ import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { getReports } from "../api/reportsApi";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   table: {
@@ -21,39 +23,48 @@ const useStyles = makeStyles({
   },
 });
 
-function Admin() {
+function Admin(props) {
   const classes = useStyles();
-
+  const [userData, setUserData] = useState({});
   const [users, setUsers] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("hi");
-    const temp = [
-      {
-        id: 1,
-        name: "John Doe",
-        email: "johndoe@example.com",
-        approved: undefined,
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        email: "janesmith@example.com",
-        approved: undefined,
-      },
-      {
-        id: 3,
-        name: "Bob Johnson",
-        email: "bobjohnson@example.com",
-        approved: undefined,
-      },
-    ];
-    setUsers(temp);
-    // axios.get("/api/users").then((response) => {
-    //   setUsers(response.data);
-    // });
+    const fetchData = async () => {
+      try {
+        const reports = await getReports(props.userData.userID);
+        console.log(reports);
+        console.log("hi");
+        const temp = [
+          {
+            id: 1,
+            name: "John Doe",
+            email: "johndoe@example.com",
+            approved: undefined,
+          },
+          {
+            id: 2,
+            name: "Jane Smith",
+            email: "janesmith@example.com",
+            approved: undefined,
+          },
+          {
+            id: 3,
+            name: "Bob Johnson",
+            email: "bobjohnson@example.com",
+            approved: undefined,
+          },
+        ];
+        setUsers(temp);
+        // setUsers(reports);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleApprove = (userId) => {

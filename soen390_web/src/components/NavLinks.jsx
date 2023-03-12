@@ -48,6 +48,14 @@ function NavLinks(props) {
           </Grid>
         </>
       )}
+      {userData && userData.isAdmin && (
+        <Grid item>
+          <Link data-testid="job-1" to="/Admin" className="link">
+            {t("Admin")}
+          </Link>
+        </Grid>
+      )}
+
       {!userData ? (
         <>
           <Grid item>

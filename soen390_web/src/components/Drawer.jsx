@@ -75,6 +75,16 @@ function DrawerComponent(props) {
                 </Link>
               </>
             )}
+
+            {userData && userData.isAdmin && (
+              <Link data-testid="job-1" to="/Admin">
+                <ListItem>
+                  <ListItemButton>
+                    <ListItemText primary={t("Admin")} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            )}
             {!userData ? (
               <>
                 <Link data-testid="login-1" to="/UserProfile">
