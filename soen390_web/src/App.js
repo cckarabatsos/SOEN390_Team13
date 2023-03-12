@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import UserProfile from "./pages/UserProfile";
 //import UserProfile from "./pages/UserProfile";
+import "./assets/Roboto/Roboto-Regular.ttf";
 import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
 import SubFooter from "./components/SubFooter";
