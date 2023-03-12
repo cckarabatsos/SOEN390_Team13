@@ -106,16 +106,17 @@ export const filterJobPostings = async (filter: Filter) => {
     if (filter.location) {
         const prefix = filter.location.toLowerCase();
         const prefixEnd = prefix + "\uf8ff";
-        jobPostingsRef = jobPostingsRef
+        jobPostingsRef = await jobPostingsRef
             .where("location", ">=", prefix)
             .where("location", "<", prefixEnd);
     }
     if (filter.company) {
-        const prefix = filter.company.toLowerCase();
+        const prefix = filter.company;
         const prefixEnd = prefix + "\uf8ff";
-        jobPostingsRef = jobPostingsRef
+        jobPostingsRef = await jobPostingsRef
             .where("company", ">=", prefix)
             .where("company", "<", prefixEnd);
+        //console.log(jobPostingsRef);
     }
     if (filter.position) {
         const prefix = filter.position.toLowerCase();
@@ -144,6 +145,8 @@ export const filterJobPostings = async (filter: Filter) => {
         jobPostingsRef = jobPostingsRef.startAfter(lastVisible);
     }
     const snapshot = await jobPostingsRef.get();
+
+
     const jobPostings = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),

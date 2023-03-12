@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/components/JobPostingComponent.css";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 function JobPostingComponent(props) {
@@ -13,10 +12,11 @@ function JobPostingComponent(props) {
   const setJob = props.setJob;
   const { t } = useTranslation();
 
+  // display job postings, position, company, location, contract
   return (
     <div className="container">
       <div>
-        <div className="button-moreinfo-position">
+        <div className="button-moreinfo-position"> 
           <Button
             className="button-moreinfo"
             variant="contained"
@@ -26,7 +26,8 @@ function JobPostingComponent(props) {
             }}
             style={{
               borderRadius: 27,
-              backgroundColor: "#a640f4b9",
+              border: "2px solid #8f8aff",
+              fontSize: "15px",
             }}
           >
             {t("MoreInfoText")}
@@ -35,7 +36,6 @@ function JobPostingComponent(props) {
 
         <div className="position">{position}</div>
         <div className="company">{company}</div>
-
         <div className="location">{location}</div>
         <div className="contract">{contract}</div>
       </div>
