@@ -47,3 +47,9 @@ html{
     transform: rotate(360deg);
   }
 }
+
+.footer-collection{
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
+  Navigate,
   Route,
   Routes,
-  Redirect,
-  Navigate,
 } from "react-router-dom";
 import "../src/App.css";
-import JobSearch from "./pages/JobSearch";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import UserProfile from "./pages/UserProfile";
 import "./assets/Roboto/Roboto-Regular.ttf";
 import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
@@ -18,10 +13,14 @@ import SubFooter from "./components/SubFooter";
 import Admin from "./pages/Admin";
 import Contacts from "./pages/Contacts";
 import JobApplication from "./pages/JobApplication";
+import JobSearch from "./pages/JobSearch";
+import Login from "./pages/Login";
 import MessagingPage from "./pages/MessagingPage";
 import NewsFeedPage from "./pages/NewsFeedPage";
+import Signup from "./pages/Signup";
 import UserConnection from "./pages/UserConnection";
 import UserNetworking from "./pages/UserNetworking";
+import UserProfile from "./pages/UserProfile";
 
 const AppWrapper = () => {
   const [userData, setUserData] = useState(() => {
@@ -67,7 +66,7 @@ const AppWrapper = () => {
               <Route path="/JobApplication" element={<JobApplication />} />
               <Route path="/UserNetworking" element={<UserNetworking />} />
               <Route path="/UserConnection" element={<UserConnection />} />
-              <Route path="/MessagingPage" element={<MessagingPage />} />
+              <Route path="/Messages" element={<MessagingPage />} />
               <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
               {userData.isAdmin && (
                 <Route path="/Admin" element={<Admin userData={userData} />} />
@@ -75,8 +74,10 @@ const AppWrapper = () => {
             </>
           )}
         </Routes>
-        <SubFooter />
-        <Footer />
+        <div className="footer-collection">
+          <SubFooter />
+          <Footer />
+        </div>
       </Router>
     </div>
   );
