@@ -94,28 +94,7 @@ const handleSendMessage = async (message:string) => {
 
   }
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    setRefreshTime(2);
 
-    setTimeout(() => {
-      setRefreshTime(0);
-      setRefreshing(false);
-      handleGetMessages();
-    }, 2000);
-  };
-
-  const circleSize = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(circleSize, {
-      toValue: 1,
-      duration: refreshTime * 1000,
-      useNativeDriver: true,
-    }).start(() => {
-      circleSize.setValue(0);
-    });
-  }, [refreshTime]);
 
   return (
     <View style={styles.container}>
@@ -145,52 +124,7 @@ const handleSendMessage = async (message:string) => {
       </View>
     </View>
   )}
-  onScroll={(event) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    const contentSizeHeight = event.nativeEvent.contentSize.height;
-    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
-
-    // Check if the scroll position is at the bottom of the list
-    if (offsetY >= contentSizeHeight - layoutMeasurementHeight) {
-      // Set the refreshing state to true
-      setRefreshing(true);
-
-      // Call the handleGetMessages function to fetch more messages
-      handleGetMessages().then(() => {
-        // Set the refreshing state to false
-        setRefreshing(false);
-      });
-    }
-  }}
-
 />
-
-{refreshing && (
-        <View style={styles.refreshContainer}>
-          <Animated.View
-            style={[
-              styles.circle,
-              {
-                transform: [
-                  {
-                    rotate: circleSize.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: ['0deg', '360deg'],
-                    }),
-                  },
-                  {
-                    scale: circleSize.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 1],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          />
-          <Text style={styles.refreshText}>Refreshing...</Text>
-        </View>
-      )}
 
       <View style={styles.inputBox}>
         <TextInput
