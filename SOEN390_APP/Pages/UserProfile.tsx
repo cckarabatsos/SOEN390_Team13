@@ -204,7 +204,7 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
         };
         
 
-const UserProfile = ({route}:{route:any}) => {
+const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -435,7 +435,7 @@ const UserProfile = ({route}:{route:any}) => {
                                       handleCloseModal={handleCloseModal}
                                       screen={2}
                                       email={user.email}
-                                      
+                                      navigation={navigation}
                             ></ContactModal>
                             </View>
                             <View>

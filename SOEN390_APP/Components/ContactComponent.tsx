@@ -14,9 +14,22 @@ import {
 } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CreateConversation } from "../api/MessagesAPI";
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function ContactsComponent(props:any) {
+
+export default function ContactsComponent(props: {
+  image: string;
+  name: string;
+  job: string;
+  location: string;
+  currentEmail: string;
+  contactEmail: string;
+  navigation: any;
+  handleCloseModal: (() => void) | undefined;
+}) {
+
+
   const image = props.image || 'https://randomuser.me/api/portraits/men/1.jpg';
 
   const name = props.name;
@@ -27,12 +40,14 @@ export default function ContactsComponent(props:any) {
 
   const currentEmail = props.currentEmail
   const contactEmail = props.contactEmail
+  
 
   //console.log(image);
 
   const handleSendMessageRequest = async (emailUser:string, emailContact:string)=>{
-    console.log()
     await CreateConversation(emailUser, emailContact);
+    props.navigation.navigate('Messages');
+    props.handleCloseModal && props.handleCloseModal(); // close the modal
     
   }
   const handleRemoveFriend = ()=>{

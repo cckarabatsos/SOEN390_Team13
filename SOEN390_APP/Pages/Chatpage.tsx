@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { GetAllMessages } from "../api/MessagesAPI";
 import { SendMessage } from "../api/MessagesAPI";
 import { GetUserInfo } from "../api/GetUsersAPI";
+import { Animated } from 'react-native';
+
 type MessageType = {
   id: number,
   text: string,
@@ -24,13 +26,15 @@ type MessageType = {
 
 const ChatPage = ({ route, navigation }:any) => {
   const { chatData } = route.params;
-  let name = chatData.name
   let image = require("../Components/Images/google-icon.png")
   let emailUser = chatData.emailUser
   let emailContact = chatData.email
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [allMessages, setAllMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [refreshTime, setRefreshTime] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  let name = chatData.userName
 
   const goBack = () => {
     navigation.goBack();
@@ -48,7 +52,7 @@ const ChatPage = ({ route, navigation }:any) => {
 
   useEffect(() => {
     handleGetMessages();
-  }, [input]);
+  }, []);
 
   //const { v4: uuidv4 } = require('uuid');
 const handleGetUserInfo = async(userID:string) =>{
@@ -72,8 +76,7 @@ const handleGetUserInfo = async(userID:string) =>{
   }
 
   const handleIsSentByUser = (userName:string) =>{
-    //console.log(userName, name)
-    if(userName==="test test")
+    if(userName===name)
       return true
     else return false
   }
@@ -82,6 +85,7 @@ const handleGetUserInfo = async(userID:string) =>{
 
 const handleSendMessage = async (message:string) => {
   await SendMessage(emailUser,emailContact, message)
+  handleGetMessages();
   setInput('')
 };
  
@@ -89,6 +93,30 @@ const handleSendMessage = async (message:string) => {
     const [text, setText] = useState('');
 
   }
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setRefreshTime(2);
+
+    setTimeout(() => {
+      setRefreshTime(0);
+      setRefreshing(false);
+      handleGetMessages();
+    }, 2000);
+  };
+
+  const circleSize = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(circleSize, {
+      toValue: 1,
+      duration: refreshTime * 1000,
+      useNativeDriver: true,
+    }).start(() => {
+      circleSize.setValue(0);
+    });
+  }, [refreshTime]);
+
   return (
     <View style={styles.container}>
            <View style={styles.header}>
@@ -117,7 +145,52 @@ const handleSendMessage = async (message:string) => {
       </View>
     </View>
   )}
+  onScroll={(event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const contentSizeHeight = event.nativeEvent.contentSize.height;
+    const layoutMeasurementHeight = event.nativeEvent.layoutMeasurement.height;
+
+    // Check if the scroll position is at the bottom of the list
+    if (offsetY >= contentSizeHeight - layoutMeasurementHeight) {
+      // Set the refreshing state to true
+      setRefreshing(true);
+
+      // Call the handleGetMessages function to fetch more messages
+      handleGetMessages().then(() => {
+        // Set the refreshing state to false
+        setRefreshing(false);
+      });
+    }
+  }}
+
 />
+
+{refreshing && (
+        <View style={styles.refreshContainer}>
+          <Animated.View
+            style={[
+              styles.circle,
+              {
+                transform: [
+                  {
+                    rotate: circleSize.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '360deg'],
+                    }),
+                  },
+                  {
+                    scale: circleSize.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
+          <Text style={styles.refreshText}>Refreshing...</Text>
+        </View>
+      )}
 
       <View style={styles.inputBox}>
         <TextInput
@@ -238,6 +311,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#f2f2f2',
+  },
+  refreshContainer: {
+    position: 'absolute',
+    bottom: 80,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circle: {
+    borderWidth: 2,
+    borderRadius: 30,
+    borderColor: 'gray',
+    width: 30,
+    height: 30,
+  },
+  refreshText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: 'gray',
   },
 });
 export default ChatPage;

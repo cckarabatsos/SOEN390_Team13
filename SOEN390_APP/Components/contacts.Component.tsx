@@ -22,6 +22,7 @@ export default function ContactModal(props: {
   isVisible: boolean | undefined;
   screen: number;
   email: string
+  navigation: any;
 }) 
 {
 
@@ -55,6 +56,8 @@ const renderContacts = ({item}:any) => (
       location={item.location}
       currentEmail={currentEmail}
       contactEmail={item.email}
+      navigation={props.navigation}
+      handleCloseModal={props.handleCloseModal}
     />
   );
 

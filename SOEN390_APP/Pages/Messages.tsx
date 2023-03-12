@@ -26,12 +26,14 @@ type ConversationType = {
   timestamp: string,
   email: string
   emailUser:string
+  userName:string
 };
 
 const Messages  = ({ route, navigation }:any) => {
   const Stack = createNativeStackNavigator();
   let emailUser = route.params.email
   let userID = route.params.userID
+  let username = route.params.username
   
   const [conversations, setConversations] = useState<ConversationType[]>([]);
   const [allMessages, setAllMessages] = useState([]);
@@ -91,7 +93,8 @@ const Messages  = ({ route, navigation }:any) => {
       lastMessage: message1,
       timestamp: timestamp1, 
       email: user.email,
-      emailUser: emailUser
+      emailUser: emailUser,
+      userName: username
     }
     return obj;
   }
