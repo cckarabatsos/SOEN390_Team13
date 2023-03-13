@@ -36,28 +36,6 @@ test('getAllApplication returns false when an error occurs', async () => {
   // verify result
   expect(result).toBe(false);
 });
-/*
-test('handleWithdrawApplication returns false when an error occurs', async () => {
-  // mock API call
-  axios.post.mockRejectedValueOnce(new Error('Error'));
-
-  // call function
-  const result = await handleWithdrawApplication('1');
-
-  // verify result
-  expect(result).toBe(false);
-});
-*/
-/* test('getAllApplication makes a GET request to the correct API endpoint', async () => {
-  // mock API call
-  axios.get.mockResolvedValueOnce({ data: [] });
-
-  // call function
-  await getAllApplication('1');
-
-  // verify API call
-  expect(axios.get).toHaveBeenCalledWith(api.BACKEND_API + '/application/getApplicationHistory/1');
-}); */
 
 test('handleWithdrawApplication makes a POST request to the correct API endpoint', async () => {
   // mock API call
