@@ -12,7 +12,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getReports, reportDecision } from "../api/reportsApi";
@@ -25,8 +24,6 @@ const useStyles = makeStyles({
 
 function Admin(props) {
   const classes = useStyles();
-  const [userData, setUserData] = useState({});
-  const [users, setUsers] = useState([]);
   const [reports, setReports] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -38,27 +35,7 @@ function Admin(props) {
         const reports = await getReports(props.userData.userID);
         console.log(reports);
         console.log("hi");
-        const temp = [
-          {
-            id: 1,
-            name: "John Doe",
-            email: "johndoe@example.com",
-            approved: undefined,
-          },
-          {
-            id: 2,
-            name: "Jane Smith",
-            email: "janesmith@example.com",
-            approved: undefined,
-          },
-          {
-            id: 3,
-            name: "Bob Johnson",
-            email: "bobjohnson@example.com",
-            approved: undefined,
-          },
-        ];
-        setUsers(temp);
+
         setReports(reports);
       } catch (error) {
         console.error(error);
@@ -68,13 +45,13 @@ function Admin(props) {
     fetchData();
   }, []);
 
-  const handleApprove = async (reporterID, reportedID) => {
-    const sendApproval = await reportDecision(reporterID, reportedID, true);
+  const handleApprove = async (reportID, reportedID) => {
+    const sendApproval = await reportDecision(reportID, reportedID, true);
     console.log(sendApproval);
   };
 
-  const handleDisapprove = async (reporterID, reportedID) => {
-    const sendDisapproval = await reportDecision(reporterID, reportedID, true);
+  const handleDisapprove = async (reportID, reportedID) => {
+    const sendDisapproval = await reportDecision(reportID, reportedID, false);
     console.log(sendDisapproval);
   };
 
@@ -116,7 +93,7 @@ function Admin(props) {
                     variant="contained"
                     color="primary"
                     onClick={() =>
-                      handleApprove(report.reporterID, report.reportedID)
+                      handleApprove(report.reportID, report.reportedID)
                     }
                   >
                     Approve
@@ -125,7 +102,7 @@ function Admin(props) {
                     variant="contained"
                     color="secondary"
                     onClick={() =>
-                      handleDisapprove(report.reporterID, report.reportedID)
+                      handleDisapprove(report.reportID, report.reportedID)
                     }
                   >
                     Disapprove

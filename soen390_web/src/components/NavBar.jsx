@@ -37,7 +37,7 @@ function Navbar(props) {
             <>
               <Link
                 data-testid="home-1"
-                to={userData ? "/JobApplication" : "/"}
+                to={userData ? "/UserProfile" : "/"}
                 className="logo"
               >
                 <img className="logo" src={navlogo} alt="LinkedOut" />
