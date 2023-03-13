@@ -11,9 +11,8 @@ export const experience_schema = yup
         startDate: yup.string().required(),
         endDate: yup.string().when("atPresent", {
             is: false,
-            then: yup
-                .string()
-                .required("Must enter an end date not working there"),
+            then: yup.string().nullable(false).required("Must enter an end date not working there"),
+            otherwise: yup.string().nullable(true),
         }),
         company: yup.string().required(),
         position: yup.string().required(),

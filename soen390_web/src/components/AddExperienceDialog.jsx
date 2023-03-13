@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/components/Drawer.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,21 +11,73 @@ import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import { Select, MenuItem } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
+import { addExperience } from "../api/UserProfileApi";
+import Checkbox from "@mui/material/Checkbox";
 
-const years = Array.from({ length: 51 }, (_, i) => 1980 + i);
+const years = Array.from({ length: 44 }, (_, i) => 1980 + i);
 
-function AddEducationDialog() {
-  const [open, setOpen] = React.useState(false);
+function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
   const { t } = useTranslation();
+  const [atPresent, setAtPresent] = React.useState(false);
+  const [startMonth, setStartMonth] = React.useState(t("JanuaryText"));
+  const [startYear, setStartYear] = React.useState(2023);
+  const [endMonth, setEndMonth] = React.useState(t("JanuaryText"));
+  const [endYear, setEndYear] = React.useState(2023);
+  const [company, setCompany] = React.useState("");
+  const [position, setPosition] = React.useState("");
+  const [isExperienceAdded, setIsExperienceAdded] = React.useState(false);
+
+  const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    resetValues();
   };
 
-  const [selectedYear, setSelectedYear] = useState(null);
+  const handleCloseSave = async () => {
+    await handleFormData();
+    setOpen(false);
+    resetValues();
+    setIsExperienceAdded(true);
+  };
+
+  const resetValues = () => {
+    setAtPresent(false);
+    setStartMonth(t("JanuaryText"));
+    setStartYear(2023);
+    setEndMonth(t("JanuaryText"));
+    setEndYear(2023);
+    setCompany("");
+    setPosition("");
+  };
+
+  const handleFormData = async () => {
+    const formattedStartDate = startMonth + " " + startYear;
+    let formattedEndDate = null;
+    if (atPresent == false) {
+      formattedEndDate = endMonth + " " + endYear;
+    }
+    await addExperience(
+      userID,
+      atPresent,
+      formattedStartDate,
+      formattedEndDate,
+      company,
+      position,
+      "Work"
+    );
+  };
+
+  useEffect(() => {
+    if (isExperienceAdded) {
+      setIsExperienceUpdated(true);
+    }
+  }, [isExperienceAdded]);
+
   return (
     <span data-testid="experience-1">
       <>
@@ -35,7 +87,7 @@ function AddEducationDialog() {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{t("AddExpText")}</DialogTitle>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("PositionText")}
+            {t("PositionText")}
           </DialogContentText>
           <DialogContent>
             <TextField
@@ -43,13 +95,14 @@ function AddEducationDialog() {
               className="inputRounded"
               margin="dense"
               label={t("PositionText")}
-              type="university"
+              type="position"
               variant="outlined"
               size="small"
+              onChange={(e) => setPosition(e.target.value)}
             />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("CompanyText")}
+            {t("CompanyText")}
           </DialogContentText>
           <DialogContent>
             <TextField
@@ -57,47 +110,48 @@ function AddEducationDialog() {
               className="inputRounded"
               margin="dense"
               label={t("CompanyText")}
-              type="program"
+              type="Company"
               variant="outlined"
               size="small"
+              onChange={(e) => setCompany(e.target.value)}
             />
           </DialogContent>
-          <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("LocationText")}
-          </DialogContentText>
           <DialogContent>
-            <TextField
-              autoFocus
-              className="inputRounded"
-              margin="dense"
-              label={t("LocationText")}
-              type="location"
-              variant="outlined"
-              size="small"
-            />
+            <DialogContentText>
+              I am currently working for this position
+            </DialogContentText>
+            <Checkbox onChange={(e) => setAtPresent(e.target.checked)} />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("StartDateText")}
+            {t("StartDateText")}
           </DialogContentText>
           <DialogContent>
-            <Select value={1}>
-            <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
-              <MenuItem value={2}> {t("FebruaryText")}</MenuItem>
-              <MenuItem value={3}>{t("MarchText")}</MenuItem>
-              <MenuItem value={4}>{t("AprilText")}</MenuItem>
-              <MenuItem value={5}>{t("MayText")}</MenuItem>
-              <MenuItem value={6}>{t("JuneText")}</MenuItem>
-              <MenuItem value={7}>{t("JulyText")}</MenuItem>
-              <MenuItem value={8}>{t("AugustText")}</MenuItem>
-              <MenuItem value={9}>{t("SeptemberText")}</MenuItem>
-              <MenuItem value={10}>{t("OctoberText")}</MenuItem>
-              <MenuItem value={11}>{t("NovemberText")}</MenuItem>
-              <MenuItem value={12}>{t("DecemberText")}</MenuItem>
+            <Select
+              value={startMonth}
+              onChange={(e) => setStartMonth(e.target.value)}
+            >
+              <MenuItem value={t("JanuaryText")}> {t("JanuaryText")}</MenuItem>
+              <MenuItem value={t("FebruaryText")}>
+                {" "}
+                {t("FebruaryText")}
+              </MenuItem>
+              <MenuItem value={t("MarchText")}>{t("MarchText")}</MenuItem>
+              <MenuItem value={t("AprilText")}>{t("AprilText")}</MenuItem>
+              <MenuItem value={t("MayText")}>{t("MayText")}</MenuItem>
+              <MenuItem value={t("JuneText")}>{t("JuneText")}</MenuItem>
+              <MenuItem value={t("JulyText")}>{t("JulyText")}</MenuItem>
+              <MenuItem value={t("AugustText")}>{t("AugustText")}</MenuItem>
+              <MenuItem value={t("SeptemberText")}>
+                {t("SeptemberText")}
+              </MenuItem>
+              <MenuItem value={t("OctoberText")}>{t("OctoberText")}</MenuItem>
+              <MenuItem value={t("NovemberText")}>{t("NovemberText")}</MenuItem>
+              <MenuItem value={t("DecemberText")}>{t("DecemberText")}</MenuItem>
             </Select>
             <Select
               style={{ marginLeft: "10px" }}
-              value={2023}
-              onChange={(e) => setSelectedYear(e.target.value)}
+              value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
             >
               {years.map((year) => (
                 <MenuItem key={year} value={year}>
@@ -106,36 +160,58 @@ function AddEducationDialog() {
               ))}
             </Select>
           </DialogContent>
-          <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("EndDateText")}
-          </DialogContentText>
-          <DialogContent>
-            <Select value={1}>
-            <MenuItem value={1}> {t("JanuaryText")}</MenuItem>
-              <MenuItem value={2}> {t("FebruaryText")}</MenuItem>
-              <MenuItem value={3}>{t("MarchText")}</MenuItem>
-              <MenuItem value={4}>{t("AprilText")}</MenuItem>
-              <MenuItem value={5}>{t("MayText")}</MenuItem>
-              <MenuItem value={6}>{t("JuneText")}</MenuItem>
-              <MenuItem value={7}>{t("JulyText")}</MenuItem>
-              <MenuItem value={8}>{t("AugustText")}</MenuItem>
-              <MenuItem value={9}>{t("SeptemberText")}</MenuItem>
-              <MenuItem value={10}>{t("OctoberText")}</MenuItem>
-              <MenuItem value={11}>{t("NovemberText")}</MenuItem>
-              <MenuItem value={12}>{t("DecemberText")}</MenuItem>
-            </Select>
-            <Select
-              style={{ marginLeft: "10px" }}
-              value={2023}
-              onChange={(e) => setSelectedYear(e.target.value)}
-            >
-              {years.map((year) => (
-                <MenuItem key={year} value={year}>
-                  {year}
-                </MenuItem>
-              ))}
-            </Select>
-          </DialogContent>
+          {!atPresent && (
+            <>
+              <DialogContentText style={{ marginLeft: "5%" }}>
+                {t("EndDateText")}
+              </DialogContentText>
+              <DialogContent>
+                <Select
+                  value={endMonth}
+                  onChange={(e) => setEndMonth(e.target.value)}
+                >
+                  <MenuItem value={t("JanuaryText")}>
+                    {" "}
+                    {t("JanuaryText")}
+                  </MenuItem>
+                  <MenuItem value={t("FebruaryText")}>
+                    {" "}
+                    {t("FebruaryText")}
+                  </MenuItem>
+                  <MenuItem value={t("MarchText")}>{t("MarchText")}</MenuItem>
+                  <MenuItem value={t("AprilText")}>{t("AprilText")}</MenuItem>
+                  <MenuItem value={t("MayText")}>{t("MayText")}</MenuItem>
+                  <MenuItem value={t("JuneText")}>{t("JuneText")}</MenuItem>
+                  <MenuItem value={t("JulyText")}>{t("JulyText")}</MenuItem>
+                  <MenuItem value={t("AugustText")}>{t("AugustText")}</MenuItem>
+                  <MenuItem value={t("SeptemberText")}>
+                    {t("SeptemberText")}
+                  </MenuItem>
+                  <MenuItem value={t("OctoberText")}>
+                    {t("OctoberText")}
+                  </MenuItem>
+                  <MenuItem value={t("NovemberText")}>
+                    {t("NovemberText")}
+                  </MenuItem>
+                  <MenuItem value={t("DecemberText")}>
+                    {t("DecemberText")}
+                  </MenuItem>
+                </Select>
+                <Select
+                  style={{ marginLeft: "10px" }}
+                  value={endYear}
+                  onChange={(e) => setEndYear(e.target.value)}
+                >
+                  {years.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </DialogContent>
+            </>
+          )}
+
           <DialogActions>
             <Button
               className="button"
@@ -146,7 +222,7 @@ function AddEducationDialog() {
               }}
               onClick={handleClose}
             >
-               {t("CancelText")}
+              {t("CancelText")}
             </Button>
             <Button
               className="button"
@@ -155,7 +231,7 @@ function AddEducationDialog() {
                 borderRadius: 27,
                 backgroundColor: "rgba(100, 69, 227, 0.85)",
               }}
-              onClick={handleClose}
+              onClick={handleCloseSave}
             >
               {t("SaveApplyText")}
             </Button>
@@ -166,4 +242,4 @@ function AddEducationDialog() {
   );
 }
 
-export default AddEducationDialog;
+export default AddExperienceDialog;
