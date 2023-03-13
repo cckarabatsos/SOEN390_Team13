@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/components/Drawer.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 const years = Array.from({ length: 44 }, (_, i) => 1980 + i);
 
-function AddExperienceDialog({ userID }) {
+function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
   const { t } = useTranslation();
   const [atPresent, setAtPresent] = React.useState(false);
   const [startMonth, setStartMonth] = React.useState(t("JanuaryText"));
@@ -25,6 +25,7 @@ function AddExperienceDialog({ userID }) {
   const [endYear, setEndYear] = React.useState(2023);
   const [company, setCompany] = React.useState("");
   const [position, setPosition] = React.useState("");
+  const [isExperienceAdded, setIsExperienceAdded] = React.useState(false);
 
   const [open, setOpen] = React.useState(false);
 
@@ -41,6 +42,7 @@ function AddExperienceDialog({ userID }) {
     await handleFormData();
     setOpen(false);
     resetValues();
+    setIsExperienceAdded(true);
   };
 
   const resetValues = () => {
@@ -69,6 +71,12 @@ function AddExperienceDialog({ userID }) {
       "Work"
     );
   };
+
+  useEffect(() => {
+    if (isExperienceAdded) {
+      setIsExperienceUpdated(true);
+    }
+  }, [isExperienceAdded]);
 
   return (
     <span data-testid="experience-1">
@@ -108,10 +116,10 @@ function AddExperienceDialog({ userID }) {
               onChange={(e) => setCompany(e.target.value)}
             />
           </DialogContent>
-          <DialogContentText>
-            I am currently working for this position
-          </DialogContentText>
           <DialogContent>
+            <DialogContentText>
+              I am currently working for this position
+            </DialogContentText>
             <Checkbox onChange={(e) => setAtPresent(e.target.checked)} />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>

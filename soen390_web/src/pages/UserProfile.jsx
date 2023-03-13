@@ -32,6 +32,7 @@ function UserProfile(props) {
   const [resumeFilename, setResumeFilename] = React.useState();
   const [workExperience, setWorkExperience] = React.useState([]);
   const [educationExperience, setEducationExperience] = React.useState([]);
+  const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -52,6 +53,8 @@ function UserProfile(props) {
     const educationData = await getExperience(userData.userID, "Education");
     setEducationExperience(educationData);
     console.log("education: " + educationData);
+
+    setIsExperienceUpdated(false);
   };
 
   const setFileData = () => {
@@ -100,10 +103,13 @@ function UserProfile(props) {
     } else {
       navigate("/");
     }
-
-    setFileData();
     getUserExperience();
+    setFileData();
   }, [navigate, userData.userID]);
+
+  useEffect(() => {
+    if (isExperienceUpdated == true) getUserExperience();
+  }, [isExperienceUpdated]);
 
   return (
     <>
@@ -130,7 +136,10 @@ function UserProfile(props) {
               <Grid item xs={6}>
                 <div className="header">
                   {t("EducationText")}
-                  <AddEducationDialog userID={userData.userID} />
+                  <AddEducationDialog
+                    userID={userData.userID}
+                    setIsExperienceUpdated={setIsExperienceUpdated}
+                  />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
                   </IconButton>
@@ -143,7 +152,10 @@ function UserProfile(props) {
               <Grid item xs={6}>
                 <div className="header">
                   {t("ExperienceText")}
-                  <AddExperienceDialog userID={userData.userID} />
+                  <AddExperienceDialog
+                    userID={userData.userID}
+                    setIsExperienceUpdated={setIsExperienceUpdated}
+                  />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
                   </IconButton>

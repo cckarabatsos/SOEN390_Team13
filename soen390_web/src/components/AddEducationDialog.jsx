@@ -7,7 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/components/Drawer.css";
 import { useTranslation } from "react-i18next";
 import { addExperience } from "../api/UserProfileApi";
@@ -15,7 +15,7 @@ import Checkbox from "@mui/material/Checkbox";
 
 const years = Array.from({ length: 51 }, (_, i) => 1980 + i);
 
-function AddEducationDialog({ userID }) {
+function AddEducationDialog({ userID, setIsExperienceUpdated }) {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
   const [atPresent, setAtPresent] = React.useState(false);
@@ -25,6 +25,7 @@ function AddEducationDialog({ userID }) {
   const [endYear, setEndYear] = React.useState(2023);
   const [company, setCompany] = React.useState("");
   const [position, setPosition] = React.useState("");
+  const [isExperienceAdded, setIsExperienceAdded] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,6 +39,7 @@ function AddEducationDialog({ userID }) {
     await handleFormData();
     setOpen(false);
     resetValues();
+    setIsExperienceAdded(true);
   };
 
   const resetValues = () => {
@@ -66,6 +68,12 @@ function AddEducationDialog({ userID }) {
       "Education"
     );
   };
+
+  useEffect(() => {
+    if (isExperienceAdded) {
+      setIsExperienceUpdated(true);
+    }
+  }, [isExperienceAdded]);
 
   const [selectedYear, setSelectedYear] = useState(null);
 
@@ -107,8 +115,10 @@ function AddEducationDialog({ userID }) {
               onChange={(e) => setPosition(e.target.value)}
             />
           </DialogContent>
-          <DialogContentText>I am currently studying here</DialogContentText>
           <DialogContent>
+            <DialogContentText>
+              I am currently attending this institute
+            </DialogContentText>
             <Checkbox onChange={(e) => setAtPresent(e.target.checked)} />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
