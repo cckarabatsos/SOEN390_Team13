@@ -49,7 +49,7 @@ html {
 }
 
 .footer-collection {
- // bottom: 0 !important;
- // position: fixed;
+ /* bottom: 0 !important;
+  position: fixed; */
   width: 100%;
 }
