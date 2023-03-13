@@ -103,7 +103,8 @@
   "importcv" : "Import CV",
   "Apply" : "Apply",
   "FirstName*" : "First Name*",
-  "LastName*" : "Last Name*"
-
+  "LastName*" : "Last Name*",
+  "remarkCareertext" : "One step away from a remarkable career",
+  "stepText" : "One step away from a remarkable career"
   
 }
