@@ -103,5 +103,7 @@
   "importcv" : "importer CV",
   "Apply" : "Appliquer",
   "FirstName*" : "Premier Nom*",
-  "LastName*" : "Nom de Famille*"
+  "LastName*" : "Nom de Famille*",
+  "remarkCareertext" : "Un raccourcis vers une carrière remarquable",
+  "stepText" : "À deux pas d'une carrière remarquable"
 }

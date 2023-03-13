@@ -45,7 +45,7 @@ function MainTitle(props) {
           className="background"
           style={{ backgroundImage: `url(${background})` }}
         >
-          <h3 className="signuptitle">Your shortcut to career success</h3>
+          <h3 className="signuptitle">{t("remarkCareertext")}</h3>
           <div className="login-form">
             {/* <Grid container spacing={1}> */}
             <Grid container spacing={2}>
