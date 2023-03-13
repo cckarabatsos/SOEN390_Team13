@@ -56,7 +56,7 @@ function SignUp(props) {
           style={{ backgroundImage: `url(${background})` }}
         >
           <p className="signuptitle" data-testid="signuptitle-1">
-            One step away from a remarkable career
+          {t("stepText")}
           </p>
           <div className="form-group">
             <Grid container spacing={1}>
