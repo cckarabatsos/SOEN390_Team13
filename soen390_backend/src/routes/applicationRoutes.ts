@@ -164,7 +164,7 @@ application.get(
  */
 application.post("/remove/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
-    let postingID: string = req.query.postingID as string;
+    let postingID = req.query.postingID as string
     try {
         const application: Application = await deleteApplication(
             userID,

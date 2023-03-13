@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,91 +13,136 @@ import {
 
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GetActiveConversations } from "../api/MessagesAPI";
+import { GetUserInfo } from "../api/GetUsersAPI";
 import ChatPage from "./Chatpage";
 
-const Stack = createNativeStackNavigator();
+
+type ConversationType = {
+  id: number,
+  lastMessage: boolean,
+  name: string,
+  image: string,
+  timestamp: string,
+  email: string
+  emailUser:string
+  userName:string
+};
+
+const Messages  = ({ route, navigation }:any) => {
+  const Stack = createNativeStackNavigator();
+  let emailUser = route.params.email
+  let userID = route.params.userID
+  let username = route.params.username
+  
+  const [conversations, setConversations] = useState<ConversationType[]>([]);
+  const [allMessages, setAllMessages] = useState([]);
+  const [input, setInput] = useState('');
+
+  
+  
+  const handleGetConversations = async () => {
+    const message = await GetActiveConversations(emailUser);
+    const newObjectsArray = await Promise.all(message.map(buildObject));
+    setConversations(newObjectsArray);
+      
+  }
+  const { v4: uuidv4 } = require('uuid');
+  
+  useEffect(() => {
+    handleGetConversations();
+  }, []);
+  
+  //const { v4: uuidv4 } = require('uuid');
+  const handleGetUserInfo = async(userID:string) =>{
+  const userInfo = await GetUserInfo(userID)
+  //console.log(userInfo)
+  return userInfo
+  }
+  
+  //const { v4: uuidv4 } = require('uuid');
+  const handleGetLastMessage = async(user:string) =>{
+    const userInfo = ""
+    return userInfo
+    }
+  
+  const buildObject = async (jsonObject:any) => {
+    const { ActiveUser, message } = jsonObject;
+    console.log("sss")
+    console.log(ActiveUser)
+    let activeUser:string = ""
+    let message1 =""
+    let timestamp1 =""
+
+    ActiveUser.forEach((element: any) => {
+      if(element!==userID){
+        activeUser = element
+      }
+    });
+
+    if(message!=null){
+      message1=message.content
+      timestamp1 = message.timestamp
+    }
+
+    const user = await handleGetUserInfo(activeUser)
+    const obj = {
+      id: uuidv4(),
+      name: user.name,
+      image: user.picture|| 'https://randomuser.me/api/portraits/men/1.jpg',
+      lastMessage: message1,
+      timestamp: timestamp1, 
+      email: user.email,
+      emailUser: emailUser,
+      userName: username
+    }
+    return obj;
+  }
+  
+  const chatData = conversations;
 
 
-const chatData = [
-  {
-    id: '1',
-    name: 'Cedric Michaud ',
-    lastMessage: 'did you watch the basketball game',
-    timestamp: '42m ago',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-   // profilePic: require('./assets/profile-pic-1.png')
-  },
-  {
-    id: '2',
-    name: 'Bogdan Podariu',
-    lastMessage: 'I have a computer vision exam.',
-    timestamp: '2h ago',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-    //profilePic: require('./assets/profile-pic-2.png')
-  },
-  {
-    id: '3',
-    name: 'Lebron James',
-    lastMessage: 'I have the most points in nba history',
-    timestamp: '4h ago',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-   // profilePic: require('./assets/profile-pic-3.png')
-  },
-  {
-    id: '4',
-    name: 'Michael Jordan',
-    lastMessage: 'Hello?',
-    timestamp: '11h ago',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-   // profilePic: require('./assets/profile-pic-3.png')
-  },
-  {
-    id: '5',
-    name: 'Bill Gates',
-    lastMessage: 'kiet',
-    timestamp: '17h ago',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-   // profilePic: require('./assets/profile-pic-3.png')
-  },
-  {
-    id: '6',
-    name: 'Elon Musk',
-    lastMessage: 'tesla',
-    timestamp: '2d ago',
-    image: 'https://randomuser.me/api/portraits/men/1.jpg'
-   // profilePic: require('./assets/profile-pic-3.png')
-  },
-];
-
-const ChatHistoryItem = ({ chatData, onPress }:any) => (
-  <TouchableOpacity onPress={onPress}>
-    <View style={styles.chatBox}>
-      <View style={styles.chatInfo}>
-        <Image style={styles.userImage} source={{ uri: chatData.image }} />
-        <Text style={styles.name}>{chatData.name}</Text>
-        <Text style={styles.lastMessage}>{chatData.lastMessage}</Text>
+  const ChatHistoryItem = ({ chatData, onPress }:any) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.chatBox}>
+        <View style={styles.chatInfo}>
+          <Image style={styles.userImage} source={{ uri: chatData.image }} />
+          <Text style={styles.name}>{chatData.name}</Text>
+          <Text style={styles.lastMessage}>{chatData.lastMessage}</Text>
+        </View>
+        <Text style={styles.timestamp}>{chatData.timestamp.seconds}</Text>
       </View>
-      <Text style={styles.timestamp}>{chatData.timestamp}</Text>
-    </View>
-  </TouchableOpacity>
-);
-
-const ChatHistory = ({ navigation }:any) => {
- 
-  const renderItem = ({ item }:any) => (
-    <ChatHistoryItem chatData={item} onPress={() => navigation.navigate('Chatpage', { chatData: item })} />
+    </TouchableOpacity>
   );
   
+  const ChatHistory = ({ navigation }:any) => {
+   
+    const renderItem = ({ item }:any) => (
+      <ChatHistoryItem chatData={item} onPress={() => navigation.navigate('Chatpage', { chatData: item })} />
+    );
+    
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={conversations}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+    );
+  };
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={chatData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      
+      <Stack.Screen name="Chats" component={ChatHistory} />
+      <Stack.Screen name="Chatpage" component={ChatPage} />
+    </Stack.Navigator>
   );
-};
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -136,15 +181,5 @@ const styles = StyleSheet.create({
     color: '#696969'
   }
 });
-
-const Messages = () => (
-  <Stack.Navigator screenOptions={{
-    headerShown: false
-  }}>
-    
-    <Stack.Screen name="Chats" component={ChatHistory} />
-    <Stack.Screen name="Chatpage" component={ChatPage} />
-  </Stack.Navigator>
-);
 
 export default Messages;
