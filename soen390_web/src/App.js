@@ -1,43 +1,49 @@
-import "../src/App.css";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import UserProfile from "./pages/UserProfile";
-import JobSearch from "./pages/JobSearch";
-//import UserProfile from "./pages/UserProfile";
-import UserNetworking from "./pages/UserNetworking";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import "../src/App.css";
+import "./assets/Roboto/Roboto-Regular.ttf";
+import Footer from "./components/Footer";
 import Navbar from "./components/NavBar";
-import UserConnection from "./pages/UserConnection";
+import SubFooter from "./components/SubFooter";
+import Admin from "./pages/Admin";
 import Contacts from "./pages/Contacts";
 import JobApplication from "./pages/JobApplication";
+import JobSearch from "./pages/JobSearch";
+import Login from "./pages/Login";
 import MessagingPage from "./pages/MessagingPage";
 import NewsFeedPage from "./pages/NewsFeedPage";
-import SubFooter from "./components/SubFooter";
-import Footer from "./components/Footer";
-import './assets/Roboto/Roboto-Regular.ttf'
+import Signup from "./pages/Signup";
+import UserConnection from "./pages/UserConnection";
+import UserNetworking from "./pages/UserNetworking";
+import UserProfile from "./pages/UserProfile";
+import ViewUserProfile from "./pages/ViewUserProfile";
 
 const AppWrapper = () => {
-  const [userData, setUseData] = useState({});
+  const [userData, setUserData] = useState(() => {
+    try {
+      const data = localStorage.getItem("isAuth");
+      return data !== null ? JSON.parse(data) : null;
+    } catch (error) {
+      return null;
+    }
+  });
 
   useEffect(() => {
-    window.addEventListener("storage", () => {
-      console.log("storage changed!");
-
-      var data;
+    const handleStorageChange = () => {
       try {
-        data = JSON.parse(localStorage.getItem("isAuth"));
-        console.log("data: " + data);
+        const data = localStorage.getItem("isAuth");
+        setUserData(data !== null ? JSON.parse(data) : null);
       } catch (error) {
-        setUseData(false);
+        setUserData(null);
       }
-
-      if (data != null) {
-        setUseData(JSON.parse(localStorage.getItem("isAuth")));
-      } else {
-        setUseData(false);
-      }
-    });
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   return (
@@ -45,19 +51,38 @@ const AppWrapper = () => {
       <Router>
         <Navbar userData={userData}></Navbar>
         <Routes>
-          <Route path="/" element={<Login></Login>} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/UserProfile" element={<UserProfile />} />
-          <Route path="/JobSearch" element={<JobSearch />} />
-          <Route path="/Contacts" element={<Contacts />}></Route>
-          <Route path="/JobApplication" element={<JobApplication />}></Route>
-          <Route path="/UserNetworking" element={<UserNetworking />} />
-          <Route path="/UserConnection" element={<UserConnection />} />
-          <Route path="/MessagingPage" element={<MessagingPage />} />
-          <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
+          <Route
+            path="/"
+            element={userData ? <Navigate to="/UserProfile" /> : <Login />}
+          />
+          <Route
+            path="/Signup"
+            element={userData ? <Navigate to="/UserProfile" /> : <Signup />}
+          />
+          {userData && (
+            <>
+              <Route path="/UserProfile" element={<UserProfile />} />
+              <Route
+                path="/UserProfile/:userId"
+                element={<ViewUserProfile />}
+              />
+              <Route path="/JobSearch" element={<JobSearch />} />
+              <Route path="/Contacts" element={<Contacts />} />
+              <Route path="/JobApplication" element={<JobApplication />} />
+              <Route path="/UserNetworking" element={<UserNetworking />} />
+              <Route path="/UserConnection" element={<UserConnection />} />
+              <Route path="/Messages/:userId" element={<MessagingPage />} />
+              <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
+              {userData.isAdmin && (
+                <Route path="/Admin" element={<Admin userData={userData} />} />
+              )}
+            </>
+          )}
         </Routes>
-        <SubFooter />
-        <Footer />
+        <div className="footer-collection">
+          <SubFooter />
+          <Footer />
+        </div>
       </Router>
     </div>
   );

@@ -30,7 +30,7 @@ function SubFooter() {
           <CssBaseline />
           <Toolbar className="border">
             {isMobile ? (
-              <DrawerComponent />
+              <></> // <DrawerComponent />
             ) : (
               <span className="navlinks">
                 <img className="Logo" src={navlogo} alt="LinkedOut" />
@@ -63,7 +63,7 @@ function SubFooter() {
           </Toolbar>
           <Toolbar className="border">
             {isMobile ? (
-              <DrawerComponent />
+              <></> // <DrawerComponent />
             ) : (
               <span className="navlinks"></span>
             )}

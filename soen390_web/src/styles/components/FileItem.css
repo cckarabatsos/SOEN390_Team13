@@ -1,4 +1,4 @@
-li{
+/* li{
     list-style: none;
     margin-top: 1.2em;
     background-color: #c87feb;
@@ -6,20 +6,19 @@ li{
     display: flex;
     align-items: center;
     padding: 1.2em 1.5em;
+} */
+
+.attach-icon {
+  margin-right: 0.5em;
+  color: #9606d9;
 }
 
-.attach-icon{
-    margin-right: 0.5em;
-    color: #9606D9
+.actions {
+  float: right;
+  color: #9606d9;
 }
 
-.actions{
-
-    float: right;
-    color: #9606D9
-}
-
-ul{
-    padding: 0;
-    margin-top: 1em;
+ul {
+  padding: 0;
+  margin-top: 1em;
 }
