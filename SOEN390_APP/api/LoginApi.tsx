@@ -17,7 +17,6 @@ export async function UserLogin(user: ILoginUser) {
         password: user.password,
       },
     });
-    console.log(response.data.name);
     return response.data;
   } catch (error) {
     console.log("error", error);

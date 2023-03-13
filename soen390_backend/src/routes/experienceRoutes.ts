@@ -52,9 +52,10 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
  * Route that removes an experience from database
  */
 experience.post("/remove/:docID", async (req: Request, res: Response) => {
-    let experienceID = req.params.docID;
+    let docID = req.params.docID;
+
     try {
-        const experience: Experience = await deleteExperience(experienceID);
+        const experience: Experience = await deleteExperience(docID);
         const status: number = experience[0];
         if (status == 200) {
             res.status(200);

@@ -16,7 +16,7 @@ dotenv.config();
 // output true if the conversation was sucessfully created
 messages.get("/createConversation", async (req, res) => {
   console.log("in createConversation");
-
+  console.log(req)
   try {
     const userEmails: string[] = JSON.parse(req.query.emails as string);
 
@@ -105,10 +105,10 @@ messages.get("/updateMessages", async (req, res) => {
 // Output: a boolean value indicating whether the message was successfully sent or not.
 messages.get("/sendMessage", async (req, res) => {
   try {
+    
     const senderEmail = req.query.senderEmail as string;
     const emails: string[] = JSON.parse(req.query.emails as string);
     const message = req.query.message as string;
-
     // Error detection for missing or invalid inputs
     if (
       !emails ||
@@ -139,32 +139,6 @@ messages.get("/sendMessage", async (req, res) => {
     });
   }
 });
-
-// this route will freat the last messafe if a conversation. can be used as thumbnails
-// receives as input the list of user within the conversation
-// output the content of the last recorded messages in the conversation
-// messages.get("/getMessages", async (req, res) => {
-//   try {
-//     const { email } = req.query;
-//     if (!email) {
-//       return res.status(400).json({
-//         message: "Please provide an email address",
-//       });
-//     }
-//     const jobPostings = "hello 5";
-//     return res.status(200).json({
-//       message: "Messages retrieved successfully",
-//       jobPostings,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       message: "Internal server error",
-//     });
-//   }
-// });
-
-
 
 messages.get("/getActiveConversation", async (req, res) => {
     try {

@@ -37,7 +37,7 @@ dotenv.config();
 //Get complete user by their id
 user.get("/id/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
-    //console.log(userID);
+    console.log(userID)
     try {
         let data: any = await getUserWithID(userID);
         res.status(data[0]);

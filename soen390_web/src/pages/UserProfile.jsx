@@ -13,6 +13,7 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
+import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
 import ExperienceItem from "../components/ExperienceItem";
 import ExperienceList from "../components/ExperienceList";
@@ -302,9 +303,11 @@ function UserProfile(props) {
                 )}
               </Grid>
             </Grid>
+          
           </div>
         </div>
       </div>
+      <ApplicationHistory></ApplicationHistory>
     </>
   );
 }

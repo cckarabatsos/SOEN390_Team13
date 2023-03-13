@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -11,48 +11,118 @@ import {
   FlatList,
 } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import { GetAllMessages } from "../api/MessagesAPI";
+import { SendMessage } from "../api/MessagesAPI";
+import { GetUserInfo } from "../api/GetUsersAPI";
+import { Animated } from 'react-native';
 
-const ChatPage = ({route}:{route:any}) => {
+type MessageType = {
+  id: number,
+  text: string,
+  sendByUser: boolean,
+  name: string,
+  image: string,
+};
+
+const ChatPage = ({ route, navigation }:any) => {
   const { chatData } = route.params;
-  let name = chatData.name
   let image = require("../Components/Images/google-icon.png")
-  const [messages, setMessages] = useState([
-    { id: 1,sendByUser:true,  name: 'Cédric Michaud',text: ' salut bonjour?', image: image },
-    { id: 2,sendByUser:false, name: name,text: name, image: image},
-    { id: 3,sendByUser:false,name: 'lionel messi',text: '390 project', image: image }
-  ]);
+  let emailUser = chatData.emailUser
+  let emailContact = chatData.email
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [allMessages, setAllMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [refreshTime, setRefreshTime] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  let name = chatData.userName
 
- const sendMessage = () => {
-  setMessages([
-    ...messages,
-    { id: messages.length + 1, text: input, sentByUser: true, senderName: 'You' },
-    { id: messages.length + 2, text: 'Response message', sentByUser: false, senderName: 'Friend' },
-  ]);
-  setInput('');
+  const goBack = () => {
+    navigation.goBack();
+  };
+
+  //{ id: 3,sendByUser:false,name: 'lionel messi',text: '390 project', image: image }
+
+  const handleGetMessages = async () => {
+    const message = await GetAllMessages(emailUser, emailContact);
+
+    const newObjectsArray = await Promise.all(message.map(buildObject));
+    setMessages(newObjectsArray);
+  }
+  const { v4: uuidv4 } = require('uuid');
+
+  useEffect(() => {
+    handleGetMessages();
+  }, []);
+
+  //const { v4: uuidv4 } = require('uuid');
+const handleGetUserInfo = async(userID:string) =>{
+  const userInfo = await GetUserInfo(userID)
+  //console.log(userInfo)
+  return userInfo
+}
+
+  const buildObject = async (jsonObject:any) => {
+    const { email, message } = jsonObject;
+    const user = await handleGetUserInfo(message.senderId)
+    const obj = {
+      id: uuidv4(),
+      text: message.content,
+      name: user.name,
+      image: user.picture|| 'https://randomuser.me/api/portraits/men/1.jpg',
+      sendByUser: handleIsSentByUser(user.name)
+    }
+    //console.log(obj)
+    return obj;
+  }
+
+  const handleIsSentByUser = (userName:string) =>{
+    if(userName===name)
+      return true
+    else return false
+  }
+
+
+
+const handleSendMessage = async (message:string) => {
+  await SendMessage(emailUser,emailContact, message)
+  handleGetMessages();
+  setInput('')
 };
  
   const fileAttach = () => {
     const [text, setText] = useState('');
 
   }
+
+
+
   return (
     <View style={styles.container}>
-     
+           <View style={styles.header}>
+        <TouchableOpacity onPress={goBack}>
+          <Ionicons name="arrow-back-outline" size={28} color="#555" />
+        </TouchableOpacity>
+        <Image style={styles.profileImage} source={{ uri: chatData.image }} />
+        <Text style={styles.name}>{chatData.name}</Text>
+      </View>
 
-<FlatList
+  <FlatList
   data={messages}
   renderItem={({ item }) => (
-    <View style={[
-      styles.messageBox,
-      item.sentByUser ? styles.senderMessageBox : styles.receiverMessageBox,
-    ]}>
-      <Text style={item.sentByUser ? styles.senderMessageName : styles.receiverMessageName}>
-        {item.sentByUser ? 'You' : item.senderName}
-      </Text>
-      <Text style={styles.messageText}>{item.text}</Text>
+    <View>
+      <View style={[
+        styles.messageBox,
+        item.sendByUser ? styles.senderMessageBox : styles.receiverMessageBox,
+      ]}>
+        <Image style={styles.messageImage} source={{ uri: item.image }} />
+        <View style={{flexDirection: 'column'}}>
+          <Text style={item.sendByUser ? styles.senderMessageName : styles.receiverMessageName}>
+            {item.sendByUser ? 'You' : item.name}
+          </Text>
+          <Text style={styles.messageText}>{item.text}</Text>
+        </View>
+      </View>
     </View>
-    
   )}
 />
 
@@ -63,11 +133,11 @@ const ChatPage = ({route}:{route:any}) => {
           onChangeText={text => setInput(text)}
           placeholder='Type a message...'
         />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+        <TouchableOpacity style={styles.sendButton} onPress={()=>handleSendMessage(input)}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.fileButton} onPress={fileAttach}>
+        <TouchableOpacity style={styles.fileButton} >
           <Ionicons name="attach" size={24} color="black" />
         </TouchableOpacity>
         
@@ -86,7 +156,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 10,
     backgroundColor: '#f2f2f2',
-    borderRadius: 5
+    borderRadius: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   senderMessageBox: {
     alignSelf: 'flex-end',
@@ -117,33 +189,83 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 16
   },
+  messageImage: {
+    width: 25,
+    height: 25,
+    borderRadius: 25,
+    marginRight: 10
+  },
+  messageDetails: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  name: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 5,
+  },
   inputBox: {
     flexDirection: 'row',
     padding: 10,
-    backgroundColor: '#fff'
+    backgroundColor: '#f2f2f2',
+    alignItems: 'center'
   },
   input: {
     flex: 1,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
     padding: 10,
-    backgroundColor: '#f2f2f2',
-    borderRadius: 5
+    marginRight: 10,
+    fontSize: 16,
+    backgroundColor: '#fff',
   },
   sendButton: {
-    padding: 10,
-    backgroundColor: '#0084ff',
+    backgroundColor: '#0099ff',
     borderRadius: 5,
-    marginLeft: 10
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
   sendButtonText: {
     color: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 16,
   },
-    fileButton: {
-    padding: 8,
-    marginRight: 8,
+  fileButton: {
+    marginLeft: 10,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+  },
+  refreshContainer: {
+    position: 'absolute',
+    bottom: 80,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circle: {
+    borderWidth: 2,
+    borderRadius: 30,
+    borderColor: 'gray',
+    width: 30,
+    height: 30,
+  },
+  refreshText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: 'gray',
   },
 });
-
 export default ChatPage;
 
 
