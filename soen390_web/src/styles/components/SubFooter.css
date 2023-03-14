@@ -2,9 +2,10 @@
     display: inline-block;
     /* flex-grow: 1; */
     cursor: pointer;
-    height: 7vh;
+    height: 10vh;
     max-width: 100%;
-    margin-left: -50%;
+    margin-left: 280%;
+    margin-right: auto;
 }
 
 .Section1{
