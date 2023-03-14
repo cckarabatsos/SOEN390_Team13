@@ -81,7 +81,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
   return (
     <span data-testid="experience-1">
       <>
-        <IconButton onClick={handleClickOpen}>
+        <IconButton data-testid="add-icon" onClick={handleClickOpen}>
           <AddIcon className="add-icon" />
         </IconButton>
         <Dialog open={open} onClose={handleClose}>
@@ -92,6 +92,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
           <DialogContent>
             <TextField
               autoFocus
+              data-testid="position-text-field"
               className="inputRounded"
               margin="dense"
               label={t("PositionText")}
@@ -106,6 +107,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
           </DialogContentText>
           <DialogContent>
             <TextField
+              data-testid="company-text-field"
               autoFocus
               className="inputRounded"
               margin="dense"
@@ -127,14 +129,15 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
           </DialogContentText>
           <DialogContent>
             <Select
+              SelectDisplayProps={{ "data-testid": "start-month" }}
               value={startMonth}
               onChange={(e) => setStartMonth(e.target.value)}
             >
-              <MenuItem value={t("JanuaryText")}> {t("JanuaryText")}</MenuItem>
-              <MenuItem value={t("FebruaryText")}>
-                {" "}
-                {t("FebruaryText")}
+              <MenuItem data-testid="january" value={t("JanuaryText")}>
+                {/* {t("JanuaryText")} */}
+                January
               </MenuItem>
+              <MenuItem value={t("FebruaryText")}>{t("FebruaryText")}</MenuItem>
               <MenuItem value={t("MarchText")}>{t("MarchText")}</MenuItem>
               <MenuItem value={t("AprilText")}>{t("AprilText")}</MenuItem>
               <MenuItem value={t("MayText")}>{t("MayText")}</MenuItem>

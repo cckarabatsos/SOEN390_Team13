@@ -303,7 +303,6 @@ function UserProfile(props) {
                 )}
               </Grid>
             </Grid>
-          
           </div>
         </div>
       </div>
