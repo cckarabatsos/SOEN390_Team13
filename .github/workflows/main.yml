@@ -28,10 +28,10 @@ jobs:
                   npm i
                   cd ..
 
-            - name: Build and Compile Backend
-              run: |
-                  cd soen390_backend
-                  npm run dev
+            # - name: Build and Compile Backend
+            #   run: |
+            #       cd soen390_backend
+            #       npm run dev
 
             - name: Build and Compile Frontend
               run: |
