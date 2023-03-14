@@ -56,6 +56,7 @@ const UserConnection = () => {
   return (
     <div data-testid="userconnection-1">
       <>
+      <div className="userconnection">
         <h1 className="center">{t("RequestCenterText")}</h1>
         <div className="request-section">
           <Grid container spacing={2}>
@@ -74,6 +75,7 @@ const UserConnection = () => {
               </Grid>
             ))}
           </Grid>
+        </div>
         </div>
       </>
     </div>

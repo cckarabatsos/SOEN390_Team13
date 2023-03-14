@@ -2,6 +2,7 @@ import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { GetContacts } from "../api/userContactsApi";
 import ContactsComponent from "../components/ContactComponent";
+import "../styles/components/Contacts.css"
 
 export default function Contacts() {
   const [userData, setUseData] = React.useState({});
@@ -29,7 +30,7 @@ export default function Contacts() {
 
   const handleLookUpProfile = () => {};
   return (
-    <div>
+    <div className="contacts">
       <h1 className="center">Contacts List</h1>
       <div className="request-section">
         <Grid container spacing={2}>

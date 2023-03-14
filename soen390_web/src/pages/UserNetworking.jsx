@@ -6,6 +6,7 @@ import { searchInfo } from "../api/userNetworkingApi";
 import FilterSelection from "../components/FilterSelection";
 import SearchBar from "../components/SearchBar";
 import SearchResultPagination from "../components/SearchResultPagination";
+import "../styles/components/UserNetworking.css";
 
 const UserNetworking = () => {
   const searchBarRef = useRef(null);
@@ -23,7 +24,7 @@ const UserNetworking = () => {
   };
 
   return (
-    <div data-testid="login-1">
+    <div className="usernetworking" data-testid="login-1">
       <h1>{t("UserNetworkingText")}</h1>
       <Box sx={{ flexGrow: 2 }}>
         <Grid container spacing={4}>

@@ -17,6 +17,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../styles/components/MessagingPage.css"
 
 const drawerWidth = 240;
 
@@ -111,6 +112,7 @@ function Messages() {
   };
 
   return (
+    <div className="messagingpage">
     <div className={classes.root}>
       <Drawer
         variant="permanent"
@@ -182,6 +184,7 @@ function Messages() {
           </Typography>
         )}
       </main>
+    </div>
     </div>
   );
 }

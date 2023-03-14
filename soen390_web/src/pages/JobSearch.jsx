@@ -4,6 +4,7 @@ import JobPostingComponent from "../components/JobPostingComponent";
 import JobSearchBar from "../components/JobSearchBar";
 import Modal from "../components/Modal";
 import JobsOverview from "../models/JobsOverview.ts";
+import "../styles/components/JobSeach.css"
 
 export default function JobSearch() {
   // define state variables with useState hook
@@ -49,7 +50,7 @@ export default function JobSearch() {
   // map over jobDisplay array and render JobPostingComponent for each job
 
   return (
-    <div>
+    <div className="jobsearch">
       <div data-testid="job-posting">
         <div className="jobSearchingText">
           <p>{t("JobSearchingJourneyText")}</p>

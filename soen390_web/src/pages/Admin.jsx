@@ -19,6 +19,8 @@ import { getReports, reportDecision } from "../api/reportsApi";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    minHeight: 650,
+    marginLeft: 50
   },
 });
 
