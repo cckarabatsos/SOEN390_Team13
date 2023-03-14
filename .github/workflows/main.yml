@@ -33,10 +33,10 @@ jobs:
             #       cd soen390_backend
             #       npm run dev
 
-            - name: Build and Compile Frontend
-              run: |
-                  soen390_web
-                  npm run build
+            # - name: Build and Compile Frontend
+            #   run: |
+            #       soen390_web
+            #       npm run build
 
             - name: Run Tests
               if: always()
