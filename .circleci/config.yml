@@ -1,79 +1,78 @@
 # This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
 version: 2.1
 
-# Define reusable commands that can be used across jobs and workflows
-# See: https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
-commands:
-  install-dependencies:
-    description: Install project dependencies
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - dependencies-{{ checksum "package-lock.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - dependencies-
-      - run: npm ci
-      - save_cache:
-          key: dependencies-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-            # You may need to adjust this if you have other dependencies or assets
-          # Cache the dependencies for 1 week
-          # You may need to adjust this based on your project needs
-          # See: https://circleci.com/docs/2.0/caching/
-          # See: https://circleci.com/docs/2.0/config-examples/#using-cache-with-package-lockjson
-          # See: https://docs.npmjs.com/cli/v7/commands/npm-ci/
-          ttl: 604800
+# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
+# See: https://circleci.com/docs/2.0/orb-intro/
+orbs:
+  node: circleci/node@4.7
 
-  run-tests:
-    description: Run project tests
-    steps:
-      - checkout
-      - run: npm run test
-
-  build-project:
-    description: Build project
-    steps:
-      - checkout
-      - run: npm run build
-
-  start-development-server:
-    description: Start development server
-    steps:
-      - checkout
-      - run: npm run dev
+  
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 
 
-# Define the jobs to run in CircleCI
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   test:
     docker:
-      - image: circleci/node:16.13
+      - image: circleci/node:16.10
     steps:
-      - install-dependencies
-      - run-tests
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install 
+      - run:
+          name: Run tests
+          command: npm run test
 
   build:
     docker:
-      - image: circleci/node:16.13
+      - image: circleci/node:16.10
     steps:
-      - install-dependencies
-      - build-project
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install 
+      - run:
+          name: Build project
+          command: npm run dev
+
+  lint:
+    docker:
+      - image: circleci/node:16.10
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      
+
+  prepublish:
+    docker:
+      - image: circleci/node:16.10
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install 
+      - run:
+          name: Build project
+          command: npm run build
+      
 
   dev:
     docker:
-      - image: circleci/node:16.13
+      - image: circleci/node:16.10
     steps:
-      - install-dependencies
-      - start-development-server
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install 
+      - run:
+          name: Start development server
+          command: npm run dev
 
 
-# Define the workflows that define how the jobs are run in CircleCI
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  # Define the workflow for the "sample" branch
   sample:
     jobs:
       - node/test:
@@ -86,10 +85,3 @@ workflows:
       - lint
       - prepublish
       - dev
-
-  # Define the workflow for the "master" branch
-  # This is an example of how you can define different workflows based on the branch name
-  master:
-    jobs:
-      - test
-      - build
