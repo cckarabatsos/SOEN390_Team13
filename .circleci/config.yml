@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install --force
+          command: npm install 
       - run:
           name: Run tests
           command: npm run test
@@ -31,7 +31,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install --force
+          command: npm install 
       - run:
           name: Build project
           command: npm run dev
@@ -53,13 +53,11 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install --force
+          command: npm install 
       - run:
           name: Build project
           command: npm run build
-      - run:
-          name: Prepare for publishing
-          command: npm run prepublish
+      
 
   dev:
     docker:
@@ -68,7 +66,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install --force
+          command: npm install 
       - run:
           name: Start development server
           command: npm run dev
