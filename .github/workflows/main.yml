@@ -31,7 +31,7 @@ jobs:
             - name: Build and Compile Backend
               run: |
                   cd soen390_backend
-                  npm run build
+                  npm run dev
 
             - name: Build and Compile Frontend
               run: |
