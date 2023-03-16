@@ -25,17 +25,17 @@ function NavLinks(props) {
       wrap="nowrap"
     >
       <Grid item>
-        <Link data-testid="job-1" to="/JobSearch" className="link">
-          {t("jobsNavBar")}
+        <Link data-testid="job-1" to="/Search" className="link">
+          {t("searchNavBar")}
         </Link>
       </Grid>
       {userData && (
         <>
-          <Grid item>
+          {/* <Grid item>
             <Link data-testid="job-1" to="/UserNetworking" className="link">
               {t("NetworkingText")}
             </Link>
-          </Grid>
+          </Grid> */}
           <Grid item>
             <Link data-testid="job-1" to="/UserConnection" className="link">
               {t("UserConnectionText")}

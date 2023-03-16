@@ -67,7 +67,7 @@ const AppWrapper = () => {
                 path="/UserProfile/:userId"
                 element={<ViewUserProfile />}
               />
-              <Route path="/JobSearch" element={<SearchPage />} />
+              <Route path="/Search" element={<SearchPage />} />
               <Route path="/Contacts" element={<Contacts />} />
               <Route path="/JobApplication" element={<JobApplication />} />
               <Route path="/UserNetworking" element={<UserNetworking />} />
