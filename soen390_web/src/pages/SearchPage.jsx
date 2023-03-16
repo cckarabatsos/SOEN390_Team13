@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import "../styles/pages/SearchPage.css";
 import JobSearch from "./JobSearch";
+import UserNetworking from "./UserNetworking";
+import CompanySearch from "./CompanySearch";
+import { useTranslation } from "react-i18next";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,6 +37,7 @@ function a11yProps(index) {
 
 export default function SearchPage() {
   const [value, setValue] = useState(0);
+  const { t } = useTranslation();
 
   //palette used: companies: 006AF9, users: 5319FB , jobs: 9C27B0
   const [color, setColor] = useState("#006AF9");
@@ -54,7 +58,9 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="tabsContainer">
+    <div style={{minHeight: "100vh"}}>
+
+<div className="tabsContainer">
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, color: color }}>
           <Tabs
@@ -70,29 +76,37 @@ export default function SearchPage() {
             }}
           >
             <Tab
-              label={<span className="tabsLabel">Company</span>}
+              label={<span className="tabsLabel">{t("CompanyTab")}</span>}
               {...a11yProps(0)}
             />
             <Tab
-              label={<span className="tabsLabel">Users</span>}
+              label={<span className="tabsLabel">{t("UserTab")}</span>}
               {...a11yProps(1)}
             />
             <Tab
-              label={<span className="tabsLabel">Jobs</span>}
+              label={<span className="tabsLabel">{t("JobTab")}</span>}
               {...a11yProps(2)}
             />
           </Tabs>
         </Box>
+        <hr className="tabsSeparator"></hr>
         <TabPanel value={value} index={0}>
+            <CompanySearch/>
           
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <UserNetworking/>
         </TabPanel>
         <TabPanel value={value} index={2}>
         <JobSearch/>
         </TabPanel>
       </Box>
+      
     </div>
+
+
+
+    </div>
+    
   );
 }

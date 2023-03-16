@@ -105,5 +105,10 @@
     "FirstName*": "Premier Nom*",
     "LastName*": "Nom de Famille*",
     "remarkCareertext": "Un raccourcis vers une carrière remarquable",
-    "stepText": "À deux pas d'une carrière remarquable"
+    "stepText": "À deux pas d'une carrière remarquable",
+    "FindCompanyLabel": "Recherche d'une compagnie",
+    "CompanyTab": "Entreprises",
+    "UserTab": "Individus",
+    "JobTab": "Emplois",
+    "DesiredCompany": "Veuillez rechercher l'entreprise souhaitée."
 }
