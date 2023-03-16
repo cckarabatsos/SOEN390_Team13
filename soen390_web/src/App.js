@@ -22,6 +22,7 @@ import UserConnection from "./pages/UserConnection";
 import UserNetworking from "./pages/UserNetworking";
 import UserProfile from "./pages/UserProfile";
 import ViewUserProfile from "./pages/ViewUserProfile";
+import SearchPage from "./pages/SearchPage";
 
 const AppWrapper = () => {
   const [userData, setUserData] = useState(() => {
@@ -66,7 +67,7 @@ const AppWrapper = () => {
                 path="/UserProfile/:userId"
                 element={<ViewUserProfile />}
               />
-              <Route path="/JobSearch" element={<JobSearch />} />
+              <Route path="/JobSearch" element={<SearchPage />} />
               <Route path="/Contacts" element={<Contacts />} />
               <Route path="/JobApplication" element={<JobApplication />} />
               <Route path="/UserNetworking" element={<UserNetworking />} />
