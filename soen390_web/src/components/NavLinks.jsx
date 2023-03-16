@@ -59,7 +59,7 @@ function NavLinks(props) {
       {!userData ? (
         <>
           <Grid item>
-            <Link data-testid="login-1" to="/UserProfile" className="link">
+            <Link data-testid="login-1" to="/UserLogin" className="link">
               {t("LoginText")}
             </Link>
           </Grid>
