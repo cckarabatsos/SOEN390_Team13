@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/components/FileItem.css";
 import CompanyHeader from "../components/CompanyHeader";
 import CompanyDescription from "../components/CompanyDescription";
+import CompanyApplicationList from "../components/CompanyApplicationList";
 
 
 export default function CompanyProfilePage(props){
@@ -10,6 +11,7 @@ export default function CompanyProfilePage(props){
         <div style={{minHeight:"90vh"}}>
              <CompanyHeader></CompanyHeader>
         <CompanyDescription></CompanyDescription>
+        <CompanyApplicationList></CompanyApplicationList>
 
 
         </div>
