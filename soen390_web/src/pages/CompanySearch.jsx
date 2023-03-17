@@ -17,6 +17,12 @@ export default function CompanySearch() {
         </div>
         <CompanySearchBar />
       </div>
+
+
+
+
+
+      
     </div>
   );
 }

@@ -11,9 +11,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CancelIcon from "@mui/icons-material/Cancel";
 import InfoIcon from '@mui/icons-material/Info';
 
 const columns = [
@@ -113,8 +110,6 @@ export default function CompanyApplicationList(props) {
                           <InfoIcon color="info" />
                       
                         </IconButton>
-                     
-                        
                       </TableRow>
                     );
                   })}
