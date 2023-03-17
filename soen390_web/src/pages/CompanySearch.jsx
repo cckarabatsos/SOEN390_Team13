@@ -18,11 +18,6 @@ export default function CompanySearch() {
         <CompanySearchBar />
       </div>
 
-
-
-
-
-      
     </div>
   );
 }
