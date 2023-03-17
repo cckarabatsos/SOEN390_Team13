@@ -4,12 +4,13 @@ import CompanyHeader from "../components/CompanyHeader";
 import CompanyDescription from "../components/CompanyDescription";
 import CompanyApplicationList from "../components/CompanyApplicationList";
 import CompanyJobPostings from "../components/CompanyJobPostings";
+import "../styles/pages/CompanyProfilePage.css";
 
 
 export default function CompanyProfilePage(props){
 
     return(
-        <div style={{minHeight:"90vh"}}>
+        <div className="CompanyProfileContainer">
              <CompanyHeader></CompanyHeader>
         <CompanyDescription></CompanyDescription>
         <CompanyJobPostings></CompanyJobPostings>

@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelIcon from "@mui/icons-material/Cancel";
+import InfoIcon from '@mui/icons-material/Info';
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
@@ -33,7 +34,7 @@ function createData(name, code, population) {
   const accept = () => {
     return <Button>hello</Button>;
   };
-  return { name, code, population, density };
+  return { name, code, population };
 }
 
 const rows = [
@@ -109,11 +110,11 @@ export default function CompanyApplicationList(props) {
                           );
                         })}
                         <IconButton>
-                          <CancelIcon color="error" />
+                          <InfoIcon color="info" />
+                      
                         </IconButton>
-                        <IconButton>
-                          <CheckCircleOutlineIcon color="success" />
-                        </IconButton>
+                     
+                        
                       </TableRow>
                     );
                   })}
