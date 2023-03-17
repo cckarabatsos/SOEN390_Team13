@@ -23,6 +23,7 @@ import UserNetworking from "./pages/UserNetworking";
 import UserProfile from "./pages/UserProfile";
 import ViewUserProfile from "./pages/ViewUserProfile";
 import SearchPage from "./pages/SearchPage";
+import CompanyProfilePage from "./pages/CompanyProfile";
 
 const AppWrapper = () => {
   const [userData, setUserData] = useState(() => {
@@ -62,6 +63,7 @@ const AppWrapper = () => {
           />
           <Route path="/Search" element={<SearchPage />} />
           <Route path="/UserLogin" element={<Login />} />
+          <Route path="/CompanyProfile" element={<CompanyProfilePage />} />
           {userData && (
             <>
               <Route path="/UserProfile" element={<UserProfile />} />

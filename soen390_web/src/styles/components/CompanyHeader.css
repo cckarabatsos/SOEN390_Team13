@@ -1,0 +1,137 @@
+@font-face {
+    font-family: 'Inter-regular';
+    src: url(../../assets/Inter-Regular.ttf);
+  }
+  
+  
+  .HeaderContainer {
+    background: white;
+    border: 2px solid rgba(0, 106, 249,0.8);
+    border-radius: 20px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    transition: all 0.3s ease 0s;
+    position: relative;
+    height: 30vh;
+    
+    width: 65vw;
+    
+    }
+
+.topHeaderDiv{
+
+
+    position: relative;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    
+    height: 50%;
+    width: 100%;
+    background-color:rgba(0, 106, 249,0.6) ;
+    z-index: 0;
+
+}
+
+.bottomHeaderDiv{
+    flex-grow: 1;
+    height: 50%;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-shadow:  0 1px 8px rgba(0,0,0,0.45);
+    margin-top: 50px;
+    display: inline-block;
+   
+  }
+
+  .avatarContainer{
+    width: 25%;
+    display: inline-block;
+    float: left;
+  }
+
+
+  .editButton{
+    right: 0;
+    display: inline-block;
+    width: 25%;
+    float: right;
+    position: absolute;
+    bottom: 20%;
+  }
+
+
+.blankContainer{
+    width: 25%;
+    display: inline-block;
+}
+.titleContainer{
+    width: 75%;
+    display: inline-block;
+}
+
+
+    
+.company {
+    margin-bottom: 0.3rem;
+    margin-top: -20px;
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3E3E3E;
+    font-family: "Inter-regular";
+}
+    
+.field {
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #6D6D6D;
+    margin-bottom: 0.3rem;
+    font-family: "Inter-regular";
+}
+    
+    .contract {
+      text-align: left;
+      font-size: 1.1rem;
+      color: #6D6D6D;
+      margin-bottom: 0.5rem;
+      font-family: "Inter-regular";
+    }
+    
+    .location {
+      text-align: left;
+      font-size: 1.1rem;
+      font-weight: normal !important;
+      color: #6D6D6D;
+      margin-bottom: 0.3rem;
+      font-family: "Inter-regular";
+    }
+    
+    .button-moreinfo {
+    font-size: 0.875rem;
+    letter-spacing: 1px;
+    background-color: white !important;
+    color: black;
+    padding: 0.6rem 2rem;
+    border-radius: 2rem;
+    border: none;
+    cursor: pointer;
+    }
+    
+    .button-moreinfo:hover {
+    background-color: #8f8aff;
+    }
+    
+    .button-moreinfo-position {
+    right: 1.5rem;
+    top: 1.5rem;
+    position: absolute;
+    }

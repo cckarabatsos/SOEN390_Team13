@@ -3,6 +3,16 @@ import "../styles/components/CompanySearchBar.css";
 import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
+
+
+//const navigate = useNavigate();
+//navigate('/other-page', { state: { id: 7, color: 'green' } });
+
+
+//const {state} = useLocation();
+//const { id, color } = state; // Read values passed on state
 
 export function CompanySearchBar() {
  
@@ -10,8 +20,10 @@ export function CompanySearchBar() {
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const handleTextChange = (e) => {
     setText(e.target.value);
+
   };
 
   //handle category selection change
@@ -23,6 +35,7 @@ export function CompanySearchBar() {
   //handle job search
   const handleSearch = async () => {
     console.log("text: " + text + " category: " + category);
+    navigate("/CompanyProfile")
   
     //var jobs = await JobSearch(category, text);
   
