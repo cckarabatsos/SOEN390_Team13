@@ -4,7 +4,7 @@ import CompanyApplicationList from '../components/CompanyApplicationList';
 
 describe('CompanyApplicationList', () => {
 
-  test("renders table headers", () => {
+  it("renders table headers", () => {
     render(<CompanyApplicationList />);
     const nameHeader = screen.getByText(/name/i);
     const emailHeader = screen.getByText(/email/i);
@@ -14,13 +14,13 @@ describe('CompanyApplicationList', () => {
     expect(timeAppliedHeader).toBeInTheDocument();
   });
 
-  test("renders table rows", () => {
+  it("renders table rows", () => {
     render(<CompanyApplicationList />);
     const rows = screen.getAllByTestId("table-rows");
     expect(rows.length).toBeGreaterThan(0);
   });
 
-  test("clicking on info icon should show more information about the application", () => {
+  it("clicking on info icon should show more information about the application", () => {
     render(<CompanyApplicationList />);
     const infoIcon = screen.getAllByRole("button")[0];
     fireEvent.click(infoIcon);
