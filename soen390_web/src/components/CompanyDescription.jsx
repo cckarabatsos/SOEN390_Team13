@@ -15,6 +15,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 
 export default function CompanyDescription(props) {
+  const description = props.description
   return (
     <div className="DescriptionContainer">
       <div className="descriptionHeaderWrap">
@@ -27,7 +28,7 @@ export default function CompanyDescription(props) {
       </div>
 
       <div className="descriptionText">
-        Hello this is a beautiful random company born in montreal in 1999
+      {description}
       </div>
     </div>
   );

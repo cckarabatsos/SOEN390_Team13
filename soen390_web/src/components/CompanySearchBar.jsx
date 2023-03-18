@@ -4,17 +4,12 @@ import { Button } from "@material-ui/core";
 import { JobSearch } from "../api/JobPostingApi";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { CompanyApi } from "../api/CompanyApi";
 
 
 
-//const navigate = useNavigate();
-//navigate('/other-page', { state: { id: 7, color: 'green' } });
 
-
-//const {state} = useLocation();
-//const { id, color } = state; // Read values passed on state
-
-export function CompanySearchBar() {
+export function CompanySearchBar({ setCompanies }) {
  
   // initialize state vars, handle text input change
   const [category, setCategory] = useState("name");
@@ -35,8 +30,11 @@ export function CompanySearchBar() {
   //handle job search
   const handleSearch = async () => {
     console.log("text: " + text + " category: " + category);
-    navigate("/CompanyProfile")
-  
+    //navigate("/CompanyProfile")
+    var companies = await CompanyApi(category,text,0,0);
+
+    setCompanies(companies);
+    
     //var jobs = await JobSearch(category, text);
   
     //setJobs(jobs)
@@ -88,10 +86,9 @@ export function CompanySearchBar() {
           onChange={handleChange}
         >
           
-          <option value="location">{t("LocationText")}</option>
-          <option value="company">{t("CompanyText")}</option>
-          <option value="position">{t("PositionText")}</option>
-          <option value="type">{t("TypeText")}</option> 
+          <option value="name">name</option>
+          <option value="email">email</option>
+
           {/* <option value="remote">{t("RemoteText")}</option> */}
         </select>
       </div>
