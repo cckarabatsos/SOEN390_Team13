@@ -12,7 +12,7 @@ import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
 import AddSkillDialog from "../components/AddSkillDialog";
 import "../styles/components/UserProfile.css";
-//import ApplicationHistory from "./ApplicationHistory";
+import ApplicationHistory from "./ApplicationHistory";
 import ExperienceItem from "../components/ExperienceItem";
 import ExperienceList from "../components/ExperienceList";
 
@@ -345,8 +345,14 @@ function UserProfile(props) {
                             </Grid>
                         </Grid>
                     </div>
+                    
                 </div>
+                <ApplicationHistory/>
+               
+
             </div>
+            
+            
             
         </>
     );

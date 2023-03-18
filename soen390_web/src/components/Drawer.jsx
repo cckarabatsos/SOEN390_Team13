@@ -50,6 +50,13 @@ function DrawerComponent(props) {
                 </ListItemButton>
               </ListItem>
             </Link>
+            <Link data-testid="job-1" to="/Search">
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText primary={t("searchNavBar")} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
             {userData && (
               <>
                 <Link data-testid="job-1" to="/UserNetworking">
@@ -70,13 +77,6 @@ function DrawerComponent(props) {
                   <ListItem>
                     <ListItemButton>
                       <ListItemText primary={t("ContactsText")} />
-                    </ListItemButton>
-                  </ListItem>
-                </Link>
-                <Link data-testid="job-1" to="/Search">
-                  <ListItem>
-                    <ListItemButton>
-                      <ListItemText primary={t("searchNavBar")} />
                     </ListItemButton>
                   </ListItem>
                 </Link>
