@@ -24,6 +24,7 @@ import UserProfile from "./pages/UserProfile";
 import ViewUserProfile from "./pages/ViewUserProfile";
 import SearchPage from "./pages/SearchPage";
 import CompanyProfilePage from "./pages/CompanyProfile";
+import NotificationPage from "./pages/NotificationPage";
 
 const AppWrapper = () => {
   const [userData, setUserData] = useState(() => {
@@ -79,6 +80,7 @@ const AppWrapper = () => {
               <Route path="/UserConnection" element={<UserConnection />} />
               <Route path="/Messages/:userId" element={<MessagingPage />} />
               <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
+              <Route path="/NotificationsPage" element={<NotificationPage />} />
               
               {userData.isAdmin && (
                 <Route path="/Admin" element={<Admin userData={userData} />} />

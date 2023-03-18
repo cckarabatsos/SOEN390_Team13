@@ -14,8 +14,11 @@ export default function CompanyProfilePage(props) {
   return (
     <div className="CompanyProfileContainer">
       <CompanyHeader name={name} picture={picture}></CompanyHeader>
+
       <CompanyDescription description={description}></CompanyDescription>
+
       <CompanyJobPostings></CompanyJobPostings>
+      
       <CompanyApplicationList></CompanyApplicationList>
     </div>
   );
