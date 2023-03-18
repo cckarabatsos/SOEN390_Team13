@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, IconButton } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import "../styles/components/CompanyHeader.css";
 import face from "../static/images/face1.jpg";
@@ -19,9 +19,9 @@ export default function CompanyHeader(props) {
             <img src={picture} alt="Avatar" class="avatar"></img>
           </div>
           <div className="editButton">
-            <Button variant="contained" color="white">
+            <Button variant="contained" color="white" size="medium">
               <EditIcon></EditIcon>
-              Edit Profile
+              Edit
             </Button>
           </div>
         </div>
@@ -36,9 +36,9 @@ export default function CompanyHeader(props) {
            
           </div>
           <div className="editButton">
-            <Button variant="contained" color="white">
+            <Button color="black" size="large">
               <PersonAddAlt1Icon/>
-              Follow
+              
             </Button>
           </div>
         </div>

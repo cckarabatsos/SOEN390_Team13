@@ -42,11 +42,11 @@
 
 .avatar {
     vertical-align: middle;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     box-shadow:  0 1px 8px rgba(0,0,0,0.45);
-    margin-top: 50px;
+    margin-top: 80px;
     display: inline-block;
    
   }
@@ -135,3 +135,59 @@
     top: 1.5rem;
     position: absolute;
     }
+
+
+    
+    @media only screen and (max-width: 768px){
+
+      .HeaderContainer {
+          background: white;
+          border: 2px solid rgba(0, 106, 249,0.8);
+          border-radius: 20px;
+          
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 2rem;
+          margin-top: 4rem;
+          transition: all 0.3s ease 0s;
+          position: relative;
+          min-height: 20vh;
+          
+          width: 95vw;
+          
+          }
+
+
+          .avatar {
+            vertical-align: middle;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            box-shadow:  0 1px 8px rgba(0,0,0,0.45);
+            margin-top: 50px;
+            display: inline-block;
+           
+          }
+        
+          .avatarContainer{
+            width: 30%;
+            display: inline-block;
+            float: left;
+          }
+
+
+          .titleContainer{
+            width: 70%;
+            display: inline-block;
+        }
+
+
+        .editButton{
+          
+          display: inline-block;
+          width: 40%;
+          float: left;
+          position: absolute;
+          bottom: 20%;
+        }
+  }

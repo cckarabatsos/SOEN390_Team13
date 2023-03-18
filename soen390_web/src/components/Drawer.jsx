@@ -73,6 +73,13 @@ function DrawerComponent(props) {
                     </ListItemButton>
                   </ListItem>
                 </Link>
+                <Link data-testid="job-1" to="/Search">
+                  <ListItem>
+                    <ListItemButton>
+                      <ListItemText primary={t("searchNavBar")} />
+                    </ListItemButton>
+                  </ListItem>
+                </Link>
               </>
             )}
 

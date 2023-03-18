@@ -4,6 +4,7 @@ import {
   Toolbar,
   useMediaQuery,
   useTheme,
+  Avatar
 } from "@material-ui/core";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,6 +45,8 @@ function Navbar(props) {
               </Link>
               <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
               <NavLinks userData={userData} />
+              <Avatar  alt="User" src={userData? userData.picture : ""}  sx={{ width: 47, height: 47 }} />
+              
             </>
           )}
         </Toolbar>

@@ -57,3 +57,25 @@
     }
 
 
+     
+    @media only screen and (max-width: 768px){
+
+        .JobsContainer {
+            background: white;
+            border: 2px solid rgba(0, 106, 249,0.8);
+            border-radius: 20px;
+            
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 2rem;
+            margin-top: 4rem;
+            transition: all 0.3s ease 0s;
+            position: relative;
+            min-height: 20vh;
+            
+            width: 95vw;
+            
+            }
+    }
+
+
