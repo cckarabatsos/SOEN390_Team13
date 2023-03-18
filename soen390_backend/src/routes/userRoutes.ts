@@ -29,6 +29,7 @@ import {
 import dotenv from "dotenv";
 import { User } from "../models/User";
 import { compare } from "bcrypt";
+// import firebase from "firebase";
 const multer = require("multer");
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
@@ -37,7 +38,7 @@ dotenv.config();
 //Get complete user by their id
 user.get("/id/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
-    console.log(userID)
+    console.log(userID);
     try {
         let data: any = await getUserWithID(userID);
         res.status(data[0]);
@@ -449,24 +450,27 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 // user.get("/updateFields", (_: Request, res: Response) => {
 //     const db = firebase.firestore();
 //     const batch = db.batch();
-//     const usersRef = db.collection("users");
-//     usersRef
+//     const jobPostingsRef = db.collection("jobpostings");
+//     const deadline = new Date();
+//     deadline.setMonth(deadline.getMonth() + 2);
+
+//     jobPostingsRef
 //         .get()
 //         .then((querySnapshot) => {
 //             querySnapshot.forEach((doc) => {
-//                 batch.update(doc.ref, { follows: [] });
+//                 batch.update(doc.ref, { postingDeadline: deadline });
 //             });
 
 //             return batch.commit();
 //         })
 //         .then(() => {
 //             res.status(200).send(
-//                 "isAdmin and follows fields added to all user documents"
+//                 "postingDeadline field added to all job posting documents"
 //             );
 //         })
 //         .catch((error) => {
-//             console.error("Error adding isAdmin and follows fields:", error);
-//             res.status(500).send("Error adding isAdmin and follows fields");
+//             console.error("Error adding postingDeadline field:", error);
+//             res.status(500).send("Error adding postingDeadline field");
 //         });
 // });
 

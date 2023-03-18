@@ -106,14 +106,14 @@ export const filterJobPostings = async (filter: Filter) => {
     if (filter.location) {
         const prefix = filter.location.toLowerCase();
         const prefixEnd = prefix + "\uf8ff";
-        jobPostingsRef = await jobPostingsRef
+        jobPostingsRef = jobPostingsRef
             .where("location", ">=", prefix)
             .where("location", "<", prefixEnd);
     }
     if (filter.company) {
         const prefix = filter.company;
         const prefixEnd = prefix + "\uf8ff";
-        jobPostingsRef = await jobPostingsRef
+        jobPostingsRef = jobPostingsRef
             .where("company", ">=", prefix)
             .where("company", "<", prefixEnd);
         //console.log(jobPostingsRef);
@@ -144,12 +144,31 @@ export const filterJobPostings = async (filter: Filter) => {
         });
         jobPostingsRef = jobPostingsRef.startAfter(lastVisible);
     }
+
     const snapshot = await jobPostingsRef.get();
 
-
-    const jobPostings = snapshot.docs.map((doc) => ({
+    const jobPostings: any = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
     }));
+    const now = new Date().getTime(); // Get the current system time in milliseconds
+
+    const validJobPostings = []; // Initialize an array to hold the valid job postings
+
+    const expiredJobPostings = []; // Initialize an array to hold the expired job postings
+
+    for (let i = 0; i < jobPostings.length; i++) {
+        const jobPosting = jobPostings[i];
+        const postingDeadline = new Date(jobPosting.postingDeadline).getTime(); // Convert the posting deadline to milliseconds
+        if (postingDeadline > now) {
+            validJobPostings.push(jobPosting); // Add the job posting to the valid job postings array
+        } else {
+            expiredJobPostings.push(jobPosting); // Add the job posting to the expired job postings array
+        }
+    }
+
+    console.log(validJobPostings); // Output the valid job postings
+    console.log(expiredJobPostings); // Output the expired job postings
+
     return jobPostings;
 };
