@@ -345,9 +345,15 @@ function UserProfile(props) {
                             </Grid>
                         </Grid>
                     </div>
+                    
                 </div>
+                <ApplicationHistory/>
+               
+
             </div>
-            <ApplicationHistory></ApplicationHistory>
+            
+            
+            
         </>
     );
 }

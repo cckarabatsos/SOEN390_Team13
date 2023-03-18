@@ -2,6 +2,7 @@ import { Grid, Button } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 function NavLinks(props) {
   const userData = props.userData;
@@ -25,17 +26,17 @@ function NavLinks(props) {
       wrap="nowrap"
     >
       <Grid item>
-        <Link data-testid="job-1" to="/JobSearch" className="link">
-          {t("jobsNavBar")}
+        <Link data-testid="job-1" to="/Search" className="link">
+          {t("searchNavBar")}
         </Link>
       </Grid>
       {userData && (
         <>
-          <Grid item>
+          {/* <Grid item>
             <Link data-testid="job-1" to="/UserNetworking" className="link">
               {t("NetworkingText")}
             </Link>
-          </Grid>
+          </Grid> */}
           <Grid item>
             <Link data-testid="job-1" to="/UserConnection" className="link">
               {t("UserConnectionText")}
@@ -59,7 +60,7 @@ function NavLinks(props) {
       {!userData ? (
         <>
           <Grid item>
-            <Link data-testid="login-1" to="/UserProfile" className="link">
+            <Link data-testid="login-1" to="/UserLogin" className="link">
               {t("LoginText")}
             </Link>
           </Grid>
@@ -94,6 +95,11 @@ function NavLinks(props) {
             FR
           </Button>
         )}
+        <Link>
+
+        <NotificationsIcon></NotificationsIcon>
+        
+        </Link>
       </Grid>
     </Grid>
   );

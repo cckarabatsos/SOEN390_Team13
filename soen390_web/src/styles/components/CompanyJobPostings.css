@@ -1,0 +1,81 @@
+@font-face {
+    font-family: 'Inter-regular';
+    src: url(../../assets/Inter-Regular.ttf);
+  }
+  
+  
+  .JobsContainer {
+    background: white;
+    border: 2px solid rgba(0, 106, 249,0.8);
+    border-radius: 20px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+    transition: all 0.3s ease 0s;
+    position: relative;
+    min-height: 20vh;
+    
+    width: 65vw;
+    
+    }
+
+    .JobHeaderWrap{
+        width: 100%;
+    }
+
+
+    .postings {
+        margin-bottom: 0.3rem;
+        text-align: left;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #3E3E3E;
+        font-family: "Inter-regular";
+        padding: 1rem;
+        width: 75%;
+        display: inline-block
+    }
+
+    .editButtonJobs{
+        width: 25%;
+        display: inline-block;
+        align-items: right;
+        right: 0;
+    }
+
+    .postingsText{
+
+        text-align: left;
+        font-size: 1rem;
+        color: #3E3E3E;
+        font-family: "Inter-regular";
+        padding-left: 1rem;
+        padding-right: 1rem;
+        width: 100%;
+    }
+
+
+     
+    @media only screen and (max-width: 768px){
+
+        .JobsContainer {
+            background: white;
+            border: 2px solid rgba(0, 106, 249,0.8);
+            border-radius: 20px;
+            
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 2rem;
+            margin-top: 4rem;
+            transition: all 0.3s ease 0s;
+            position: relative;
+            min-height: 20vh;
+            
+            width: 95vw;
+            
+            }
+    }
+
+

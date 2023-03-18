@@ -1,5 +1,5 @@
 {
-    "jobsNavBar": "Jobs",
+    "searchNavBar": "Search",
     "emailText": "Email Address",
     "passwordText": "Password",
     "FirstNameText": "First Name",
@@ -105,5 +105,11 @@
     "FirstName*": "First Name*",
     "LastName*": "Last Name*",
     "remarkCareertext": "One step away from a remarkable career",
-    "stepText": "One step away from a remarkable career"
+    "stepText": "One step away from a remarkable career",
+    "FindCompanyLabel": "Find a company",
+    "CompanyTab": "Companies",
+    "UserTab": "User",
+    "JobTab": "Jobs",
+    "DesiredCompany": "Browse available companies below."
+
 }

@@ -22,6 +22,8 @@ import UserConnection from "./pages/UserConnection";
 import UserNetworking from "./pages/UserNetworking";
 import UserProfile from "./pages/UserProfile";
 import ViewUserProfile from "./pages/ViewUserProfile";
+import SearchPage from "./pages/SearchPage";
+import CompanyProfilePage from "./pages/CompanyProfile";
 
 const AppWrapper = () => {
   const [userData, setUserData] = useState(() => {
@@ -53,26 +55,31 @@ const AppWrapper = () => {
         <Routes>
           <Route
             path="/"
-            element={userData ? <Navigate to="/UserProfile" /> : <Login />}
+            element={userData ? <Navigate to="/UserLogin" /> : <Login />}
           />
           <Route
             path="/Signup"
-            element={userData ? <Navigate to="/UserProfile" /> : <Signup />}
+            element={userData ? <Navigate to="/UserLogin" /> : <Signup />}
           />
+          <Route path="/Search" element={<SearchPage />} />
+          <Route path="/UserLogin" element={<Login />} />
+          <Route path="/CompanyProfile" element={<CompanyProfilePage />} />
           {userData && (
             <>
               <Route path="/UserProfile" element={<UserProfile />} />
               <Route
+              
                 path="/UserProfile/:userId"
                 element={<ViewUserProfile />}
               />
-              <Route path="/JobSearch" element={<JobSearch />} />
+              
               <Route path="/Contacts" element={<Contacts />} />
               <Route path="/JobApplication" element={<JobApplication />} />
               <Route path="/UserNetworking" element={<UserNetworking />} />
               <Route path="/UserConnection" element={<UserConnection />} />
               <Route path="/Messages/:userId" element={<MessagingPage />} />
               <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
+              
               {userData.isAdmin && (
                 <Route path="/Admin" element={<Admin userData={userData} />} />
               )}

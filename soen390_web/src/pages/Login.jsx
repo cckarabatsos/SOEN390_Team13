@@ -7,10 +7,11 @@ import { SignInUser } from "../api/loginApi";
 import background from "../assets/undraw_login_re_4vu2.svg";
 import "../styles/components/Login.css";
 
-function MainTitle(props) {
+function Login(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [incorrectLogin, setIncorrectLogin] = React.useState(false);
+  console.log("hello in login page")
 
 
   
@@ -151,4 +152,4 @@ function MainTitle(props) {
   );
 }
 
-export default MainTitle;
+export default Login;
