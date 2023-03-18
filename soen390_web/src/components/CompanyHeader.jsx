@@ -2,16 +2,6 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import "../styles/components/CompanyHeader.css";
-import {
-  Grid,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-  Avatar,
-  Stack,
-} from "@material-ui/core";
 import face from "../static/images/face1.jpg";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';

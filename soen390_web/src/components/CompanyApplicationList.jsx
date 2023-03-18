@@ -15,10 +15,10 @@ import InfoIcon from '@mui/icons-material/Info';
 
 const columns = [
   { id: "name", label: "Name", minWidth: 170 },
-  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
+  { id: "code", label: "Email", minWidth: 100 },
   {
     id: "population",
-    label: "Population",
+    label: "Time applied",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
@@ -35,7 +35,7 @@ function createData(name, code, population) {
 }
 
 const rows = [
-  createData("Bogdan", "IN", 1324171354),
+  createData("Bogdan", "podaroiuBogdan1@gmail.com", "17/03/2023"),
   createData("Max", "CN", 1403500365),
   createData("Math", "IT", 60483973),
   createData("Ceds", "US", 327167434),
@@ -62,9 +62,7 @@ export default function CompanyApplicationList(props) {
       <div className="ApplicationHeaderWrap">
         <div className="application">Applications (3)</div>
         <div className="editButtonApplication">
-          <Button>
-            <EditIcon></EditIcon>
-          </Button>
+          
         </div>
       </div>
 
