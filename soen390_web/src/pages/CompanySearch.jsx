@@ -7,14 +7,10 @@ import CompanySearchComponent from "../components/CompanySearchComponent";
 
 import { useNavigate } from "react-router-dom";
 
-
-
 export default function CompanySearch() {
   const { t } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [companyDisplay, setCompanyDisplay] = useState([]);
-
-
 
   useEffect(() => {
     console.log(companies);
@@ -39,11 +35,9 @@ export default function CompanySearch() {
     setCompanyDisplay(companyArray);
   }, [companies]);
 
-  if(companies){
-
-    console.log(companyDisplay)
+  if (companies) {
+    console.log(companyDisplay);
   }
-
 
   return (
     <div>
@@ -57,24 +51,16 @@ export default function CompanySearch() {
         <CompanySearchBar setCompanies={setCompanies} />
       </div>
 
-
       {companyDisplay.map((company) => (
-       
         <CompanySearchComponent
-        key={company.id}
-        name={company.companyName}
-        location="New York, NY"
-        followerCount={company.followerCount}
-        picture={company.pictureURL}
-        description={company.description}
-      
+          key={company.id}
+          name={company.companyName}
+          location="New York, NY"
+          followerCount={company.followerCount}
+          picture={company.pictureURL}
+          description={company.description}
         ></CompanySearchComponent>
-
-      )
-      )
-      }
-      
-
+      ))}
     </div>
   );
 }

@@ -7,20 +7,16 @@ import CompanyJobPostings from "../components/CompanyJobPostings";
 import "../styles/pages/CompanyProfilePage.css";
 import { useLocation } from "react-router-dom";
 
+export default function CompanyProfilePage(props) {
+  const { state } = useLocation();
+  const { picture, name, description } = state; // Read values passed on state
 
-export default function CompanyProfilePage(props){
-const {state} = useLocation();
-const { picture, name, description} = state; // Read values passed on state
-
-
-
-    return(
-        <div className="CompanyProfileContainer">
-             <CompanyHeader name={name} picture={picture}></CompanyHeader>
-        <CompanyDescription description={description}></CompanyDescription>
-        <CompanyJobPostings></CompanyJobPostings>
-        <CompanyApplicationList></CompanyApplicationList>
-        </div>
-       
-    )
+  return (
+    <div className="CompanyProfileContainer">
+      <CompanyHeader name={name} picture={picture}></CompanyHeader>
+      <CompanyDescription description={description}></CompanyDescription>
+      <CompanyJobPostings></CompanyJobPostings>
+      <CompanyApplicationList></CompanyApplicationList>
+    </div>
+  );
 }
