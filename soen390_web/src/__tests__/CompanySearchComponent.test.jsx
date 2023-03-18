@@ -15,7 +15,7 @@ describe('CompanySearchComponent', () => {
         location: 'Location'
       };
 
-    //tests if the job posting details are properly rendered
+    //tests if the company details are properly rendered
   test("renders company details", () => {
     render(
       <CompanySearchComponent
