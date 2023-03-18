@@ -10,3 +10,4 @@ describe("CompanyDescription", () => {
     expect(screen.getByText(mockDescription)).toBeInTheDocument();
   });
 });
+
