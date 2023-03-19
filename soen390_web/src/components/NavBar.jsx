@@ -4,7 +4,7 @@ import {
   Toolbar,
   useMediaQuery,
   useTheme,
-  Avatar
+  Avatar,
 } from "@material-ui/core";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,9 @@ import SearchBar from "../components/SearchBar";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 import NavLinks from "./NavLinks";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
+import Stack from "@mui/material/Stack";
 
 function Navbar(props) {
   const theme = useTheme();
@@ -45,8 +48,21 @@ function Navbar(props) {
               </Link>
               <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
               <NavLinks userData={userData} />
-              <Avatar  alt="User" src={userData? userData.picture : ""}  sx={{ width: 47, height: 47 }} />
-              
+
+              {userData &&(
+                 <Stack spacing={1} direction="row">
+                 <Avatar
+                   alt="User"
+                   src={userData ? userData.picture : ""}
+                   sx={{ width: 47, height: 47 }}
+                 />
+                 <Link className="notification" to="/NotificationsPage">
+                   <Badge badgeContent={4} color="secondary">
+                     <NotificationsIcon></NotificationsIcon>
+                   </Badge>
+                 </Link>
+               </Stack>
+              )}  
             </>
           )}
         </Toolbar>

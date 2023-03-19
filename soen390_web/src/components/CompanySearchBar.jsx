@@ -15,7 +15,6 @@ export function CompanySearchBar({ setCompanies }) {
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const handleTextChange = (e) => {
     setText(e.target.value);
 
@@ -30,14 +29,9 @@ export function CompanySearchBar({ setCompanies }) {
   //handle job search
   const handleSearch = async () => {
     console.log("text: " + text + " category: " + category);
-    //navigate("/CompanyProfile")
     var companies = await CompanyApi(category,text,0,0);
 
     setCompanies(companies);
-    
-    //var jobs = await JobSearch(category, text);
-  
-    //setJobs(jobs)
   };
 
   // render job search bar, search button, dropdown filter to select category

@@ -2,7 +2,8 @@ import { Grid, Button } from "@material-ui/core";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
 
 function NavLinks(props) {
   const userData = props.userData;
@@ -95,11 +96,9 @@ function NavLinks(props) {
             FR
           </Button>
         )}
-        <Link>
 
-        <NotificationsIcon></NotificationsIcon>
-        
-        </Link>
+       
+       
       </Grid>
     </Grid>
   );

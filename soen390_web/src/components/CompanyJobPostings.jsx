@@ -10,6 +10,7 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import Delete from "@mui/icons-material/Delete";
+import Divider from '@mui/material/Divider';
 
 export default function CompanyJobPostings(props) {
   return (
@@ -25,7 +26,8 @@ export default function CompanyJobPostings(props) {
       <div className="postingsText">
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
-            <ListItem
+            <div>
+                 <ListItem
               key={value}
               secondaryAction={
                 <>
@@ -40,6 +42,10 @@ export default function CompanyJobPostings(props) {
             >
               <ListItemText primary={`Line item ${value}`} />
             </ListItem>
+            <Divider variant="middle"/>
+              
+            </div>
+         
           ))}
         </List>
       </div>
