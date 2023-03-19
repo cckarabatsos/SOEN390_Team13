@@ -63,20 +63,22 @@ export async function GetUpdatedMessages(
     throw new Error((error as Error).message);
   }
 
-  return [200, messagesList];
+  return messagesList;
 }
 
-export async function GetActiveConversations(email: string) {
-  let messagesList: any;
+export async function GetActiveConversations(email: string, returnEmail:boolean) {
+  let convoList: any;
   try {
-    messagesList = (await getActiveConversations(
-      email
+    convoList = (await getActiveConversations(
+      email,returnEmail
     )) as conversationListElement[];
   } catch (error) {
     console.log((error as Error).message);
     throw new Error((error as Error).message);
   }
 
-  console.log(messagesList)
-  return [200, messagesList];
+
+
+
+  return convoList;
 }
