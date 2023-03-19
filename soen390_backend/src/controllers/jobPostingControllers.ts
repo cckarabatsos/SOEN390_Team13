@@ -1,3 +1,4 @@
+import firebase from "firebase";
 import {
     jobposting_schema,
     Jobposting,
@@ -39,6 +40,9 @@ export async function createJobPosting(
     jobPosterID: string
 ) {
     try {
+        const date = new Date();
+        date.setMonth(date.getMonth() + 2);
+        var postingDeadline = firebase.firestore.Timestamp.fromDate(date);
         let newJobPosting: Jobposting = jobposting_schema.validateSync({
             email,
             location,
@@ -51,7 +55,9 @@ export async function createJobPosting(
             duration,
             type,
             jobPosterID,
+            postingDeadline,
         });
+        console.log(newJobPosting);
         let postingID = await storeJobPosting(newJobPosting);
         updateCompanyPostings(postingID, jobPosterID);
         if (postingID) {
