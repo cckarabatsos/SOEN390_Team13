@@ -33,6 +33,8 @@ export const jobposting_schema = yup
         email: yup.string().required(),
         logo: yup.string(),
         jobPosterID: yup.string().required(),
+        mandatoryResume: yup.boolean().required().default(true),
+        mandatoryCoverLetter: yup.boolean().required().default(false),
     })
     .required();
 

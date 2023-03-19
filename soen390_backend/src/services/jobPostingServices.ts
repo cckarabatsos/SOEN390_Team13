@@ -31,21 +31,13 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
         let user = await findUserWithID(newJobPosting.jobPosterID);
         let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({
-            email: newJobPosting.email,
-            location: newJobPosting.location,
-            position: newJobPosting.position,
-            salary: newJobPosting.salary,
-            company: newJobPosting.company,
-            description: newJobPosting.description,
-            remote: newJobPosting.remote,
-            contract: newJobPosting.contract,
-            duration: newJobPosting.duration,
-            type: newJobPosting.type,
-            logo: casted_user.picture,
-            jobPosterID: newJobPosting.jobPosterID,
-            postingDeadline: postingDeadline,
+            ...newJobPosting,
         });
-        await document.update({ postingID: document.id });
+        await document.update({
+            postingID: document.id,
+            postingDeadline: postingDeadline,
+            logo: casted_user.picture,
+        });
         console.log("Job posting successfully stored with id: " + document.id);
     } catch (error) {
         console.log(error);
