@@ -13,6 +13,7 @@ import TableBody from "@mui/material/TableBody";
 import ActionButton from "../components/ActionButton";
 import { useEffect, useState } from "react";
 import { getAllApplication } from "../api/ApplicationHistoryApi";
+import "../styles/components/UserProfile.css";
 
 function createData(position, location, company, contract, JobId) {
   return { position, location, company, contract, JobId };
@@ -51,8 +52,9 @@ const [currentID, setCurrentID] = useState(""); */
 
   console.log(Application);
   return (
-    <TableContainer component={Paper} sx={{ width: "65%", margin: "0 auto" }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+
+    <TableContainer component={Paper} sx={{ width: "80%", margin: "0 auto", marginTop: "35px" }}>
+      <Table sx={{ minWidth: 650, backgroundColor: 'rgba(217, 217, 217, 0.7)' }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell
@@ -60,6 +62,7 @@ const [currentID, setCurrentID] = useState(""); */
                 fontSize: "40px",
                 fontWeight: "bold",
                 paddingBottom: "100px",
+
               }}
               colSpan={6}
             >
@@ -89,7 +92,7 @@ const [currentID, setCurrentID] = useState(""); */
               sx={{ fontSize: "20px", paddingBottom: "16px" }}
               align="left"
             >
-              Contract&nbsp;
+              Status&nbsp;
             </TableCell>
             <TableCell
               sx={{ fontSize: "20px", paddingBottom: "16px" }}
