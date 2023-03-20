@@ -46,7 +46,7 @@ const { t } = useTranslation();
           <p>Contact: {viewEmail}</p>
           <p>Mandatory resume: {viewMandatoryResume ? 'Yes' : 'No'}</p>
           <p>Mandatory cover letter: {viewMandatoryCoverLetter ? 'Yes' : 'No'}</p>
-          <p>Deadline to apply: {viewPostingDeadline}</p>
+          <p style={{textDecoration: "underline"}}>Deadline to apply: {viewPostingDeadline}</p>
         </div>
         <div>
           <button
