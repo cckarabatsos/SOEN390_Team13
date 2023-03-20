@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "@material-ui/core";
+import React, { useState } from "react";
+import { Button, Dialog, DialogContent, Grid, TextField, Typography, FormControlLabel, Checkbox } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import "../styles/components/CompanyJobPostings.css";
 import List from "@mui/material/List";
@@ -11,15 +11,27 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import Delete from "@mui/icons-material/Delete";
 import Divider from '@mui/material/Divider';
+import AddressForm from "../components/JobPostingsCompanyPage";
 
 export default function CompanyJobPostings(props) {
+  const [showForm, setShowForm] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className="JobsContainer">
       <div className="JobHeaderWrap">
         <div className="postings">Open Positions</div>
         <div className="editButtonJobs">
-          <Button>
-            <PlaylistAddIcon></PlaylistAddIcon>
+          <Button onClick={handleClickOpen}>
+            <PlaylistAddIcon />
           </Button>
         </div>
       </div>
@@ -27,28 +39,33 @@ export default function CompanyJobPostings(props) {
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           {[1, 2, 3, 4, 5, 6, 7].map((value) => (
             <div>
-                 <ListItem
-              key={value}
-              secondaryAction={
-                <>
-                  <IconButton aria-label="comment" color="info">
-                    <InfoIcon />
-                  </IconButton>
-                  <IconButton aria-label="comment" color="error">
-                    <Delete />
-                  </IconButton>
-                </>
-              }
-            >
-              <ListItemText primary={`Line item ${value}`} />
-            </ListItem>
-            <Divider variant="middle"/>
-              
+              <ListItem
+                key={value}
+                secondaryAction={
+                  <>
+                    <IconButton aria-label="comment" color="info">
+                      <InfoIcon />
+                    </IconButton>
+                    <IconButton aria-label="comment" color="error">
+                      <Delete />
+                    </IconButton>
+                  </>
+                }
+              >
+                <ListItemText primary={`Line item ${value}`} />
+              </ListItem>
+              <Divider variant="middle" />
             </div>
-         
           ))}
         </List>
       </div>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+
+          <AddressForm />
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
