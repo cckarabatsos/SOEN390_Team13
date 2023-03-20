@@ -5,6 +5,10 @@ import JobSearchBar from "../components/JobSearchBar";
 import Modal from "../components/Modal";
 import JobsOverview from "../models/JobsOverview.ts";
 
+const fireBaseTime = (seconds, nanoseconds) => new Date(
+ seconds * 1000 + nanoseconds / 1000000,
+);
+
 export default function JobSearch() {
   // define state variables with useState hook
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,6 +20,8 @@ export default function JobSearch() {
   const [salary, setSalary] = useState(false);
   const [description, setDescription] = useState(false);
   const [email, setEmail] = useState(false);
+  const [mandatoryResume, setMandatoryResume] = useState(false);
+  const [mandatoryCoverLetter, setMandatoryCoverLetter] = useState(false);
   const [jobs, setJobs] = useState([]);
   const { t } = useTranslation();
   const [jobDisplay, setJobDisplay] = useState([]);
@@ -35,12 +41,14 @@ export default function JobSearch() {
           i,
           20, //jobs[i].salary
           jobs[i].description,
-          jobs[i].email
+          jobs[i].email,
+          jobs[i].mandatoryResume,
+          jobs[i].mandatoryCoverLetter,
+          (fireBaseTime(jobs[i].postingDeadline.seconds, jobs[i].postingDeadline.nanoseconds)).toString()
         )
       );
     }
 
-    console.log(jobArray);
 
     setJobDisplay(jobArray);
   }, [jobs]);
@@ -68,6 +76,9 @@ export default function JobSearch() {
             viewEmail={jobDisplay[jobPosterID].email}
             viewContract={jobDisplay[jobPosterID].contract}
             viewSalary={jobDisplay[jobPosterID].salary}
+            viewMandatoryResume={jobDisplay[jobPosterID].mandatoryResume}
+            viewMandatoryCoverLetter={jobDisplay[jobPosterID].mandatoryCoverLetter}
+            viewPostingDeadline={jobDisplay[jobPosterID].postingDeadline}
           />
         )}
 
@@ -81,6 +92,8 @@ export default function JobSearch() {
             viewDesc={setModalOpen}
             jobPosterID={job.jobPosterID}
             setJob={setjobPosterID}
+            mandatoryResume={job.mandatoryResume}
+            mandatoryCoverLetter={job.mandatoryCoverLetter}
           ></JobPostingComponent>
         ))}
       </div>

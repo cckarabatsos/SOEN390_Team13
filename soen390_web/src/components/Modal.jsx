@@ -12,7 +12,11 @@ function Modal({
   viewContract,
   viewEmail,
   viewCompany,
+  viewMandatoryResume,
+  viewMandatoryCoverLetter,
+  viewPostingDeadline
 }) 
+
 {
 const { t } = useTranslation();
 
@@ -40,6 +44,9 @@ const { t } = useTranslation();
           <p>{viewContract}</p>
           <p>Salary: ${viewSalary}/hr</p>
           <p>Contact: {viewEmail}</p>
+          <p>Mandatory resume: {viewMandatoryResume ? 'Yes' : 'No'}</p>
+          <p>Mandatory cover letter: {viewMandatoryCoverLetter ? 'Yes' : 'No'}</p>
+          <p>Deadline to apply: {viewPostingDeadline}</p>
         </div>
         <div>
           <button
