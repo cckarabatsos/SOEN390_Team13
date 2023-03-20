@@ -490,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"OLIOLI\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"OLIMOLI\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -662,7 +662,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"docID\":\"6Vlp5h0yMG7I8CwAMoT6\"\r\n}",
+							"raw": "{\r\n    \"docID\":\"4uOmyvh4Y9UO3hrGMeAl\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -985,7 +985,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"dzm.fiodarau@gmail.com\",\r\n    \"firstName\": \"Dzmitry\",\r\n    \"lastName\": \"Fiodarau\",\r\n    \"phone\": \"514-123-1234\",\r\n    \"address\": \"123, Nowhere St.\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Montreal\",\r\n    \"area\": \"H8J 4H1\",\r\n    \"province\": \"QC\",\r\n    \"school\": \"Concordia\",\r\n    \"schoolCountry\": \"Canada\",\r\n    \"schoolDegree\": \"Bachelor of Engineering\",\r\n    \"schoolEnd\": \"01-05-2024\",\r\n    \"schoolMajor\": \"Software Engineering\",\r\n    \"timestamp\": \"05-03-2023\",\r\n    \"postingID\": \"B9edMZe4tjUEAFcimWUu\",\r\n    \"attachResume\": false,\r\n    \"attachCoverLetter\": true,\r\n    \"experience\": [\"Ville de Montreal,Marketing Intern,May 2021,Sept 2021\",\"Nventive,Developer Intern,May 2022,Dec 2022\"]\r\n}",
+							"raw": "{\r\n    \"email\": \"dzm.fiodarau@gmail.com\",\r\n    \"firstName\": \"Dzmitry\",\r\n    \"lastName\": \"Fiodarau\",\r\n    \"phone\": \"514-123-1234\",\r\n    \"address\": \"123, Nowhere St.\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Montreal\",\r\n    \"area\": \"H8J 4H1\",\r\n    \"province\": \"QC\",\r\n    \"school\": \"Concordia\",\r\n    \"schoolCountry\": \"Canada\",\r\n    \"schoolDegree\": \"Bachelor of Engineering\",\r\n    \"schoolEnd\": \"01-05-2024\",\r\n    \"schoolMajor\": \"Software Engineering\",\r\n    \"timestamp\": \"05-03-2023\",\r\n    \"postingID\": \"felpjahjRoaRoY6Fu4Lf\",\r\n    \"attachResume\": false,\r\n    \"attachCoverLetter\": true,\r\n    \"experience\": [\"Ville de Montreal,Marketing Intern,May 2021,Sept 2021\",\"Nventive,Developer Intern,May 2022,Dec 2022\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1006,7 +1006,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "fS0PjwOmmPRWbSZxzva9"
+									"value": "OteQMtP6wkT5XtwHCJox"
 								}
 							]
 						}
@@ -1383,6 +1383,32 @@
 								{
 									"key": "messagesLength",
 									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetActiveconversation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/getActiveConversation?email=msg1@test.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"getActiveConversation"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "msg1@test.com"
 								}
 							]
 						}

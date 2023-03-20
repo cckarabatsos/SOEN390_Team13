@@ -57,3 +57,9 @@
   color: #00acff !important;
   border-bottom: 1px solid #00acff !important;
 }
+
+.notification:hover{
+
+  color: #00acff !important;
+  transform: scale(1.2);
+}
