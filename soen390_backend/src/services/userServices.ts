@@ -609,7 +609,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
         userRef = userRef.where("isCompany", "==", true);
     }
     if (filter.name) {
-        const prefix = filter.name.toLowerCase();
+        const prefix = filter.name;
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         userRef = userRef
             .where("name", ">=", prefix)
@@ -617,7 +617,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     }
 
     if (filter.email) {
-        const prefix = filter.email.toLowerCase();
+        const prefix = filter.email
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         userRef = userRef
             .where("email", ">=", prefix)

@@ -1,20 +1,20 @@
 import { Button, Grid } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { GoogleLogin } from "react-google-login";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInUser } from "../api/loginApi";
 import background from "../assets/undraw_login_re_4vu2.svg";
-import Footer from "../components/Footer";
-import SubFooter from "../components/SubFooter";
 import "../styles/components/Login.css";
-import { useTranslation } from "react-i18next";
 
-function MainTitle(props) {
+function Login(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [incorrectLogin, setIncorrectLogin] = React.useState(false);
+  console.log("hello in login page")
 
+
+  
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ function MainTitle(props) {
           className="background"
           style={{ backgroundImage: `url(${background})` }}
         >
-          <h3 className="signuptitle">Your shortcut to career success</h3>
+          <h3 className="signuptitle">{t("remarkCareertext")}</h3>
           <div className="login-form">
             {/* <Grid container spacing={1}> */}
             <Grid container spacing={2}>
@@ -152,4 +152,4 @@ function MainTitle(props) {
   );
 }
 
-export default MainTitle;
+export default Login;

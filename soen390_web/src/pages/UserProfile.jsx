@@ -13,9 +13,13 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import Footer from "../components/Footer";
 import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
+import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
+import ExperienceItem from "../components/ExperienceItem";
+import ExperienceList from "../components/ExperienceList";
 
 import { GetFile } from "../api/UserStorageApi";
+import { getExperience } from "../api/UserProfileApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 import { useTranslation } from "react-i18next";
 
@@ -27,6 +31,9 @@ function UserProfile(props) {
   const [picture, setpicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
+  const [workExperience, setWorkExperience] = React.useState([]);
+  const [educationExperience, setEducationExperience] = React.useState([]);
+  const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -37,6 +44,18 @@ function UserProfile(props) {
 
   const handleDisableEdit = () => {
     setEnable(false);
+  };
+
+  const getUserExperience = async () => {
+    const workData = await getExperience(userData.userID, "Work");
+    setWorkExperience(workData);
+    console.log("work: " + workData);
+
+    const educationData = await getExperience(userData.userID, "Education");
+    setEducationExperience(educationData);
+    console.log("education: " + educationData);
+
+    setIsExperienceUpdated(false);
   };
 
   const setFileData = () => {
@@ -85,9 +104,13 @@ function UserProfile(props) {
     } else {
       navigate("/");
     }
-
+    getUserExperience();
     setFileData();
   }, [navigate, userData.userID]);
+
+  useEffect(() => {
+    if (isExperienceUpdated == true) getUserExperience();
+  }, [isExperienceUpdated]);
 
   return (
     <>
@@ -114,110 +137,34 @@ function UserProfile(props) {
               <Grid item xs={6}>
                 <div className="header">
                   {t("EducationText")}
-                  <AddEducationDialog />
+                  <AddEducationDialog
+                    userID={userData.userID}
+                    setIsExperienceUpdated={setIsExperienceUpdated}
+                  />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
                   </IconButton>
                 </div>
                 <hr className="line"></hr>
-                <Grid
-                  container
-                  spacing={2}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  style={{ margin: "1em" }}
-                >
-                  <Grid item xs={2}>
-                    <Grid style={{ height: "100%" }}>
-                      <img
-                        className="education-picture"
-                        src={Concordia}
-                        alt="Amazon"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      style={{
-                        textAlign: "left",
-                        fontWeight: "Bold",
-                        fontSize: "large",
-                      }}
-                    >
-                      Concordia University
-                      {enable && (
-                        <IconButton>
-                          <DeleteIcon className="profile-icon" />
-                        </IconButton>
-                      )}
-                    </Typography>
-                    <Typography style={{ textAlign: "left" }}>
-                      Bachelor of Engineering - BE, Software Engineering
-                    </Typography>
-                    <Typography
-                      style={{ textAlign: "left", fontSize: "small" }}
-                    >
-                      2020 - 2024
-                    </Typography>
-                  </Grid>
-                </Grid>
+                {educationExperience !== null && (
+                  <ExperienceList experiences={educationExperience} />
+                )}
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
                   {t("ExperienceText")}
-                  <AddExperienceDialog />
+                  <AddExperienceDialog
+                    userID={userData.userID}
+                    setIsExperienceUpdated={setIsExperienceUpdated}
+                  />
                   <IconButton onClick={handleClickEnableEdit}>
                     <EditIcon className="profile-icon" />
                   </IconButton>
                 </div>
                 <hr className="line"></hr>
-                <Grid
-                  container
-                  spacing={2}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  className="grid-container"
-                  style={{ margin: "1em" }}
-                >
-                  <Grid item xs={2}>
-                    <Grid style={{ height: "100%" }}>
-                      <img
-                        className="education-picture"
-                        src={AmazonLogo}
-                        alt="Concordia"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      style={{
-                        textAlign: "left",
-                        fontWeight: "Bold",
-                        fontSize: "large",
-                      }}
-                    >
-                      Software Development Engineer Intern
-                      {enable && (
-                        <IconButton>
-                          <DeleteIcon className="profile-icon" />
-                        </IconButton>
-                      )}
-                    </Typography>
-                    <Typography style={{ textAlign: "left" }}>
-                      Amazon
-                    </Typography>
-                    <Typography style={{ textAlign: "left" }}>
-                      Vancouver, BC, Canada
-                    </Typography>
-                    <Typography
-                      style={{ textAlign: "left", fontSize: "small" }}
-                    >
-                      May 2022 - August 2022
-                    </Typography>
-                  </Grid>
-                </Grid>
+                {workExperience !== null && (
+                  <ExperienceList experiences={workExperience} />
+                )}
               </Grid>
               <Grid item xs={6}>
                 <Grid
@@ -357,8 +304,10 @@ function UserProfile(props) {
               </Grid>
             </Grid>
           </div>
+          <ApplicationHistory></ApplicationHistory>
         </div>
       </div>
+
     </>
   );
 }

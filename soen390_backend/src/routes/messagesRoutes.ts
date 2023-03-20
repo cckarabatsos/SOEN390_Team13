@@ -5,7 +5,7 @@ import {
   createNewConversationController,
   SendNewMessage,
   GetUpdatedMessages,
-  GetActiveConversations
+  GetActiveConversations,
 } from "../controllers/messagesController";
 const messages = express.Router();
 messages.use(express.json());
@@ -42,7 +42,6 @@ messages.get("/createConversation", async (req, res) => {
 // this route will be used to return the list of messages within a conversatiuon entity.
 // receives the email address of the conversatiuon entity
 //outputs the list of messages along with their sender email address
-
 messages.get("/getAllMessages", async (req, res) => {
   try {
     const userEmails: string[] = JSON.parse(req.query.userEmails as string);
@@ -66,7 +65,7 @@ messages.get("/getAllMessages", async (req, res) => {
   }
 });
 
-// This route will be used to update the current conversation with missing messages that are in the database but not received by the client yet. 
+// This route will be used to update the current conversation with missing messages that are in the database but not received by the client yet.
 // It receives the current messages length and the list of emails of the conversation entity, and outputs the missing messages along with the respective sender email address.
 messages.get("/updateMessages", async (req, res) => {
   try {
@@ -75,7 +74,7 @@ messages.get("/updateMessages", async (req, res) => {
     const senderEmail = req.query.senderEmail as string;
     const messagesLength: number = parseInt(req.query.messagesLength as string);
     // Validate the input
-    if (!userEmails || !senderEmail || messagesLength<0) {
+    if (!userEmails || !senderEmail || messagesLength < 0) {
       return res.status(400).json({
         message: "Please provide all required data",
       });
@@ -140,51 +139,34 @@ messages.get("/sendMessage", async (req, res) => {
   }
 });
 
-// this route will freat the last messafe if a conversation. can be used as thumbnails
-// receives as input the list of user within the conversation
-// output the content of the last recorded messages in the conversation
-// messages.get("/getMessages", async (req, res) => {
-//   try {
-//     const { email } = req.query;
-//     if (!email) {
-//       return res.status(400).json({
-//         message: "Please provide an email address",
-//       });
-//     }
-//     const jobPostings = "hello 5";
-//     return res.status(200).json({
-//       message: "Messages retrieved successfully",
-//       jobPostings,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       message: "Internal server error",
-//     });
-//   }
-// });
-
-
-
 messages.get("/getActiveConversation", async (req, res) => {
-    try {
-      const email  = req.query.email as string;
-      if (!email) {
-        return res.status(400).json({
-          message: "Please provide an email address",
-        });
-      }
-      const activeConvos = await GetActiveConversations(email);
-      
-      return res.status(200).json({
-        message: "Messages retrieved successfully",
-        activeConvos,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal server error",
+  try {
+    const email = req.query.email as string;
+    const returnEmail = req.query.returnEmail as string
+
+    
+    if (!email) {
+      return res.status(400).json({
+        message: "Please provide an email address",
       });
     }
-  });
+    var activeConvos:any
+    if(returnEmail=="true"){
+       activeConvos = await GetActiveConversations(email,true);
+    }
+    else{
+      activeConvos =await GetActiveConversations(email,false);
+    }
+
+    return res.status(200).json({
+      message: "Messages retrieved successfully",
+      activeConvos,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
 module.exports = messages;

@@ -260,87 +260,6 @@ export async function sendMessage(
   }
 }
 
-export async function getMessages(senderEmail: string, userEmails: string[]) {
-  console.log(userEmails);
-
-  try {
-    // get user ids from the array of
-
-    let userIds: string[] = new Array();
-
-    for (var i = 0; i < userEmails.length; i++) {
-      var anUser: any;
-      console.log(userEmails[i]);
-
-      anUser = await new Promise((resolve, _) => {
-        findUserWithEmail(userEmails[i], (user) => {
-          // console.log(user);
-          if (user == null) {
-            resolve(null);
-          } else {
-            resolve(user);
-          }
-        });
-      });
-
-      if (anUser.data) {
-        userIds.push(anUser.data["userID"]);
-      }
-    }
-    userIds = orderIds(userIds);
-
-    // fetch the sender userID from the database
-    let sender: any;
-    sender = await new Promise((resolve, _) => {
-      findUserWithEmail(senderEmail, (user) => {
-        // console.log(user);
-        if (user == null) {
-          resolve(null);
-        } else {
-          resolve(user);
-        }
-      });
-    });
-
-    //fetch the conversation entity shared among the users
-
-    let conversation = await fetchConversation(userIds);
-
-    let messagesRef = conversation[0].data["messages"];
-    console.log(sender.data["userID"]);
-
-    var listOfMessages: messagesListElement[] = [];
-
-    for (var i = 0; i < messagesRef.length; i++) {
-      let snapShot: any = await messagesRef[i].get();
-      let chat: chatMessage = snapShot.data() as chatMessage;
-
-      //if its not the owner of the sent mesage set the read flag to true
-      if (chat.senderId != sender.data["userID"] && chat.isRead == false) {
-        chat.isRead = true;
-        await db.collection("chats").doc(snapShot.id).update({
-          isRead: true,
-        });
-      }
-
-      //convert to readable Date javascript object for timestamp
-      chat.timestamp = (
-        chat.timestamp as firebase.firestore.Timestamp
-      ).toDate();
-
-      //populates the return message list:
-      var messageWrapper: messagesListElement = {
-        email: senderEmail,
-        message: chat,
-      };
-      listOfMessages.push(messageWrapper);
-    }
-    return listOfMessages;
-  } catch (error) {
-    throw new Error("Error in getMessages: " + (error as Error).message);
-  }
-}
-
 /**
 
 Asynchronously retrieves any new messages sent to a conversation and marks them as read for the recipient.
@@ -443,7 +362,10 @@ export async function getUpdatedMessages(
   }
 }
 
-export async function getActiveConversations(email: string) {
+export async function getActiveConversations(
+  email: string,
+  returnEmail: boolean
+) {
   try {
     // retrive sender email
     let sender: any;
@@ -475,6 +397,8 @@ export async function getActiveConversations(email: string) {
 
     let conversationList: conversationListElement[] = [];
 
+    //var tempArray=[]
+
     for (var i = 0; i < convo.length; i++) {
       let msgToFetch = convo[i].data["messages"].length;
       if (msgToFetch > 0) {
@@ -485,12 +409,42 @@ export async function getActiveConversations(email: string) {
           ActiveUser: convo[i].data["userArray"],
           message: messageRef.data() as chatMessage,
         };
+        if (returnEmail) {
+          var temp: any;
+          var tempArray = [];
+
+          for (var j = 0; j < element.ActiveUser.length; j++) {
+            temp = await db
+              .collection("users")
+              .doc(element.ActiveUser[j])
+              .get();
+            //temp= element.ActiveUser[j]
+            tempArray.push(temp.data()["email"]);
+          }
+
+          element.ActiveUser = tempArray;
+        }
         conversationList.push(element);
       } else {
         let element: conversationListElement = {
           ActiveUser: convo[i].data["userArray"],
           message: null,
         };
+        if (returnEmail) {
+          var temp: any;
+          var tempArray = [];
+
+          for (var j = 0; j < element.ActiveUser.length; j++) {
+            temp = await db
+              .collection("users")
+              .doc(element.ActiveUser[j])
+              .get();
+            tempArray.push(temp.data()["email"]);
+          }
+
+          element.ActiveUser = tempArray;
+        }
+
         conversationList.push(element);
       }
     }

@@ -20,17 +20,17 @@ function SubFooter() {
     <>
       <div
         data-testid="subfooter-1"
-        style={{ position: "static", bottom: 0, width: "100%" }}
+        style={{ position: "relative", bottom: 0, width: "100%" }}
       >
         <AppBar
           className="border"
-          position="static"
+          position="relative"
           style={{ background: "#ffffff" }}
         >
           <CssBaseline />
           <Toolbar className="border">
             {isMobile ? (
-              <DrawerComponent />
+              <></> // <DrawerComponent />
             ) : (
               <span className="navlinks">
                 <img className="Logo" src={navlogo} alt="LinkedOut" />
@@ -63,7 +63,7 @@ function SubFooter() {
           </Toolbar>
           <Toolbar className="border">
             {isMobile ? (
-              <DrawerComponent />
+              <></> // <DrawerComponent />
             ) : (
               <span className="navlinks"></span>
             )}
