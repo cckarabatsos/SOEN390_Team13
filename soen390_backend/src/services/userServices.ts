@@ -292,6 +292,68 @@ export function processData(snapshot: any) {
     }
 }
 /**
+ * Service that handles the removal of a user connection between two users
+ * @param receiverID
+ * @param senderID
+ */
+export async function removeUserContact(
+    senderEmail: string,
+    removedEmail: string
+) {
+    try {
+        var senderUser: any = await new Promise((resolve, _) => {
+            findUserWithEmail(senderEmail, (user) => {
+                // console.log(user);
+                if (user == null) {
+                    resolve(null);
+                } else {
+                    resolve(user);
+                }
+            });
+        });
+
+        var removedUser: any = await new Promise((resolve, _) => {
+            findUserWithEmail(removedEmail, (user) => {
+                // console.log(user);
+                if (user == null) {
+                    resolve(null);
+                } else {
+                    resolve(user);
+                }
+            });
+        });
+
+        if (!(senderUser || removedUser)) {
+            throw error(
+                "cannot find desired receiver or sender when trying to send invitation"
+            );
+        }
+        if (!(senderUser.data as User).contacts.includes(removedEmail)) {
+            throw error("error sender and receiver are not contacts");
+        } else {
+            console.log("proceed check 1");
+        }
+
+        await db
+            .collection("users")
+            .doc(senderUser.data.userID)
+            .update({
+                contacts:
+                    firebase.firestore.FieldValue.arrayRemove(removedEmail),
+            });
+        await db
+            .collection("users")
+            .doc(removedUser.data.userID)
+            .update({
+                contacts:
+                    firebase.firestore.FieldValue.arrayRemove(senderEmail),
+            });
+    } catch (error) {
+        console.log(error);
+        throw new Error("this is an invitation error");
+    }
+}
+/**
  * Send an invitation to a users
  * @param receiverEmail
  * @param senderEmail
@@ -617,7 +679,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     }
 
     if (filter.email) {
-        const prefix = filter.email
+        const prefix = filter.email;
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         userRef = userRef
             .where("email", ">=", prefix)
