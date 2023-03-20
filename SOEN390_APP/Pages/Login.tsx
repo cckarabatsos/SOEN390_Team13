@@ -71,7 +71,7 @@ export default function Login({ navigation }: { navigation: any }) {
     let aUser = new LoginUserModel(email, password);
 
     const userProfile = await UserLogin(aUser);
-
+    
     if (userProfile) {
       
       navigation.navigate({

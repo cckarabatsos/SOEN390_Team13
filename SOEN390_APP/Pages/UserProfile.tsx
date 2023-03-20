@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     Platform,
     Image,
-    Modal
+    Modal,
+    ActivityIndicator
 } from 'react-native';
 import React from 'react'
 import { useEffect, useState } from "react";
@@ -209,6 +210,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleApplication, setModalVisibleApplication] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   let name = route.params.username
   let password = route.params.password
@@ -220,6 +222,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   const handleGetUser = async () => {
     const user = await GetUserInfo(userID)
     setUser(user);
+    setIsLoading(false);
   }
 
 
@@ -379,6 +382,14 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
     setModalVisibleApplication(false);
   }; 
   
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+  else
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -483,6 +494,12 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
     },
     switchContainer: {
         flexDirection: 'row',
