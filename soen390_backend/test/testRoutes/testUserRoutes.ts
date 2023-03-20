@@ -345,6 +345,22 @@ describe("Test User Routes", function () {
                 .expect(404);
         });
     });
+    describe("Get user/api/removeContact", function () {
+        it("responds with 200 when you can remove a user from your contacts", async function () {
+            await request(url)
+                .get(
+                    `/user/api/removeContact?senderEmail=${randomEmail1}&removedEmail=${randomEmail2}`
+                )
+                .expect(200);
+        });
+        it("responds with 404 when the contact is already removed", async function () {
+            await request(url)
+                .get(
+                    `/user/api/removeContact?senderEmail=${randomEmail1}&removedEmail=${randomEmail2}`
+                )
+                .expect(404);
+        });
+    });
 
     describe("Get user/api/getPendingInvitations", function () {
         it("responds with 200 when you can get the invitations", async function () {

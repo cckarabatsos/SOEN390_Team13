@@ -16,6 +16,7 @@ import {
     deleteAccountFile,
     followCompanyInv,
     unFollowCompanyInv,
+    removeUserContact,
 } from "../services/userServices";
 import dotenv from "dotenv";
 import {
@@ -222,6 +223,21 @@ export async function editAccount(
 export async function sendInvite(receiverEmail: string, senderEmail: string) {
     try {
         await sendUserInvitation(receiverEmail, senderEmail);
+    } catch (error) {
+        return [404, { msg: (error as Error).message }];
+    }
+
+    return [200, { msg: "Invitation sent" }];
+}
+/**
+ * Function to remove a certain contact for a user
+ * @param receiverEmail
+ * @param senderEmail
+ * @returns [status,msg:""]
+ */
+export async function removeContact(senderEmail: string, removedEmail: string) {
+    try {
+        await removeUserContact(senderEmail, removedEmail);
     } catch (error) {
         return [404, { msg: (error as Error).message }];
     }
