@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Dimensions,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { GetAllMessages } from "../api/MessagesAPI";
@@ -34,6 +35,8 @@ const ChatPage = ({ route, navigation }:any) => {
   const [input, setInput] = useState('');
   const [refreshTime, setRefreshTime] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRead, setIsRead] = useState(true);
   let name = chatData.userName
 
   const goBack = () => {
@@ -47,6 +50,7 @@ const ChatPage = ({ route, navigation }:any) => {
 
     const newObjectsArray = await Promise.all(message.map(buildObject));
     setMessages(newObjectsArray);
+    setIsLoading(false);
   }
   const { v4: uuidv4 } = require('uuid');
 
@@ -67,18 +71,27 @@ const handleGetUserInfo = async(userID:string) =>{
     const obj = {
       id: uuidv4(),
       text: message.content,
+      isRead: message.isRead,
       name: user.name,
       image: user.picture|| 'https://randomuser.me/api/portraits/men/1.jpg',
-      sendByUser: handleIsSentByUser(user.name)
+      sendByUser: handleIsSentByUser(user.name, message.isRead)
     }
     //console.log(obj)
     return obj;
   }
 
-  const handleIsSentByUser = (userName:string) =>{
-    if(userName===name)
+  const handleIsSentByUser = (userName:string, isReadIn:boolean) =>{
+    if(userName===name){
+ 
+      if(!isReadIn){
+        setIsRead(isReadIn)
+      }
       return true
-    else return false
+    }
+
+    else { 
+      return false
+    }
   }
 
 
@@ -94,8 +107,14 @@ const handleSendMessage = async (message:string) => {
 
   }
 
-
-
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+  else
   return (
     <View style={styles.container}>
            <View style={styles.header}>
@@ -124,6 +143,16 @@ const handleSendMessage = async (message:string) => {
       </View>
     </View>
   )}
+  ListFooterComponent={
+    <View style={styles.readIndicator}>
+    {isRead ?
+      <Image style={styles.readIndicatorImage} source={{ uri: chatData.image }} />
+      :
+    
+       <Ionicons name="checkmark-circle-outline" size={28} color="#555" /> 
+    }
+  </View>
+  }
 />
 
       <View style={styles.inputBox}>
@@ -150,6 +179,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
   messageBox: {
     padding: 10,
@@ -265,6 +300,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
   },
+  readIndicator: {
+    alignItems: 'flex-end'
+  },
+  readIndicatorImage: {
+    width: 22,
+    height: 22,
+    borderRadius: 8,
+  },
+  unreadIndicator: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+
+  }
 });
 export default ChatPage;
 

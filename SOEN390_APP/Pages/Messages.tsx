@@ -9,9 +9,10 @@ import {
   ImageBackground,
   Dimensions,
   FlatList,
+  ActivityIndicator
 } from "react-native";
 
-
+import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GetActiveConversations } from "../api/MessagesAPI";
 import { GetUserInfo } from "../api/GetUsersAPI";
@@ -38,6 +39,7 @@ const Messages  = ({ route, navigation }:any) => {
   const [conversations, setConversations] = useState<ConversationType[]>([]);
   const [allMessages, setAllMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   
   
@@ -45,7 +47,7 @@ const Messages  = ({ route, navigation }:any) => {
     const message = await GetActiveConversations(emailUser);
     const newObjectsArray = await Promise.all(message.map(buildObject));
     setConversations(newObjectsArray);
-      
+    setIsLoading(false);
   }
   const { v4: uuidv4 } = require('uuid');
   
@@ -68,11 +70,10 @@ const Messages  = ({ route, navigation }:any) => {
   
   const buildObject = async (jsonObject:any) => {
     const { ActiveUser, message } = jsonObject;
-    console.log("sss")
-    console.log(ActiveUser)
     let activeUser:string = ""
     let message1 =""
-    let timestamp1 =""
+    let date = new Date()
+    let isRead1 = false
 
     ActiveUser.forEach((element: any) => {
       if(element!==userID){
@@ -82,19 +83,35 @@ const Messages  = ({ route, navigation }:any) => {
 
     if(message!=null){
       message1=message.content
-      timestamp1 = message.timestamp
+      const timestamp = message.timestamp
+      date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+      isRead1= message.isRead
+      console.log(message1)
+      console.log(isRead1)
+      console.log(timestamp)
+      console.log(date)
     }
 
     const user = await handleGetUserInfo(activeUser)
+
+    const options: Intl.DateTimeFormatOptions = { 
+      timeStyle: 'short', 
+      dateStyle: 'medium', 
+      year: undefined, // remove the year option
+      hour12: true,
+    };
+    const formattedDate = date.toLocaleString('en-US', options);
+
     const obj = {
       id: uuidv4(),
       name: user.name,
       image: user.picture|| 'https://randomuser.me/api/portraits/men/1.jpg',
       lastMessage: message1,
-      timestamp: timestamp1, 
+      timestamp: formattedDate, 
       email: user.email,
       emailUser: emailUser,
-      userName: username
+      userName: username,
+      isRead: isRead1
     }
     return obj;
   }
@@ -110,7 +127,14 @@ const Messages  = ({ route, navigation }:any) => {
           <Text style={styles.name}>{chatData.name}</Text>
           <Text style={styles.lastMessage}>{chatData.lastMessage}</Text>
         </View>
-        <Text style={styles.timestamp}>{chatData.timestamp.seconds}</Text>
+        <Text style={styles.timestamp}>{chatData.timestamp}</Text>
+        <View style={styles.readIndicator}>
+          {chatData.isRead ?
+            <Image style={styles.readIndicatorImage} source={{ uri: chatData.image }} />
+            :
+            <Ionicons name="checkmark-circle-outline" size={28} color="#555" /> 
+          }
+         </View>
       </View>
     </TouchableOpacity>
   );
@@ -131,6 +155,15 @@ const Messages  = ({ route, navigation }:any) => {
       </View>
     );
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+  else
   return (
     <Stack.Navigator screenOptions={{
       headerShown: false
@@ -150,6 +183,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     
     justifyContent: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
   chatBox: {
     flexDirection: 'row',
@@ -178,7 +217,22 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     fontSize: 16,
-    color: '#696969'
+    color: '#696969',
+    marginRight: 10
+  },
+  readIndicator: {
+    alignItems: 'center'
+  },
+  readIndicatorImage: {
+    width: 22,
+    height: 22,
+    borderRadius: 8,
+  },
+  unreadIndicator: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+
   }
 });
 

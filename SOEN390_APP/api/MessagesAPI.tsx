@@ -35,9 +35,9 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
         },
       });
       if (response.status == 200) {
-        return response.data.usersChat[1];
+        return response.data.usersChat;
       } else {
-        return response.data.usersChat[1];
+        return response.data.usersChat;
       }
     } catch (error) {
       console.error("error Remove Application", error);
@@ -76,14 +76,13 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
             email: emailUser
         },
       });
-      console.log("------------------------" )
+      console.log("---------------------------------------")
       console.log(response.data.activeConvos)
-      console.log(response.data.activeConvos[1])
-      console.log("------------------------" )
+      console.log("---------------------------------------")
       if (response.status == 200) {
-        return response.data.activeConvos[1];
+        return response.data.activeConvos;
       } else {
-        return response.data.activeConvos[1];
+        return response.data.activeConvos;
       }
     } catch (error) {
       console.error("error Remove Application", error);
