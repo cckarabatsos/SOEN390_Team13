@@ -71,7 +71,9 @@ export default function CompanyApplicationList(props) {
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
-                <TableRow>
+                <TableRow
+                data-testid="table-rows"
+                >
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
@@ -122,6 +124,7 @@ export default function CompanyApplicationList(props) {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            data-testid="rows-per-page-selector"
           />
         </Paper>
       </div>
