@@ -1,4 +1,6 @@
+// import dependencies
 import React from 'react';
+// import react testing methods
 import { render, fireEvent, screen } from '@testing-library/react';
 import CompanySearchComponent from '../components/CompanySearchComponent';
 
@@ -28,8 +30,8 @@ describe('CompanySearchComponent', () => {
     expect(screen.getByText(company.location)).toBeInTheDocument();
   });
 
+  //checks if navigates to company profile upon click
   it("navigates to CompanyProfile with correct state on button click", () => {
-    
     const { getByText } = render(<CompanySearchComponent {...company} />);
 
     const button = getByText("MoreInfoText");

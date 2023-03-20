@@ -1,7 +1,9 @@
+// import dependencies
 import React from "react";
+//import react testing methods
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import { CompanySearchBar } from "../components/CompanySearchBar";
 import { MemoryRouter } from 'react-router-dom';
+import { CompanySearchBar } from "../components/CompanySearchBar";
 
 describe("CompanySearchBar", () => {
     
