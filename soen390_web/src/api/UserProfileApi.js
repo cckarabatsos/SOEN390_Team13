@@ -39,7 +39,11 @@ export async function getExperience(userID, type) {
       return data;
     } else {
       return null;
-
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 export async function findUserById(userID) {
   try {
