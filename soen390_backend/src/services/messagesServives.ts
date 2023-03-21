@@ -260,7 +260,6 @@ export async function sendMessage(
   }
 }
 
-
 /**
 
 Asynchronously retrieves any new messages sent to a conversation and marks them as read for the recipient.
@@ -363,7 +362,10 @@ export async function getUpdatedMessages(
   }
 }
 
-export async function getActiveConversations(email: string) {
+export async function getActiveConversations(
+  email: string,
+  returnEmail: boolean
+) {
   try {
     // retrive sender email
     let sender: any;
@@ -395,6 +397,8 @@ export async function getActiveConversations(email: string) {
 
     let conversationList: conversationListElement[] = [];
 
+    //var tempArray=[]
+
     for (var i = 0; i < convo.length; i++) {
       let msgToFetch = convo[i].data["messages"].length;
       if (msgToFetch > 0) {
@@ -405,12 +409,42 @@ export async function getActiveConversations(email: string) {
           ActiveUser: convo[i].data["userArray"],
           message: messageRef.data() as chatMessage,
         };
+        if (returnEmail) {
+          var temp: any;
+          var tempArray = [];
+
+          for (var j = 0; j < element.ActiveUser.length; j++) {
+            temp = await db
+              .collection("users")
+              .doc(element.ActiveUser[j])
+              .get();
+            //temp= element.ActiveUser[j]
+            tempArray.push(temp.data()["email"]);
+          }
+
+          element.ActiveUser = tempArray;
+        }
         conversationList.push(element);
       } else {
         let element: conversationListElement = {
           ActiveUser: convo[i].data["userArray"],
           message: null,
         };
+        if (returnEmail) {
+          var temp: any;
+          var tempArray = [];
+
+          for (var j = 0; j < element.ActiveUser.length; j++) {
+            temp = await db
+              .collection("users")
+              .doc(element.ActiveUser[j])
+              .get();
+            tempArray.push(temp.data()["email"]);
+          }
+
+          element.ActiveUser = tempArray;
+        }
+
         conversationList.push(element);
       }
     }

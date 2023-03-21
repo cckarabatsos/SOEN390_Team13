@@ -15,6 +15,7 @@ export function CompanySearchBar({ setCompanies }) {
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
   const { t } = useTranslation();
+  // const navigate = useNavigate();
   const handleTextChange = (e) => {
     setText(e.target.value);
 

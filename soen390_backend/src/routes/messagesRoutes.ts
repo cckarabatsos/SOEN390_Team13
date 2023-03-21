@@ -142,12 +142,21 @@ messages.get("/sendMessage", async (req, res) => {
 messages.get("/getActiveConversation", async (req, res) => {
   try {
     const email = req.query.email as string;
+    const returnEmail = req.query.returnEmail as string
+
+    
     if (!email) {
       return res.status(400).json({
         message: "Please provide an email address",
       });
     }
-    const activeConvos = await GetActiveConversations(email);
+    var activeConvos:any
+    if(returnEmail=="true"){
+       activeConvos = await GetActiveConversations(email,true);
+    }
+    else{
+      activeConvos =await GetActiveConversations(email,false);
+    }
 
     return res.status(200).json({
       message: "Messages retrieved successfully",

@@ -19,6 +19,8 @@ describe('Modal component', () => {
         const viewContract = 'Contract';
         const viewEmail = 'Email';
         const viewCompany = 'Company';
+        const viewMandatoryCoverLetter = Boolean;
+        const viewMandatoryResume = Boolean;
         
         const { getByText } = render(
           <BrowserRouter>
@@ -31,6 +33,8 @@ describe('Modal component', () => {
               viewContract={viewContract}
               viewEmail={viewEmail}
               viewCompany={viewCompany}
+              viewMandatoryCoverLetter={viewMandatoryCoverLetter}
+              viewMandatoryResume={viewMandatoryResume}
           />
       </BrowserRouter>
       );
