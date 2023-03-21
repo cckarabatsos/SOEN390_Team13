@@ -39,12 +39,17 @@ export async function getExperience(userID, type) {
       return data;
     } else {
       return null;
-    }
+
+
+export async function findUserById(userID) {
+  try {
+    const response = await axios.get(api.BACKEND_API + "/user/id/" + userID);
+    return response;
   } catch (err) {
     console.error(err);
-    throw err; // re-throw any caught errors for the calling function to handle
   }
 }
+
 
 export async function removeExperience(experienceID) {
   try {
@@ -110,3 +115,4 @@ export async function removeSkill(skillId) {
     return false; 
   }
 }
+
