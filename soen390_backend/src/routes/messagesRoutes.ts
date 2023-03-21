@@ -16,7 +16,7 @@ dotenv.config();
 // output true if the conversation was sucessfully created
 messages.get("/createConversation", async (req, res) => {
   console.log("in createConversation");
-  console.log(req)
+  console.log(req);
   try {
     const userEmails: string[] = JSON.parse(req.query.emails as string);
 
@@ -44,7 +44,10 @@ messages.get("/createConversation", async (req, res) => {
 //outputs the list of messages along with their sender email address
 messages.get("/getAllMessages", async (req, res) => {
   try {
-    const userEmails: string[] = JSON.parse(req.query.userEmails as string);
+    const userEmails: string[] =
+      typeof req.query.userEmails === "string"
+        ? JSON.parse(req.query.userEmails)
+        : req.query.userEmails;
     const senderEmail = req.query.senderEmail as string;
 
     if (!userEmails) {
@@ -104,10 +107,10 @@ messages.get("/updateMessages", async (req, res) => {
 // Output: a boolean value indicating whether the message was successfully sent or not.
 messages.get("/sendMessage", async (req, res) => {
   try {
-    
     const senderEmail = req.query.senderEmail as string;
     const emails: string[] = JSON.parse(req.query.emails as string);
     const message = req.query.message as string;
+    console.log(message);
     // Error detection for missing or invalid inputs
     if (
       !emails ||
@@ -142,20 +145,18 @@ messages.get("/sendMessage", async (req, res) => {
 messages.get("/getActiveConversation", async (req, res) => {
   try {
     const email = req.query.email as string;
-    const returnEmail = req.query.returnEmail as string
+    const returnEmail = req.query.returnEmail as string;
 
-    
     if (!email) {
       return res.status(400).json({
         message: "Please provide an email address",
       });
     }
-    var activeConvos:any
-    if(returnEmail=="true"){
-       activeConvos = await GetActiveConversations(email,true);
-    }
-    else{
-      activeConvos =await GetActiveConversations(email,false);
+    var activeConvos: any;
+    if (returnEmail == "true") {
+      activeConvos = await GetActiveConversations(email, true);
+    } else {
+      activeConvos = await GetActiveConversations(email, false);
     }
 
     return res.status(200).json({
