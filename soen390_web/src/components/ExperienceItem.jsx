@@ -16,7 +16,7 @@ function ExperienceItem({ experience, enable, setIsExperienceUpdated }) {
   useEffect(() => {
     if (typeof setIsExperienceUpdated === "function" && isExperienceDeleted) {
       setIsExperienceUpdated(true);
-      // setIsExperienceDeleted(false);
+      setIsExperienceDeleted(false);
     }
   }, [isExperienceDeleted]);
 
