@@ -188,7 +188,11 @@ function UserProfile(props) {
                 </div>
                 <hr className="line"></hr>
                 {educationExperience !== null && (
-                  <ExperienceList experiences={educationExperience} />
+                  <ExperienceList
+                    experiences={educationExperience}
+                    enable={enable}
+                    setIsExperienceUpdated={setIsExperienceUpdated}
+                  />
                 )}
               </Grid>
               <Grid item xs={6}>
@@ -204,7 +208,11 @@ function UserProfile(props) {
                 </div>
                 <hr className="line"></hr>
                 {workExperience !== null && (
-                  <ExperienceList experiences={workExperience} />
+                  <ExperienceList
+                    experiences={workExperience}
+                    enable={enable}
+                    setIsExperienceUpdated={setIsExperienceUpdated}
+                  />
                 )}
               </Grid>
               <Grid item xs={6}>
