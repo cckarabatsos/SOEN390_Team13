@@ -39,12 +39,17 @@ export async function getExperience(userID, type) {
       return data;
     } else {
       return null;
-    }
+
+
+export async function findUserById(userID) {
+  try {
+    const response = await axios.get(api.BACKEND_API + "/user/id/" + userID);
+    return response;
   } catch (err) {
     console.error(err);
-    throw err; // re-throw any caught errors for the calling function to handle
   }
 }
+
 
 export async function removeExperience(experienceID) {
   try {
@@ -57,11 +62,57 @@ export async function removeExperience(experienceID) {
   }
 }
 
-export async function findUserById(userID) {
+export async function getSkills(userID) {
   try {
-    const response = await axios.get(api.BACKEND_API + "/user/id/" + userID);
-    return response;
+    const response = await axios.get(
+      api.BACKEND_API + "/skill/get/" + userID,
+      {}
+    );
+    if (response.status === 200) {
+      const data = response.data; // wait for the data to
+
+      return data;
+    } else {
+      return null;
+    }
   } catch (err) {
     console.error(err);
+    return []; // re-throw any caught errors for the calling function to handle
   }
 }
+
+export async function addSkill(userID, skill) {
+  try {
+    const response = await axios.post(api.BACKEND_API + "/skill/" + userID, {
+      name: skill,
+    });
+    if (response.status === 200) {
+      // wait for the data to
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+export async function removeSkill(skillId) {
+  try {
+    
+    const response = await axios.post(
+      api.BACKEND_API + "/skill/remove/" + skillId
+    );
+    if (response.status === 200) {
+      // wait for the data to
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false; 
+  }
+}
+
