@@ -19,7 +19,12 @@ import ExperienceItem from "../components/ExperienceItem";
 import ExperienceList from "../components/ExperienceList";
 
 import { GetFile } from "../api/UserStorageApi";
-import { getExperience } from "../api/UserProfileApi";
+import {
+  getExperience,
+  getSkills,
+  addSkill,
+  removeSkill,
+} from "../api/UserProfileApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 import { useTranslation } from "react-i18next";
 
@@ -34,6 +39,10 @@ function UserProfile(props) {
   const [workExperience, setWorkExperience] = React.useState([]);
   const [educationExperience, setEducationExperience] = React.useState([]);
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
+
+  const [skills, setSkills] = React.useState([]);
+
+  const [newSkill, setNewSkill] = React.useState("");
   const { t } = useTranslation();
 
   const navigate = useNavigate();
@@ -92,9 +101,19 @@ function UserProfile(props) {
         console.log(
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
-        console.log("resume:", resume);
       });
     }
+  };
+
+  const getSkillList = async (userID) => {
+    var response = await getSkills(userID);
+    var skillArray = [];
+
+    for (var i = 0; i < response.length; i++) {
+      skillArray.push([response[i]["name"], response[i]["skillID"]]);
+    }
+
+    setSkills(skillArray);
   };
 
   useEffect(() => {
@@ -106,11 +125,33 @@ function UserProfile(props) {
     }
     getUserExperience();
     setFileData();
+    getSkillList(userData.userID);
   }, [navigate, userData.userID]);
 
   useEffect(() => {
     if (isExperienceUpdated == true) getUserExperience();
   }, [isExperienceUpdated]);
+
+  const addNewSkill = async (userID) => {
+    if (newSkill != "") {
+      var response = await addSkill(userID, newSkill);
+
+      if (response) {
+        await getSkillList(userID);
+      }
+    }
+  };
+
+  const handleRemoveSkillOnClick = async (id) => {
+    var response = await removeSkill(id);
+    if (response) {
+      await getSkillList(userData.userID);
+    }
+  };
+
+  useEffect(() => {
+    addNewSkill(userData.userID);
+  }, [newSkill]);
 
   return (
     <>
@@ -180,57 +221,30 @@ function UserProfile(props) {
                     <div className="header">{t("SkillsText")}</div>
                   </Grid>
                   <Grid iten xs={6}>
-                    <AddSkillDialog />
+                    <AddSkillDialog setNewSkill={setNewSkill} />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
                     </IconButton>
                   </Grid>
                 </Grid>
                 <hr className="line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  Java
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  Python
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  JavaScript
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  Software Testing
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
+                {skills.map((aSkill) => (
+                  <div>
+                    <Typography style={{ marginLeft: "5%" }} className="skill">
+                      {aSkill[0]}
+                      {enable && (
+                        <span className="profile-item">
+                          <IconButton
+                            onClick={() => handleRemoveSkillOnClick(aSkill[1])}
+                          >
+                            <DeleteIcon className="profile-icon" />
+                          </IconButton>
+                        </span>
+                      )}
+                    </Typography>
+                    <hr className="sub-line"></hr>
+                  </div>
+                ))}
               </Grid>
               <Grid item xs={6}>
                 <Grid
@@ -307,7 +321,6 @@ function UserProfile(props) {
           <ApplicationHistory></ApplicationHistory>
         </div>
       </div>
-
     </>
   );
 }
