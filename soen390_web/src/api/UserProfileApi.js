@@ -40,6 +40,12 @@ export async function getExperience(userID, type) {
     } else {
       return null;
 
+    }
+  } catch(err){
+    console.error(err);
+  }
+}
+
 
 export async function findUserById(userID) {
   try {
@@ -115,4 +121,3 @@ export async function removeSkill(skillId) {
     return false; 
   }
 }
-
