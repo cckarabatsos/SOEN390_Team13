@@ -173,7 +173,7 @@ function UserProfile(props) {
                 {userData.name}
               </Grid>
               <Grid className="bio" item xs={12}>
-                Software Engineering Student at Concordia University
+                {userData.bio}
               </Grid>
               <Grid item xs={6}>
                 <div className="header">
