@@ -69,19 +69,21 @@ const AppWrapper = () => {
             <>
               <Route path="/UserProfile" element={<UserProfile />} />
               <Route
-              
                 path="/UserProfile/:userId"
                 element={<ViewUserProfile />}
               />
-              
+
               <Route path="/Contacts" element={<Contacts />} />
               <Route path="/JobApplication" element={<JobApplication />} />
               <Route path="/UserNetworking" element={<UserNetworking />} />
               <Route path="/UserConnection" element={<UserConnection />} />
-              <Route path="/Messages/:userId" element={<MessagingPage />} />
+              <Route
+                path="/Messages/:userId"
+                element={<MessagingPage userData={userData} />}
+              />
               <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
               <Route path="/NotificationsPage" element={<NotificationPage />} />
-              
+
               {userData.isAdmin && (
                 <Route path="/Admin" element={<Admin userData={userData} />} />
               )}

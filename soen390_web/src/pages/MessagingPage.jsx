@@ -1,3 +1,7 @@
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllMessages, sendMessage } from "../api/messagesApi";
+import { findUserById } from "../api/UserProfileApi";
 import {
   Avatar,
   Badge,
@@ -15,14 +19,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    marginBottom: "40%",
   },
   drawer: {
     width: drawerWidth,
@@ -42,15 +45,55 @@ const useStyles = makeStyles((theme) => ({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+  conversation: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  messageContainer: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "auto",
+    marginBottom: "8px",
+  },
+  message: {
+    maxWidth: "80%",
+    padding: "8px",
+    borderRadius: "16px",
+    backgroundColor: "#F5F5F5",
+    alignSelf: "flex-start",
+    marginBottom: "8px",
+    boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
+  },
+  sentMessage: {
+    alignSelf: "flex-start",
+    backgroundColor: "#F5F5F5",
+    color: "white",
+    borderRadius: "16px",
+    padding: "8px",
+    maxWidth: "80%",
+    marginBottom: "8px",
+    boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
+  },
+
+  messageInputContainer: {
+    display: "flex",
+    marginTop: "8px",
+  },
+  messageInput: {
+    flexGrow: 1,
+    marginRight: "8px",
+  },
 }));
 
-function Messages() {
+function Messages(props) {
   const classes = useStyles();
   const navigate = useNavigate();
   const location = useLocation();
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState();
   const [message, setMessage] = useState("");
+  const [conversation, setConversation] = useState([]);
 
   useEffect(() => {
     const mockContacts = [
@@ -86,17 +129,29 @@ function Messages() {
       },
     ];
     setUsers(mockContacts);
-    // fetch("/api/users")
-    //   .then((response) => response.json())
-    //   .then((data) => setUsers(data))
-    //   .catch((error) => console.error(error));
   }, []);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const userId = searchParams.get("userId");
-    const user = users.find((user) => user.id === userId);
-    setSelectedUser(user);
+    async function fetchData() {
+      const userId = window.location.pathname.split("/").pop();
+      console.log(userId);
+      const user = await findUserById(userId);
+      console.log(props.userData.email);
+      const activeMessages = await getAllMessages(
+        props.userData.email,
+        user.data.email
+      );
+      console.log(activeMessages.data.usersChat);
+
+      // set the value of conversation to the usersChat array
+      setConversation(
+        activeMessages.data.usersChat.map((chat) => chat.message)
+      );
+      console.log(user);
+      setSelectedUser(user.data);
+    }
+
+    fetchData();
   }, [location.search, users]);
 
   const handleUserClick = (user) => {
@@ -104,9 +159,22 @@ function Messages() {
     setSelectedUser(user);
   };
 
-  const handleSendMessage = (event) => {
+  const handleSendMessage = async (event) => {
     event.preventDefault();
     console.log(`Sending message "${message}" to ${selectedUser.name}`);
+    const response = await sendMessage(
+      props.userData.email,
+      selectedUser.email,
+      message
+    );
+    console.log(response);
+    const newMessage = {
+      sender: props.userData.email,
+      recipient: selectedUser.email,
+      text: message,
+      timestamp: new Date(),
+    };
+    setConversation([...conversation, newMessage]);
     setMessage("");
   };
 
@@ -149,31 +217,46 @@ function Messages() {
         {selectedUser ? (
           <Box display="flex" flexDirection="column" height="100%">
             <Typography>{selectedUser.name}</Typography>
-            <ListItemAvatar>
-              <Avatar alt={selectedUser.name} src={selectedUser.avatar} />
-            </ListItemAvatar>
-            <Box flexGrow={1}>{/* Render message conversations */}</Box>
-            <Box display="flex" mt={2}>
-              <Box flexGrow={1}>
-                <TextField
-                  id="message-input"
-                  label="Type a message"
-                  variant="outlined"
-                  fullWidth
-                  value={message}
-                  onChange={(event) => setMessage(event.target.value)}
-                />
-              </Box>
-              <Box ml={2}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={!message.trim()}
+            <Box display="flex" flexGrow={1} flexDirection="column">
+              {conversation.map((message, index) => (
+                <Box
+                  key={index}
+                  className={`${classes.messageContainer} ${
+                    message.sender === props.userData.email
+                      ? classes.sentMessage
+                      : classes.message
+                  }`}
                 >
-                  Send
-                </Button>
-              </Box>
+                  <Typography>{message.content}</Typography>
+                  <Typography variant="caption">
+                    {new Date(message.timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                    {new Date(message.timestamp).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+            <Box className={classes.messageInputContainer}>
+              <TextField
+                id="message-input"
+                label="Type a message"
+                variant="outlined"
+                fullWidth
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                className={classes.messageInput}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={!message.trim()}
+                onClick={handleSendMessage}
+              >
+                Send
+              </Button>
             </Box>
           </Box>
         ) : (
