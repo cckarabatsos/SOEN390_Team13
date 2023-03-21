@@ -60,7 +60,6 @@ export async function removeExperience(experienceID) {
 export async function findUserById(userID) {
   try {
     const response = await axios.get(api.BACKEND_API + "/user/id/" + userID);
-    // const response = await axios.get(`http://localhost:7000/user/id/${userID}`);
     return response;
   } catch (err) {
     console.error(err);
