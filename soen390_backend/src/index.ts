@@ -51,6 +51,8 @@ const award = require("./routes/awardRoutes");
 app.use("/award", award);
 const application = require("./routes/applicationRoutes");
 app.use("/application", application);
+const notification = require("./routes/notificationRoutes");
+app.use("/notification", notification);
 const reports = require("./routes/reportRoutes");
 app.use("/reports", reports);
 const messages = require("./routes/messagesRoutes");
