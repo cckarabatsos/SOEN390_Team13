@@ -17,24 +17,28 @@ export default function ContactsComponent(props) {
           alt="Profile Pic"
           className="friend-request-avatar"
         />
-        <h2 className="friend-request-name">{name}</h2>
+        <p className="friend-request-name">{name}</p>
         <p class="friend-request-job">{job}</p>
         <p class="friend-request-mutual">{location}</p>
       </div>
       <div className="friend-request-actions">
-        <Button
-          style={{
-            backgroundColor: "#d59bf6",
-            margin: "auto",
-          }}
+        <Button className="button-lookup"
+            style={{
+              borderRadius: 27,
+              border: "2px solid #8f8aff",
+              fontSize: "14px",
+              margin: "auto"
+            }}
           color="info"
         >
-          Look up Profile
+          View Profile
         </Button>
-        <Button
+        <Button className="button-removecontact"
         style={{
-          backgroundColor: "#d59bf6",
-          margin: "auto",
+          borderRadius: 27,
+          border: "2px solid #8f8aff",
+          fontSize: "14px",
+          margin: "auto"
         }}
         color="info"
         onClick={() => props.handleRemoveContact(props.contactEmail)}

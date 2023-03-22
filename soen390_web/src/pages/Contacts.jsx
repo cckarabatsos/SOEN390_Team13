@@ -1,4 +1,5 @@
 import { Grid } from "@material-ui/core";
+import { fontFamily } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { GetContacts } from "../api/userContactsApi";
 import { removeContact } from "../api/userContactsApi";
@@ -42,7 +43,9 @@ const handleRemoveContact = async (removedEmail) => {
   const handleLookUpProfile = () => {};
   return (
     <div>
-      <h1 className="center">Contacts List</h1>
+      <h1 className="center" style={{
+       fontWeight: "normal"
+      }}>Contacts List</h1>
       <div className="request-section">
         <Grid container spacing={2}>
           {users.map((aUser) => (
