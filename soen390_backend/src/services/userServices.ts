@@ -108,7 +108,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                            " job postings successfully deleted."
+                        " job postings successfully deleted."
                     );
                 }
             }
@@ -439,6 +439,7 @@ export async function sendUserInvitation(
                 pendingInvitations:
                     firebase.firestore.FieldValue.arrayUnion(senderEmail),
             });
+
     } catch (error) {
         console.log(error);
         throw new Error("this is an invitation error");

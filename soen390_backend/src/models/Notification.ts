@@ -7,7 +7,7 @@ export const notification_schema = yup
     .object()
     .shape({
         logo: yup.string().required(),
-        timestamp: yup.date().required(),
+        timestamp: yup.string().required(),
         message: yup.string().required(),
         category: yup.string().required()
     })

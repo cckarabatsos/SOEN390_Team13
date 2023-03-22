@@ -10,7 +10,7 @@ const notification = express.Router();
 notification.use(express.json());
 
 /**
- * Route that gets the application history of a user
+ * Route that gets the notifications of a user
  */
 notification.get(
     "/getNotifications/:userID",
