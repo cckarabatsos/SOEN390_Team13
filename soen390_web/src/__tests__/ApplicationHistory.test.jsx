@@ -7,7 +7,8 @@ import api from "../config.json";
 import BasicTable from '../pages/ApplicationHistory';
 import Application from '../pages/ApplicationHistory'
 import TableRow from '@mui/material/TableRow';
-
+import { Table } from '@mui/material';
+import { setApplication } from '../pages/ApplicationHistory';
 
 describe('BasicTable component', () => {
   it('renders the table', () => {
@@ -70,6 +71,21 @@ describe('TableRow component', () => {
 
 });
 
+jest.mock('../api/ApplicationHistoryApi');
+
+describe('setApplication', () => {
+  test('renders with correct application data', async () => {
+    const mockResponse = [{ id: 1, name: 'Application 1' }];
+    getAllApplication.mock.results("return", mockResponse);
+
+    render(<Table ID={1} />);
+
+    const applicationData = await screen.findByText('postingID');
+    expect(applicationData).toBeInTheDocument();
+
+    expect(setApplication).toHaveBeenCalledWith(mockResponse);
+  });
+});
 
 
 
