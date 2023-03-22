@@ -28,14 +28,16 @@ export default function Contacts() {
     getContactsList(data.email);
   }, []);
 
-   //remove contact with given email from list of contacts
-   const handleRemoveContact = async (removedEmail) => {
+  //remove contact with given email from list of contacts
+const handleRemoveContact = async (removedEmail) => {
+  if (window.confirm("Are you sure you want to remove this contact?")) {
     var senderEmail = userData.email;
     var response = await removeContact(senderEmail, removedEmail);
-    if (response){
+    if (response) {
       getContactsList(userData.email);
     }
-  };
+  }
+};
 
   const handleLookUpProfile = () => {};
   return (
