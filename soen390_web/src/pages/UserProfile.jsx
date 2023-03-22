@@ -163,11 +163,17 @@ function UserProfile(props) {
           }}
         >
           <div className="foreground-colour">
-            <img
-              className="profile-pic"
-              alt="profile-pic"
-              src={profilepicture}
-            ></img>
+            <div
+              className="pfp-wrap"
+              style={{ marginLeft: "auto", marginRight: "auto" }}
+            >
+              <img
+                className="profile-pic"
+                alt="profile-pic"
+                src={profilepicture}
+              ></img>
+            </div>
+
             <Grid container spacing={2}>
               <Grid className="name" item xs={12}>
                 {userData.name}

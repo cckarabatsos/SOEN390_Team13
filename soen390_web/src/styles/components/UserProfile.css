@@ -29,6 +29,28 @@
     width: 10em;
     height: auto;
     border-radius: 100px;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    opacity: 1;
+}
+
+.profile-pic:hover{
+    opacity: 0.9;
+}
+
+.pfp-wrap{
+    text-align: center;
+    width: 10em;
+    height: 10em;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 100px;
+    background-color: black;
+}
+.pfp-wrap:hover{
+    cursor: pointer;
 }
 
 .education-picture{
