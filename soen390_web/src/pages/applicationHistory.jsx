@@ -13,19 +13,19 @@ import TableBody from "@mui/material/TableBody";
 import ActionButton from "../components/ActionButton";
 import { useEffect, useState } from "react";
 import { getAllApplication } from "../api/ApplicationHistoryApi";
-import "../styles/components/UserProfile.css";
 
+/*
 function createData(position, location, company, contract, JobId) {
   return { position, location, company, contract, JobId };
 }
-
+*/
 export default function BasicTable() {
   /* const [userData, setUseData] = useState({});
 
 const [currentID, setCurrentID] = useState(""); */
   const [application, setApplication] = useState([]);
   var Application = [];
-  const getApplications = async (ID) => {
+  /*const getApplications = async (ID) => {
     var responce = await getAllApplication(ID);
     console.log(responce[0]);
 
@@ -34,7 +34,7 @@ const [currentID, setCurrentID] = useState(""); */
       setApplication(responce);
     }
   };
-
+*/
   useEffect(() => {
     const getApplications = async (ID) => {
       const response = await getAllApplication(ID);
