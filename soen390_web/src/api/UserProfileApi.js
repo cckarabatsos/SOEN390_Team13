@@ -40,11 +40,10 @@ export async function getExperience(userID, type) {
     } else {
       return null;
     }
-  } catch(err){
+  } catch (err) {
     console.error(err);
   }
 }
-
 
 export async function findUserById(userID) {
   try {
