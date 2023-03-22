@@ -447,7 +447,8 @@ export async function sendUserInvitation(
             timestamp: (new Date()).toLocaleString(),
             category: "network"
         };
-        storeNotification((receiverUser as User).userID, notification);
+        console.log(receiverUser.data.userID);
+        storeNotification(receiverUser.data.userID, notification);
     } catch (error) {
         console.log(error);
         throw new Error("this is an invitation error");
