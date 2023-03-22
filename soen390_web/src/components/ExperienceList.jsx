@@ -1,8 +1,7 @@
 import React from "react";
 import ExperienceItem from "./ExperienceItem";
 
-
-const ExperienceList = ({ experiences }) => {
+const ExperienceList = ({ experiences, enable, setIsExperienceUpdated }) => {
   if (!experiences) {
     experiences = [];
   }
