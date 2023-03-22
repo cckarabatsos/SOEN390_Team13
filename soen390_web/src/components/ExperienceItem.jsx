@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
+import { removeExperience } from "../api/UserProfileApi";
 
-const ExperienceItem = ({ experience }) => {
+function ExperienceItem({ experience, enable, setIsExperienceUpdated }) {
+  const [isExperienceDeleted, setIsExperienceDeleted] = React.useState(false);
+
+  const handleDelete = async (experienceID) => {
+    const response = await removeExperience(experienceID);
+    setIsExperienceDeleted(true);
+    return response;
+  };
+
+  useEffect(() => {
+    if (typeof setIsExperienceUpdated === "function" && isExperienceDeleted) {
+      setIsExperienceUpdated(true);
+      setIsExperienceDeleted(false);
+    }
+  }, [isExperienceDeleted]);
+
   return (
     <>
       <Grid
@@ -32,11 +48,11 @@ const ExperienceItem = ({ experience }) => {
             }}
           >
             {experience.position}
-            {/* {enable && (
-              <IconButton>
+            {enable && (
+              <IconButton onClick={() => handleDelete(experience.experienceID)}>
                 <DeleteIcon className="profile-icon" />
               </IconButton>
-            )} */}
+            )}
           </Typography>
           <Typography style={{ textAlign: "left" }}>
             {experience.company}
@@ -48,6 +64,6 @@ const ExperienceItem = ({ experience }) => {
       </Grid>
     </>
   );
-};
+}
 
 export default ExperienceItem;
