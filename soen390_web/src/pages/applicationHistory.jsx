@@ -104,7 +104,7 @@ const [currentID, setCurrentID] = useState(""); */
         </TableHead>
         <TableBody>
           {application.map((row) => (
-            <TableRow
+            <TableRow data-testid='row'
               key={row.name}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >

@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import ApplicationHistory from '../pages/ApplicationHistory';
 import { getAllApplication } from '../api/ApplicationHistoryApi';
 import axios from "axios";
@@ -87,8 +87,25 @@ describe('setApplication', () => {
   });
 });
 
+test('renders a table row with correct props', async () => {
+  const mockApplications = [
+    { position: 'Software Engineer', location: 'San Francisco', company: 'Google', contract: 'Full-time' },
+    { position: 'Product Manager', location: 'New York', company: 'Amazon', contract: 'Part-time' },
+    { position: 'Sales  Manager', location: 'Brooklyn', company: 'Lyft', contract: 'Part-time' },
+    { position: 'Product Manager', location: 'New York', company: 'Amazon', contract: 'Part-time' },
+  ];
+  jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+    json: async () => mockApplications,
+  });
+  render(<BasicTable />);
 
+  await waitFor(() => screen.queryByText(/loading/i));
 
+  const rowElement = screen.getByTestId('row');
+  expect(rowElement.tagName).toBe('TR');
+  expect(rowElement).toHaveAttribute('key', row.name);
+  expect(rowElement.children).toHaveLength(5);
+});
 /* istanbul ignore next */
 console.log(Application);
 
