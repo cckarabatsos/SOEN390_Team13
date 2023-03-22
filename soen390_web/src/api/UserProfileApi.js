@@ -119,4 +119,3 @@ export async function removeSkill(skillId) {
     return false; 
   }
 }
-
