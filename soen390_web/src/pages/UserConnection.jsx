@@ -56,7 +56,9 @@ const UserConnection = () => {
   return (
     <div data-testid="userconnection-1">
       <>
-        <h1 className="center">{t("RequestCenterText")}</h1>
+        <h1 className="center" style={{
+            fontWeight: "normal"
+        }}>{t("RequestCenterText")}</h1>
         <div className="request-section">
           <Grid container spacing={2}>
             {users.map((aUser) => (

@@ -17,3 +17,27 @@ export async function GetContacts(email) {
     return [];
   }
 }
+
+export async function removeContact(senderEmail, removedEmail) {
+ 
+  try {
+    const response = await axios.get(
+      
+      api.BACKEND_API + "/user/api/removeContact",
+      {
+        params: {
+          senderEmail: senderEmail,
+          removedEmail: removedEmail,
+        }
+      }
+    );
+    if (response.status == 200){
+      return true;
+    } else {
+      return false;
+    };
+  } catch (error) {
+    console.error("error", error);
+    return false;
+  }
+}
