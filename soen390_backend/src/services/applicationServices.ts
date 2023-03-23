@@ -6,8 +6,10 @@ import firebase from "firebase";
 import "firebase/storage";
 import { Application, application_schema } from "../models/Application";
 import { jobposting_schema } from "../models/jobPosting";
+import { Notification } from "../models/Notification";
 import { user_schema } from "../models/User";
 import { findJobpostingWithID } from "./jobPostingServices";
+import { storeNotification } from "./notificationServices";
 import { findUserWithID, updateUser } from "./userServices";
 
 const db = firebase.firestore();
@@ -79,6 +81,13 @@ export const storeApplication = async (application: Application) => {
             document.id :
             casted_company.jobpostings.applied[index] + "," + document.id;
         updateUser(casted_company, casted_company.userID);
+        let notification: Notification = {
+            logo: casted_user.picture,
+            message: casted_user.name + " has applied to your job posting '" + casted_posting.position + "'.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "applications"
+        };
+        storeNotification(casted_company.userID, notification);
     } catch (error) {
         console.log(error);
         throw error;
