@@ -15,6 +15,7 @@ export const application_schema = yup
         city: yup.string().required(),
         area: yup.string().required(),
         province: yup.string().required(),
+        status: yup.string().required(),
         school: yup.string().required(),
         schoolCountry: yup.string().required(),
         schoolDegree: yup.string().required(),

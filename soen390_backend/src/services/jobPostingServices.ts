@@ -2,6 +2,8 @@ import { Filter, Jobposting } from "../models/jobPosting";
 import firebase from "firebase";
 import { findUserWithID } from "./userServices";
 import { user_schema } from "../models/User";
+import { Notification } from "../models/Notification";
+import { storeNotification } from "./notificationServices";
 
 const db = firebase.firestore();
 /**
@@ -39,6 +41,15 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
             logo: casted_user.picture,
         });
         console.log("Job posting successfully stored with id: " + document.id);
+        let notification: Notification = {
+            logo: casted_user.picture,
+            message: casted_user.name + " has posted a new job '" + newJobPosting.position + "'.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "news"
+        };
+        casted_user.followers.forEach((followerID: string) => {
+            storeNotification(followerID, notification);
+        });
     } catch (error) {
         console.log(error);
         throw error;

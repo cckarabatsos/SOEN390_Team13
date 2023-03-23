@@ -8,6 +8,7 @@ import {
     getLastApplication,
     getApplicationHistory,
     deleteApplication,
+    editApplication,
 } from "../controllers/applicationControllers";
 import { Application } from "../models/Application";
 const application = express.Router();
@@ -169,6 +170,31 @@ application.post("/remove/:userID", async (req: Request, res: Response) => {
         const application: Application = await deleteApplication(
             userID,
             postingID
+        );
+        const status: number = application[0];
+        if (status == 200) {
+            res.status(200);
+            res.json(application[1]);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
+
+/**
+ * Route that updates an application's status in database
+ */
+application.post("/updateStatus/:applicationID", async (req: Request, res: Response) => {
+    let applicationID: string = req.params.applicationID;
+    let newStatus = req.query.status as string;
+    try {
+        const application: Application = await editApplication(
+            applicationID,
+            newStatus
         );
         const status: number = application[0];
         if (status == 200) {
