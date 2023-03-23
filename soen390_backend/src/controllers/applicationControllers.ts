@@ -58,6 +58,7 @@ export async function createApplication(
     ownerID: string
 ) {
     try {
+        const status: string = "pending";
         let newApplication: Application = application_schema.cast({
             email,
             firstName,
@@ -68,6 +69,7 @@ export async function createApplication(
             city,
             area,
             province,
+            status,
             school,
             schoolCountry,
             schoolDegree,

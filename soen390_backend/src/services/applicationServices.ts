@@ -189,7 +189,9 @@ export const retrieveApplicationHistory = async (userID: string) => {
         let jobpostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
             db.collection("jobpostings");
         let jobPostingIDs: string[] = [];
+        let applicationIDs: string[] = [];
         casted_user.jobpostings.applied.forEach((str: string) => {
+            applicationIDs.push(str.split(",")[0]);
             jobPostingIDs.push(str.split(",")[1]);
         });
         if (jobPostingIDs.length === 0) {
@@ -198,11 +200,28 @@ export const retrieveApplicationHistory = async (userID: string) => {
         jobpostingsRef = jobpostingsRef
             .where("postingID", "in", jobPostingIDs);
 
-        const snapshot = await jobpostingsRef.get();
+        const postingSnapshot = await jobpostingsRef.get();
+        const postings = postingSnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            // status: "new status",
+        }));
+
+        let applicationsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+            db.collection("applications");
+        applicationsRef = applicationsRef
+            .where("applicationID", "in", applicationIDs);
+
+        const snapshot = await applicationsRef.get();
         const applications = snapshot.docs.map((doc) => ({
             ...doc.data(),
         }));
-        return applications;
+        let counter: number = 0;
+        postings.forEach((posting: any) => {
+            posting.status = applications !== undefined ? applications[counter].status : "Status Error";
+            counter++;
+        });
+
+        return postings;
 
     } catch (error) {
         console.log(error);
