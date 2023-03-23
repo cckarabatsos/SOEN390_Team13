@@ -287,3 +287,26 @@ export const deleteApplicationWithId = async (userID: string, postingID: string)
     }
     return "Success";
 };
+
+/**
+ * Updates the status of the application in the database
+ * 
+ * @param applicationID 
+ * @param newStatus 
+ * @returns updated application or null
+ */
+export async function updateApplication(applicationID: string, newStatus: string) {
+    try {
+        let application = await findApplicationWithID(applicationID);
+        if (application === undefined) {
+            console.log("Application not found.");
+            return null;
+        }
+        application.status = newStatus;
+        db.collection("applications").doc(applicationID).update(application);
+        return application;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
