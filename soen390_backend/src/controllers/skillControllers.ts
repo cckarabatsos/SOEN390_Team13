@@ -19,6 +19,8 @@ export async function createSkill(name: string, ownerID: string) {
         let skill = await storeSkill(newSkill);
         if (skill === "limit") {
             return [400, { msg: "Already at maximum number of skills allowed." }];
+        } else if (skill === "exists") {
+            return [401, { msg: "Such a skill already exists." }];
         } else if (skill !== null) {
             return [200, skill];
         }
