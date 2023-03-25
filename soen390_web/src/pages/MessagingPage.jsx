@@ -1,20 +1,21 @@
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Divider,
   Drawer,
-  Icon,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   TextField,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { MoreVert } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -23,6 +24,7 @@ import {
   sendMessage,
 } from "../api/messagesApi";
 import { findUserById } from "../api/UserProfileApi";
+import ReportModal from "../components/ReportModal";
 
 const drawerWidth = 240;
 
@@ -108,6 +110,8 @@ function Messages(props) {
   const [message, setMessage] = useState("");
   const [conversation, setConversation] = useState([]);
   const intervalId = useRef(null);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -116,21 +120,6 @@ function Messages(props) {
     }
     fetchData();
   }, []);
-
-  const fetchConversation = async (userId) => {
-    if (userId) {
-      console.log("checking messages");
-      const user = await findUserById(userId);
-      setSelectedUser(user.data);
-      const activeMessages = await getAllMessages(
-        props.userData.email,
-        user.data.email
-      );
-      setConversation(
-        activeMessages.data.usersChat.map((chat) => chat.message)
-      );
-    }
-  };
 
   useEffect(() => {
     const userId = window.location.pathname.split("/").pop();
@@ -154,6 +143,45 @@ function Messages(props) {
       }
     };
   }, [selectedUser]);
+
+  const fetchConversation = async (userId) => {
+    if (userId) {
+      console.log("checking messages");
+      const user = await findUserById(userId);
+      setSelectedUser(user.data);
+      const activeMessages = await getAllMessages(
+        props.userData.email,
+        user.data.email
+      );
+      setConversation(
+        activeMessages.data.usersChat.map((chat) => chat.message)
+      );
+    }
+  };
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleReportClick = (userID) => {
+    console.log("Report clicked for user:", userID);
+    setShowReportModal(true);
+    handleMenuClose();
+  };
+
+  const handleReportModalClose = () => {
+    setShowReportModal(false);
+  };
+
+  const handleReportSubmit = (issue) => {
+    console.log(`Reporting issue: ${issue}`);
+
+    setShowReportModal(false);
+  };
 
   const handleUserClick = (user) => {
     console.log(user.ActiveUser);
@@ -196,11 +224,20 @@ function Messages(props) {
                 secondary={user.status}
                 classes={{ primary: classes.listItemText }}
               />
-              <ListItemIcon>
-                <Badge color="secondary" variant="dot">
-                  <Icon />
-                </Badge>
-              </ListItemIcon>
+              <IconButton onClick={handleMenuClick}>
+                <MoreVert />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem
+                  onClick={() => handleReportClick(user.ActiveUser.userID)}
+                >
+                  Report
+                </MenuItem>
+              </Menu>
             </ListItem>
           ))}
         </List>
@@ -285,6 +322,11 @@ function Messages(props) {
           </Typography>
         )}
       </main>
+      <ReportModal
+        open={showReportModal}
+        onClose={handleReportModalClose}
+        onSubmit={handleReportSubmit}
+      />
     </div>
   );
 }
