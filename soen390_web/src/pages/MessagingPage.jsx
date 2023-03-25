@@ -114,7 +114,7 @@ function Messages(props) {
         fetchData();
     }, []);
     async function fetchData() {
-        const convos = await getActiveConvos(props.userData.email);
+        const convos = await getActiveConvos(props.userData.userID);
         setUsers(convos);
     }
     const fetchConversation = async (userId) => {
