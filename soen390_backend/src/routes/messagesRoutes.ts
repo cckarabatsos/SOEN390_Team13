@@ -63,7 +63,7 @@ messages.get("/getAllMessages", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server error: " + (error as Error).message,
     });
   }
 });
@@ -137,7 +137,7 @@ messages.get("/sendMessage", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: (error as Error).message,
     });
   }
 });
@@ -166,7 +166,7 @@ messages.get("/getActiveConversation", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: (error as Error).message,
     });
   }
 });
