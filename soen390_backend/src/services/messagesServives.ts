@@ -1,4 +1,3 @@
-
 import firebase from "firebase";
 import "firebase/storage";
 import {
@@ -120,7 +119,11 @@ async function createConversation(
         throw error;
     }
 }
-
+/**
+ * Initiate a conversation between two users
+ * @param userIds
+ * @returns UserList
+ */
 export async function initiateConversation(userIds: string[]) {
     let userList = true;
     try {
@@ -169,7 +172,7 @@ export async function initiateConversation(userIds: string[]) {
 
 /**
  * Sends a chat message to a group of users.
- * @param senderEmail The email address of the user sending the message.
+ * @param senderId The email address of the user sending the message.
  * @param userIds An array of email addresses of the conversation thne user is included.
  * @param message The content of the chat message.
  * @returns A promise that resolves to true if the message was sent successfully.
@@ -268,9 +271,9 @@ export async function sendMessage(
 
 Asynchronously retrieves any new messages sent to a conversation and marks them as read for the recipient.
 
-@param senderEmail - The email address of the sender of the messages
+@param senderID - The ID of the sender of the messages
 
-@param userEmails - An array of email addresses of the users participating in the conversation
+@param userIds - An array of email addresses of the users participating in the conversation
 
 @param messagesLength - The length of the message array last retrieved by the recipient
 
@@ -341,10 +344,7 @@ export async function getUpdatedMessages(
             let chat: chatMessage = snapShot.data() as chatMessage;
 
             //if its not the owner of the sent mesage set the read flag to true
-            if (
-                chat.senderId != senderId &&
-                chat.isRead == false
-            ) {
+            if (chat.senderId != senderId && chat.isRead == false) {
                 chat.isRead = true;
                 await db.collection("chats").doc(snapShot.id).update({
                     isRead: true,
@@ -370,7 +370,12 @@ export async function getUpdatedMessages(
         throw error;
     }
 }
-
+/**
+ * Get all the active conversations of a certain user
+ * @param userId userID of a certain user
+ * @param returnEmail
+ * @returns the conversation list of the active user
+ */
 export async function getActiveConversations(
     userId: string,
     returnEmail: boolean
@@ -389,7 +394,7 @@ export async function getActiveConversations(
         //     });
         // });
 
-        // fetch the conversation og the active user
+        // fetch the conversations og the active user
         let conversation = await db
             .collection("conversations")
             .where("userArray", "array-contains", userId)
