@@ -88,7 +88,11 @@ async function createConversation(
     throw error;
   }
 }
-
+/**
+ * Initiate a conversation between two users
+ * @param userIds
+ * @returns UserList
+ */
 export async function initiateConversation(userIds: string[]) {
   let userList = true;
   try {
@@ -281,7 +285,12 @@ export async function getUpdatedMessages(
     );
   }
 }
-
+/**
+ * Get all the active conversations of a certain user
+ * @param userId userID of a certain user
+ * @param returnEmail
+ * @returns the conversation list of the active user
+ */
 export async function getActiveConversations(
   userId: string,
   returnEmail: boolean
