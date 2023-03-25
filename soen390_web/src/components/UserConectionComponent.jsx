@@ -42,18 +42,24 @@ export default function UserConnectionComponent(props) {
         <p class="friend-request-mutual">2 mutual friends</p>
       </div>
       <div className="friend-request-actions">
-        <Button
-          style={{
-            backgroundColor: "#21b6ae",
-          }}
+        <Button className="button-accept"
+            style={{
+              borderRadius: 27,
+              border: "2px solid #8f8aff",
+              fontSize: "14px",
+              margin: "auto"
+            }}
           color="success"
           onClick={() => accept(currentEmail, senderEmail)}
         >
           {t("AcceptText")}
         </Button>
-        <Button
+        <Button className="button-decline"
           style={{
-            backgroundColor: "#ff5252",
+            borderRadius: 27,
+            border: "2px solid #8f8aff",
+            fontSize: "14px",
+            margin: "auto"
           }}
           onClick={() => decline(currentEmail, senderEmail)}
         >

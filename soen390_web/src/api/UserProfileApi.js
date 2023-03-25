@@ -42,9 +42,18 @@ export async function getExperience(userID, type) {
     }
   } catch (err) {
     console.error(err);
-    throw err; // re-throw any caught errors for the calling function to handle
   }
 }
+
+export async function findUserById(userID) {
+  try {
+    const response = await axios.get(api.BACKEND_API + "/user/id/" + userID);
+    return response;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 
 export async function removeExperience(experienceID) {
   try {

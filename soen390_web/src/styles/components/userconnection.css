@@ -82,6 +82,25 @@
   color: #ffffff;
 }
 
+.friend-request-actions .button-accept{
+  text-transform: none !important;
+  width: 80px !important;
+}
+
+.friend-request-actions .button-accept:hover{
+  background-color: #8f8aff;
+    color:white;
+}
+
+.friend-request-actions .button-decline{
+  text-transform: none !important;
+  width: 80px !important;
+}
+
+.friend-request-actions .button-decline:hover{
+  background-color: #8f8aff;
+    color:white;
+}
 
 .friend-request {
   display: flex;
@@ -118,7 +137,7 @@
 
 .friend-request-mutual {
   font-size: 14px;
-  color: #999;
+  color: black;
   margin: 0;
 }
 
