@@ -19,10 +19,10 @@ export async function getAllMessages(reqUserEmail, reqSenderEmail) {
         return false;
     }
 }
-export async function sendMessage(reqUserEmail, reqSenderEmail, reqMessage) {
+export async function sendMessage(reqUserID, reqSenderID, reqMessage) {
     try {
-        const emails = JSON.stringify([reqUserEmail, reqSenderEmail]);
-        const queryString = `senderEmail=${reqSenderEmail}&emails=${emails}&message=${reqMessage}`;
+        const Ids = JSON.stringify([reqUserID, reqSenderID]);
+        const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}`;
 
         const response = await axios.get(
             api.BACKEND_API + "/messages/sendMessage?" + queryString
@@ -34,9 +34,9 @@ export async function sendMessage(reqUserEmail, reqSenderEmail, reqMessage) {
     }
 }
 
-export async function getActiveConvos(reqEmail) {
+export async function getActiveConvos(reqID) {
     try {
-        const queryString = `id=${reqEmail}&returnEmail=false`;
+        const queryString = `id=${reqID}&returnEmail=false`;
 
         const response = await axios.get(
             api.BACKEND_API + "/messages/getActiveConversation?" + queryString
@@ -47,9 +47,10 @@ export async function getActiveConvos(reqEmail) {
         const updatedActiveConvos = [];
 
         for (let i = 0; i < activeConvos.length; i++) {
-            const userId = activeConvos[i].ActiveUser[0];
+            const activeUserIds = activeConvos[i].ActiveUser;
+            const otherUserId = activeUserIds.find((id) => id !== reqID);
 
-            const userDataResponse = await findUserById(userId);
+            const userDataResponse = await findUserById(otherUserId);
             const userData = userDataResponse.data;
 
             activeConvos[i].ActiveUser = userData;

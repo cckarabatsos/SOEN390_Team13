@@ -123,8 +123,8 @@ function Messages(props) {
             const user = await findUserById(userId);
             setSelectedUser(user.data);
             const activeMessages = await getAllMessages(
-                props.userData.email,
-                user.data.email
+                props.userData.userID,
+                user.data.userID
             );
             setConversation(
                 activeMessages.data.usersChat.listOfMessages.map(
@@ -165,12 +165,13 @@ function Messages(props) {
         }
 
         return () => unsubscribe();
-    }, [selectedUser]);
+    }, [selectedUser, conversationID]);
 
     const handleUserClick = (user) => {
         console.log(user.ActiveUser);
         navigate(`/Messages/${user.ActiveUser.userID}`);
         setSelectedUser(user.ActiveUser);
+        console.log(selectedUser);
     };
     const handleConversationChange = (conversationID) => {
         console.log(conversationID);
@@ -180,7 +181,7 @@ function Messages(props) {
     const handleSendMessage = async (event) => {
         event.preventDefault();
         console.log(`Sending message "${message}" to ${selectedUser.name}`);
-        await sendMessage(selectedUser.email, props.userData.email, message);
+        await sendMessage(selectedUser.email, props.userData.userID, message);
         setMessage("");
         //  fetchConversation(selectedUser.userID); // Refresh the conversation after sending the message
     };
