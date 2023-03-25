@@ -111,7 +111,7 @@ const [currentID, setCurrentID] = useState(""); */
               <TableCell align="left">{row.position}</TableCell>
               <TableCell align="left">{row.location}</TableCell>
               <TableCell align="left">{row.company}</TableCell>
-              <TableCell align="left">{row.contract}</TableCell>
+              <TableCell align="left">{row.status}</TableCell>
               <TableCell align="left">
                 <ActionButton postingID={row.postingID}></ActionButton>
               </TableCell>
