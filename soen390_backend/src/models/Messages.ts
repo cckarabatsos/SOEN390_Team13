@@ -9,7 +9,7 @@ export type chatMessage = {
 };
 
 export type messagesListElement = {
-  email: string;
+  Id: string;
   message: chatMessage;
 };
 

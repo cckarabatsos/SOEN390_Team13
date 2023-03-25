@@ -12,11 +12,10 @@ import {
 
 dotenv.config();
 
-export async function createNewConversationController(usersEmail: string[]) {
+export async function createNewConversationController(usersIds: string[]) {
     let success = false;
-    console.log(usersEmail);
     try {
-        success = await initiateConversation(usersEmail);
+        success = await initiateConversation(usersIds);
     } catch (error) {
         console.log((error as Error).message);
         throw new Error((error as Error).message);
@@ -26,15 +25,15 @@ export async function createNewConversationController(usersEmail: string[]) {
 }
 
 export async function SendNewMessage(
-    senderEmail: string,
-    usersEmail: string[],
+    senderId: string,
+    usersIds: string[],
     content: string
 ) {
     let confirmation = false;
     try {
         confirmation = (await sendMessage(
-            senderEmail,
-            usersEmail,
+            senderId,
+            usersIds,
             content
         )) as boolean;
     } catch (error) {
@@ -46,15 +45,15 @@ export async function SendNewMessage(
 }
 
 export async function GetUpdatedMessages(
-    senderEmail: string,
-    usersEmail: string[],
+    senderId: string,
+    usersIds: string[],
     messagesLength: number
 ) {
     let messagesList: any;
     try {
         messagesList = (await getUpdatedMessages(
-            senderEmail,
-            usersEmail,
+            senderId,
+            usersIds,
             messagesLength
         )) as messagesListElement[];
     } catch (error) {
@@ -66,13 +65,13 @@ export async function GetUpdatedMessages(
 }
 
 export async function GetActiveConversations(
-    email: string,
+    userId: string,
     returnEmail: boolean
 ) {
     let convoList: any;
     try {
         convoList = (await getActiveConversations(
-            email,
+            userId,
             returnEmail
         )) as conversationListElement[];
     } catch (error) {
