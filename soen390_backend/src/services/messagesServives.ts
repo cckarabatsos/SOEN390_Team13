@@ -1,4 +1,4 @@
-import { error } from "console";
+
 import firebase from "firebase";
 import "firebase/storage";
 import {
@@ -32,38 +32,38 @@ const orderIds = (arr: string[]): string[] => {
 // If a user with the provided email is found, the callback function is called with the user's data as an argument.
 // If a user with the provided email is not found, the callback function is called with a null argument.
 // If there is an error getting the user document, an error is thrown.
-const findUserWithEmail = (email: string, callback: (data: any) => void) => {
-    db.collection("users")
-        .where("email", "==", email)
-        .get()
-        .then((snapshot) => {
-            if (!snapshot.empty) {
-                let data = processData(snapshot);
-                callback(data);
-            } else {
-                callback(null);
-            }
-        })
-        .catch((error) => {
-            console.log("Error getting the document:", error);
-            throw new Error(error.message);
-        });
-};
+// const findUserWithEmail = (email: string, callback: (data: any) => void) => {
+//     db.collection("users")
+//         .where("email", "==", email)
+//         .get()
+//         .then((snapshot) => {
+//             if (!snapshot.empty) {
+//                 let data = processData(snapshot);
+//                 callback(data);
+//             } else {
+//                 callback(null);
+//             }
+//         })
+//         .catch((error) => {
+//             console.log("Error getting the document:", error);
+//             throw new Error(error.message);
+//         });
+// };
 
 // This function processes the snapshot returned from Firebase and extracts the data and id of the first document in the array.
 // It returns an object with the extracted data and id. If the data is null, it logs an error and throws an exception.
-function processData(snapshot: any) {
-    let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
-        data: doc.data(),
-        id: doc.id,
-    }));
-    if (data !== null) {
-        return data[0];
-    } else {
-        console.log("ERROR");
-        throw error;
-    }
-}
+// function processData(snapshot: any) {
+//     let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
+//         data: doc.data(),
+//         id: doc.id,
+//     }));
+//     if (data !== null) {
+//         return data[0];
+//     } else {
+//         console.log("ERROR");
+//         throw error;
+//     }
+// }
 
 // This is an async function that fetches the conversation between users with the specified user IDs from the Firestore database.
 // It searches the "conversations" collection in the database and filters for documents where the "userArray" field matches the specified user IDs.
@@ -121,28 +121,28 @@ async function createConversation(
     }
 }
 
-export async function initiateConversation(userEmails: string[]) {
+export async function initiateConversation(userIds: string[]) {
     let userList = true;
     try {
-        let userIds: string[] = new Array();
-        for (var i = 0; i < userEmails.length; i++) {
-            var sender: any;
+        // let userIds: string[] = new Array();
+        // for (var i = 0; i < userEmails.length; i++) {
+        //     var sender: any;
 
-            sender = await new Promise((resolve, _) => {
-                findUserWithEmail(userEmails[i], (user) => {
-                    // console.log(user);
-                    if (user == null) {
-                        resolve(null);
-                    } else {
-                        resolve(user);
-                    }
-                });
-            });
+        //     sender = await new Promise((resolve, _) => {
+        //         findUserWithEmail(userEmails[i], (user) => {
+        //             // console.log(user);
+        //             if (user == null) {
+        //                 resolve(null);
+        //             } else {
+        //                 resolve(user);
+        //             }
+        //         });
+        //     });
 
-            if (sender.data) {
-                userIds.push(sender.data["userID"]);
-            }
-        }
+        //     if (sender.data) {
+        //         userIds.push(sender.data["userID"]);
+        //     }
+        // }
         userIds = orderIds(userIds);
 
         let conversationFound: any = await fetchConversation(userIds);
@@ -170,38 +170,38 @@ export async function initiateConversation(userEmails: string[]) {
 /**
  * Sends a chat message to a group of users.
  * @param senderEmail The email address of the user sending the message.
- * @param userEmails An array of email addresses of the conversation thne user is included.
+ * @param userIds An array of email addresses of the conversation thne user is included.
  * @param message The content of the chat message.
  * @returns A promise that resolves to true if the message was sent successfully.
  */
 export async function sendMessage(
-    senderEmail: string,
-    userEmails: string[],
+    senderId: string,
+    userIds: string[],
     message: string
 ) {
     try {
         //fetch the ids of each user email
 
-        let userIds: string[] = new Array();
-        for (var i = 0; i < userEmails.length; i++) {
-            var anUser: any;
-            console.log(userEmails[i]);
+        // let userIds: string[] = new Array();
+        // for (var i = 0; i < userEmails.length; i++) {
+        //     var anUser: any;
+        //     console.log(userEmails[i]);
 
-            anUser = await new Promise((resolve, _) => {
-                findUserWithEmail(userEmails[i], (user) => {
-                    // console.log(user);
-                    if (user == null) {
-                        resolve(null);
-                    } else {
-                        resolve(user);
-                    }
-                });
-            });
+        //     anUser = await new Promise((resolve, _) => {
+        //         findUserWithEmail(userEmails[i], (user) => {
+        //             // console.log(user);
+        //             if (user == null) {
+        //                 resolve(null);
+        //             } else {
+        //                 resolve(user);
+        //             }
+        //         });
+        //     });
 
-            if (anUser.data) {
-                userIds.push(anUser.data["userID"]);
-            }
-        }
+        //     if (anUser.data) {
+        //         userIds.push(anUser.data["userID"]);
+        //     }
+        // }
         userIds = orderIds(userIds);
         console.log(userIds);
 
@@ -222,22 +222,22 @@ export async function sendMessage(
         }
 
         // retrive sender email
-        let sender: any;
-        sender = await new Promise((resolve, _) => {
-            findUserWithEmail(senderEmail, (user) => {
-                // console.log(user);
-                if (user == null) {
-                    resolve(null);
-                } else {
-                    resolve(user);
-                }
-            });
-        });
+        // let sender: any;
+        // sender = await new Promise((resolve, _) => {
+        //     findUserWithEmail(senderEmail, (user) => {
+        //         // console.log(user);
+        //         if (user == null) {
+        //             resolve(null);
+        //         } else {
+        //             resolve(user);
+        //         }
+        //     });
+        // });
 
         let chat: chatMessage = {
             content: message,
             isRead: false,
-            senderId: sender.data["userID"] as string,
+            senderId: senderId as string,
             timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
             type: "text",
         };
@@ -280,34 +280,34 @@ or an empty array if there are no new messages to retrieve or if there was an er
 */
 
 export async function getUpdatedMessages(
-    senderEmail: string,
-    userEmails: string[],
+    senderId: string,
+    userIds: string[],
     messagesLength: number
 ) {
     try {
         // get user ids from the array of
 
-        let userIds: string[] = new Array();
+        // let userIds: string[] = new Array();
 
-        for (var i = 0; i < userEmails.length; i++) {
-            var anUser: any;
-            console.log(userEmails[i]);
+        // for (var i = 0; i < userEmails.length; i++) {
+        //     var anUser: any;
+        //     console.log(userEmails[i]);
 
-            anUser = await new Promise((resolve, _) => {
-                findUserWithEmail(userEmails[i], (user) => {
-                    // console.log(user);
-                    if (user == null) {
-                        resolve(null);
-                    } else {
-                        resolve(user);
-                    }
-                });
-            });
+        //     anUser = await new Promise((resolve, _) => {
+        //         findUserWithEmail(userEmails[i], (user) => {
+        //             // console.log(user);
+        //             if (user == null) {
+        //                 resolve(null);
+        //             } else {
+        //                 resolve(user);
+        //             }
+        //         });
+        //     });
 
-            if (anUser.data) {
-                userIds.push(anUser.data["userID"]);
-            }
-        }
+        //     if (anUser.data) {
+        //         userIds.push(anUser.data["userID"]);
+        //     }
+        // }
         userIds = orderIds(userIds);
 
         let conversation: any = await fetchConversation(userIds);
@@ -317,17 +317,17 @@ export async function getUpdatedMessages(
         }
         console.log(conversation[0].id);
         // fetch the sender userID from the database
-        let sender: any;
-        sender = await new Promise((resolve, _) => {
-            findUserWithEmail(senderEmail, (user) => {
-                // console.log(user);
-                if (user == null) {
-                    resolve(null);
-                } else {
-                    resolve(user);
-                }
-            });
-        });
+        // let sender: any;
+        // sender = await new Promise((resolve, _) => {
+        //     findUserWithEmail(senderEmail, (user) => {
+        //         // console.log(user);
+        //         if (user == null) {
+        //             resolve(null);
+        //         } else {
+        //             resolve(user);
+        //         }
+        //     });
+        // });
 
         let messagesRef = conversation[0].data["messages"];
 
@@ -342,7 +342,7 @@ export async function getUpdatedMessages(
 
             //if its not the owner of the sent mesage set the read flag to true
             if (
-                chat.senderId != sender.data["userID"] &&
+                chat.senderId != senderId &&
                 chat.isRead == false
             ) {
                 chat.isRead = true;
@@ -358,7 +358,7 @@ export async function getUpdatedMessages(
 
             //populates the return message list:
             var messageWrapper: messagesListElement = {
-                email: senderEmail,
+                Id: senderId,
                 message: chat,
             };
             listOfMessages.push(messageWrapper);
@@ -372,27 +372,27 @@ export async function getUpdatedMessages(
 }
 
 export async function getActiveConversations(
-    email: string,
+    userId: string,
     returnEmail: boolean
 ) {
     try {
         // retrive sender email
-        let sender: any;
-        sender = await new Promise((resolve, _) => {
-            findUserWithEmail(email, (user) => {
-                // console.log(user);
-                if (user == null) {
-                    resolve(null);
-                } else {
-                    resolve(user);
-                }
-            });
-        });
+        // let sender: any;
+        // sender = await new Promise((resolve, _) => {
+        //     findUserWithEmail(email, (user) => {
+        //         // console.log(user);
+        //         if (user == null) {
+        //             resolve(null);
+        //         } else {
+        //             resolve(user);
+        //         }
+        //     });
+        // });
 
         // fetch the conversation og the active user
         let conversation = await db
             .collection("conversations")
-            .where("userArray", "array-contains", sender.data["userID"])
+            .where("userArray", "array-contains", userId)
             .get();
 
         let convo = conversation.docs.map(
