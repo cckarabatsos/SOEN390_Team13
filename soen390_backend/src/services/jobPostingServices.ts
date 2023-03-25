@@ -189,19 +189,29 @@ export const retrieveJobSuggestions = async (userID: string) => {
             console.log("User not found.");
             return null;
         }
-        //let casted_user = await user_schema.cast(user);
+        let casted_user = await user_schema.cast(user);
         const skills = await retrieveSkills(userID);
         skills?.forEach((skill: Skill) => {
             skill.name = skill.name.toUpperCase();
         });
+        let companyPostingIDs: string[] = [];
+        casted_user.follows.forEach(async (str: string) => {
+            let company = await findUserWithID(str);
+            if (company !== undefined) {
+                let casted_company = await user_schema.cast(company);
+                casted_company.jobpostings.postingids.forEach((postingID: string) => {
+                    companyPostingIDs.push(postingID);
+                });
+            }
+        });
 
         let postingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
             db.collection("jobpostings");
-
         const snapshot = await postingsRef.get();
         const postings = snapshot.docs.map((doc) => ({
             ...doc.data(),
         }));
+
         let nbrElementsToRemove: number = 0;
         postings.forEach((posting: Jobposting) => {
             let score: number = 0;
@@ -209,18 +219,20 @@ export const retrieveJobSuggestions = async (userID: string) => {
             let description: string[] = posting.description.toUpperCase().split(" ");
             skills?.forEach((skill: Skill) => {
                 position.forEach((str: string) => {
+                    str = str.replace(/["'`,.:;-]+/g, "");
                     if (skill.name == str) {
                         score++;
                     }
                 });
                 description.forEach((str: string) => {
+                    str = str.replace(/["'`,.:;-]+/g, "");
                     if (skill.name == str) {
                         score++;
                     }
                 });
             });
 
-            if (score == 0) {
+            if (score == 0 && !companyPostingIDs.includes(posting.postingID)) {
                 posting.score = -1;
                 nbrElementsToRemove++;
             } else {
