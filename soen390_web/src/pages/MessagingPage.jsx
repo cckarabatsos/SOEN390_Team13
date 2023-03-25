@@ -118,22 +118,27 @@ function Messages(props) {
         setUsers(convos);
     }
     const fetchConversation = async (userId) => {
-        if (userId) {
-            console.log("checking messages");
-            const user = await findUserById(userId);
-            setSelectedUser(user.data);
-            const activeMessages = await getAllMessages(
-                props.userData.userID,
-                user.data.userID
-            );
-            setConversation(
-                activeMessages.data.usersChat.listOfMessages.map(
-                    (chat) => chat.message
-                )
-            );
-            handleConversationChange(
-                activeMessages.data.usersChat.conversationID
-            );
+        try {
+            if (userId) {
+                console.log("checking messages");
+                const user = await findUserById(userId);
+                setSelectedUser(user.data);
+                const activeMessages = await getAllMessages(
+                    props.userData.userID,
+                    user.data.userID
+                );
+                if (!activeMessages.data.usersChat.listOfMessages) {
+                    setConversation([]);
+                }
+                setConversation(
+                    activeMessages.data.usersChat.listOfMessages.map(
+                        (chat) => chat.message
+                    )
+                );
+                setConversationID(activeMessages.data.usersChat.conversationID);
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -143,29 +148,33 @@ function Messages(props) {
     // }, [location.pathname]);
 
     useEffect(() => {
-        var unsubscribe = () => {};
-        if (selectedUser) {
-            if (conversationID) {
-                const messageRef = collection(
-                    db,
-                    "conversations",
-                    conversationID,
-                    "messages"
-                );
-                unsubscribe = onSnapshot(messageRef, (querySnapshot) => {
+        // Only run this effect once when the component is mounted
+        if (selectedUser && !conversationID) {
+            console.log("Fetch conversation 1");
+            fetchConversation(selectedUser.userID);
+        }
+
+        // Set up the listener for the selected conversation
+        const messageRef = conversationID
+            ? collection(db, "conversations", conversationID, "messages")
+            : null;
+        if (messageRef) {
+            const unsubscribe =
+                messageRef &&
+                onSnapshot(messageRef, (querySnapshot) => {
                     console.log("New message received");
                     const messages = querySnapshot.docs.map((doc) =>
                         doc.data()
                     );
                     setConversation(messages);
                 });
-            } else {
-                fetchConversation(selectedUser.userID);
-            }
-        }
 
-        return () => unsubscribe();
-    }, [selectedUser, conversationID]);
+            // Clean up the listener when the component unmounts or when a new conversation is selected
+            return () => {
+                unsubscribe && unsubscribe();
+            };
+        }
+    }, [selectedUser]);
 
     const handleUserClick = (user) => {
         console.log(user.ActiveUser);
@@ -173,15 +182,15 @@ function Messages(props) {
         setSelectedUser(user.ActiveUser);
         console.log(selectedUser);
     };
-    const handleConversationChange = (conversationID) => {
-        console.log(conversationID);
-        setConversationID(conversationID);
-    };
+    // const handleConversationChange = (conversationID) => {
+    //     console.log(conversationID);
+    //     setConversationID(conversationID);
+    // };
 
     const handleSendMessage = async (event) => {
         event.preventDefault();
         console.log(`Sending message "${message}" to ${selectedUser.name}`);
-        await sendMessage(selectedUser.email, props.userData.userID, message);
+        await sendMessage(selectedUser.userID, props.userData.userID, message);
         setMessage("");
         //  fetchConversation(selectedUser.userID); // Refresh the conversation after sending the message
     };

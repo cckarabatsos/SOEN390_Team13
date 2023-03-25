@@ -2,14 +2,14 @@ import axios from "axios";
 import api from "../config.json";
 import { findUserById } from "./UserProfileApi";
 
-export async function getAllMessages(reqUserEmail, reqSenderEmail) {
+export async function getAllMessages(reqUserID, reqSenderID) {
     try {
         const response = await axios.get(
             api.BACKEND_API + "/messages/getAllMessages",
             {
                 params: {
-                    userEmails: [reqUserEmail, reqSenderEmail],
-                    senderEmail: reqSenderEmail,
+                    userIds: [reqSenderID, reqUserID],
+                    senderId: reqSenderID,
                 },
             }
         );
@@ -49,7 +49,6 @@ export async function getActiveConvos(reqID) {
         for (let i = 0; i < activeConvos.length; i++) {
             const activeUserIds = activeConvos[i].ActiveUser;
             const otherUserId = activeUserIds.find((id) => id !== reqID);
-
             const userDataResponse = await findUserById(otherUserId);
             const userData = userDataResponse.data;
 
