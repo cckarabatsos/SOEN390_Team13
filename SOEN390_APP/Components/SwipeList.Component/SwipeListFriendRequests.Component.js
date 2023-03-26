@@ -174,10 +174,13 @@ const styles = StyleSheet.create({
   rowFront: {
     backgroundColor: "white",
     borderBottomColor: "black",
-    borderBottomWidth: 1,
+    borderWidth: 1,
     justifyContent: "center",
     height: 80,
     paddingStart: 20,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    marginVertical: 4,
   },
   rowBack: {
     alignItems: "center",
@@ -185,7 +188,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 15,
+    marginRight: 20,
   },
   backRightBtn: {
     alignItems: "center",
@@ -193,8 +196,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     top: 0,
-    width: 75,
+    height: 50,
+    width: 50,
     borderRadius: 40,
+    marginTop: 15,
   },
   backRightBtnLeft: {
     backgroundColor: "#fff",

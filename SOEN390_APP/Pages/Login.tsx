@@ -76,7 +76,7 @@ export default function Login({ navigation }: { navigation: any }) {
       
       navigation.navigate({
         name: "Home",
-        params:{username : userProfile.name, user_email: userProfile.email, user_password:userProfile.password, userID:userProfile.userID},
+        params:{username : userProfile.name, user_email: userProfile.email, user_password:userProfile.password, userID:userProfile.userID, pendingInvitations: userProfile.pendingInvitations},
         merge: true,
       });
       

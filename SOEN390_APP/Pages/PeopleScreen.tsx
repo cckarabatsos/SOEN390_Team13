@@ -50,8 +50,8 @@ const PeopleScreen = ({route}:{route:any}) => {
   const [search, setSearch] = useState("");
 
   let email:string = route.params.email
+  let pendingInvites:string = route.params.pendingInvitations
   let userID1:string = route.params.userID
-
 
   const handleGetUser = async () => {
     setRefresh(false);
@@ -118,12 +118,15 @@ const PeopleScreen = ({route}:{route:any}) => {
     handleSearch();
   }, [searchTerm, allUsers]);
 
-  function isUserInContactsList(contactsList: string[],pendingInvitationsList: string[], userEmail: string) {
+  function isUserInContactsList(contactsList: string[],pendingInvitationsList: string[], userEmail: string, recieverEmail:string) {
     if (contactsList.includes(userEmail)) {
       return "connected";
     } else if (pendingInvitationsList.includes(userEmail)) {
       return "pending";
-    } else {
+    }else if(pendingInvites.includes(recieverEmail)){
+      return "pending";
+    }
+     else {
       return "connect";
     }
   }
@@ -159,8 +162,8 @@ const PeopleScreen = ({route}:{route:any}) => {
   };
 
 
-const modalRender = (user:User) =>{
-let buttons = isUserInContactsList(user.contactList, user.pendingInvitationsList, email);
+const modalRender = (user1:User) =>{
+let buttons = isUserInContactsList(user1.contactList, user1.pendingInvitationsList, email, user1.email);
 return( 
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
@@ -174,13 +177,13 @@ return(
               </TouchableOpacity>
             </View>
             <View style={styles.modalHeader}>
-              <Image style={styles.logoModal} source={{ uri: user.image }} />
-              <Text style={styles.modalHeaderText}>{user.name}</Text>
-              <Text style={styles.modalBodyText}>{user.occupation}</Text>
-              <Text style={styles.modalBodyMessage}>{user.location}</Text>
+              <Image style={styles.logoModal} source={{ uri: user1.image }} />
+              <Text style={styles.modalHeaderText}>{user1.name}</Text>
+              <Text style={styles.modalBodyText}>{user1.occupation}</Text>
+              <Text style={styles.modalBodyMessage}>{user1.location}</Text>
             </View>
             <View style={styles.modalBody}>
-              <Text style={styles.modalBodyText}>Email: {user.email}</Text>
+              <Text style={styles.modalBodyText}>Email: {user1.email}</Text>
             </View>
             <ScrollView style={styles.scrollview}>
               <Text style={styles.modalBodyText}>Bio: </Text>
@@ -217,7 +220,7 @@ return(
                   <TouchableOpacity
                     style={styles.buttonModal}
                     onPress={() => {
-                      connectWithUser(user.name, user.email);
+                      connectWithUser(user1.name, user1.email);
                     }}
                   >
                     <Text style={styles.followButtonText}>Connect</Text>
@@ -234,7 +237,7 @@ return(
 
   const renderItem = ({ item }: { item: User }) => {
     if(!item.isCompany){
-      let buttons = isUserInContactsList(item.contactList, item.pendingInvitationsList, email);
+      let buttons = isUserInContactsList(item.contactList, item.pendingInvitationsList, email, item.email);
       return (
       <View style={styles.userContainer}> 
         <Image style={styles.userImage} source={{ uri: item.image }} />
@@ -275,7 +278,6 @@ return(
                 viewUserProfile(item)}}>
       <Text style={styles.followButtonText}>Profile</Text>
     </TouchableOpacity> 
-    {modalRender(item)}
     </View>
     );
   }};
@@ -302,7 +304,7 @@ return(
       </View>
       <View style={styles.filterContainer}>
 </View>
-
+    {modalRender(user)}
       <FlatList
         data={filteredUsers}
         keyExtractor={item => item.id.toString()}
