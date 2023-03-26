@@ -86,10 +86,6 @@ const Messages  = ({ route, navigation }:any) => {
       const timestamp = message.timestamp
       date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
       isRead1= message.isRead
-      console.log(message1)
-      console.log(isRead1)
-      console.log(timestamp)
-      console.log(date)
     }
 
     const user = await handleGetUserInfo(activeUser)
@@ -146,12 +142,21 @@ const Messages  = ({ route, navigation }:any) => {
     );
     
     return (
-      <View style={styles.container}>
+
+        <View style={styles.container2}>
+        <View style={{flexDirection: 'column'}}>
+          <View style={styles.inboxContainer}>
+            <Ionicons size={30} name="chatbubble"/>
+            <Text style={styles.inboxText}> Chats </Text>
+          </View>
+        </View>
+         <View style={styles.container}>
         <FlatList
           data={conversations}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
+      </View>
       </View>
     );
   };
@@ -184,6 +189,27 @@ const styles = StyleSheet.create({
     
     justifyContent: 'center',
   },
+  container2: {
+    backgroundColor: 'white',
+    flex: 1,
+},
+inboxContainer: {
+  backgroundColor:  "rgb(145, 140, 224)",
+  height:50,
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection:"row",
+},
+requestText:{
+  fontSize: 20,
+  fontWeight: 'bold',
+  marginRight: 7,
+},
+inboxText:{
+  textAlign: 'center',
+  fontSize: 18,
+  fontWeight: 'bold',
+},
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
