@@ -17,15 +17,15 @@ export default function NotificationComponentList(props) {
 
   const getNotificationsList= async (userId)=>{
     let generatedNotification = await GetNotification(userId)
-    console.log(generatedNotification)
     setNotifications(generatedNotification)
 
   }
-
   const handleRemoveNotification = async (notificationId) => {
+
+    console.log("document notification IOd: " + notificationId)
     var response = await removeNotification(notificationId);
     if (response) {
-      setNotifications([])
+      getNotificationsList(userData.userId)
     }
     
   };
@@ -40,41 +40,40 @@ export default function NotificationComponentList(props) {
     } 
     
     if(userData) {
-      getNotificationsList(userData.userID)
+      getNotificationsList("i2iLvPkBHmkV43PufHVp")
     }
   },[])
- 
 
   return (
     <div className="notificationContainer">
       <div className="notificationPageTitle">
-        <h2>Notification Center</h2>
+        <h1>Notification Center</h1>
       </div>
 
       <div className="innerMiddleContainer">
+        {notifications.length>0 &&
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
 
-          {notifications.map((aNotification)=>(
-            <>
-            <NotificationComponent
-            userName="tomas"
-            notificationDescription= {aNotification.message}
-            notificationCategory = {aNotification.category}
-            picture = {aNotification.logo}
-            handledelete={handleRemoveNotification}
-            notificationId= {aNotification.notificationID}
-            ></NotificationComponent>
-             <Divider variant="inset" component="li" />
-            </>
-            
-
-          )
-          
-          
-          )}
-         
-          
-        </List>
+        {notifications.map((aNotification)=>(
+          <>
+          <NotificationComponent
+          userName="tomas"
+          notificationDescription= {aNotification.message}
+          notificationCategory = {aNotification.category}
+          picture = {aNotification.logo}
+          handleDelete={handleRemoveNotification}
+          notificationId= {aNotification.notificationID}
+          ></NotificationComponent>
+           <Divider variant="inset" component="li" />
+          </>
+        )
+        )}
+      </List>
+        }
+        {
+          notifications.length==0 &&
+          <h2>No New Notification!</h2>
+        } 
       </div>
     </div>
   );

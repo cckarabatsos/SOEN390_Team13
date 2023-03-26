@@ -75,10 +75,34 @@ export const retrieveNotifications = async (userID: string) => {
             return null;
         }
         let casted_user = await user_schema.cast(user);
+
+        let userRef = await db.collection("users").doc(userID)
+
+        //removed unused notifications from the reffernce array
+        for(let i =0; i < casted_user.notifications.length; i++) {
+            let notifDocRef= (await casted_user.notifications[i].get())
+            if(!notifDocRef.data()){
+                await userRef.update({
+                    "notifications": firebase.firestore.FieldValue.arrayRemove(casted_user.notifications[i])
+                })
+            }
+        }
+
+
+        let userRefresh = await findUserWithID(userID);
+        if (user === undefined) {
+            console.log("User not found.");
+            return null;
+        }
+        let casted_userRefresh = await user_schema.cast(userRefresh);
+
+
+
+
         var notifications: Notification[] = [];
 
         var promise = new Promise<void>((resolve) => {
-            casted_user.notifications.forEach(async (notifRef: any, index: any, array: any) => {
+            casted_userRefresh.notifications.forEach(async (notifRef: any, index: any, array: any) => {
                 let snapShot: any = await notifRef.get();
                 let notif: Notification = await notification_schema.cast(snapShot.data());
                 notifications.push(notif);

@@ -19,7 +19,7 @@ export default function NotificationComponent(props) {
 const userImage = props.picture
 const notificationCategory = props.notificationCategory
 const notificationDescription= props.notificationDescription
-const handleDelete= props.handleDelete
+
 var userName = props.userName
 if (!userName){ 
     userName = "Error"
@@ -46,7 +46,7 @@ if (!userName){
               }
             />
             <ListItemSecondaryAction>
-              <IconButton color="error" onClick={()=>handleDelete(props.notificationId)}>
+              <IconButton color="error" onClick={()=>props.handleDelete(props.notificationId)}>
                 <Delete></Delete>
               </IconButton>
             </ListItemSecondaryAction>

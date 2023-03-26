@@ -15,8 +15,8 @@ export async function GetNotification(userId) {
 
 export async function removeNotification(notificationId){
     try {
-        const response = await axios.get(
-          api.BACKEND_API + '/notification/remove/'+notificationId
+        const response = await axios.post(
+          api.BACKEND_API + '/notification/remove/'+notificationId,
         );
 
         if(response.status == 200){
