@@ -9,40 +9,34 @@ import "../styles/components/NotificationComponent.css";
 import NotificationComponent from "./NotificationComponent";
 import { GetNotification, removeNotification } from "../api/NotificationsApi";
 
-
 export default function NotificationComponentList(props) {
-
-  const[notifications, setNotifications]= useState([])
+  const [notifications, setNotifications] = useState([]);
   const [userData, setUseData] = React.useState({});
 
-  const getNotificationsList= async (userId)=>{
-    let generatedNotification = await GetNotification(userId)
-    setNotifications(generatedNotification)
-
-  }
+  const getNotificationsList = async (userId) => {
+    let generatedNotification = await GetNotification(userId);
+    setNotifications(generatedNotification);
+  };
   const handleRemoveNotification = async (notificationId) => {
-
-    console.log("document notification IOd: " + notificationId)
+    console.log("document notification IOd: " + notificationId);
     var response = await removeNotification(notificationId);
     if (response) {
-      getNotificationsList(userData.userId)
+      getNotificationsList(userData.userId);
     }
-    
   };
 
-  useEffect( ()=>{
-
+  useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
       setUseData(JSON.parse(localStorage.getItem("isAuth")));
     } else {
       setUseData(false);
-    } 
-    
-    if(userData) {
-      getNotificationsList("i2iLvPkBHmkV43PufHVp")
     }
-  },[])
+
+    if (userData) {
+      getNotificationsList(userData.userId);
+    }
+  }, []);
 
   return (
     <div className="notificationContainer">
@@ -51,29 +45,24 @@ export default function NotificationComponentList(props) {
       </div>
 
       <div className="innerMiddleContainer">
-        {notifications.length>0 &&
-        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-
-        {notifications.map((aNotification)=>(
-          <>
-          <NotificationComponent
-          userName="tomas"
-          notificationDescription= {aNotification.message}
-          notificationCategory = {aNotification.category}
-          picture = {aNotification.logo}
-          handleDelete={handleRemoveNotification}
-          notificationId= {aNotification.notificationID}
-          ></NotificationComponent>
-           <Divider variant="inset" component="li" />
-          </>
-        )
+        {notifications.length > 0 && (
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+            {notifications.map((aNotification) => (
+              <>
+                <NotificationComponent
+                  userName="tomas"
+                  notificationDescription={aNotification.message}
+                  notificationCategory={aNotification.category}
+                  picture={aNotification.logo}
+                  handleDelete={handleRemoveNotification}
+                  notificationId={aNotification.notificationID}
+                ></NotificationComponent>
+                <Divider variant="inset" component="li" />
+              </>
+            ))}
+          </List>
         )}
-      </List>
-        }
-        {
-          notifications.length==0 &&
-          <h2>No New Notification!</h2>
-        } 
+        {notifications.length == 0 && <h2>No New Notification!</h2>}
       </div>
     </div>
   );

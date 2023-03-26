@@ -12,44 +12,44 @@ import Delete from "@mui/icons-material/Delete";
 import { ListItemSecondaryAction } from "@material-ui/core";
 import IconButton from "@mui/material/IconButton";
 
-
-
 export default function NotificationComponent(props) {
+  const userImage = props.picture;
+  const notificationCategory = props.notificationCategory;
+  const notificationDescription = props.notificationDescription;
 
-const userImage = props.picture
-const notificationCategory = props.notificationCategory
-const notificationDescription= props.notificationDescription
-
-var userName = props.userName
-if (!userName){ 
-    userName = "Error"
-}
-    return(
-        <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt={userName} src={userImage} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={notificationCategory}
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {notificationCategory} from {userName}: 
-                  </Typography>
-                  {" "+notificationDescription}
-                </React.Fragment>
-              }
-            />
-            <ListItemSecondaryAction>
-              <IconButton color="error" onClick={()=>props.handleDelete(props.notificationId)}>
-                <Delete></Delete>
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-    )
+  var userName = props.userName;
+  if (!userName) {
+    userName = "Error";
+  }
+  return (
+    <ListItem alignItems="flex-start">
+      <ListItemAvatar>
+        <Avatar alt={userName} src={userImage} />
+      </ListItemAvatar>
+      <ListItemText
+        primary={notificationCategory}
+        secondary={
+          <React.Fragment>
+            <Typography
+              sx={{ display: "inline" }}
+              component="span"
+              variant="body2"
+              color="text.primary"
+            >
+              {notificationCategory} from {userName}:
+            </Typography>
+            {" " + notificationDescription}
+          </React.Fragment>
+        }
+      />
+      <ListItemSecondaryAction>
+        <IconButton
+          color="error"
+          onClick={() => props.handleDelete(props.notificationId)}
+        >
+          <Delete></Delete>
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
 }
