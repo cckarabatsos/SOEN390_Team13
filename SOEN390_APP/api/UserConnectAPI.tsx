@@ -3,6 +3,8 @@ import api from "../config.json";
 
 export async function UserConnectAPI(emailReceiver: String, emailSender: String) {
   try {
+    console.log(emailReceiver)
+    console.log(emailSender)
     const response = await axios.get(api.BACKEND_API + "/user/api/sendInvite", {
       params: {
         receiverEmail: emailReceiver,

@@ -90,7 +90,6 @@ const PeopleScreen = ({route}:{route:any}) => {
 
   const connectWithUser = async (user_name: String, user_email: String) => {
     setModalVisible(false);
-
     let responce = await UserConnectAPI(user_email, email)
     if(responce)
     Toast.show({
@@ -265,7 +264,7 @@ return(
                   <TouchableOpacity
                     style={styles.followButton}
                     onPress={() => {
-                      connectWithUser(user.name, user.email);
+                      connectWithUser(item.name, item.email);
                     }}
                   >
                     <Text style={styles.followButtonText}>Connect</Text>
@@ -275,7 +274,8 @@ return(
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
                 viewUserProfile(item)}}>
       <Text style={styles.followButtonText}>Profile</Text>
-    </TouchableOpacity>
+    </TouchableOpacity> 
+    {modalRender(item)}
     </View>
     );
   }};
@@ -301,8 +301,8 @@ return(
         </TouchableOpacity>
       </View>
       <View style={styles.filterContainer}>
-  {modalRender(user)}
 </View>
+
       <FlatList
         data={filteredUsers}
         keyExtractor={item => item.id.toString()}
