@@ -81,7 +81,7 @@ export const storeApplication = async (application: Application) => {
             document.id :
             casted_company.jobpostings.applied[index] + "," + document.id;
         updateUser(casted_company, casted_company.userID);
-        let notification: Notification = {
+        let companyNotification: Notification = {
             logo: casted_user.picture,
             message: casted_user.name + " has applied to your job posting '" + casted_posting.position + "'.",
             timestamp: (new Date()).toLocaleString(),
@@ -89,7 +89,16 @@ export const storeApplication = async (application: Application) => {
             ownerID: casted_company.userID,
             relatedEntity: casted_user.userID
         };
-        storeNotification(notification);
+        storeNotification(companyNotification);
+        let userNotification: Notification = {
+            logo: casted_company.picture,
+            message: "You have applied to " + casted_company.name + "'s position '" + casted_posting.position + "'.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "applications",
+            ownerID: casted_user.userID,
+            relatedEntity: casted_posting.postingID
+        };
+        storeNotification(userNotification);
     } catch (error) {
         console.log(error);
         throw error;
@@ -315,6 +324,7 @@ export async function updateApplication(applicationID: string, newStatus: string
         }
         application.status = newStatus;
         db.collection("applications").doc(applicationID).update(application);
+
         return application;
     } catch (error) {
         console.log(error);

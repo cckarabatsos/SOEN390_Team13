@@ -11,11 +11,26 @@ import { findUserWithID } from "./userServices";
 const db = firebase.firestore();
 
 /**
+ * Finds notification with specified ID in the database
+ *
+ * @param notificationID 
+ * @returns snapshot of the found notification or undefined
+ */
+export const findNotificationWithID = async (notificationID: string) => {
+    try {
+        var snapShot = await db.collection("notifications").doc(notificationID).get();
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return snapShot.data();
+};
+
+/**
  * Stores a new Notification in the database
  * 
- * @param userID
  * @param notification 
- * @returns "Success" or null
+ * @returns notification ID or null
  */
 export const storeNotification = async (notification: Notification) => {
     try {
@@ -77,4 +92,35 @@ export const retrieveNotifications = async (userID: string) => {
         console.log(error);
         throw error;
     }
+};
+
+/**
+ * Deletes notification with specified ID from the database
+ * 
+ * @param notificationID 
+ * @returns information of the deleted notification or null
+ */
+export const deleteNotificationWithId = async (notificationID: string) => {
+    try {
+        var data: any = await findNotificationWithID(notificationID);
+        if (data !== undefined) {
+            db.collection("notifications")
+                .doc(notificationID)
+                .delete()
+                .then(() => {
+                    console.log(
+                        "Notification with ID " +
+                        notificationID +
+                        " successfully deleted."
+                    );
+                });
+        }
+        else {
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return data;
 };
