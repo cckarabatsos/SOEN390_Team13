@@ -1105,12 +1105,12 @@
 					"response": []
 				},
 				{
-					"name": "Remove Application Copy",
+					"name": "Update Application Status",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/application/remove/:userID?postingID=QnO8p53hTIJpiomXbccm",
+							"raw": "http://localhost:7000/application/updateStatus/:applicationID?status=approved",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1118,19 +1118,19 @@
 							"port": "7000",
 							"path": [
 								"application",
-								"remove",
-								":userID"
+								"updateStatus",
+								":applicationID"
 							],
 							"query": [
 								{
-									"key": "postingID",
-									"value": "QnO8p53hTIJpiomXbccm"
+									"key": "status",
+									"value": "approved"
 								}
 							],
 							"variable": [
 								{
-									"key": "userID",
-									"value": "fS0PjwOmmPRWbSZxzva9"
+									"key": "applicationID",
+									"value": "wKzDjRkFJq8oFBnz75bl"
 								}
 							]
 						}
@@ -1388,7 +1388,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/sendMessage?senderId=6Xwu7LcLPdqkBgwJa6EM&Ids=[\"JaQGolnDcz8fm0CjEkep\",\"6Xwu7LcLPdqkBgwJa6EM\"]&message=Test message",
+							"raw": "http://localhost:7000/messages/sendMessage?senderId=3Ri6yXlYSo7rCQk4t4ks&Ids=[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]&message=Test message",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1401,11 +1401,11 @@
 							"query": [
 								{
 									"key": "senderId",
-									"value": "6Xwu7LcLPdqkBgwJa6EM"
+									"value": "3Ri6yXlYSo7rCQk4t4ks"
 								},
 								{
 									"key": "Ids",
-									"value": "[\"JaQGolnDcz8fm0CjEkep\",\"6Xwu7LcLPdqkBgwJa6EM\"]"
+									"value": "[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]"
 								},
 								{
 									"key": "message",
@@ -1535,7 +1535,34 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "i2iLvPkBHmkV43PufHVp"
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/notification/remove/:docID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"notification",
+								"remove",
+								":docID"
+							],
+							"variable": [
+								{
+									"key": "docID",
+									"value": "EgNAZICbsXrsQ2k6gclJ"
 								}
 							]
 						}
