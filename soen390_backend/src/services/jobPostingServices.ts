@@ -4,6 +4,8 @@ import { findUserWithID } from "./userServices";
 import { user_schema } from "../models/User";
 import { Notification } from "../models/Notification";
 import { storeNotification } from "./notificationServices";
+import { retrieveSkills } from "./skillServices";
+import { Skill } from "../models/Skill";
 
 const db = firebase.firestore();
 /**
@@ -178,4 +180,73 @@ export const filterJobPostings = async (filter: Filter) => {
     console.log(expiredJobPostings); // Output the expired job postings
 
     return jobPostings;
+};
+
+export const retrieveJobSuggestions = async (userID: string) => {
+    try {
+        let user = await findUserWithID(userID);
+        if (user === undefined) {
+            console.log("User not found.");
+            return null;
+        }
+        let casted_user = await user_schema.cast(user);
+        const skills = await retrieveSkills(userID);
+        skills?.forEach((skill: Skill) => {
+            skill.name = skill.name.toUpperCase();
+        });
+        let companyPostingIDs: string[] = [];
+        casted_user.follows.forEach(async (str: string) => {
+            let company = await findUserWithID(str);
+            if (company !== undefined) {
+                let casted_company = await user_schema.cast(company);
+                casted_company.jobpostings.postingids.forEach((postingID: string) => {
+                    companyPostingIDs.push(postingID);
+                });
+            }
+        });
+
+        let postingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+            db.collection("jobpostings");
+        const snapshot = await postingsRef.get();
+        const postings = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+        }));
+
+        let nbrElementsToRemove: number = 0;
+        postings.forEach((posting: Jobposting) => {
+            let score: number = 0;
+            let position: string[] = posting.position.toUpperCase().split(" ");
+            let description: string[] = posting.description.toUpperCase().split(" ");
+            skills?.forEach((skill: Skill) => {
+                position.forEach((str: string) => {
+                    str = str.replace(/["'`,.:;-]+/g, "");
+                    if (skill.name == str) {
+                        score++;
+                    }
+                });
+                description.forEach((str: string) => {
+                    str = str.replace(/["'`,.:;-]+/g, "");
+                    if (skill.name == str) {
+                        score++;
+                    }
+                });
+            });
+
+            if (score == 0 && !companyPostingIDs.includes(posting.postingID)) {
+                posting.score = -1;
+                nbrElementsToRemove++;
+            } else {
+                posting.score = score;
+            }
+        });
+        postings.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
+        for (let i = 0; i < nbrElementsToRemove; i++) {
+            postings.pop();
+        }
+
+        return postings;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 };
