@@ -107,12 +107,17 @@ export const deleteNotificationWithId = async (notificationID: string) => {
             db.collection("notifications")
                 .doc(notificationID)
                 .delete()
-                .then(() => {
+                .then(async () => {
                     console.log(
                         "Notification with ID " +
                         notificationID +
                         " successfully deleted."
                     );
+                    let casted_notification = notification_schema.cast(data);
+                    let user = await findUserWithID(casted_notification.ownerID);
+                    if (user !== undefined) {
+                        user.notifications.splice(user.notifications.indexOf("notifications/" + notificationID), 1);
+                    }
                 });
         }
         else {
