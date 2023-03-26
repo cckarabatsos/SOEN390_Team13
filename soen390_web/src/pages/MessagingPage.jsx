@@ -13,10 +13,11 @@ import {
     ListItemText,
     TextField,
     Typography,
+    CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
     getActiveConvos,
     getAllMessages,
@@ -25,6 +26,7 @@ import {
 import { findUserById } from "../api/UserProfileApi";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { async } from "@firebase/util";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -110,89 +112,69 @@ function Messages(props) {
     const [conversation, setConversation] = useState([]);
     const intervalId = useRef(null);
     const [conversationID, setConversationID] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+
+    const { userId } = useParams();
     useEffect(() => {
+        setIsLoading(true);
         fetchData();
-    }, []);
+        fetchConversation(userId);
+    }, [userId]);
+    useEffect(() => {
+        if (!conversationID) {
+            console.log("Ignoring subscription");
+
+            return;
+        }
+        console.log(
+            "Running subscription for conversationID: ",
+            conversationID
+        );
+        const messageRef = doc(db, "conversations", conversationID);
+        const unsub = onSnapshot(messageRef, (querySnapshot) => {
+            fetchConversation(userId);
+        });
+
+        return () => {
+            console.log("Unsubbing");
+
+            unsub();
+        };
+    }, [conversationID]);
     async function fetchData() {
         const convos = await getActiveConvos(props.userData.userID);
+
+        const convUser = convos.find(
+            (user) => user.ActiveUser.userID === userId
+        );
+
+        setSelectedUser(convUser);
         setUsers(convos);
     }
     const fetchConversation = async (userId) => {
         try {
             if (userId) {
-                console.log("checking messages");
                 const user = await findUserById(userId);
-                setSelectedUser(user.data);
                 const activeMessages = await getAllMessages(
                     props.userData.userID,
                     user.data.userID
                 );
-                if (!activeMessages.data.usersChat.listOfMessages) {
-                    setConversation([]);
-                }
                 setConversation(
                     activeMessages.data.usersChat.listOfMessages.map(
                         (chat) => chat.message
                     )
                 );
+
                 setConversationID(activeMessages.data.usersChat.conversationID);
+                setIsLoading(false);
             }
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
-
-    // useEffect(() => {
-    //     const userId = window.location.pathname.split("/").pop();
-    //     fetchConversation(userId);
-    // }, [location.pathname]);
-
-    useEffect(() => {
-        // Only run this effect once when the component is mounted
-        if (selectedUser && !conversationID) {
-            console.log("Fetch conversation 1");
-            fetchConversation(selectedUser.userID);
-        }
-
-        // Set up the listener for the selected conversation
-        const messageRef = conversationID
-            ? collection(db, "conversations", conversationID, "messages")
-            : null;
-        if (messageRef) {
-            const unsubscribe =
-                messageRef &&
-                onSnapshot(messageRef, (querySnapshot) => {
-                    console.log("New message received");
-                    const messages = querySnapshot.docs.map((doc) =>
-                        doc.data()
-                    );
-                    setConversation(messages);
-                });
-
-            // Clean up the listener when the component unmounts or when a new conversation is selected
-            return () => {
-                unsubscribe && unsubscribe();
-            };
-        }
-    }, [selectedUser]);
-
-    const handleUserClick = (user) => {
-        console.log(user.ActiveUser);
-        navigate(`/Messages/${user.ActiveUser.userID}`);
-        setSelectedUser(user.ActiveUser);
-        console.log(selectedUser);
-    };
-    // const handleConversationChange = (conversationID) => {
-    //     console.log(conversationID);
-    //     setConversationID(conversationID);
-    // };
 
     const handleSendMessage = async (event) => {
         event.preventDefault();
-        console.log(`Sending message "${message}" to ${selectedUser.name}`);
-        await sendMessage(selectedUser.userID, props.userData.userID, message);
+        await sendMessage(userId, props.userData.userID, message);
         setMessage("");
-        //  fetchConversation(selectedUser.userID); // Refresh the conversation after sending the message
     };
 
     return (
@@ -207,13 +189,11 @@ function Messages(props) {
                 <List>
                     {users.map((user) => (
                         <ListItem
-                            button
                             key={user.ActiveUser.userID}
-                            selected={
-                                selectedUser &&
-                                user.ActiveUser.userID === selectedUser.userID
+                            selected={user.ActiveUser.userID === userId}
+                            onClick={() =>
+                                navigate(`/Messages/${user.ActiveUser.userID}`)
                             }
-                            onClick={() => handleUserClick(user)}
                         >
                             <ListItemAvatar>
                                 <Avatar alt={user.name} src={user.avatar} />
@@ -234,40 +214,54 @@ function Messages(props) {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
+                {isLoading && !selectedUser && <CircularProgress />}
                 {selectedUser ? (
-                    <Box display="flex" flexDirection="column" height="100%">
+                    <Box
+                        position="relative"
+                        display="flex"
+                        flexDirection="column"
+                        height="100%"
+                    >
                         <Typography>{selectedUser.name}</Typography>
-                        <Box
-                            display="flex"
-                            flexGrow={1}
-                            flexDirection="column"
-                            className={classes.messagesContainer}
-                        >
-                            {conversation.map((message, index) => (
-                                <Box
-                                    key={index}
-                                    className={`${classes.messageContainer} ${
-                                        message.senderId ===
-                                        props.userData.userID
-                                            ? classes.sentMessage
-                                            : classes.message
-                                    }`}
-                                >
-                                    <Typography>{message.content}</Typography>
-                                    <Typography variant="caption">
-                                        {new Date(
-                                            message.timestamp
-                                        ).toLocaleTimeString([], {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                        })}
-                                        {new Date(
-                                            message.timestamp
-                                        ).toLocaleDateString()}
-                                    </Typography>
-                                </Box>
-                            ))}
-                        </Box>
+                        {isLoading ? (
+                            <CircularProgress position="absolute" />
+                        ) : (
+                            <Box
+                                display="flex"
+                                flexGrow={1}
+                                flexDirection="column"
+                                className={classes.messagesContainer}
+                            >
+                                {conversation.map((message, index) => (
+                                    <Box
+                                        key={index}
+                                        className={`${
+                                            classes.messageContainer
+                                        } ${
+                                            message.senderId ===
+                                            props.userData.userID
+                                                ? classes.sentMessage
+                                                : classes.message
+                                        }`}
+                                    >
+                                        <Typography>
+                                            {message.content}
+                                        </Typography>
+                                        <Typography variant="caption">
+                                            {new Date(
+                                                message.timestamp
+                                            ).toLocaleTimeString([], {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })}
+                                            {new Date(
+                                                message.timestamp
+                                            ).toLocaleDateString()}
+                                        </Typography>
+                                    </Box>
+                                ))}
+                            </Box>
+                        )}
                         <Box className={classes.messageInputContainer}>
                             <form
                                 onSubmit={(event) => {
@@ -291,7 +285,7 @@ function Messages(props) {
                                     variant="contained"
                                     color="primary"
                                     type="submit"
-                                    disabled={!message.trim()}
+                                    disabled={!message.trim() || isLoading}
                                     onClick={handleSendMessage}
                                 >
                                     Send
@@ -315,7 +309,7 @@ function Messages(props) {
                     </Box>
                 ) : (
                     <Typography variant="subtitle1">
-                        Please select a user to start a conversation.
+                        Please select a valid user to start a conversation.
                     </Typography>
                 )}
             </main>
