@@ -1,14 +1,14 @@
 /**
  * Service methods for Notification entity of the database
  */
-// import firebase from "firebase";
+import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-// import { Notification, notification_schema } from "../models/Notification";
+import { Notification, notification_schema } from "../models/Notification";
 import { user_schema } from "../models/User";
-import { findUserWithID, updateUser } from "./userServices";
+import { findUserWithID } from "./userServices";
 
-// const db = firebase.firestore();
+const db = firebase.firestore();
 
 /**
  * Stores a new Notification in the database
@@ -17,22 +17,33 @@ import { findUserWithID, updateUser } from "./userServices";
  * @param notification 
  * @returns "Success" or null
  */
-export const storeNotification = async (userID: string, notification: Notification) => {
+export const storeNotification = async (notification: Notification) => {
     try {
-        let user = await findUserWithID(userID);
+        let user = await findUserWithID(notification.ownerID);
         if (user === undefined) {
             console.log("User not found.");
             return null;
         }
         let casted_user = await user_schema.cast(user);
-        casted_user.notifications.push(notification);
-        updateUser(casted_user, casted_user.userID);
-        console.log("Notification stored successfully.");
+        var document = await db.collection("notifications").add({
+            ...notification
+        });
+        await document.update({ notificationID: document.id });
+        console.log("Notification successfully stored with id: " + document.id);
+
+        await db
+            .collection("users")
+            .doc(casted_user.userID)
+            .update({
+                notifications: firebase.firestore.FieldValue.arrayUnion(
+                    db.doc("notifications/" + document.id)
+                ),
+            });
     } catch (error) {
         console.log(error);
         throw error;
     }
-    return "Success";
+    return document.id;
 };
 
 /**
@@ -49,8 +60,19 @@ export const retrieveNotifications = async (userID: string) => {
             return null;
         }
         let casted_user = await user_schema.cast(user);
+        var notifications: Notification[] = [];
 
-        return casted_user.notifications;
+        var promise = new Promise<void>((resolve) => {
+            casted_user.notifications.forEach(async (notifRef: any, index: any, array: any) => {
+                let snapShot: any = await notifRef.get();
+                let notif: Notification = await notification_schema.cast(snapShot.data());
+                notifications.push(notif);
+                if (index === array.length - 1) resolve();
+            })
+        });
+        await promise;
+        console.log(notifications);
+        return notifications;
     } catch (error) {
         console.log(error);
         throw error;

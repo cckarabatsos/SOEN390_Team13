@@ -85,9 +85,11 @@ export const storeApplication = async (application: Application) => {
             logo: casted_user.picture,
             message: casted_user.name + " has applied to your job posting '" + casted_posting.position + "'.",
             timestamp: (new Date()).toLocaleString(),
-            category: "applications"
+            category: "applications",
+            ownerID: casted_company.userID,
+            relatedEntity: casted_user.userID
         };
-        storeNotification(casted_company.userID, notification);
+        storeNotification(notification);
     } catch (error) {
         console.log(error);
         throw error;
