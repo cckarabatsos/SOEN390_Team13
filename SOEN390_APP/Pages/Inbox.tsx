@@ -199,7 +199,8 @@ const buildObjectNotification = (jsonObject:any) => {
       <View style={styles.container}>
         <View style={{flexDirection: 'column'}}>
           <View style={styles.inboxContainer}>
-            <Text style={styles.inboxText}> Notification Inbox </Text></View>
+            <Ionicons size={30} name="folder"/>
+            <Text style={styles.inboxText}> Inbox </Text></View>
         </View>
         <View style={{flexDirection: 'row'}}>
           <ScrollView style={{flex: 1}}>
@@ -233,6 +234,7 @@ inboxContainer: {
   height:50,
   justifyContent: 'center',
   alignItems: 'center',
+  flexDirection:"row",
 },
 requestText:{
   fontSize: 20,
