@@ -2,7 +2,9 @@ import express, { Request, Response } from "express";
 import {
     deleteJobPosting,
     getFilteredJobPostings,
+    getJobSuggestions,
 } from "../controllers/jobPostingControllers";
+import { Jobposting } from "../models/jobPosting";
 const jobposting = express.Router();
 jobposting.use(express.json());
 /**
@@ -48,5 +50,32 @@ jobposting.get("/filter/products", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
+
+/**
+ * Route that gets the job suggestions for a user
+ */
+jobposting.get(
+    "/getJobSuggestions/:userID",
+    async (req: Request, res: Response) => {
+        let userID = req.params.userID;
+        try {
+            const application: Jobposting = await getJobSuggestions(
+                userID
+            );
+            const status: number = application[0];
+            if (status == 200) {
+                res.status(200);
+                res.json(application[1]);
+            }
+            if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.name, errMsg: err.message });
+        }
+    }
+);
+
 //Exporting the job postings
 module.exports = jobposting;

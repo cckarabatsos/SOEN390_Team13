@@ -8,6 +8,7 @@ import {
 import {
     deleteJobPostingWithId,
     filterJobPostings,
+    retrieveJobSuggestions,
     storeJobPosting,
 } from "../services/jobPostingServices";
 import { updateCompanyPostings } from "../services/userServices";
@@ -120,4 +121,20 @@ function validateFilterData(filter: Filter) {
         return [true, error_data];
     }
     return [false, {}];
+}
+
+/**
+ * Tries to retrieve all job posting suggestions for the specified user 
+ *
+ * @param userID
+ * @returns status and res message
+ */
+export async function getJobSuggestions(userID: string) {
+    let jobpostings = await retrieveJobSuggestions(userID);
+
+    if (jobpostings !== null) {
+        return [200, jobpostings];
+    } else {
+        return [404, { msg: "Job suggestions not found" }];
+    }
 }
