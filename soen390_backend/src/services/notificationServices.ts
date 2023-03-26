@@ -4,7 +4,7 @@
 // import firebase from "firebase";
 //import { string } from "yup";
 import "firebase/storage";
-// import { Notification, notification_schema } from "../models/Notification";
+ import { Notification} from "../models/Notification";
 import { user_schema } from "../models/User";
 import { findUserWithID, updateUser } from "./userServices";
 
@@ -50,7 +50,14 @@ export const retrieveNotifications = async (userID: string) => {
         }
         let casted_user = await user_schema.cast(user);
 
-        return casted_user.notifications;
+        var notificationList:Notification = []
+
+        for(var i =0; i<casted_user.notifications.length; i++) {
+
+            let aNotification = await casted_user.notifications[i].get()
+            notificationList.push(aNotification.data())
+        }
+        return notificationList;
     } catch (error) {
         console.log(error);
         throw error;
