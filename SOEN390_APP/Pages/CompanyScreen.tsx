@@ -22,7 +22,7 @@ interface User {
   email: string
   isCompany: boolean
   userID: string
-  followerList: []
+  followerList: string[];
 }
 
 
@@ -32,10 +32,21 @@ const CompanyScreen = ({route}:{route:any}) => {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({
+    id: 0,
+    name: "",
+    occupation: "",
+    location: "",
+    company: "",
+    image: "",
+    email: "",
+    isCompany: false,
+    userID: "",
+    followerList: []
+  });
   const [data, setData] = useState([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
-  const [showFlatlist, setShowFlatlist] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   
 
@@ -45,18 +56,18 @@ const CompanyScreen = ({route}:{route:any}) => {
   let empty = {}
 
   const handleGetUser = async () => {
-    const user = await GetCompanyAPI(empty)
+    setRefresh(false);
+    let user = await GetCompanyAPI(empty)
+
     const newObjectsArray = user.map(buildObject);
     setData(newObjectsArray);
-  
+
     // Update the subcategory in CONTENT with the fetched data
-    const updatedContent = [...allUsers, ...newObjectsArray];
+    const updatedContent = [...newObjectsArray];
     setAllUsers(updatedContent);
+      
   }
   
-  useEffect(() => {
-    handleGetUser();
-  }, []);
 
   const { v4: uuidv4 } = require('uuid');
 
@@ -79,44 +90,18 @@ const CompanyScreen = ({route}:{route:any}) => {
     return obj;
   }
 
-  const followCompany = async (user_name: String, user_email: String, name:string) => {
+  const followCompany = async (user_name: String, user_email: String) => {
     setModalVisible(false);
-    setShowFlatlist(false);
-    let responce = followCompanyAPI(user_email, user_name)
-    if(await responce)
-    Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "REQUEST SENT",
-        textBody: "Following: "+ name,
-      });
-      else 
-      Toast.show({
-        type: ALERT_TYPE.WARNING,
-        title: "Already Following",
-      });
-      //setFollowUnfollowCount(count => count + 1);
-      setShowFlatlist(true);
+    await followCompanyAPI(user_email, user_name)
+    setRefresh(true);
     }
 
 
     
-  const unfollowCompany = async (user_name: String, user_email: String, name:string) => {
+  const unfollowCompany = async (user_name: String, user_email: String) => {
     setModalVisible(false);
-    setShowFlatlist(false);
-    let responce = unfollowCompanyAPI(user_email, user_name)
-    if(await responce)
-    Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "REQUEST SENT",
-        textBody: "Following: "+ name,
-      });
-      else 
-      Toast.show({
-        type: ALERT_TYPE.WARNING,
-        title: "Already Following",
-      });
-      //setFollowUnfollowCount(count => count + 1);
-      setShowFlatlist(true);
+    await unfollowCompanyAPI(user_email, user_name)
+    setRefresh(true);
     }
 
     
@@ -124,6 +109,11 @@ const CompanyScreen = ({route}:{route:any}) => {
         setUser(user);
         setModalVisible(true);
       }
+    
+      useEffect(() => {
+        handleGetUser();
+      }, [refresh]);
+
 
   useEffect(() => {
     handleSearch();
@@ -142,8 +132,6 @@ const CompanyScreen = ({route}:{route:any}) => {
   };
 
   function isUserInFollowerList(followerList: string[], userID: string): boolean {
-    console.log(followerList)
-    console.log("xxxxxxxxxxxxxxxxxxx")
     return followerList.includes(userID);
   }
 
@@ -152,7 +140,7 @@ const CompanyScreen = ({route}:{route:any}) => {
     setSelectedLocation('');
   };
 
-  const modalRender = (user:any) =>{
+  const modalRender = (user:User) =>{
 return( 
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
@@ -188,12 +176,24 @@ return(
               </View>
             </View>
             <View style={styles.modalFooterButton}>
+            {isUserInFollowerList(user.followerList, userID1) ? (
+              <TouchableOpacity 
+                style={styles.buttonModalUnfollow}
+                onPress={() => {
+                  unfollowCompany(userID1, user.userID);
+                }}>
+                <Text style={styles.followButtonText}>Unfollow</Text>
+              </TouchableOpacity>
+            ) : (
               <TouchableOpacity
                 style={styles.buttonModal}
-                onPress={() => followCompany(userID1, user.userID, user.company)}
+                onPress={() => {
+                  followCompany(userID1, user.userID);
+                }}
               >
-                <Text style={styles.backTextWhite}>Follow</Text>
+                <Text style={styles.followButtonText}>Follow</Text>
               </TouchableOpacity>
+            )}
             </View>
           </View>
         </View>
@@ -212,20 +212,20 @@ return(
         </View>
         {isUserInFollowerList(item.followerList, userID1) ? (
               <TouchableOpacity 
-                style={styles.followButton}
+                style={styles.followButtonUnfollow}
                 onPress={() => {
-                  unfollowCompany(userID1, item.userID, item.name);
+                  unfollowCompany(userID1, item.userID);
                 }}>
-                <Text style={styles.followButton}>Unfollow</Text>
+                <Text style={styles.followButtonText}>Unfollow</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={styles.followButton}
                 onPress={() => {
-                  followCompany(userID1, item.userID, item.name);
+                  followCompany(userID1, item.userID);
                 }}
               >
-                <Text style={styles.followButton}>Follow</Text>
+                <Text style={styles.followButtonText}>Follow</Text>
               </TouchableOpacity>
             )}
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
@@ -257,36 +257,14 @@ return(
         </TouchableOpacity>
       </View>
       <View style={styles.filterContainer}>
-{/*   <Picker
-    selectedValue={selectedOccupation}
-    onValueChange={itemValue => setSelectedOccupation(itemValue)}
-    style={styles.filterPicker}
-  >
-    <Picker.Item style={styles.pickerItemDefault} label="Select occupation" value={null} />
-    <Picker.Item style={styles.pickerItem} label="Designer" value="Designer" />
-    <Picker.Item style={styles.pickerItem} label="Developer" value="Developer" />
-    <Picker.Item style={styles.pickerItem} label="Manager" value="Manager" />
-  </Picker>
-  <Picker
-    selectedValue={selectedLocation}
-    onValueChange={itemValue => setSelectedLocation(itemValue)}
-    style={styles.filterPicker}
-  >
-    <Picker.Item style={styles.pickerItemDefault} label="Select location" value={null} />
-    <Picker.Item style={styles.pickerItem} label="New York" value="New York" />
-    <Picker.Item style={styles.pickerItem} label="San Francisco" value="San Francisco" />
-    <Picker.Item style={styles.pickerItem} label="London" value="London" />
-  </Picker> */}
   {modalRender(user)}
-</View>
-{showFlatlist && (
+  </View>
       <FlatList
         data={filteredUsers}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         //onRefresh={handleRefresh}
       />
-)}
     </View>
     
   );
@@ -414,6 +392,11 @@ const styles = StyleSheet.create({
             padding: 10,
             borderRadius: 5,
           },
+          followButtonUnfollow: {
+            backgroundColor: "#b1b2b3",
+            padding: 10,
+            borderRadius: 5,
+          },
           followButtonProfile: {
             backgroundColor: 'blue',
             padding: 10,
@@ -438,6 +421,16 @@ const styles = StyleSheet.create({
           },
           buttonModal: {
             backgroundColor: "#4c7aaf",
+            padding: 12,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 16,
+            width: "100%",
+            height: 50,
+            borderRadius: 120,
+          },
+          buttonModalUnfollow: {
+            backgroundColor: "#b1b2b3",
             padding: 12,
             alignItems: "center",
             justifyContent: "center",

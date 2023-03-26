@@ -10,6 +10,7 @@ import {
     Toast,
   } from "react-native-alert-notification";
   import Ionicons from "react-native-vector-icons/Ionicons";
+import { RemoveContact } from '../api/userContactsApi';
 
 interface User {
   id: number;
@@ -20,6 +21,8 @@ interface User {
   image: string;
   email: string
   isCompany: boolean
+  contactList: string[]
+  pendingInvitationsList: string[]
 }
 
 
@@ -29,21 +32,35 @@ const PeopleScreen = ({route}:{route:any}) => {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({
+    id: 0,
+    name: "",
+    occupation: "",
+    location: "",
+    company: "",
+    image: "",
+    email: "",
+    isCompany: false,
+    contactList: [],
+    pendingInvitationsList:[]
+  });
   const [data, setData] = useState([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [refresh, setRefresh] = useState(false);
+  const [search, setSearch] = useState("");
 
-  let email:String = route.params.email
+  let email:string = route.params.email
+  let userID1:string = route.params.userID
 
-  let empty = {}
 
   const handleGetUser = async () => {
-    const user = await GetUsersAPI(empty)
+    setRefresh(false);
+    const user = await GetUsersAPI(search)
     const newObjectsArray = user.map(buildObject);
     setData(newObjectsArray);
   
     // Update the subcategory in CONTENT with the fetched data
-    const updatedContent = [...allUsers, ...newObjectsArray];
+    const updatedContent = [...newObjectsArray];
     setAllUsers(updatedContent);
   }
   
@@ -55,7 +72,7 @@ const PeopleScreen = ({route}:{route:any}) => {
   const { v4: uuidv4 } = require('uuid');
 
   const buildObject = (jsonObject:any) => {
-    const { name, currentPosition, currentCompany, email,isCompany } = jsonObject;
+    const { name, currentPosition, currentCompany, email,isCompany, contacts, pendingInvitations } = jsonObject;
     const obj = {
       id: uuidv4(),
       name: name,
@@ -65,6 +82,8 @@ const PeopleScreen = ({route}:{route:any}) => {
       email: email,
       isCompany: isCompany,
       image: jsonObject.picture || 'https://randomuser.me/api/portraits/men/1.jpg',
+      contactList: contacts,
+      pendingInvitationsList: pendingInvitations
     }
     return obj;
   }
@@ -72,8 +91,8 @@ const PeopleScreen = ({route}:{route:any}) => {
   const connectWithUser = async (user_name: String, user_email: String) => {
     setModalVisible(false);
 
-    let responce = UserConnectAPI(user_email, email)
-    if(await responce)
+    let responce = await UserConnectAPI(user_email, email)
+    if(responce)
     Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: "REQUEST SENT",
@@ -84,18 +103,40 @@ const PeopleScreen = ({route}:{route:any}) => {
         type: ALERT_TYPE.DANGER,
         title: "REQUEST PENDING",
       });
+    setRefresh(true);
     }
-
     
     const viewUserProfile = (user: User) => {
         setUser(user);
         setModalVisible(true);
       }
 
+      useEffect(() => {
+        handleGetUser();
+      }, [refresh]);
+
   useEffect(() => {
     handleSearch();
   }, [searchTerm, allUsers]);
 
+  function isUserInContactsList(contactsList: string[],pendingInvitationsList: string[], userEmail: string) {
+    if (contactsList.includes(userEmail)) {
+      return "connected";
+    } else if (pendingInvitationsList.includes(userEmail)) {
+      return "pending";
+    } else {
+      return "connect";
+    }
+  }
+  const handleRemoveFriend = async(emailSender: string, emailReceiver: string )=>{
+    const responce = await RemoveContact(emailSender,emailReceiver)
+    if(responce)
+    Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: "Removed",
+      });
+      setRefresh(true);
+  }
   const handleSearch = () => {
     const filteredUsers = allUsers.filter(user => {
       const name = user.name.toLowerCase();
@@ -113,7 +154,14 @@ const PeopleScreen = ({route}:{route:any}) => {
     setSelectedLocation('');
   };
 
-  const modalRender = (user:any) =>{
+  const handleSearchUser = (input:string) => {
+    setSearch(input)
+    setRefresh(true);
+  };
+
+
+const modalRender = (user:User) =>{
+let buttons = isUserInContactsList(user.contactList, user.pendingInvitationsList, email);
 return( 
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
@@ -149,12 +197,34 @@ return(
               </View>
             </View>
             <View style={styles.modalFooterButton}>
-              <TouchableOpacity
-                style={styles.buttonModal}
-                onPress={() => connectWithUser(user.name, user.email)}
-              >
-                <Text style={styles.backTextWhite}>Connect</Text>
-              </TouchableOpacity>
+            {buttons === "connected" ? (
+                <TouchableOpacity 
+                  style={styles.buttonModalRemove}
+                  onPress={() => {
+                    // Handle button press
+                  }}>
+                  <Text style={styles.followButtonText}>Remove</Text>
+                </TouchableOpacity>
+              ) : (
+                buttons === "pending" ? (
+                  <TouchableOpacity 
+                    style={styles.buttonModalUnfollow}
+                    onPress={() => {
+                      // Handle button press
+                    }}>
+                    <Text style={styles.followButtonText}>Pending</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.buttonModal}
+                    onPress={() => {
+                      connectWithUser(user.name, user.email);
+                    }}
+                  >
+                    <Text style={styles.followButtonText}>Connect</Text>
+                  </TouchableOpacity>
+                )
+              )}
             </View>
           </View>
         </View>
@@ -164,8 +234,9 @@ return(
 
 
   const renderItem = ({ item }: { item: User }) => {
-    if(!item.isCompany)
-    return (
+    if(!item.isCompany){
+      let buttons = isUserInContactsList(item.contactList, item.pendingInvitationsList, email);
+      return (
       <View style={styles.userContainer}> 
         <Image style={styles.userImage} source={{ uri: item.image }} />
         <View style={styles.userInfo}>
@@ -173,17 +244,41 @@ return(
           <Text style={styles.userOccupation}>{item.occupation}</Text>
           <Text style={styles.userCompany}>{item.company}</Text>
         </View>
-        <TouchableOpacity style={styles.followButton} onPress={() => {
-                connectWithUser(item.name, item.email)}}>
-      <Text style={styles.followButtonText}>Connect</Text>
-    </TouchableOpacity>
+        {buttons === "connected" ? (
+                <TouchableOpacity 
+                  style={styles.followButtonRemove}
+                  onPress={() => {
+                    handleRemoveFriend(email,item.email)
+                  }}>
+                  <Text style={styles.followButtonText}>Remove</Text>
+                </TouchableOpacity>
+              ) : (
+                buttons === "pending" ? (
+                  <TouchableOpacity 
+                    style={styles.followButtonUnfollow}
+                    onPress={() => {
+                      // Handle button press
+                    }}>
+                    <Text style={styles.followButtonText}>Pending</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.followButton}
+                    onPress={() => {
+                      connectWithUser(user.name, user.email);
+                    }}
+                  >
+                    <Text style={styles.followButtonText}>Connect</Text>
+                  </TouchableOpacity>
+                )
+              )}
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
                 viewUserProfile(item)}}>
       <Text style={styles.followButtonText}>Profile</Text>
     </TouchableOpacity>
     </View>
     );
-  };
+  }};
 
   const filteredUsers = users.filter(user => {
     const occupation = user.occupation.toLowerCase();
@@ -201,31 +296,11 @@ return(
           value={searchTerm}
           onChangeText={setSearchTerm}
         />
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+        <TouchableOpacity style={styles.searchButton} onPress={()=>handleSearchUser(searchTerm)}>
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.filterContainer}>
-{/*   <Picker
-    selectedValue={selectedOccupation}
-    onValueChange={itemValue => setSelectedOccupation(itemValue)}
-    style={styles.filterPicker}
-  >
-    <Picker.Item style={styles.pickerItemDefault} label="Select occupation" value={null} />
-    <Picker.Item style={styles.pickerItem} label="Designer" value="Designer" />
-    <Picker.Item style={styles.pickerItem} label="Developer" value="Developer" />
-    <Picker.Item style={styles.pickerItem} label="Manager" value="Manager" />
-  </Picker>
-  <Picker
-    selectedValue={selectedLocation}
-    onValueChange={itemValue => setSelectedLocation(itemValue)}
-    style={styles.filterPicker}
-  >
-    <Picker.Item style={styles.pickerItemDefault} label="Select location" value={null} />
-    <Picker.Item style={styles.pickerItem} label="New York" value="New York" />
-    <Picker.Item style={styles.pickerItem} label="San Francisco" value="San Francisco" />
-    <Picker.Item style={styles.pickerItem} label="London" value="London" />
-  </Picker> */}
   {modalRender(user)}
 </View>
       <FlatList
@@ -360,6 +435,16 @@ const styles = StyleSheet.create({
             padding: 10,
             borderRadius: 5,
           },
+          followButtonUnfollow: {
+            backgroundColor: "#b1b2b3",
+            padding: 10,
+            borderRadius: 5,
+          },
+          followButtonRemove: {
+            backgroundColor: "#fd00008b",
+            padding: 10,
+            borderRadius: 5,
+          },
           followButtonProfile: {
             backgroundColor: 'blue',
             padding: 10,
@@ -384,6 +469,26 @@ const styles = StyleSheet.create({
           },
           buttonModal: {
             backgroundColor: "#4caf50",
+            padding: 12,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 16,
+            width: "100%",
+            height: 50,
+            borderRadius: 120,
+          },
+          buttonModalUnfollow: {
+            backgroundColor: "#b1b2b3",
+            padding: 12,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 16,
+            width: "100%",
+            height: 50,
+            borderRadius: 120,
+          },
+          buttonModalRemove: {
+            backgroundColor: "#fd00008b",
             padding: 12,
             alignItems: "center",
             justifyContent: "center",

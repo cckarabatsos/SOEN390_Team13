@@ -60,7 +60,6 @@ export default function ContactsComponent(props: ContactsComponentProps) {
     if(responce){
       props.refreshContacts(emailSender);
     }
-
   }
 
   return (
