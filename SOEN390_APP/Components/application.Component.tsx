@@ -17,6 +17,7 @@ import { GetApplicationsHistory } from "../api/userApplicationsApi";
 import ApplicationComponent from "./ApplicationComponent";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+
 export default function ContactModal(props: {
   handleCloseModal: (() => void) | undefined;
   isVisible: boolean | undefined;

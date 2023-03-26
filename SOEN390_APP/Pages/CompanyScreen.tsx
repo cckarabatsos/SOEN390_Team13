@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, Image, M
 import {Picker} from '@react-native-picker/picker'
 import { GetCompanyAPI } from '../api/GetUsersAPI';
 import { followCompanyAPI } from '../api/UserConnectAPI';
+import { unfollowCompanyAPI } from '../api/UserConnectAPI';
 import {
     ALERT_TYPE,
     Dialog,
@@ -21,6 +22,7 @@ interface User {
   email: string
   isCompany: boolean
   userID: string
+  followerList: []
 }
 
 
@@ -33,6 +35,9 @@ const CompanyScreen = ({route}:{route:any}) => {
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [showFlatlist, setShowFlatlist] = useState(true);
+
+  
 
   let email:String = route.params.email
   let userID1:string = route.params.userID
@@ -51,13 +56,12 @@ const CompanyScreen = ({route}:{route:any}) => {
   
   useEffect(() => {
     handleGetUser();
-    handleSearch();
   }, []);
 
   const { v4: uuidv4 } = require('uuid');
 
   const buildObject = (jsonObject:any) => {
-    const { name, currentPosition, currentCompany, email,isCompany, userID } = jsonObject;
+    const { name, currentPosition, currentCompany, email,isCompany, userID,followers } = jsonObject;
     const obj = {
       id: uuidv4(),
       name: name,
@@ -68,15 +72,16 @@ const CompanyScreen = ({route}:{route:any}) => {
       //image: jsonObject.picture
       image: jsonObject.picture || 'https://picsum.photos/seed/picsum/200/300',
       isCompany: isCompany,
-      userID: userID
+      userID: userID,
+      followerList: followers
     }
     console.log(obj)
     return obj;
   }
 
-  const connectWithUser = async (user_name: String, user_email: String, name:string) => {
+  const followCompany = async (user_name: String, user_email: String, name:string) => {
     setModalVisible(false);
-
+    setShowFlatlist(false);
     let responce = followCompanyAPI(user_email, user_name)
     if(await responce)
     Toast.show({
@@ -89,6 +94,29 @@ const CompanyScreen = ({route}:{route:any}) => {
         type: ALERT_TYPE.WARNING,
         title: "Already Following",
       });
+      //setFollowUnfollowCount(count => count + 1);
+      setShowFlatlist(true);
+    }
+
+
+    
+  const unfollowCompany = async (user_name: String, user_email: String, name:string) => {
+    setModalVisible(false);
+    setShowFlatlist(false);
+    let responce = unfollowCompanyAPI(user_email, user_name)
+    if(await responce)
+    Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: "REQUEST SENT",
+        textBody: "Following: "+ name,
+      });
+      else 
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: "Already Following",
+      });
+      //setFollowUnfollowCount(count => count + 1);
+      setShowFlatlist(true);
     }
 
     
@@ -103,15 +131,21 @@ const CompanyScreen = ({route}:{route:any}) => {
 
   const handleSearch = () => {
     const filteredUsers = allUsers.filter(user => {
-      const name = user.name.toLowerCase();
+      const company = user.company.toLowerCase();
       const occupation = user.occupation.toLowerCase();
       const location = user.location.toLowerCase();
-      return name.includes(searchTerm.toLowerCase())
+      return company.includes(searchTerm.toLowerCase())
         && (!selectedOccupation || occupation.includes(selectedOccupation.toLowerCase()))
         && (!selectedLocation || location.includes(selectedLocation.toLowerCase()));
     });
     setUsers(filteredUsers);
   };
+
+  function isUserInFollowerList(followerList: string[], userID: string): boolean {
+    console.log(followerList)
+    console.log("xxxxxxxxxxxxxxxxxxx")
+    return followerList.includes(userID);
+  }
 
   const handleResetFilters = () => {
     setSelectedOccupation('');
@@ -133,7 +167,7 @@ return(
             </View>
             <View style={styles.modalHeader}>
               <Image style={styles.logoModal} source={{ uri: user.image }} />
-              <Text style={styles.modalHeaderText}>{user.name}</Text>
+              <Text style={styles.modalHeaderText}>{user.company}</Text>
               <Text style={styles.modalBodyText}>{user.occupation}</Text>
               <Text style={styles.modalBodyMessage}>{user.location}</Text>
             </View>
@@ -156,7 +190,7 @@ return(
             <View style={styles.modalFooterButton}>
               <TouchableOpacity
                 style={styles.buttonModal}
-                onPress={() => connectWithUser(userID1, user.userID, user.name)}
+                onPress={() => followCompany(userID1, user.userID, user.company)}
               >
                 <Text style={styles.backTextWhite}>Follow</Text>
               </TouchableOpacity>
@@ -173,13 +207,27 @@ return(
       <View style={styles.userContainer}> 
         <Image style={styles.userImage} source={{ uri: item.image }} />
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>{item.name}</Text>
+          <Text style={styles.userName}>{item.company}</Text>
           <Text style={styles.userCompany}>{item.email}</Text>
         </View>
-        <TouchableOpacity style={styles.followButton} onPress={() => {
-                connectWithUser(userID1, item.userID, item.name)}}>
-      <Text style={styles.followButtonText}>Follow</Text>
-    </TouchableOpacity>
+        {isUserInFollowerList(item.followerList, userID1) ? (
+              <TouchableOpacity 
+                style={styles.followButton}
+                onPress={() => {
+                  unfollowCompany(userID1, item.userID, item.name);
+                }}>
+                <Text style={styles.followButton}>Unfollow</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.followButton}
+                onPress={() => {
+                  followCompany(userID1, item.userID, item.name);
+                }}
+              >
+                <Text style={styles.followButton}>Follow</Text>
+              </TouchableOpacity>
+            )}
     <TouchableOpacity style={styles.followButtonProfile} onPress={() => {
                 viewUserProfile(item)}}>
       <Text style={styles.followButtonText}>Profile</Text>
@@ -231,11 +279,14 @@ return(
   </Picker> */}
   {modalRender(user)}
 </View>
+{showFlatlist && (
       <FlatList
         data={filteredUsers}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
+        //onRefresh={handleRefresh}
       />
+)}
     </View>
     
   );

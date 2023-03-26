@@ -16,6 +16,7 @@ export async function GetUsersAPI(data:any) {
 }
 
 export async function GetCompanyAPI(data:any) {
+  console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
   try {
     const response = await axios.get(api.BACKEND_API + "/user/api/searchCompanies", {
       params: {
