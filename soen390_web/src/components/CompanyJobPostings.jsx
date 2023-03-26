@@ -30,7 +30,7 @@ export default function CompanyJobPostings(props) {
       <div className="JobHeaderWrap">
         <div className="postings">Open Positions</div>
         <div className="editButtonJobs">
-          <Button onClick={handleClickOpen}>
+          <Button onClick={handleClickOpen} data-testid="add-button">
             <PlaylistAddIcon />
           </Button>
         </div>

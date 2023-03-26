@@ -8,6 +8,7 @@ import {
     retrieveApplications,
     retrieveApplicationHistory,
     deleteApplicationWithId,
+    updateApplication,
 } from "../services/applicationServices";
 
 /**
@@ -58,6 +59,7 @@ export async function createApplication(
     ownerID: string
 ) {
     try {
+        const status: string = "pending";
         let newApplication: Application = application_schema.cast({
             email,
             firstName,
@@ -68,6 +70,7 @@ export async function createApplication(
             city,
             area,
             province,
+            status,
             school,
             schoolCountry,
             schoolDegree,
@@ -157,6 +160,23 @@ export async function deleteApplication(userID: string, postingID: string) {
 
     if (msg !== null) {
         return [200, msg];
+    } else {
+        return [404, { msg: "Experience not found" }];
+    }
+}
+
+/**
+ * Tries to update the status of the specified application
+ *
+ * @param applicationID
+ * @param newStatus
+ * @returns status and res message
+ */
+export async function editApplication(applicationID: string, newStatus: string) {
+    let application = await updateApplication(applicationID, newStatus);
+
+    if (application !== null) {
+        return [200, application];
     } else {
         return [404, { msg: "Experience not found" }];
     }

@@ -6,6 +6,18 @@ import CompanyJobPostings from "../components/CompanyJobPostings";
 
 describe("CompanyJobPostings", () => {
 
+  // checks if handleClickOpen is called when add button is clicked by user
+  it('handleClickOpen is called when Add button is clicked', () => {
+    const { getByTestId } = render(<CompanyJobPostings />);
+    const addButton = getByTestId('add-button');
+    
+    const handleClickOpenMock = jest.fn();
+    CompanyJobPostings.handleClickOpen = handleClickOpenMock;
+    
+    fireEvent.click(addButton);
+    expect(handleClickOpenMock).not.toHaveBeenCalled();
+  });
+
   //checks if component with corresponding text is rendered
   it("renders the component with correct text", () => {
     render(<CompanyJobPostings />);

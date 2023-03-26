@@ -28,9 +28,6 @@ const columns = [
 function createData(name, code, population) {
   const density = population / 3;
 
-  const accept = () => {
-    return <Button>hello</Button>;
-  };
   return { name, code, population };
 }
 

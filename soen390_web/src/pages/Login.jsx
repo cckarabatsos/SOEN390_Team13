@@ -22,8 +22,18 @@ function Login(props) {
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
     setIsAuth(success.data);
+    
     if (success.status === 200) {
-      navigate("/UserProfile");
+      var userData=JSON.parse(localStorage.getItem("isAuth"))
+      console.log(userData);
+
+      if(userData.isCompany){
+        navigate('/CompanyProfile', { state: { picture: userData.picture, name: userData.name, description:userData.bio}})
+      }
+      else{
+        navigate("/UserProfile");
+      }
+      
     } else {
       setIncorrectLogin(true);
       console.log("Login Fail");

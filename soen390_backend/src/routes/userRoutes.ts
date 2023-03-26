@@ -25,6 +25,7 @@ import {
     getFilteredCompaniesController,
     followCompany,
     unFollowCompany,
+    removeContact,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
@@ -263,6 +264,18 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+user.get("/api/removeContact", async (req: Request, res: Response) => {
+    let senderEmail = req.query.senderEmail as string;
+    let removedEmail = req.query.removedEmail as string;
+
+    let data = await removeContact(senderEmail, removedEmail);
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
 /**
  * Route to follow a company
  */

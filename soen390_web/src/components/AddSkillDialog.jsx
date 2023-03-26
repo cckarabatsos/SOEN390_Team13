@@ -11,14 +11,29 @@ import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
 
-function AddEducationDialog() {
+function AddEducationDialog({ setNewSkill }) {
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
   const { t } = useTranslation();
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleTextChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleCloseAndSave = () => {
+    if (value != "") {
+      setNewSkill(value);
+    }
+    setValue("")
+    
+
     setOpen(false);
   };
 
@@ -31,7 +46,7 @@ function AddEducationDialog() {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{t("AddSkillText")}</DialogTitle>
           <DialogContentText style={{ marginLeft: "5%" }}>
-          {t("WhatSkillText")}
+            {t("WhatSkillText")}
           </DialogContentText>
           <DialogContent>
             <TextField
@@ -42,6 +57,8 @@ function AddEducationDialog() {
               type="skill"
               variant="outlined"
               size="small"
+              value={value}
+              onChange={handleTextChange}
             />
           </DialogContent>
           <DialogActions>
@@ -63,7 +80,7 @@ function AddEducationDialog() {
                 borderRadius: 27,
                 backgroundColor: "rgba(100, 69, 227, 0.85)",
               }}
-              onClick={handleClose}
+              onClick={handleCloseAndSave}
             >
               {t("SaveApplyText")}
             </Button>

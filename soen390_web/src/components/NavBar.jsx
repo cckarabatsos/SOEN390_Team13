@@ -32,7 +32,10 @@ function Navbar(props) {
 
   return (
     <div data-testid="navbar-1">
-      <AppBar position="static" style={{ background: "#ffffff" }}>
+      <AppBar
+        position="static"
+        style={{ background: "#ffffff", zIndex: 1301 }} // Add zIndex to the AppBar
+      >
         <CssBaseline />
         <Toolbar className="navbar-toolbar">
           {isMobile ? (
@@ -49,20 +52,20 @@ function Navbar(props) {
               <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
               <NavLinks userData={userData} />
 
-              {userData &&(
-                 <Stack spacing={1} direction="row">
-                 <Avatar
-                   alt="User"
-                   src={userData ? userData.picture : ""}
-                   sx={{ width: 47, height: 47 }}
-                 />
-                 <Link className="notification" to="/NotificationsPage">
-                   <Badge badgeContent={4} color="secondary">
-                     <NotificationsIcon></NotificationsIcon>
-                   </Badge>
-                 </Link>
-               </Stack>
-              )}  
+              {userData && (
+                <Stack spacing={1} direction="row">
+                  <Avatar
+                    alt="User"
+                    src={userData ? userData.picture : ""}
+                    sx={{ width: 47, height: 47 }}
+                  />
+                  <Link className="notification" to="/NotificationsPage">
+                    <Badge badgeContent={4} color="secondary">
+                      <NotificationsIcon></NotificationsIcon>
+                    </Badge>
+                  </Link>
+                </Stack>
+              )}
             </>
           )}
         </Toolbar>
