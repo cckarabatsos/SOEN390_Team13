@@ -31,13 +31,13 @@ export async function reportDecision(reqReportId, reqReportedId, reqDecision) {
   }
 }
 
-export async function reportDecision(reqReportId, reqReportedId, reqDecision) {
+export async function createReport(reqReporterId, reqReportedId, reqReason) {
   try {
     const response = await axios
-      .post(`${api.BACKEND_API}/reports/verdictReport`, {
-        reportID: reqReportId,
+      .post(`${api.BACKEND_API}/reports/newReport`, {
+        reporterID: reqReporterId,
         reportedID: reqReportedId,
-        banned: reqDecision,
+        reason: reqReason,
       })
       .then((res) => {
         return res.data;

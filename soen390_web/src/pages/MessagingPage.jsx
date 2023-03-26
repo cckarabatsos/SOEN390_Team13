@@ -23,6 +23,7 @@ import {
   getAllMessages,
   sendMessage,
 } from "../api/messagesApi";
+import { createReport } from "../api/reportsApi";
 import { findUserById } from "../api/UserProfileApi";
 import ReportModal from "../components/ReportModal";
 
@@ -167,7 +168,7 @@ function Messages(props) {
     setAnchorEl(null);
   };
 
-  const handleReportClick = (userID) => {
+  const handleReportClick = (userID, reportReason) => {
     console.log("Report clicked for user:", userID);
     setShowReportModal(true);
     handleMenuClose();
@@ -177,9 +178,9 @@ function Messages(props) {
     setShowReportModal(false);
   };
 
-  const handleReportSubmit = (issue) => {
+  const handleReportSubmit = async (issue) => {
     console.log(`Reporting issue: ${issue}`);
-
+    await createReport(props.userData.userID);
     setShowReportModal(false);
   };
 
@@ -238,6 +239,13 @@ function Messages(props) {
                   Report
                 </MenuItem>
               </Menu>
+              <ReportModal
+                open={showReportModal}
+                onClose={handleReportModalClose}
+                onSubmit={handleReportSubmit}
+                handleReportClick={handleReportClick}
+                userID={user.ActiveUser.userID}
+              />
             </ListItem>
           ))}
         </List>
@@ -322,11 +330,6 @@ function Messages(props) {
           </Typography>
         )}
       </main>
-      <ReportModal
-        open={showReportModal}
-        onClose={handleReportModalClose}
-        onSubmit={handleReportSubmit}
-      />
     </div>
   );
 }
