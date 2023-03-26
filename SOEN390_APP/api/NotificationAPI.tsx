@@ -2,21 +2,19 @@ import axios from "axios";
 import api from "../config.json";
 
 export async function GetNotification(userId:string) {
- try {
-    const response = await axios.get(
-      api.BACKEND_API + '/notification/getNotifications/'+userId
-    );
+  try {
+    const response = await axios.get(api.BACKEND_API + "/notification/getNotifications/" + userId);
     return response.data;
   } catch (error) {
     console.error("error", error);
-    return [];
+    return false;
   }
 }
 
-export async function removeNotification(notificationId:string){
+export async function removeNotification(docID:string){
     try {
-        const response = await axios.get(
-          api.BACKEND_API + '/notification/remove/'+notificationId
+        const response = await axios.post(
+          api.BACKEND_API + '/notification/remove/'+docID
         );
 
         if(response.status == 200){

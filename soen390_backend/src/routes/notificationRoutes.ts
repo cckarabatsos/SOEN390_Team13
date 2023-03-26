@@ -17,7 +17,6 @@ notification.get(
     "/getNotifications/:userID",
     async (req: Request, res: Response) => {
         let userID = req.params.userID;
-
         try {
             const notification: Notification = await getNotifications(
                 userID

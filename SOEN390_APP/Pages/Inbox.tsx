@@ -20,7 +20,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { LogBox } from 'react-native';
 import { UserRequest } from '../api/UserRequestAPI';
 import { GetNotification } from '../api/NotificationAPI';
-import { removeNotification } from '../api/NotificationAPI';
 
 
 const ExpandableComponent = ({item, onClickFunction, email}:any) => {

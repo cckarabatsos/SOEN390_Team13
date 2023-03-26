@@ -23,6 +23,7 @@ import {
   Toast,
 } from "react-native-alert-notification";
 import { ScrollView } from "react-native-gesture-handler";
+import { removeNotification } from "../../api/NotificationAPI";
 
 //import { auth } from '../firebaseConfig'
 
@@ -68,20 +69,22 @@ export default function Basic({ data }) {
     setListData(newData);
   };
 
-  const denyRequest = (rowMap, rowKey) => {
-    console.log("Deny Request");
-    //DENY IN BACKEND
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: "REFUSED",
-      textBody: "Job request not accetped",
-    });
+  const denyRequest = async (rowMap, rowKey, notificationID1) => {
+    console.log(notificationID1);
+    let responce = await removeNotification(notificationID1);
+    if (responce) {
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: "REFUSED",
+        textBody: "Job request not accetped",
+      });
 
-    closeRow(rowMap, rowKey);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
+      closeRow(rowMap, rowKey);
+      const newData = [...listData];
+      const prevIndex = listData.findIndex((item) => item.key === rowKey);
+      newData.splice(prevIndex, 1);
+      setListData(newData);
+    }
   };
 
   const copyToClipBoard = () => {
@@ -120,7 +123,7 @@ export default function Basic({ data }) {
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         title={"toast notification"}
-        onPress={() => denyRequest(rowMap, data.item.key)}
+        onPress={() => denyRequest(rowMap, data.item.key, notificationID)}
       >
         <Ionicons size={30} name="trash-outline" color={"red"} />
       </TouchableOpacity>
