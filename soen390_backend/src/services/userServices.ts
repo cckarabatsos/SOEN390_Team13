@@ -445,10 +445,12 @@ export async function sendUserInvitation(
             logo: (senderUser.data as User).picture,
             message: (senderUser.data as User).name + " has sent you a friend request.",
             timestamp: (new Date()).toLocaleString(),
-            category: "network"
+            category: "network",
+            ownerID: receiverUser.data.userID,
+            relatedEntity: senderUser.data.userID
         };
         console.log(receiverUser.data.userID);
-        storeNotification(receiverUser.data.userID, notification);
+        storeNotification(notification);
     } catch (error) {
         console.log(error);
         throw new Error("this is an invitation error");
@@ -491,9 +493,11 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
                 logo: senderUser.picture,
                 message: senderUser.name + " is now following you.",
                 timestamp: (new Date()).toLocaleString(),
-                category: "network"
+                category: "network",
+                ownerID: receiverID,
+                relatedEntity: senderID
             };
-            storeNotification(receiverID, notification);
+            storeNotification(notification);
         }
     } catch (error) {
         console.log(error);
@@ -608,9 +612,11 @@ export async function manageUserInvitation(
                 logo: invitedUser.data.picture,
                 message: invitedUser.data.name + " has accepted your friend request.",
                 timestamp: (new Date()).toLocaleString(),
-                category: "network"
+                category: "network",
+                ownerID: senderUser.data.userID,
+                relatedEntity: invitedUser.data.userID
             };
-            storeNotification(senderUser.data.userID, notification);
+            storeNotification(notification);
         }
     } catch (error) {
         console.log(error);

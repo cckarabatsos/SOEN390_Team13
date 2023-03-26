@@ -10,9 +10,8 @@ export const notification_schema = yup
         timestamp: yup.string().required(),
         message: yup.string().required(),
         category: yup.string().required(),
-        notificationID: yup.string(),
-        ownerID: yup.string()
-
+        ownerID: yup.string().required(),
+        relatedEntity: yup.string().required(),
     })
     .required();
 

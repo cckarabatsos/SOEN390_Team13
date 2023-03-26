@@ -47,10 +47,12 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
             logo: casted_user.picture,
             message: casted_user.name + " has posted a new job '" + newJobPosting.position + "'.",
             timestamp: (new Date()).toLocaleString(),
-            category: "news"
+            category: "news",
+            relatedEntity: document.id
         };
         casted_user.followers.forEach((followerID: string) => {
-            storeNotification(followerID, notification);
+            notification.ownerID = followerID;
+            storeNotification(notification);
         });
     } catch (error) {
         console.log(error);
