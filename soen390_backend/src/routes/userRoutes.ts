@@ -269,6 +269,7 @@ user.get("/api/removeContact", async (req: Request, res: Response) => {
     let removedEmail = req.query.removedEmail as string;
 
     let data = await removeContact(senderEmail, removedEmail);
+
     if (data[0] == 200) {
         res.sendStatus(200);
     } else {

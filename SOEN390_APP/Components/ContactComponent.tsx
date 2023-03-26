@@ -15,10 +15,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CreateConversation } from "../api/MessagesAPI";
 import { useNavigation } from '@react-navigation/native';
+import { RemoveContact } from "../api/userContactsApi";
 
 
-
-export default function ContactsComponent(props: {
+interface ContactsComponentProps {
   image: string;
   name: string;
   job: string;
@@ -27,7 +27,12 @@ export default function ContactsComponent(props: {
   contactEmail: string;
   navigation: any;
   handleCloseModal: (() => void) | undefined;
-}) {
+  refreshContacts: (email: string) => Promise<void>;
+}
+
+
+
+export default function ContactsComponent(props: ContactsComponentProps) {
 
 
   const image = props.image || 'https://randomuser.me/api/portraits/men/1.jpg';
@@ -50,8 +55,12 @@ export default function ContactsComponent(props: {
     props.handleCloseModal && props.handleCloseModal(); // close the modal
     
   }
-  const handleRemoveFriend = ()=>{
-    
+  const handleRemoveFriend = async(emailSender: string, emailReceiver: string )=>{
+    const responce = await RemoveContact(emailSender,emailReceiver)
+    if(responce){
+      props.refreshContacts(emailSender);
+    }
+
   }
 
   return (
@@ -71,7 +80,7 @@ export default function ContactsComponent(props: {
               <Ionicons name="chatbubble-outline" size={25} color={"green"}></Ionicons>        
             </TouchableOpacity>
         <TouchableOpacity
-            onPress={() => handleRemoveFriend()}
+            onPress={() => handleRemoveFriend(currentEmail,contactEmail)}
             style={styles.closeButtonContainer}
           >
             <Ionicons name="person-remove-outline" size={25} color={"red"}></Ionicons>        

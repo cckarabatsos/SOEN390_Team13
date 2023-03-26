@@ -58,6 +58,7 @@ const renderContacts = ({item}:any) => (
       contactEmail={item.email}
       navigation={props.navigation}
       handleCloseModal={props.handleCloseModal}
+      refreshContacts={getContactsList}
     />
   );
 
