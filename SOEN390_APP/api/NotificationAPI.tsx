@@ -2,7 +2,7 @@ import axios from "axios";
 import api from "../config.json";
 
 export async function GetNotification(userId:string) {
-  try {
+ try {
     const response = await axios.get(
       api.BACKEND_API + '/notification/getNotifications/'+userId
     );

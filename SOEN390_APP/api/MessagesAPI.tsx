@@ -3,9 +3,6 @@ import api from "../config.json";
 
 
 export async function CreateConversation(emailUser:string, emailContact:string) {
-    //console.log("INSIDE create convo" )
-    //console.log(emailUser, emailContact)
-    //console.log(JSON.stringify([emailUser, emailContact]))
     try {
       const response = await axios.get(api.BACKEND_API + "/messages/createConversation/", {
         params: {
@@ -24,9 +21,6 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
   }
 
   export async function GetAllMessages(emailUser:string, emailContact:string) {
-    //console.log("INSIDE messages" )
-    //console.log(emailUser, emailContact)
-    //console.log(JSON.stringify([emailUser, emailContact]))
     try {
       const response = await axios.get(api.BACKEND_API + "/messages/getAllMessages/", {
         params: {
@@ -45,8 +39,6 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
   }
 
   export async function SendMessage(emailUser:string, emailContact:string, message:string) {
-    //console.log("Message sent" )
-    //console.log(emailUser, emailContact)
     try {
       const response = await axios.get(api.BACKEND_API + "/messages/sendMessage/", {
         params: {
