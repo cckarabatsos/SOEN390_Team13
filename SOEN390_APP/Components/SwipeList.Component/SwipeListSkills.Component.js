@@ -79,12 +79,11 @@ export default function Basic({ data }) {
     <TouchableHighlight
       onPress={copyToClipBoard}
       style={styles.rowFront}
-      underlayColor={"#AAA"}
+      underlayColor={"#EEE"}
     >
       <View>
-        <Text>
-          {input1}
-          {name1}
+        <Text style={styles.text}>
+          {input1} {name1}
         </Text>
       </View>
     </TouchableHighlight>
@@ -96,7 +95,7 @@ export default function Basic({ data }) {
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         onPress={() => deleteSkill(rowMap, data.item.key)}
       >
-        <Text style={styles.backTextWhite}>Delete</Text>
+        <Ionicons name="trash-sharp" size={30} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -108,7 +107,7 @@ export default function Basic({ data }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-75}
+        rightOpenValue={-50}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
@@ -120,38 +119,54 @@ export default function Basic({ data }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-  },
-  backTextWhite: {
-    color: "#FFF",
+    flex: 1,
+    backgroundColor: "#F5F5F5",
   },
   rowFront: {
     backgroundColor: "white",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    justifyContent: "center",
-    height: 50,
-    paddingStart: 20,
+    borderRadius: 20,
+    marginVertical: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.6,
+    shadowRadius: 1,
+    elevation: 3,
+    marginHorizontal: 20,
   },
   rowBack: {
     alignItems: "center",
-    backgroundColor: "#DDD",
-    flex: 1,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    height: 50,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 15,
+    paddingHorizontal: 15,
+    marginBottom: 2,
+  },
+  backText: {
+    color: "#FFF",
+    fontSize: 16,
+  },
+  text: {
+    color: "#333",
+    fontSize: 18,
+    fontWeight: "500",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
   backRightBtn: {
     alignItems: "center",
     bottom: 0,
     justifyContent: "center",
     position: "absolute",
-    top: 0,
-    width: 75,
+    top: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 25,
   },
   backRightBtnLeft: {
     backgroundColor: "red",
-    right: 75,
+    right: 50,
   },
   buttonModalClose: {
     position: "absolute",
@@ -161,7 +176,7 @@ const styles = StyleSheet.create({
   },
   backRightBtnRight: {
     backgroundColor: "red",
-    right: 0,
+    right: 20,
   },
   modalContainer: {
     flex: 1,
@@ -194,9 +209,5 @@ const styles = StyleSheet.create({
     borderColor: "black",
     padding: 10,
     margin: 10,
-  },
-  textBold: {
-    fontWeight: "bold",
-    fontSize: 17,
   },
 });

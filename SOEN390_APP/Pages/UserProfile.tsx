@@ -11,7 +11,8 @@ import {
     Platform,
     Image,
     Modal,
-    ActivityIndicator
+    ActivityIndicator,
+    ImageBackground
 } from 'react-native';
 import React from 'react'
 import { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ import { GetUserSkills } from '../api/UserSkillsAPI';
 import ContactModal from '../Components/contacts.Component'
 import ApplicationModal from '../Components/application.Component';
 import { GetFile } from '../api/UserFileAPI';
+import { Flex } from '@react-native-material/core';
 
 interface User {
   id: number;
@@ -41,7 +43,20 @@ interface User {
   userID: String
 }
 
-const ExpandableComponent = ({item, onClickFunction}:any) => {
+const handleAddExperience = (ownerID:string) =>{
+  console.log("Experience")
+  console.log(ownerID)
+}
+const handleAddEducation = (ownerID:string) =>{
+  console.log("Eduction")
+  console.log(ownerID)
+}
+const handleAddSkills = (ownerID:string) =>{
+  console.log("Skills")
+  console.log(ownerID)
+}
+
+const ExpandableComponent = ({item, onClickFunction, userID}:any) => {
     //Custom Component for the Expandable List
     const [layoutHeight, setLayoutHeight] = useState(0);
   
@@ -114,6 +129,9 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
           {item.subcategory.map((item:any, key:any) =>(
             <StandaloneRowExperience data = {item}/>
           ))}
+          <TouchableOpacity style={styles.innerHeader} onPress={()=> {handleAddExperience(userID)}}> 
+                  <Ionicons size={25} name="add-outline" />
+              </TouchableOpacity>
         </View>
       </View>
     );
@@ -142,6 +160,9 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
         {item.subcategory.map((item:any, key:any) =>(
           <StandaloneRowEducation data = {item}/>
         ))}
+        <TouchableOpacity style={styles.innerHeader}  onPress={()=> {handleAddEducation(userID)}}> 
+                  <Ionicons size={25} name="add-outline" />
+              </TouchableOpacity>
       </View>
       </View>
       );
@@ -170,6 +191,9 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
               {item.subcategory.map((item:any, key:any) =>(
                 <StandaloneRowSkills data = {item}/>
               ))}
+              <TouchableOpacity style={styles.innerHeader} onPress={()=> {handleAddSkills(userID)}}> 
+                  <Ionicons size={25} name="add-outline" />
+              </TouchableOpacity>
             </View>
             </View>
             );
@@ -381,6 +405,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
     setModalVisible(false);
     setModalVisibleApplication(false);
   }; 
+
   
   if (isLoading) {
     return (
@@ -393,18 +418,25 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-            <View style={{backgroundColor: "rgb(145, 140, 224)", width: '100%', paddingTop:10}}>
-                <View style={styles.logoContainer}>
-                  <Image
-                  style={styles.logo}
-                  source={{ uri: image }}
-                  />
-                  
-                </View>
-                <View style={styles.textContainer}>
-                <Text style={styles.titleText}> {user.name} </Text>
-                </View>
+        <View style={{flexDirection: 'row'}}>           
+              <ImageBackground
+                source={{ uri: "https://source.unsplash.com/1600x900/?nature,water" }}
+                style={styles.backgroundImage}
+              >
+              
+                
+                    <View style={styles.logoContainer}>
+                      <Image
+                      style={styles.logo}
+                      source={{ uri: image }}
+                      />
+                      
+                    </View>
+
+                    <View style={styles.textContainer}>
+                    <Text style={styles.titleText}> {user.name} </Text>
+                    </View>
+
                 <View style={{backgroundColor: "rgb(249, 248, 250)", width: '100%',padding: 10, marginTop:10}}>
                   <View style={{flexDirection:'row'}}>
                       <View>                          
@@ -466,10 +498,10 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                                       userID={user.userID}
                             ></ApplicationModal>
                             </View>
-                        </View>
-                    </View>
+                        </View>                    
+                    </View>                    
                   </View>
-                  </View>
+                  </ImageBackground>
             </View>
               <ScrollView>
                 {listDataSource.map((item, key) => (
@@ -479,6 +511,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                       updateLayout(key);
                     }}
                     item={item}
+                    userID={userID}
                   />
                 ))}
               </ScrollView>
@@ -494,6 +527,11 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
+    },
+    subContainer:{
+      marginTop:10,
+      borderColor: "rgb(145, 140, 224)",
+      borderTopWidth: 1,
     },
     loadingContainer: {
       flex: 1,
@@ -523,7 +561,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         padding: 20,
         borderColor: "rgb(145, 140, 224)",
-        borderBottomWidth: 1,
+        borderWidth:1,
+        borderRadius: 30,
+        marginHorizontal: 10,
+        marginVertical:10,
+      },
+      innerHeader: {
+        backgroundColor: '#39f152',
+        borderColor: "rgb(0, 0, 0)",
+        borderWidth:1,
+        borderRadius: 100,
+        marginVertical:5,
+        alignSelf:"flex-end",
+        justifyContent:"center",
+        marginRight: 25,
       },
       headerText: {
         paddingRight: 20,
@@ -572,6 +623,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
+      },
+      backgroundImage: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
       },
       logo: {
         width: 120,
