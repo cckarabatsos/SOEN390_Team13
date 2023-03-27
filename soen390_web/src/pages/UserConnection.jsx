@@ -30,7 +30,7 @@ const UserConnection = () => {
     } else {
       setUseData(false);
     }
-    getInvitations(data.email);
+    getInvitations(data?.email);
   }, []);
 
   const handleAccept = async (curr, senderEmail) => {
