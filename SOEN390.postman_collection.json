@@ -721,33 +721,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Get Job Suggestions",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7000/jobposting/getJobSuggestions/:userID",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7000",
-							"path": [
-								"jobposting",
-								"getJobSuggestions",
-								":userID"
-							],
-							"variable": [
-								{
-									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -761,7 +734,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"skill\"\r\n}",
+							"raw": "{\r\n    \"name\": \"C#\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -782,7 +755,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "0NS4CwuBHfd4rDPAIEuC"
+									"value": "18JRHKkLE2t50nE17SHc"
 								}
 							]
 						}
@@ -836,7 +809,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "0NS4CwuBHfd4rDPAIEuC"
+									"value": "5"
 								}
 							]
 						}
@@ -1105,39 +1078,6 @@
 					"response": []
 				},
 				{
-					"name": "Update Application Status",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7000/application/updateStatus/:applicationID?status=approved",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7000",
-							"path": [
-								"application",
-								"updateStatus",
-								":applicationID"
-							],
-							"query": [
-								{
-									"key": "status",
-									"value": "approved"
-								}
-							],
-							"variable": [
-								{
-									"key": "applicationID",
-									"value": "wKzDjRkFJq8oFBnz75bl"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Applications",
 					"request": {
 						"method": "GET",
@@ -1362,7 +1302,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/createConversation?ids=[\"6Xwu7LcLPdqkBgwJa6EM\",\"JaQGolnDcz8fm0CjEkep\"]",
+							"raw": "http://localhost:7000/messages/createConversation?emails=[\"msg1@test.com\",\"oli@hotmail.com\"]",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1374,8 +1314,8 @@
 							],
 							"query": [
 								{
-									"key": "ids",
-									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"JaQGolnDcz8fm0CjEkep\"]"
+									"key": "emails",
+									"value": "[\"msg1@test.com\",\"oli@hotmail.com\"]"
 								}
 							]
 						}
@@ -1388,7 +1328,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/sendMessage?senderId=3Ri6yXlYSo7rCQk4t4ks&Ids=[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]&message=Test message",
+							"raw": "http://localhost:7000/messages/sendMessage?senderEmail=msg1@test.com&emails=[\"msg1@test.com\",\"oli@hotmail.com\"]&message=ca va?",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1400,16 +1340,16 @@
 							],
 							"query": [
 								{
-									"key": "senderId",
-									"value": "3Ri6yXlYSo7rCQk4t4ks"
+									"key": "senderEmail",
+									"value": "msg1@test.com"
 								},
 								{
-									"key": "Ids",
-									"value": "[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]"
+									"key": "emails",
+									"value": "[\"msg1@test.com\",\"oli@hotmail.com\"]"
 								},
 								{
 									"key": "message",
-									"value": "Test message"
+									"value": "ca va?"
 								}
 							]
 						}
@@ -1422,7 +1362,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/getAllMessages?userIds=[\"6Xwu7LcLPdqkBgwJa6EM\",\"lZioJzyfCxPy28CTyT9E\"]&senderId=6Xwu7LcLPdqkBgwJa6EM",
+							"raw": "http://localhost:7000/messages/getAllMessages?userEmails=[\"oli@hotmail.com\",\"msg1@test.com\"]&senderEmail=msg1@test.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1434,12 +1374,12 @@
 							],
 							"query": [
 								{
-									"key": "userIds",
-									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"lZioJzyfCxPy28CTyT9E\"]"
+									"key": "userEmails",
+									"value": "[\"oli@hotmail.com\",\"msg1@test.com\"]"
 								},
 								{
-									"key": "senderId",
-									"value": "6Xwu7LcLPdqkBgwJa6EM"
+									"key": "senderEmail",
+									"value": "msg1@test.com"
 								}
 							]
 						}
@@ -1452,7 +1392,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/updateMessages?userIds=[\"JaQGolnDcz8fm0CjEkep\",\"6Xwu7LcLPdqkBgwJa6EM\"]&senderId=JaQGolnDcz8fm0CjEkep&messagesLength=0",
+							"raw": "http://localhost:7000/messages/updateMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com&messagesLength=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1464,16 +1404,16 @@
 							],
 							"query": [
 								{
-									"key": "userIds",
-									"value": "[\"JaQGolnDcz8fm0CjEkep\",\"6Xwu7LcLPdqkBgwJa6EM\"]"
+									"key": "userEmails",
+									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
 								},
 								{
-									"key": "senderId",
-									"value": "JaQGolnDcz8fm0CjEkep"
+									"key": "senderEmail",
+									"value": "msg1@test.com"
 								},
 								{
 									"key": "messagesLength",
-									"value": "0"
+									"value": "2"
 								}
 							]
 						}
@@ -1486,7 +1426,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/getActiveConversation?id=3Ri6yXlYSo7rCQk4t4ks&returnEmail=",
+							"raw": "http://localhost:7000/messages/getActiveConversation?email=oli@hotmail.com&returnEmail=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1498,12 +1438,12 @@
 							],
 							"query": [
 								{
-									"key": "id",
-									"value": "3Ri6yXlYSo7rCQk4t4ks"
+									"key": "email",
+									"value": "oli@hotmail.com"
 								},
 								{
 									"key": "returnEmail",
-									"value": ""
+									"value": "true"
 								}
 							]
 						}
@@ -1535,34 +1475,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove Notification",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:7000/notification/remove/:docID",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "7000",
-							"path": [
-								"notification",
-								"remove",
-								":docID"
-							],
-							"variable": [
-								{
-									"key": "docID",
-									"value": "EgNAZICbsXrsQ2k6gclJ"
+									"value": "i2iLvPkBHmkV43PufHVp"
 								}
 							]
 						}

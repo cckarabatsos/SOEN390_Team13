@@ -1,61 +1,99 @@
 import React from 'react';
-import { render, fireEvent, screen, act } from '@testing-library/react';
+import { render, fireEvent, screen,getAllByRole,waitFor } from '@testing-library/react';
 import ActionButton from '../components/ActionButton';
+import api from "../config.json";
+import { MemoryRouter } from 'react-router-dom';
+import ApplicationHistoryApi from '../api/ApplicationHistoryApi' ;
 import { handleWithdrawApplication } from '../api/ApplicationHistoryApi';
-
+import { toHaveStyle } from '@testing-library/jest-dom';
+import { Paper } from '@mui/material';
+import { BrowserRouter as Router } from 'react-router-dom';
+import {handleWithdraw} from '../components/ActionButton'
+import { Box } from "@mui/system";
 
 describe('ActionButton', () => {
-  it('renders without error', () => {
-    render(<ActionButton />);
-  });
+  const userID = '1';
+  const postingID = '1';
 
-  it('opens the popper when button is clicked', () => {
-    render(<ActionButton />);
-    fireEvent.click(screen.getByRole('button'));
-    expect(screen.getByRole('tooltip')).toBeVisible();
-  });
+  test('displays popper when button is clicked', async () => {
+    // render component inside Router
+    render(
+      <Router>
+        <ActionButton userID={userID} postingID={postingID} />
+      </Router>
+    );
 
-  it('closes the popper when the close button is clicked', () => {
-    render(<ActionButton />);
-    fireEvent.click(screen.getByRole('button'));
-    // fireEvent.click(screen.getByLabelText('Close'));
-    expect(screen.getByRole('tooltip')).toBeVisible();
-  });
-
-  it('withdraws the application when the "Withdraw application" button is clicked', async () => {
-    // Mock the handleWithdrawApplication function
-    const mockHandleWithdrawApplication = jest.fn();
-    jest.mock('../api/ApplicationHistoryApi', () => ({
-      handleWithdrawApplication: mockHandleWithdrawApplication,
-    }));
-
-    render(<ActionButton postingID="123" />);
-
+    // click button
     fireEvent.click(screen.getByRole('button'));
 
-    // Click the "Withdraw application" button
-    fireEvent.click(screen.getByText('Withdraw application'));
-
-
+    // verify that popper is displayed
+    expect(await screen.findByText(/View application/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Withdraw application/i)).toBeInTheDocument();
   });
-  it('displays success message if application withdrawal succeeds', async () => {
-    const postingID = '123';
-    const originalAlert = window.alert;
-    window.alert = jest.fn();
-    const handleWithdrawApplication = (postingID) => {
-      if (typeof postingID !== 'string') {
-        throw new Error('Invalid posting ID');
-      }
-      // your existing code here
-    };
 
-    await handleWithdrawApplication(postingID);
 
+
+  test('renders button with three dots', () => {
+    render(<ActionButton userID={userID} postingID={postingID} />);
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('...');
+  });
+
+  test('renders Paper component with correct width and border radius', () => {
+    const { container } = render(
+      <Paper sx={{ width: '220px', borderRadius: '10px' }}>
+        <div>Test Content</div>
+      </Paper>
+    );
+    const paperEl = container.firstChild;
+    expect(paperEl).toHaveStyle('width: 220px');
+    expect(paperEl).toHaveStyle('border-radius: 10px');
+  });
+  describe('<Box />', () => {
+    it('has correct styles', () => {
+      const { getByTestId } = render(
+        <Box
+          sx={{
+            p: 1,
+            bgcolor: 'transparent',
+          }}
+          data-testid="styled-box"
+        >
+          Example Box
+        </Box>
+      );
+      
+      const styledBox = getByTestId('styled-box');
+      
+      expect(styledBox).toHaveStyle({
+        padding: '8px', // 1 * 8
+        backgroundColor: 'transparent',
+      });
+
+    });
+
+    
+
+  test('withdraws application and shows alert on confirmation', async () => {
+    const confirmedMock = jest.spyOn(window, 'confirm');
+    confirmedMock.mockReturnValueOnce(true); // mock user confirmation to true
+    const handleWithdrawApplicationMock = jest.fn(); // create a mock function for handleWithdrawApplication
+    handleWithdrawApplicationMock.mockResolvedValueOnce(); // mock handleWithdrawApplication to resolve
+  
+    await handleWithdrawApplication(postingID, handleWithdrawApplicationMock);
+    
+    console.log('confirm string:', 'Are you sure you want to withdraw this application?');
+    expect(confirmedMock).toHaveBeenCalledWith("Are you sure you want to withdraw this application?");
+    
+    confirmedMock.mockReturnValueOnce(true);
+    expect(handleWithdrawApplicationMock).toHaveBeenCalledWith(postingID);
+    expect(window.location.reload).toHaveBeenCalled();
     expect(window.alert).toHaveBeenCalledWith('Application withdrawn successfully!');
-    window.alert = originalAlert;
+  
+    confirmedMock.mockRestore(); // restore window.confirm
   });
+ 
+  })
 
-
-
-
-});
+})

@@ -9,9 +9,7 @@ export const notification_schema = yup
         logo: yup.string().required(),
         timestamp: yup.string().required(),
         message: yup.string().required(),
-        category: yup.string().required(),
-        ownerID: yup.string().required(),
-        relatedEntity: yup.string().required(),
+        category: yup.string().required()
     })
     .required();
 
