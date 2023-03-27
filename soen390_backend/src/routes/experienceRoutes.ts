@@ -22,6 +22,14 @@ experience.post("/:ownerID", async (req: Request, res: Response) => {
     let company: string = req.body.company;
     let position: string = req.body.position;
     let type: string = req.body.type;
+    console.log("SSSSSSSSSSSSSSSS")
+    console.log(atPresent,
+        startDate,
+        endDate,
+        company,
+        position,
+        type,
+        ownerID)
     try {
         const experience: Experience = await createExperience(
             atPresent,

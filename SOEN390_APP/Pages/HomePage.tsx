@@ -20,7 +20,7 @@ function HomeTabs({route}:{route:any}) {
       <Tab.Screen name="News"component={NewsScreen}/>
       <Tab.Screen name="Company" initialParams={{username: route.params.username, email:route.params.email, password:route.params.password, userID: route.params.userID}} component={CompanyScreen} />
       <Tab.Screen name="People" initialParams={{username: route.params.username, email:route.params.email, password:route.params.password, pendingInvitations:route.params.pendingInvitations}} component={PeopleScreen} />
-      <Tab.Screen name="Jobs" component={JobOfferScreen} />
+      <Tab.Screen name="Jobs" initialParams={{userID: route.params.userID}} component={JobOfferScreen} />
     </Tab.Navigator>
   );
 }
