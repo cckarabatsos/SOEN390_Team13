@@ -14,9 +14,10 @@ export default function CompanySearch() {
   const [userData, setUserData] = useState({});
 
   const setState = (data) => {
-    console.log(data.userID);
+    if(data){
+      setUserData(data);
+    }
 
-    setUserData(data);
   };
 
   useEffect(() => {
