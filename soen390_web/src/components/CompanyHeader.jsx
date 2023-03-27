@@ -48,7 +48,7 @@ export default function CompanyHeader(props) {
             </div>
           )}
         </div>
-
+        
         <div className="bottomHeaderDiv">
           <div className="blankContainer"></div>
           <div className="titleContainer">
@@ -56,7 +56,7 @@ export default function CompanyHeader(props) {
             <div className="field">Software</div>
             <div className="location">Montreal</div>
           </div>
-          {props.userData && (
+          {props.userData && !props.userData.isCompany && (
             <div className="editButton">
               <Button
                 color="black"
