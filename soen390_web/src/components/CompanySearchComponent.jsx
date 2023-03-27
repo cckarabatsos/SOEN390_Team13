@@ -5,13 +5,8 @@ import { useTranslation } from "react-i18next";
 import face from "../static/images/google.png";
 import { useNavigate } from "react-router-dom";
 
-
-
-
-
 //const navigate = useNavigate();
 //navigate('/other-page', { state: { id: 7, color: 'green' } });
-
 
 //const {state} = useLocation();
 //const { id, color } = state; // Read values passed on state
@@ -26,16 +21,26 @@ export default function CompanySearchComponent(props) {
   const setCompany = props.setJob;
   const email = props.email;
   const picture = props.picture;
-  const state= props.state;
+  const state = props.state;
   const description = props.description;
+  const isFollowing = props.isFollowing;
+  const companyId = props.companyId;
 
   const { t } = useTranslation();
 
-  console.log(props.name)
+  console.log(props.name);
 
   const handleOnClick = () => {
-    navigate('/CompanyProfile', { state: { picture: picture, name: name, description:description}});
-  }
+    navigate("/CompanyProfile", {
+      state: {
+        picture: picture,
+        name: name,
+        description: description,
+        isFollowing: isFollowing,
+        companyId: companyId,
+      },
+    });
+  };
 
   // display company component, position, company, location, contract
   return (

@@ -11,12 +11,33 @@ export default function CompanySearch() {
   const { t } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [companyDisplay, setCompanyDisplay] = useState([]);
+  const [userData, setUserData] = useState({});
+
+  const setState = (data) => {
+    console.log(data.userID);
+
+    setUserData(data);
+  };
 
   useEffect(() => {
-    console.log(companies);
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    if (data != {}) {
+      setState(data);
+    } else {
+      setUserData(false);
+    }
+  }, []);
+
+  useEffect(() => {
     var companyArray = [];
 
     for (var i = 0; i < companies.length; i++) {
+      let isFollowing = false;
+
+      if (userData.userID && companies[i].followers.includes(userData.userID)) {
+        isFollowing = true;
+      }
+
       companyArray.push(
         new Company(
           companies[i].name,
@@ -25,7 +46,9 @@ export default function CompanySearch() {
           companies[i].bio,
           companies[i].picture,
           companies[i].location,
-          i
+          i,
+          isFollowing,
+          companies[i].userID
         )
       );
     }
@@ -59,6 +82,8 @@ export default function CompanySearch() {
           followerCount={company.followerCount}
           picture={company.pictureURL}
           description={company.description}
+          isFollowing={company.followCompany}
+          companyId={company.companyId}
         ></CompanySearchComponent>
       ))}
     </div>

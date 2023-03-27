@@ -51,6 +51,7 @@ export async function findUserById(userID) {
     return response;
   } catch (err) {
     console.error(err);
+    return null;
   }
 }
 
