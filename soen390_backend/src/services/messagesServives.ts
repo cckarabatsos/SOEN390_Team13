@@ -1,3 +1,4 @@
+import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
 import {
@@ -8,7 +9,7 @@ import {
 const db = firebase.firestore();
 //const ref = firebase.storage().ref();
 
-//dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
+//  dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
 // This is a helper function that takes an array of string IDs and sorts them in ascending order using bubble sort algorithm.
 // The function mutates the original array and returns it sorted.
@@ -26,6 +27,44 @@ const orderIds = (arr: string[]): string[] => {
   return arr;
 };
 
+// This method finds a user in the Firestore database collection "users" using the user's email address.
+// It takes in the email as a string and a callback function to handle the result.
+// If a user with the provided email is found, the callback function is called with the user's data as an argument.
+// If a user with the provided email is not found, the callback function is called with a null argument.
+// If there is an error getting the user document, an error is thrown.
+const findUserWithEmail = (email: string, callback: (data: any) => void) => {
+  db.collection("users")
+    .where("email", "==", email)
+    .get()
+    .then((snapshot) => {
+      if (!snapshot.empty) {
+        let data = processData(snapshot);
+        callback(data);
+      } else {
+        callback(null);
+      }
+    })
+    .catch((error) => {
+      console.log("Error getting the document:", error);
+      throw new Error(error.message);
+    });
+};
+
+// This function processes the snapshot returned from Firebase and extracts the data and id of the first document in the array.
+// It returns an object with the extracted data and id. If the data is null, it logs an error and throws an exception.
+function processData(snapshot: any) {
+  let data = snapshot.docs.map((doc: { data: () => any; id: string }) => ({
+    data: doc.data(),
+    id: doc.id,
+  }));
+  if (data !== null) {
+    return data[0];
+  } else {
+    console.log("ERROR");
+    throw error;
+  }
+}
+
 // This is an async function that fetches the conversation between users with the specified user IDs from the Firestore database.
 // It searches the "conversations" collection in the database and filters for documents where the "userArray" field matches the specified user IDs.
 // The function returns an array of conversation objects, where each object contains the conversation data and ID.
@@ -35,6 +74,7 @@ async function fetchConversation(userIds: string[]) {
       .collection("conversations")
       .where("userArray", "==", userIds)
       .get();
+
     //let b: any =conversation.data()
 
     //let c:any = b["messages"]
@@ -47,10 +87,11 @@ async function fetchConversation(userIds: string[]) {
         id: doc.id,
       })
     );
+
     return convo;
   } catch (error) {
     console.log(error);
-    throw new Error("V=cannot fetch the conversation data from the database");
+    throw error;
   }
 }
 
@@ -63,20 +104,10 @@ async function createConversation(
   userIds: string[]
 ): Promise<firebase.firestore.DocumentData> {
   try {
-    //check if user exist in the database first
-
-    for (var i = 0; i < userIds.length; i++) {
-      var doc = await db.collection("users").doc(userIds[i]).get();
-      if (!doc.data()) {
-        throw new Error("The user Ids are not registered in the database!");
-      }
-    }
-
     const conversationData = await db.collection("conversations").add({
       messages: [],
       userArray: userIds,
     });
-    await conversationData.update({ conversationID: conversationData.id });
 
     if (!conversationData) {
       throw new Error("Failed to create conversation.");
@@ -88,23 +119,30 @@ async function createConversation(
     throw error;
   }
 }
-/**
- * Initiate a conversation between two users
- * @param userIds
- * @returns UserList
- */
-export async function initiateConversation(userIds: string[]) {
+
+export async function initiateConversation(userEmails: string[]) {
   let userList = true;
   try {
-    userIds = orderIds(userIds);
+    let userIds: string[] = new Array();
+    for (var i = 0; i < userEmails.length; i++) {
+      var sender: any;
 
-    //check if the userIds receives are already in the user database
-    for (var i = 0; i < userIds.length; i++) {
-      var doc = await db.collection("users").doc(userIds[i]).get();
-      if (!doc.data()) {
-        throw new Error("The user Ids are not registered in the database!");
+      sender = await new Promise((resolve, _) => {
+        findUserWithEmail(userEmails[i], (user) => {
+          // console.log(user);
+          if (user == null) {
+            resolve(null);
+          } else {
+            resolve(user);
+          }
+        });
+      });
+
+      if (sender.data) {
+        userIds.push(sender.data["userID"]);
       }
     }
+    userIds = orderIds(userIds);
 
     let conversationFound: any = await fetchConversation(userIds);
 
@@ -119,9 +157,7 @@ export async function initiateConversation(userIds: string[]) {
 
     createConversation(userIds);
   } catch (error) {
-    throw new Error(
-      "Error in initiateConversation " + (error as Error).message
-    );
+    throw new Error("Error in initiateConversation");
   }
   console.log(userList);
   return userList;
@@ -129,26 +165,41 @@ export async function initiateConversation(userIds: string[]) {
 
 /**
  * Sends a chat message to a group of users.
- *@param senderId - The user Id of the sender of the messages
- * @param userIds - An array of Ids of the users participating in the conversation
+ * @param senderEmail The email address of the user sending the message.
+ * @param userEmails An array of email addresses of the conversation thne user is included.
  * @param message The content of the chat message.
  * @returns A promise that resolves to true if the message was sent successfully.
  */
 export async function sendMessage(
-  senderId: string,
-  userIds: string[],
+  senderEmail: string,
+  userEmails: string[],
   message: string
 ) {
   try {
+    //fetch the ids of each user email
+
+    let userIds: string[] = new Array();
+    for (var i = 0; i < userEmails.length; i++) {
+      var anUser: any;
+      console.log(userEmails[i]);
+
+      anUser = await new Promise((resolve, _) => {
+        findUserWithEmail(userEmails[i], (user) => {
+          // console.log(user);
+          if (user == null) {
+            resolve(null);
+          } else {
+            resolve(user);
+          }
+        });
+      });
+
+      if (anUser.data) {
+        userIds.push(anUser.data["userID"]);
+      }
+    }
     userIds = orderIds(userIds);
     console.log(userIds);
-
-    //check for duplicates:
-    let findDuplicates = (arr: string[]) =>
-      arr.filter((item, index) => arr.indexOf(item) != index);
-    if (findDuplicates(userIds).length > 0) {
-      throw new Error("There are dupplicate ids in the userId List received!");
-    }
 
     const conversation = await fetchConversation(userIds);
 
@@ -166,16 +217,23 @@ export async function sendMessage(
       throw new Error("Multiple conversations found.");
     }
 
-    //check if senderId is in the user database
-    var doc = await db.collection("users").doc(senderId).get();
-    if (!doc.data()) {
-      throw new Error("The senderId are not registered in the database!");
-    }
+    // retrive sender email
+    let sender: any;
+    sender = await new Promise((resolve, _) => {
+      findUserWithEmail(senderEmail, (user) => {
+        // console.log(user);
+        if (user == null) {
+          resolve(null);
+        } else {
+          resolve(user);
+        }
+      });
+    });
 
     let chat: chatMessage = {
       content: message,
       isRead: false,
-      senderId: senderId as string,
+      senderId: sender.data["userID"] as string,
       timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
       type: "text",
     };
@@ -198,7 +256,7 @@ export async function sendMessage(
     return true;
   } catch (error) {
     console.error(`Error occurred in sendMessage: ${error}`);
-    throw new Error(`Error occurred in sendMessage: ${error}`);
+    throw error;
   }
 }
 
@@ -206,9 +264,9 @@ export async function sendMessage(
 
 Asynchronously retrieves any new messages sent to a conversation and marks them as read for the recipient.
 
-@param senderId - The user Id of the sender of the messages
+@param senderEmail - The email address of the sender of the messages
 
-@param userIds - An array of Ids of the users participating in the conversation
+@param userEmails - An array of email addresses of the users participating in the conversation
 
 @param messagesLength - The length of the message array last retrieved by the recipient
 
@@ -218,33 +276,54 @@ or an empty array if there are no new messages to retrieve or if there was an er
 */
 
 export async function getUpdatedMessages(
-  senderId: string,
-  userIds: string[],
+  senderEmail: string,
+  userEmails: string[],
   messagesLength: number
 ) {
   try {
-    //check if the userIds receives are already in the user database
-    for (var i = 0; i < userIds.length; i++) {
-      var doc = await db.collection("users").doc(userIds[i]).get();
-      if (!doc.data()) {
-        throw new Error("The user Ids are not registered in the database!");
+    // get user ids from the array of
+
+    let userIds: string[] = new Array();
+
+    for (var i = 0; i < userEmails.length; i++) {
+      var anUser: any;
+      console.log(userEmails[i]);
+
+      anUser = await new Promise((resolve, _) => {
+        findUserWithEmail(userEmails[i], (user) => {
+          // console.log(user);
+          if (user == null) {
+            resolve(null);
+          } else {
+            resolve(user);
+          }
+        });
+      });
+
+      if (anUser.data) {
+        userIds.push(anUser.data["userID"]);
       }
     }
-
-    //check if the  senderId is already in the user database
-    var doc = await db.collection("users").doc(senderId).get();
-    if (!doc.data()) {
-      throw new Error("The senderId are not registered in the database!");
-    }
-
     userIds = orderIds(userIds);
 
-    let conversation: any = await fetchConversation(userIds);
+    let conversation = await fetchConversation(userIds);
 
     if (conversation.length != 1) {
       return [];
     }
-    console.log(conversation[0].id);
+    // fetch the sender userID from the database
+    let sender: any;
+    sender = await new Promise((resolve, _) => {
+      findUserWithEmail(senderEmail, (user) => {
+        // console.log(user);
+        if (user == null) {
+          resolve(null);
+        } else {
+          resolve(user);
+        }
+      });
+    });
+
     let messagesRef = conversation[0].data["messages"];
 
     if (messagesRef.length == messagesLength) {
@@ -257,7 +336,7 @@ export async function getUpdatedMessages(
       let chat: chatMessage = snapShot.data() as chatMessage;
 
       //if its not the owner of the sent mesage set the read flag to true
-      if (chat.senderId != senderId && chat.isRead == false) {
+      if (chat.senderId != sender.data["userID"] && chat.isRead == false) {
         chat.isRead = true;
         await db.collection("chats").doc(snapShot.id).update({
           isRead: true,
@@ -271,41 +350,40 @@ export async function getUpdatedMessages(
 
       //populates the return message list:
       var messageWrapper: messagesListElement = {
-        Id: senderId,
+        email: senderEmail,
         message: chat,
       };
       listOfMessages.push(messageWrapper);
     }
-    const conversationID = conversation[0].id;
-    return { listOfMessages, conversationID };
+    return listOfMessages;
   } catch (error) {
     console.error(`Error occurred in sendMessage: ${error}`);
-    throw new Error(
-      `Error occurred in GetUpdatedMessages in messagesServices: ${error}`
-    );
+    throw error;
   }
 }
-/**
- * Get all the active conversations of a certain user
- * @param userId userID of a certain user
- * @param returnEmail
- * @returns the conversation list of the active user
- */
+
 export async function getActiveConversations(
-  userId: string,
+  email: string,
   returnEmail: boolean
 ) {
   try {
-    //check if the userId is already in the user database
-    var doc = await db.collection("users").doc(userId).get();
-    if (!doc.data()) {
-      throw new Error("The userId are not registered in the database!");
-    }
+    // retrive sender email
+    let sender: any;
+    sender = await new Promise((resolve, _) => {
+      findUserWithEmail(email, (user) => {
+        // console.log(user);
+        if (user == null) {
+          resolve(null);
+        } else {
+          resolve(user);
+        }
+      });
+    });
 
-    // fetch the conversation of the active user
+    // fetch the conversation og the active user
     let conversation = await db
       .collection("conversations")
-      .where("userArray", "array-contains", userId)
+      .where("userArray", "array-contains", sender.data["userID"])
       .get();
 
     let convo = conversation.docs.map(
@@ -343,6 +421,7 @@ export async function getActiveConversations(
             //temp= element.ActiveUser[j]
             tempArray.push(temp.data()["email"]);
           }
+
           element.ActiveUser = tempArray;
         }
         conversationList.push(element);
@@ -362,14 +441,17 @@ export async function getActiveConversations(
               .get();
             tempArray.push(temp.data()["email"]);
           }
+
           element.ActiveUser = tempArray;
         }
+
         conversationList.push(element);
       }
     }
 
     return conversationList;
   } catch (error) {
-    throw new Error(`Error occurred in GetActiveConversation list: ${error}`);
+    console.error(`Error occurred in conversation list: ${error}`);
+    throw error;
   }
 }
