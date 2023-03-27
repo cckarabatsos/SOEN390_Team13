@@ -30,3 +30,21 @@ export async function reportDecision(reqReportId, reqReportedId, reqDecision) {
     return false;
   }
 }
+
+export async function createReport(reqReporterId, reqReportedId, reqReason) {
+  try {
+    const response = await axios
+      .post(`${api.BACKEND_API}/reports/newReport`, {
+        reporterID: reqReporterId,
+        reportedID: reqReportedId,
+        reason: reqReason,
+      })
+      .then((res) => {
+        return res.data;
+      });
+    return response.data;
+  } catch (error) {
+    console.error("error", error);
+    return false;
+  }
+}
