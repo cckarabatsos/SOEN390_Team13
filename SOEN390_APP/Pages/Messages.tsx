@@ -45,7 +45,7 @@ const Messages  = ({ route, navigation }:any) => {
   
   
   const handleGetConversations = async () => {
-    const message = await GetActiveConversations(emailUser);
+    const message = await GetActiveConversations(userID);
     const newObjectsArray = await Promise.all(message.map(buildObject));
     setConversations(newObjectsArray);
     setIsLoading(false);
@@ -108,7 +108,9 @@ const Messages  = ({ route, navigation }:any) => {
       email: user.email,
       emailUser: emailUser,
       userName: username,
-      isRead: isRead1
+      isRead: isRead1,
+      senderID: user.userID,
+      userID: userID
     }
     return obj;
   }

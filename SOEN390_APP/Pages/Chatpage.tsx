@@ -17,6 +17,7 @@ import { SendMessage } from "../api/MessagesAPI";
 import { GetUserInfo } from "../api/GetUsersAPI";
 import { Animated } from 'react-native';
 
+
 type MessageType = {
   id: number,
   text: string,
@@ -25,17 +26,15 @@ type MessageType = {
   image: string,
 };
 
+
 const ChatPage = ({ route, navigation}:any) => {
   const { chatData } = route.params;
   const {isDarkMode} = route.params;
-  let image = require("../Components/Images/google-icon.png")
-  let emailUser = chatData.emailUser
-  let emailContact = chatData.email
+  let userIDContact = chatData.senderID
+  let userID = chatData.userID
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [allMessages, setAllMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [refreshTime, setRefreshTime] = useState(0);
-  const [refreshing, setRefreshing] = useState(false);
+  const [conversationID, setConversationID] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isRead, setIsRead] = useState(true);
   let name = chatData.userName
@@ -47,10 +46,10 @@ const ChatPage = ({ route, navigation}:any) => {
   //{ id: 3,sendByUser:false,name: 'lionel messi',text: '390 project', image: image }
 
   const handleGetMessages = async () => {
-    const message = await GetAllMessages(emailUser, emailContact);
-
-    const newObjectsArray = await Promise.all(message.map(buildObject));
+    const message = await GetAllMessages(userID, userIDContact);
+    const newObjectsArray = await Promise.all(message.listOfMessages.map(buildObject));
     setMessages(newObjectsArray);
+    setConversationID(message.conversationID);
     setIsLoading(false);
   }
   const { v4: uuidv4 } = require('uuid');
@@ -58,6 +57,24 @@ const ChatPage = ({ route, navigation}:any) => {
   useEffect(() => {
     handleGetMessages();
   }, []);
+
+
+  useEffect(() => {
+    if (!conversationID) {
+        console.log("Ignoring subscription");
+
+        return;
+    }
+    console.log(
+        "Running subscription for conversationID: ",
+        conversationID
+    );
+
+    return () => {
+        console.log("Unsubbing");
+
+    };
+}, [conversationID]);
 
   //const { v4: uuidv4 } = require('uuid');
 const handleGetUserInfo = async(userID:string) =>{
@@ -77,7 +94,6 @@ const handleGetUserInfo = async(userID:string) =>{
       image: user.picture|| 'https://randomuser.me/api/portraits/men/1.jpg',
       sendByUser: handleIsSentByUser(user.name, message.isRead)
     }
-    //console.log(obj)
     return obj;
   }
 
@@ -98,7 +114,7 @@ const handleGetUserInfo = async(userID:string) =>{
 
 
 const handleSendMessage = async (message:string) => {
-  await SendMessage(emailUser,emailContact, message)
+  await SendMessage(userID,userIDContact, message)
   handleGetMessages();
   setInput('')
 };
