@@ -26,6 +26,9 @@ skill.post("/:ownerID", async (req: Request, res: Response) => {
         } else if (status == 400) {
             res.status(400);
             res.json(skill[1]);
+        } else if (status == 401) {
+            res.status(401);
+            res.json(skill[1]);
         } else if (status == 404) {
             res.sendStatus(status);
         }

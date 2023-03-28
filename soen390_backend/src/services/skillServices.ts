@@ -42,6 +42,15 @@ export const storeSkill = async (skill: Skill) => {
                 return "limit";
             }
         }
+        let exists: boolean = false;
+        skills?.forEach((skl: Skill) => {
+            if (skl.name == skill.name) {
+                exists = true;
+            }
+        })
+        if (exists) {
+            return "exists";
+        }
 
         var document = await db.collection("skills").add({
             name: skill.name,

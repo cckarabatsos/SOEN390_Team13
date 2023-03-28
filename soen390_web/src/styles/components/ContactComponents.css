@@ -20,8 +20,8 @@
     margin-top: 5vh;
     margin-bottom: 5vh;
     
-   
-    background-color: #CBC3E3;
+    background: white !important;
+    border: 2px solid #8f8aff;
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -89,6 +89,7 @@
     align-items: center;
     background-color: #fff;
     border-radius: 10px;
+    border: 2px solid #8f8aff;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     padding: 0px;
    
@@ -96,14 +97,10 @@
   }
   
   .friend-request-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    background: #908affbf;
+    border-radius: 0.5rem;
     width: 100%;
     margin-bottom: 20px;
-    background-color: #655DBB;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
     padding: 10px;
   }
   
@@ -116,7 +113,7 @@
   
   .friend-request-name {
     font-size: 18px;
-    font-weight: bold;
+    text-decoration: none !important;
     margin: 0;
   }
   
@@ -132,6 +129,24 @@
     align-items: center;
     width: 100%;
     padding: 10px;
+  }
+
+  .button-lookup{
+    text-transform: none !important;
+  }
+
+  .button-removecontact{
+    text-transform: none !important;
+  }
+
+  .friend-request-actions .button-lookup:hover{
+    background-color: #8f8aff;
+    color:white;
+  }
+
+  .friend-request-actions .button-removecontact:hover{
+    background-color: #8f8aff;
+    color:white;
   }
   
   .friend-request-button {
@@ -149,8 +164,4 @@
   
   .friend-request-decline {
     background-color: #dc3545;
-  }
-  .friend-request-job {
-    font-size: 14px;
-    margin: 4px 0;
   }

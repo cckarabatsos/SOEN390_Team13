@@ -5,11 +5,13 @@ import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
 import { User, user_schema, UserFilter } from "../models/User";
+import { Notification } from "../models/Notification";
 // import { database } from "firebase-admin";
 
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
+import { storeNotification } from "./notificationServices";
 /**
  * Query the db to get a user via their ID
  * @param userID
@@ -108,7 +110,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                            " job postings successfully deleted."
+                        " job postings successfully deleted."
                     );
                 }
             }
@@ -439,6 +441,16 @@ export async function sendUserInvitation(
                 pendingInvitations:
                     firebase.firestore.FieldValue.arrayUnion(senderEmail),
             });
+        let notification: Notification = {
+            logo: (senderUser.data as User).picture,
+            message: (senderUser.data as User).name + " has sent you a friend request.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "network",
+            ownerID: receiverUser.data.userID,
+            relatedEntity: senderUser.data.userID
+        };
+        console.log(receiverUser.data.userID);
+        storeNotification(notification);
     } catch (error) {
         console.log(error);
         throw new Error("this is an invitation error");
@@ -477,6 +489,15 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
                     follows:
                         firebase.firestore.FieldValue.arrayUnion(receiverID),
                 });
+            let notification: Notification = {
+                logo: senderUser.picture,
+                message: senderUser.name + " is now following you.",
+                timestamp: (new Date()).toLocaleString(),
+                category: "network",
+                ownerID: receiverID,
+                relatedEntity: senderID
+            };
+            storeNotification(notification);
         }
     } catch (error) {
         console.log(error);
@@ -587,6 +608,15 @@ export async function manageUserInvitation(
                     contacts:
                         firebase.firestore.FieldValue.arrayUnion(invitedEmail),
                 });
+            let notification: Notification = {
+                logo: invitedUser.data.picture,
+                message: invitedUser.data.name + " has accepted your friend request.",
+                timestamp: (new Date()).toLocaleString(),
+                category: "network",
+                ownerID: senderUser.data.userID,
+                relatedEntity: invitedUser.data.userID
+            };
+            storeNotification(notification);
         }
     } catch (error) {
         console.log(error);

@@ -6,8 +6,10 @@ import firebase from "firebase";
 import "firebase/storage";
 import { Application, application_schema } from "../models/Application";
 import { jobposting_schema } from "../models/jobPosting";
+import { Notification } from "../models/Notification";
 import { user_schema } from "../models/User";
 import { findJobpostingWithID } from "./jobPostingServices";
+import { storeNotification } from "./notificationServices";
 import { findUserWithID, updateUser } from "./userServices";
 
 const db = firebase.firestore();
@@ -79,6 +81,24 @@ export const storeApplication = async (application: Application) => {
             document.id :
             casted_company.jobpostings.applied[index] + "," + document.id;
         updateUser(casted_company, casted_company.userID);
+        let companyNotification: Notification = {
+            logo: casted_user.picture,
+            message: casted_user.name + " has applied to your job posting '" + casted_posting.position + "'.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "applications",
+            ownerID: casted_company.userID,
+            relatedEntity: casted_user.userID
+        };
+        storeNotification(companyNotification);
+        let userNotification: Notification = {
+            logo: casted_company.picture,
+            message: "You have applied to " + casted_company.name + "'s position '" + casted_posting.position + "'.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "applications",
+            ownerID: casted_user.userID,
+            relatedEntity: casted_posting.postingID
+        };
+        storeNotification(userNotification);
     } catch (error) {
         console.log(error);
         throw error;
@@ -189,7 +209,9 @@ export const retrieveApplicationHistory = async (userID: string) => {
         let jobpostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
             db.collection("jobpostings");
         let jobPostingIDs: string[] = [];
+        let applicationIDs: string[] = [];
         casted_user.jobpostings.applied.forEach((str: string) => {
+            applicationIDs.push(str.split(",")[0]);
             jobPostingIDs.push(str.split(",")[1]);
         });
         if (jobPostingIDs.length === 0) {
@@ -198,11 +220,28 @@ export const retrieveApplicationHistory = async (userID: string) => {
         jobpostingsRef = jobpostingsRef
             .where("postingID", "in", jobPostingIDs);
 
-        const snapshot = await jobpostingsRef.get();
+        const postingSnapshot = await jobpostingsRef.get();
+        const postings = postingSnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            // status: "new status",
+        }));
+
+        let applicationsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
+            db.collection("applications");
+        applicationsRef = applicationsRef
+            .where("applicationID", "in", applicationIDs);
+
+        const snapshot = await applicationsRef.get();
         const applications = snapshot.docs.map((doc) => ({
             ...doc.data(),
         }));
-        return applications;
+        let counter: number = 0;
+        postings.forEach((posting: any) => {
+            posting.status = applications !== undefined ? applications[counter].status : "Status Error";
+            counter++;
+        });
+
+        return postings;
 
     } catch (error) {
         console.log(error);
@@ -268,3 +307,27 @@ export const deleteApplicationWithId = async (userID: string, postingID: string)
     }
     return "Success";
 };
+
+/**
+ * Updates the status of the application in the database
+ * 
+ * @param applicationID 
+ * @param newStatus 
+ * @returns updated application or null
+ */
+export async function updateApplication(applicationID: string, newStatus: string) {
+    try {
+        let application = await findApplicationWithID(applicationID);
+        if (application === undefined) {
+            console.log("Application not found.");
+            return null;
+        }
+        application.status = newStatus;
+        db.collection("applications").doc(applicationID).update(application);
+
+        return application;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

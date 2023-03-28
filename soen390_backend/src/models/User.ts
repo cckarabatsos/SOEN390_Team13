@@ -64,6 +64,13 @@ export const user_schema = yup
                 then: yup.array(yup.string()).default([]),
             })
             .required("Field Is required when its a recruiter"),
+        notifications: yup.array().of(yup.object().shape({
+            logo: yup.string().required(),
+            timestamp: yup.string().required(),
+            message: yup.string().required(),
+            category: yup.string().required()
+        }).required(),
+        ).required().default([]),
     })
     .required();
 
