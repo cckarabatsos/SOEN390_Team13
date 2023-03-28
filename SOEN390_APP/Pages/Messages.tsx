@@ -40,6 +40,7 @@ const Messages  = ({ route, navigation }:any) => {
   const [allMessages, setAllMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   
   
@@ -111,53 +112,67 @@ const Messages  = ({ route, navigation }:any) => {
     }
     return obj;
   }
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
   
   const chatData = conversations;
 
 
-  const ChatHistoryItem = ({ chatData, onPress }:any) => (
+  const ChatHistoryItem = ({ chatData, onPress  }:any) => (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.chatBox}>
-        <View style={styles.chatInfo}>
-          <Image style={styles.userImage} source={{ uri: chatData.image }} />
-          <Text style={styles.name}>{chatData.name}</Text>
-          <Text style={styles.lastMessage}>{chatData.lastMessage}</Text>
+    <View style={[styles.chatBox, isDarkMode ? darkStyles.chatBox : styles.chatBox]}>
+      <View style={styles.chatInfo}>
+        <Image style={styles.userImage} source={{ uri: chatData.image }} />
+        <View style={styles.messageInfo}>
+          <View style={styles.nameAndTime}>
+            <Text style={[styles.name, isDarkMode ? darkStyles.name : styles.name]}>{chatData.name}</Text>
+            <Text style={[styles.timestamp, isDarkMode ? darkStyles.timestamp : styles.timestamp]}>{chatData.timestamp}</Text>
+          </View>
+          <Text style={[styles.lastMessage, isDarkMode ? darkStyles.lastMessage : styles.lastMessage]}>{chatData.lastMessage}</Text>
         </View>
-        <Text style={styles.timestamp}>{chatData.timestamp}</Text>
-        <View style={styles.readIndicator}>
-          {chatData.isRead ?
-            <Image style={styles.readIndicatorImage} source={{ uri: chatData.image }} />
-            :
-            <Ionicons name="checkmark-circle-outline" size={28} color="#555" /> 
-          }
-         </View>
       </View>
-    </TouchableOpacity>
+      {chatData.isRead ? (
+        <View style={styles.readIndicator}>
+          <Image style={styles.readIndicatorImage} source={{ uri: chatData.image }} />
+        </View>
+      ) : (
+        <Ionicons name="checkmark-circle-outline" size={25} color="#555" /> 
+      )}
+    </View>
+  </TouchableOpacity>
   );
   
   const ChatHistory = ({ navigation }:any) => {
    
     const renderItem = ({ item }:any) => (
-      <ChatHistoryItem chatData={item} onPress={() => navigation.navigate('Chatpage', { chatData: item })} />
+      <ChatHistoryItem chatData={item} onPress={() => navigation.navigate('Chatpage', { chatData: item, isDarkMode: isDarkMode })} />
     );
     
     return (
 
-        <View style={styles.container2}>
-        <View style={{flexDirection: 'column'}}>
-          <View style={styles.inboxContainer}>
-            <Ionicons size={30} name="chatbubble"/>
-            <Text style={styles.inboxText}> Chats </Text>
-          </View>
-        </View>
-         <View style={styles.container}>
-        <FlatList
-          data={conversations}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
+<View style={[styles.container, isDarkMode ? darkStyles.container : styles.container]}>
+    <View style={[styles.header, isDarkMode ? darkStyles.header : styles.header]}>
+      <Image style={styles.logo} source={require('../Components/Images/linkedout-logo.png') } />
+      <Text style={[styles.headerTitle, isDarkMode ? darkStyles.headerTitle : styles.headerTitle]}>Chats</Text>
+      <View style={{flexDirection:"row"}}>
+      <TouchableOpacity onPress={() => console.log('Settings pressed')} style={{marginHorizontal:15}}>
+        <Ionicons name="settings-sharp" size={28} color={isDarkMode ? '#fff' : '#333'} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={toggleDarkMode}>
+        <Ionicons name={isDarkMode ? 'sunny-outline' : 'moon-outline'} size={28} color={isDarkMode ? '#fff' : '#333'} />
+      </TouchableOpacity>
       </View>
-      </View>
+    </View>
+    <FlatList
+      data={conversations}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+      style={[styles.chatList, isDarkMode ? darkStyles.chatList : styles.chatList]}
+    />
+    <View style={[styles.footer, isDarkMode ? darkStyles.footer : styles.footer]}>
+    </View>
+  </View>
     );
   };
 
@@ -180,86 +195,204 @@ const Messages  = ({ route, navigation }:any) => {
   );
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    
-    justifyContent: 'center',
   },
-  container2: {
-    backgroundColor: 'white',
-    flex: 1,
-},
-inboxContainer: {
-  backgroundColor:  "rgb(145, 140, 224)",
-  height:50,
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection:"row",
-},
-requestText:{
-  fontSize: 20,
-  fontWeight: 'bold',
-  marginRight: 7,
-},
-inboxText:{
-  textAlign: 'center',
-  fontSize: 18,
-  fontWeight: 'bold',
-},
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    backgroundColor: '#fff',
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
   },
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 10,
+  },
+  chatList: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   chatBox: {
     flexDirection: 'row',
-    
-    padding: 16,
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
+    borderBottomColor: '#ccc',
+  },
+  chatInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
   },
   userImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 16
-    },
-  chatInfo: {
+    marginRight: 16,
+  },
+  messageInfo: {
     flex: 1,
-    marginLeft: 16
+  },
+  nameAndTime: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   name: {
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  lastMessage: {
     fontSize: 16,
-    color: '#696969'
+    fontWeight: 'bold',
   },
   timestamp: {
-    fontSize: 16,
-    color: '#696969',
-    marginRight: 10
+    fontSize: 12,
+    color: '#aaa',
+  },
+  lastMessage: {
+    fontSize: 14,
+    color: '#888',
   },
   readIndicator: {
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   readIndicatorImage: {
-    width: 22,
-    height: 22,
-    borderRadius: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
   },
   unreadIndicator: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-
-  }
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#1a73e8',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    padding: 16,
+    backgroundColor: '#fff',
+  },
 });
+
+const darkStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    backgroundColor: '#111',
+    borderBottomColor: '#666',
+
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 10,
+    color: '#fff',
+  },
+  chatList: {
+    flex: 1,
+    backgroundColor: '#111',
+
+  },
+  chatBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    backgroundColor: '#111',
+    borderBottomColor: '#666',
+  },
+  chatInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  userImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
+  },
+  messageInfo: {
+    flex: 1,
+  },
+  nameAndTime: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  timestamp: {
+    fontSize: 12,
+    color: '#aaa',
+  },
+  lastMessage: {
+    fontSize: 14,
+    color: '#ccc',
+  },
+  readIndicator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  readIndicatorImage: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+  },
+  unreadIndicator: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#1a73e8',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    padding: 16,
+    backgroundColor: '#111',
+  },
+});
+
 
 export default Messages;
