@@ -1,4 +1,4 @@
-name: Starter CI implementation
+name: CI test backend and frontend
 
 on:
     pull_request:
