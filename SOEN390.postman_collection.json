@@ -3,7 +3,7 @@
 		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
 		"name": "SOEN390",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25472351"
+		"_exporter_id": "19175436"
 	},
 	"item": [
 		{
@@ -265,7 +265,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/manageInvite?invitedEmail=bog1@test.com&senderEmail=Qzm8c1439z&isAccept=true",
+							"raw": "http://localhost:7000/user/api/manageInvite?invitedEmail=bog1@test.com&senderEmail=dzm.fiodarau@gmail.com&isAccept=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -283,7 +283,7 @@
 								},
 								{
 									"key": "senderEmail",
-									"value": "Qzm8c1439z"
+									"value": "dzm.fiodarau@gmail.com"
 								},
 								{
 									"key": "isAccept",
@@ -742,7 +742,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "fS0PjwOmmPRWbSZxzva9"
 								}
 							]
 						}
@@ -761,7 +761,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"skill\"\r\n}",
+							"raw": "{\r\n    \"name\": \"skill2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1064,7 +1064,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "OteQMtP6wkT5XtwHCJox"
+									"value": "18JRHKkLE2t50nE17SHc"
 								}
 							]
 						}
@@ -1545,10 +1545,10 @@
 				{
 					"name": "Remove Notification",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/notification/remove/:docID",
+							"raw": "http://localhost:7000/notification/remove?docID=s479PNVx2ga8kPfGXvAo&userID=18JRHKkLE2t50nE17SHc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1556,13 +1556,16 @@
 							"port": "7000",
 							"path": [
 								"notification",
-								"remove",
-								":docID"
+								"remove"
 							],
-							"variable": [
+							"query": [
 								{
 									"key": "docID",
-									"value": "EgNAZICbsXrsQ2k6gclJ"
+									"value": "s479PNVx2ga8kPfGXvAo"
+								},
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
 								}
 							]
 						}

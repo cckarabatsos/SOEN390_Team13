@@ -18,15 +18,15 @@ messages.get("/createConversation", async (req, res) => {
   console.log("in createConversation");
   console.log(req);
   try {
-    const userEmails: string[] = JSON.parse(req.query.emails as string);
+    const userIds: string[] = JSON.parse(req.query.ids as string);
 
-    if (userEmails.length < 2) {
+    if (userIds.length < 2) {
       return res.status(400).json({
         message: "Please provide at least 2 user emails",
       });
     }
     const jobPostings = "hello 1";
-    await createNewConversationController(userEmails);
+    await createNewConversationController(userIds);
     return res.status(200).json({
       message: "Conversation created successfully",
       jobPostings,
@@ -44,18 +44,18 @@ messages.get("/createConversation", async (req, res) => {
 //outputs the list of messages along with their sender email address
 messages.get("/getAllMessages", async (req, res) => {
   try {
-    const userEmails: string[] =
-      typeof req.query.userEmails === "string"
-        ? JSON.parse(req.query.userEmails)
-        : req.query.userEmails;
-    const senderEmail = req.query.senderEmail as string;
+    const userIds: string[] =
+      typeof req.query.userIds === "string"
+        ? JSON.parse(req.query.userIds)
+        : req.query.userIds;
+    const senderEmail = req.query.senderId as string;
 
-    if (!userEmails) {
+    if (!userIds) {
       return res.status(400).json({
         message: "Please provide an email address",
       });
     }
-    const usersChat = await GetUpdatedMessages(senderEmail, userEmails, 0);
+    const usersChat = await GetUpdatedMessages(senderEmail, userIds, 0);
     return res.status(200).json({
       message: "Messages retrieved successfully",
       usersChat,
@@ -63,7 +63,7 @@ messages.get("/getAllMessages", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server error: " + (error as Error).message,
     });
   }
 });
@@ -73,11 +73,11 @@ messages.get("/getAllMessages", async (req, res) => {
 messages.get("/updateMessages", async (req, res) => {
   try {
     // Extract the required data from the request query
-    const userEmails: string[] = JSON.parse(req.query.userEmails as string);
-    const senderEmail = req.query.senderEmail as string;
+    const userIds: string[] = JSON.parse(req.query.userIds as string);
+    const senderId = req.query.senderId as string;
     const messagesLength: number = parseInt(req.query.messagesLength as string);
     // Validate the input
-    if (!userEmails || !senderEmail || messagesLength < 0) {
+    if (!userIds || !senderId || messagesLength < 0) {
       return res.status(400).json({
         message: "Please provide all required data",
       });
@@ -85,8 +85,8 @@ messages.get("/updateMessages", async (req, res) => {
 
     // Get the missing messages from the database
     const missingMessages = await GetUpdatedMessages(
-      senderEmail,
-      userEmails,
+      senderId,
+      userIds,
       messagesLength
     );
 
@@ -107,27 +107,27 @@ messages.get("/updateMessages", async (req, res) => {
 // Output: a boolean value indicating whether the message was successfully sent or not.
 messages.get("/sendMessage", async (req, res) => {
   try {
-    const senderEmail = req.query.senderEmail as string;
-    const emails: string[] = JSON.parse(req.query.emails as string);
+    const senderId = req.query.senderId as string;
+    const Ids: string[] = JSON.parse(req.query.Ids as string);
     const message = req.query.message as string;
     console.log(message);
     // Error detection for missing or invalid inputs
     if (
-      !emails ||
+      !Ids ||
       !message ||
-      !senderEmail ||
-      !Array.isArray(emails) ||
-      emails.length < 2
+      !senderId ||
+      !Array.isArray(Ids) ||
+      Ids.length < 2
     ) {
       return res.status(400).json({
         message:
-          "Please provide a valid sender email address, all emails in the conversation, and a non-null message",
+          "Please provide a valid sender Id address, all Ids in the conversation, and a non-null message",
       });
     }
 
     const messageConfirmation = await SendNewMessage(
-      senderEmail,
-      emails,
+      senderId,
+      Ids,
       message
     );
     return res.status(200).json({
@@ -137,26 +137,26 @@ messages.get("/sendMessage", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: (error as Error).message,
     });
   }
 });
 
 messages.get("/getActiveConversation", async (req, res) => {
   try {
-    const email = req.query.email as string;
+    const id = req.query.id as string;
     const returnEmail = req.query.returnEmail as string;
 
-    if (!email) {
+    if (!id) {
       return res.status(400).json({
         message: "Please provide an email address",
       });
     }
     var activeConvos: any;
     if (returnEmail == "true") {
-      activeConvos = await GetActiveConversations(email, true);
+      activeConvos = await GetActiveConversations(id, true);
     } else {
-      activeConvos = await GetActiveConversations(email, false);
+      activeConvos = await GetActiveConversations(id, false);
     }
 
     return res.status(200).json({
@@ -166,7 +166,7 @@ messages.get("/getActiveConversation", async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: (error as Error).message,
     });
   }
 });
