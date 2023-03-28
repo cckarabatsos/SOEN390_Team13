@@ -47,6 +47,7 @@ describe('ActionButton', () => {
         throw new Error('Invalid posting ID');
       }
       // your existing code here
+      window.alert('Application withdrawn successfully!');
     };
 
     await handleWithdrawApplication(postingID);
