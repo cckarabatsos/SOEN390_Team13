@@ -26,7 +26,7 @@ export default function CompanySearchComponent(props) {
   const setCompany = props.setJob;
   const email = props.email;
   const picture = props.picture;
-  const state= props.state;
+  const state = props.state;
   const description = props.description;
 
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ export default function CompanySearchComponent(props) {
   console.log(props.name)
 
   const handleOnClick = () => {
-    navigate('/CompanyProfile', { state: { picture: picture, name: name, description:description}});
+    navigate('/CompanyProfile', { state: { picture: picture, name: name, description: description } });
   }
 
   // display company component, position, company, location, contract
@@ -62,7 +62,7 @@ export default function CompanySearchComponent(props) {
           </div>
 
           <div className="companyName">{name}</div>
-          <div className="companyFollowers">{followerCount + " "}Followers</div>
+          <div className="companyFollowers">{followerCount + " "}{t("Followers")}</div>
           <div className="companyLocation">{location}</div>
         </div>
       </div>

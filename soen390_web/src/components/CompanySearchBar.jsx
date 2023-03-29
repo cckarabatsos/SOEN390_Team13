@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { CompanyApi } from "../api/CompanyApi";
 
 export function CompanySearchBar({ setCompanies }) {
+
   // initialize state vars, handle text input change
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
