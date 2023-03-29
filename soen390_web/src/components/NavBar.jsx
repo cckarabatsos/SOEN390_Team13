@@ -10,7 +10,7 @@ import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/default_picture2.jpg";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/UserSearchBar";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 import NavLinks from "./NavLinks";

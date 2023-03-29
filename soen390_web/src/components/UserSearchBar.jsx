@@ -5,8 +5,9 @@ import { JobSearch } from "../api/JobPostingApi";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CompanyApi } from "../api/CompanyApi";
+import { searchInfo, searchUsers } from "../api/userNetworkingApi";
 
-export function CompanySearchBar({ setCompanies }) {
+function UserSearchBar({ setUsers }) {
   // initialize state vars, handle text input change
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
@@ -25,9 +26,11 @@ export function CompanySearchBar({ setCompanies }) {
   //handle job search
   const handleSearch = async () => {
     console.log("text: " + text + " category: " + category);
-    var companies = await CompanyApi(category, text, 0, 0);
+    const temp = await searchUsers(category, text);
+    console.log(temp);
+    //var companies = await CompanyApi(category, text, 0, 0);
 
-    setCompanies(companies);
+    setUsers(temp);
   };
 
   // render job search bar, search button, dropdown filter to select category
@@ -78,9 +81,9 @@ export function CompanySearchBar({ setCompanies }) {
         >
           <option value="name">{t("NameText")}</option>
           <option value="email">{t("ByEmailText")}</option>
-          {/* <option value="remote">{t("RemoteText")}</option> */}
         </select>
       </div>
     </div>
   );
 }
+export default UserSearchBar;

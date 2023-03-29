@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import "../styles/pages/SearchPage.css";
 import CompanySearch from "./CompanySearch";
 import JobSearch from "./JobSearch";
-import UserNetworking from "./UserNetworking";
+import UserNetworking from "./UserSearch";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
