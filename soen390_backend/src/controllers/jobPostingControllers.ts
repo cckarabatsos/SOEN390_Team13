@@ -8,6 +8,7 @@ import {
 import {
     deleteJobPostingWithId,
     filterJobPostings,
+    findJobpostingWithID,
     retrieveJobSuggestions,
     storeJobPosting,
 } from "../services/jobPostingServices";
@@ -124,7 +125,7 @@ function validateFilterData(filter: Filter) {
 }
 
 /**
- * Tries to retrieve all job posting suggestions for the specified user 
+ * Tries to retrieve all job posting suggestions for the specified user
  *
  * @param userID
  * @returns status and res message
@@ -136,5 +137,20 @@ export async function getJobSuggestions(userID: string) {
         return [200, jobpostings];
     } else {
         return [404, { msg: "Job suggestions not found" }];
+    }
+}
+/**
+ * Get jobPostingWithID
+ * @param userID
+ * @returns
+ */
+export async function getJobPostingWithID(postingID: string) {
+    let user = await findJobpostingWithID(postingID);
+    let casted_user = await jobposting_schema.cast(user);
+    // console.log(casted_user);
+    if (user) {
+        return [200, casted_user];
+    } else {
+        return [404, { msg: "User not found" }];
     }
 }

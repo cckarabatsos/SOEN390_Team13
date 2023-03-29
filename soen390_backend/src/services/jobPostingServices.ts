@@ -45,10 +45,14 @@ export const storeJobPosting = async (newJobPosting: Jobposting) => {
         console.log("Job posting successfully stored with id: " + document.id);
         let notification: Notification = {
             logo: casted_user.picture,
-            message: casted_user.name + " has posted a new job '" + newJobPosting.position + "'.",
-            timestamp: (new Date()).toLocaleString(),
+            message:
+                casted_user.name +
+                " has posted a new job '" +
+                newJobPosting.position +
+                "'.",
+            timestamp: new Date().toLocaleString(),
             category: "news",
-            relatedEntity: document.id
+            relatedEntity: document.id,
         };
         casted_user.followers.forEach((followerID: string) => {
             notification.ownerID = followerID;
@@ -201,9 +205,11 @@ export const retrieveJobSuggestions = async (userID: string) => {
             let company = await findUserWithID(str);
             if (company !== undefined) {
                 let casted_company = await user_schema.cast(company);
-                casted_company.jobpostings.postingids.forEach((postingID: string) => {
-                    companyPostingIDs.push(postingID);
-                });
+                casted_company.jobpostings.postingids.forEach(
+                    (postingID: string) => {
+                        companyPostingIDs.push(postingID);
+                    }
+                );
             }
         });
 
@@ -218,7 +224,9 @@ export const retrieveJobSuggestions = async (userID: string) => {
         postings.forEach((posting: Jobposting) => {
             let score: number = 0;
             let position: string[] = posting.position.toUpperCase().split(" ");
-            let description: string[] = posting.description.toUpperCase().split(" ");
+            let description: string[] = posting.description
+                .toUpperCase()
+                .split(" ");
             skills?.forEach((skill: Skill) => {
                 position.forEach((str: string) => {
                     str = str.replace(/["'`,.:;-]+/g, "");
@@ -241,7 +249,9 @@ export const retrieveJobSuggestions = async (userID: string) => {
                 posting.score = score;
             }
         });
-        postings.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
+        postings.sort((a, b) =>
+            a.score > b.score ? -1 : b.score > a.score ? 1 : 0
+        );
         for (let i = 0; i < nbrElementsToRemove; i++) {
             postings.pop();
         }
