@@ -9,6 +9,8 @@ const userID = "18JRHKkLE2t50nE17SHc";
 const companyID = "i2iLvPkBHmkV43PufHVp";
 const postingID = "B9edMZe4tjUEAFcimWUu";
 const badUserID = "5";
+const applicationID = "wk52ye8hAOx3NAB0TxIq";
+const status = "test status";
 const postApplication = {
     email: "abc@gmail.com",
     firstName: "firstName",
@@ -134,7 +136,7 @@ describe("Test Application Routes", function () {
                 .expect(404);
         });
     });
-    describe("Post experience/remove/:docID", function () {
+    describe("Post application/remove/:docID", function () {
         it("responds with 200 when application removed for a specific user and specific job posting", async function () {
             await request(url)
                 .post(`/application/remove/${userID}?postingID=${postingID}`)
@@ -147,7 +149,19 @@ describe("Test Application Routes", function () {
         });
         it("responds with a 404 when job posting with passed id does not exist", async function () {
             await request(url)
-                .post(`/experience/remove/${userID}?postingID=${badUserID}`)
+                .post(`/application/remove/${userID}?postingID=${badUserID}`)
+                .expect(404);
+        });
+    });
+    describe("Post application/updateStatus/:applicationID", function () {
+        it("responds with 200 when application status updated", async function () {
+            await request(url)
+                .post(`/application/updateStatus/${applicationID}?status=${status}`)
+                .expect(200);
+        });
+        it("responds with a 404 when user with passed id does not exist", async function () {
+            await request(url)
+                .post(`/application/updateStatus/${badUserID}?status=${status}`)
                 .expect(404);
         });
     });
