@@ -21,10 +21,10 @@ export default function UserSearch() {
     <div>
       <div data-testid="job-posting">
         <div className="jobSearchingText">
-          <p>{t("JobSearchingJourneyText")}</p>
+          <p>{t("FindUsersLabel")}</p>
         </div>
         <div className="desiredJobText">
-          <p>{t("DesiredJobText")}</p>
+          <p>{t("DesiredUsers")}</p>
         </div>
         <UserSearchBar setUsers={setUsers} />
 
