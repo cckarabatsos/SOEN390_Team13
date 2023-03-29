@@ -94,4 +94,4 @@ experience.get("/get/:userID", async (req: Request, res: Response) => {
     }
 });
 
-module.exports = experience;
+export default experience;

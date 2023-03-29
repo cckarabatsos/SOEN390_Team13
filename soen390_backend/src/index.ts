@@ -1,16 +1,24 @@
 import express, { Application, Request, Response } from "express";
-//imports needed later for the encryption
-//import jsonwebtoken from "jsonwebtoken";
-//import { hash, compare } from "bcrypt";
+
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+
+import { UserDB } from "./firebaseconfig";
+import jobposting from "./routes/jobPostingRoutes";
+import experience from "./routes/experienceRoutes";
+import award from "./routes/awardRoutes";
+import user from "./routes/userRoutes";
+import messages from "./routes/messagesRoutes";
+import reports from "./routes/reportRoutes";
+import notification from "./routes/notificationRoutes";
+import skill from "./routes/skillRoutes";
+import application from "./routes/applicationRoutes";
 (global as any).XMLHttpRequest = require("xhr2");
 dotenv.config();
-const User = require("./firebaseconfig");
-const app: Application = express();
-const port: any = process.env.port || 7000; //Port for the backend
 
+const app: Application = express();
+const port: any = process.env.port || 7000;
 app.use(express.json());
 app.use(cookieParser());
 
@@ -25,9 +33,8 @@ app.use(function (_req, res, next) {
 
 //Example of route to test
 
-// const User = require("./firebaseconfig");
 app.get("/api", async (_: Request, res: Response) => {
-    const snapshot = await User.get();
+    const snapshot = await UserDB.get();
     const list = snapshot.docs.map((doc: any) => ({
         id: doc.id,
         ...doc.data(),
@@ -37,25 +44,16 @@ app.get("/api", async (_: Request, res: Response) => {
 
 //Requiring routes for different request types
 
-//Adding jobposting routes
-const jobposting = require("./routes/jobPostingRoutes");
+//Adding All routes
+
 app.use("/jobposting", jobposting);
-// Adding user routes
-const user = require("./routes/userRoutes");
 app.use("/user", user);
-const skill = require("./routes/skillRoutes");
 app.use("/skill", skill);
-const experience = require("./routes/experienceRoutes");
 app.use("/experience", experience);
-const award = require("./routes/awardRoutes");
 app.use("/award", award);
-const application = require("./routes/applicationRoutes");
 app.use("/application", application);
-const notification = require("./routes/notificationRoutes");
 app.use("/notification", notification);
-const reports = require("./routes/reportRoutes");
 app.use("/reports", reports);
-const messages = require("./routes/messagesRoutes");
 app.use("/messages", messages);
 //Heartbeat Route
 app.get("/", (_: Request, res: Response) => {

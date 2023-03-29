@@ -29,10 +29,10 @@ import {
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
-import { compare } from "bcrypt";
-
+import { compare } from "bcryptjs";
+import multer from "multer";
 // import firebase from "firebase";
-const multer = require("multer");
+
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
 user.use(express.json());
@@ -494,4 +494,4 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 // });
 
 // Exporting the user as a module
-module.exports = user;
+export default user;
