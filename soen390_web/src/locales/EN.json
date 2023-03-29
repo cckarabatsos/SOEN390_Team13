@@ -110,6 +110,8 @@
     "CompanyTab": "Companies",
     "UserTab": "User",
     "JobTab": "Jobs",
-    "DesiredCompany": "Browse available companies below."
+    "DesiredCompany": "Browse available companies below.",
+    "JobSuggestions" : "Job suggestions for you",
+    "AddSkills" : "There are no jobs that fit the skills on your profile, add more skills to get some job suggestions"
 
 }

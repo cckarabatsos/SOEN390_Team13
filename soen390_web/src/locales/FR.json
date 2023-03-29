@@ -110,5 +110,7 @@
     "CompanyTab": "Entreprises",
     "UserTab": "Individus",
     "JobTab": "Emplois",
-    "DesiredCompany": "Veuillez rechercher l'entreprise souhaitée."
+    "DesiredCompany": "Veuillez rechercher l'entreprise souhaitée.",
+    "JobSuggestions" : "Suggestions d'emplois pour vous",
+    "AddSkills" : "Il n'y a pas d'emplois correspondant à vos compétences, ajoutez plus de compétences à votre profil!"
 }

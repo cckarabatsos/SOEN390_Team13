@@ -7,7 +7,7 @@ import { auth, provider } from "../firebaseConfig";
 
 export async function getJobSuggestions(userID) {
   try {
-    const response = await axios.get(api.BACKEND_API + 'jobposting/getJobSuggestions/'
+    const response = await axios.get(api.BACKEND_API + '/jobposting/getJobSuggestions/'
       + userID
     );
     //console.log(response.data);
