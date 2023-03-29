@@ -16,7 +16,7 @@ import AddressForm from "../components/JobPostingsCompanyPage";
 export default function CompanyJobPostings(props) {
   const [showForm, setShowForm] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const { t } = useTranslation();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -28,7 +28,7 @@ export default function CompanyJobPostings(props) {
   return (
     <div className="JobsContainer">
       <div className="JobHeaderWrap">
-        <div className="postings">Open Positions</div>
+        <div className="postings">{t("OpenPositions")}</div>
         <div className="editButtonJobs">
           <Button onClick={handleClickOpen} data-testid="add-button">
             <PlaylistAddIcon />
@@ -63,7 +63,7 @@ export default function CompanyJobPostings(props) {
         <DialogContent>
 
           <AddressForm />
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>{t("CancelText")}</Button>
         </DialogContent>
       </Dialog>
     </div>
