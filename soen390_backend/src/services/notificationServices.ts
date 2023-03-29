@@ -79,7 +79,7 @@ export const retrieveNotifications = async (userID: string) => {
     }
     let casted_user = await user_schema.cast(user);
 
-    let userRef = await db.collection("users").doc(userID);
+    let userRef = db.collection("users").doc(userID);
 
     //removed unused notifications from the reffernce array
     for (let i = 0; i < casted_user.notifications.length; i++) {
@@ -115,7 +115,7 @@ export const retrieveNotifications = async (userID: string) => {
       );
     });
     await promise;
-    console.log(notifications);
+    // console.log(notifications);
     return notifications;
   } catch (error) {
     console.log(error);

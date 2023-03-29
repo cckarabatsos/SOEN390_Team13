@@ -76,8 +76,8 @@
     "CoverLetterText": "Lettre de motivation",
     "PictureText": "Photo",
     "FilesText": "Fichiers Supportés",
-    "NameText": "Par Nom",
-    "ByEmailText": "Par Courriel",
+    "NameText": "Nom",
+    "ByEmailText": "Courriel",
     "SearchByText": "Rechercher Par",
     "UploadDocText": "Télécharger vos documents personnels",
     "SentenceText": "Téléchargez votre CV, lettre de motivation ou tout autre document que vous souhaitez que vos recruteurs examinent!",
@@ -111,6 +111,14 @@
     "UserTab": "Individus",
     "JobTab": "Emplois",
     "DesiredCompany": "Veuillez rechercher l'entreprise souhaitée.",
-    "JobSuggestions" : "Suggestions d'emplois pour vous",
-    "AddSkills" : "Il n'y a pas d'emplois correspondant à vos compétences, ajoutez plus de compétences à votre profil!"
+    "StatusText" : "Statut",
+    "Applications" :"Mes candidatures",
+    "Followers" :"Abonnés",
+    "Candidatures" : "Candidatures",
+    "Edit" : "Modifier",
+    "OpenPositions" : "Postes Ouverts",
+    "RemoveContact" :"Supprimer Contact",
+    "ReqDoc" : "Documents Requis",
+    "SelDoc" : "Documents Selectionnés"
+
 }

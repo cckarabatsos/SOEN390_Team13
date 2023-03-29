@@ -76,8 +76,8 @@
     "CoverLetterText": "Cover Letter",
     "PictureText": "Picture",
     "FilesText": "Files Supported",
-    "NameText": "By Name",
-    "ByEmailText": "By Email",
+    "NameText": "Name",
+    "ByEmailText": "Email",
     "SearchByText": "Search By",
     "UploadDocText": "Upload Personal Documents",
     "SentenceText": "Upload your CV, Cover letter, or anything else you wish your recruiters to look at!",
@@ -111,7 +111,14 @@
     "UserTab": "User",
     "JobTab": "Jobs",
     "DesiredCompany": "Browse available companies below.",
-    "JobSuggestions" : "Job suggestions for you",
-    "AddSkills" : "There are no jobs that fit the skills on your profile, add more skills to get some job suggestions"
+    "StatusText" : "Status",
+    "Applications" :"My applications",
+    "Followers" :"Followers",
+    "Candidatures" : "Applications",
+    "Edit" : "Edit",
+    "OpenPositions" : "Open Positions",
+    "RemoveContact" :"Remove Contact",
+    "ReqDoc" : "Required Documents",
+    "SelDoc" : "Selected Documents"
 
 }

@@ -5,7 +5,7 @@ import ForwardedSearchBar from "../components/SearchBar";
 describe("SearchBar", () => {
   test("renders the SearchBar component", () => {
     const { getByPlaceholderText } = render(<ForwardedSearchBar />);
-    const searchInput = getByPlaceholderText("Search");
+    const searchInput = getByPlaceholderText("SearchText");
     expect(searchInput).toBeInTheDocument();
   });
 
@@ -14,8 +14,8 @@ describe("SearchBar", () => {
     const { getByText, getByPlaceholderText } = render(
       <ForwardedSearchBar onSearchBtnClick={onSearchBtnClick} />
     );
-    const searchInput = getByPlaceholderText("Search");
-    const searchButton = getByText("Search");
+    const searchInput = getByPlaceholderText("SearchText");
+    const searchButton = getByText("SearchText");
     const searchValue = "Test search value";
     fireEvent.change(searchInput, { target: { value: searchValue } });
     fireEvent.click(searchButton);
@@ -24,7 +24,7 @@ describe("SearchBar", () => {
 
   test("returns the correct input value using the ref", () => {
     const { getByPlaceholderText } = render(<ForwardedSearchBar />);
-    const searchInput = getByPlaceholderText("Search");
+    const searchInput = getByPlaceholderText("SearchText");
     const searchValue = "Test search value";
     fireEvent.change(searchInput, { target: { value: searchValue } });
     const inputValue =

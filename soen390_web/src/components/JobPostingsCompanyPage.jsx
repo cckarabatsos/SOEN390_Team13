@@ -8,9 +8,10 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
+
 export default function AddressForm() {
     const [documents, setDocuments] = React.useState([]);
-
+    const { t } = useTranslation();
     const handleChange = (event) => {
         setDocuments(event.target.value);
     };
@@ -55,7 +56,7 @@ export default function AddressForm() {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="subtitle1">Required Documents:</Typography>
+                    <Typography variant="subtitle1"> {t("ReqDoc")}:</Typography>
                     <Select
                         multiple
                         value={documents}
@@ -63,12 +64,12 @@ export default function AddressForm() {
                         inputProps={{ name: 'documents', id: 'documents' }}
                     >
                         <MenuItem value="CV">CV</MenuItem>
-                        <MenuItem value="Cover Letter">Cover Letter</MenuItem>
+                        <MenuItem value="Cover Letter"> {t("CoverLetterText")}</MenuItem>
                         <MenuItem value="Unofficial Transcript">Unofficial Transcript</MenuItem>
                     </Select>
                     {documents.length > 0 && (
                         <Typography variant="subtitle1">
-                            Selected Documents: {documents.join(', ')}
+                            {t("SelDoc")}: {documents.join(', ')}
                         </Typography>
                     )}
                 </Grid>
