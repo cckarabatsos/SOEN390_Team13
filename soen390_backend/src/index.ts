@@ -14,7 +14,7 @@ import reports from "./routes/reportRoutes";
 import notification from "./routes/notificationRoutes";
 import skill from "./routes/skillRoutes";
 import application from "./routes/applicationRoutes";
-(global as any).XMLHttpRequest = require("xhr2");
+// (global as any).XMLHttpRequest = require("xhr2");
 dotenv.config();
 
 const app: Application = express();
