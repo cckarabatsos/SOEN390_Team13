@@ -25,6 +25,13 @@ export default function CompanyJobPostings(props) {
     setOpen(false);
   };
 
+  console.log("in Jobsposting components")
+
+  if(props.openPositions){
+    console.log(props.openPositions['postingids'])
+  }
+
+
   return (
     <div className="JobsContainer">
       <div className="JobHeaderWrap">
@@ -45,8 +52,8 @@ export default function CompanyJobPostings(props) {
                   <>
                     <IconButton aria-label="comment" color="info">
                       <InfoIcon />
-                    </IconButton>
-                    <IconButton aria-label="comment" color="error">
+                     <IconButton aria-label="comment" color="error">
+                   </IconButton>
                       <Delete />
                     </IconButton>
                   </>

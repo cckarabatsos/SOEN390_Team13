@@ -83,3 +83,5 @@ export async function UnfollowCompany(userId, companyId) {
     return false;
   }
 }
+
+

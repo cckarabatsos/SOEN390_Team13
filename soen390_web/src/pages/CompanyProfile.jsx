@@ -33,8 +33,7 @@ export default function CompanyProfilePage(props) {
 
     }
   }
-
-  
+ 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
@@ -48,14 +47,13 @@ export default function CompanyProfilePage(props) {
 
   }, [isFollowingState]);
 
-
   return (
     <div className="CompanyProfileContainer">
       <CompanyHeader name={companyData.name?companyData.name:name} picture={companyData.picture?companyData.picture:picture} userId={userData.userID} companyId={companyId} isFollowing={isFollowingState} setIsFollowing={setIsFollowingState} userData={userData}></CompanyHeader>
 
       <CompanyDescription description={description}></CompanyDescription>
 
-      <CompanyJobPostings></CompanyJobPostings>
+      <CompanyJobPostings openPositions={companyData.jobpostings}></CompanyJobPostings>
       
       <CompanyApplicationList></CompanyApplicationList>
     </div>
