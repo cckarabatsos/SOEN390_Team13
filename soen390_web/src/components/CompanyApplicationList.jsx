@@ -44,7 +44,7 @@ const rows = [
 export default function CompanyApplicationList(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const { t } = useTranslation();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -57,9 +57,9 @@ export default function CompanyApplicationList(props) {
   return (
     <div className="ApplicationContainer">
       <div className="ApplicationHeaderWrap">
-        <div className="application">Applications (3)</div>
+        <div className="application">{t("Candidatures")} (3)</div>
         <div className="editButtonApplication">
-          
+
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export default function CompanyApplicationList(props) {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow
-                data-testid="table-rows"
+                  data-testid="table-rows"
                 >
                   {columns.map((column) => (
                     <TableCell
@@ -105,7 +105,7 @@ export default function CompanyApplicationList(props) {
                         })}
                         <IconButton>
                           <InfoIcon color="info" />
-                      
+
                         </IconButton>
                       </TableRow>
                     );
