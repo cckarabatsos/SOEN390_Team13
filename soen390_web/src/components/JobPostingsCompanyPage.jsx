@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import "../styles/components/JobPostingComponent.css";
 import { Button } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
@@ -12,8 +12,8 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Slider from "@mui/material/Slider";
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import "react-datepicker/dist/react-datepicker.css";
 import { CreateJobPostingApi } from "../api/JobPostingApi";
 
@@ -22,13 +22,13 @@ function valuetext(value) {
 }
 
 function timeout(delay) {
-    return new Promise((res) => setTimeout(res, delay));
-  }
+  return new Promise((res) => setTimeout(res, delay));
+}
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-  
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function AddressForm(props) {
   const [documents, setDocuments] = React.useState([]);
   const { t } = useTranslation();
@@ -49,10 +49,8 @@ export default function AddressForm(props) {
   const [environment, setEnvironment] = useState(false);
   const [duration, setDuration] = useState("0 years");
   const [type, setType] = useState("");
-  const [alertType, setAlertType] = useState("error")
+  const [alertType, setAlertType] = useState("error");
   const [open, setOpen] = React.useState(false);
-
-  
 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
@@ -64,7 +62,7 @@ export default function AddressForm(props) {
   };
   const handleSalaryChange = (e) => {
     setSalary(e.target.value);
-//console.log(e.target.value);
+    //console.log(e.target.value);
   };
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -72,55 +70,94 @@ export default function AddressForm(props) {
   };
   const handleContractChange = (e) => {
     setContract(!contract);
-    console.log(contract);
+    if (contract) {
+      setType("contract");
+    }
+    //console.log(contract);
   };
   const handleEnvironmentChange = (e) => {
     setEnvironment(e.target.value);
-    console.log(e.target.value);
+    //console.log(e.target.value);
   };
   const handleDurationChange = (e) => {
     setDuration(valuetext(e.target.value));
   };
- 
+
   const handleTypeChange = (e) => {
     setType(e.target.value);
-   // console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handlePostJobOnClick = async () => {
-    let response=false
-    let formatedDate= date.toISOString().substring(0,date.toISOString().indexOf("T"))
-    
-    if(contract){
-        console.log("HJAHAHHAHAHAHAHAHHAHAHAHAH")
-        setDescription("none")
+    let response = false;
+    let formatedDate = date
+      .toISOString()
+      .substring(0, date.toISOString().indexOf("T"));
+
+    // console.log(
+    //   props.companyEmail +
+    //     "\n " +
+    //     location +
+    //     "\n " +
+    //     position +
+    //     " \n" +
+    //     salary +
+    //     "\n " +
+    //     props.companyName +
+    //     " \n" +
+    //     description +
+    //     " \n" +
+    //     environment +
+    //     "\n " +
+    //     contract +
+    //     " \n" +
+    //     duration +
+    //     "\n " +
+    //     type +
+    //     "\n " +
+    //     formatedDate
+    // );
+    if (
+      props.companyEmail &&
+      location != "" &&
+      position != "" &&
+      salary != "" &&
+      props.companyName &&
+      description != "" &&
+      type != "" &&
+      formatedDate != ""
+    ) {
+      response = await CreateJobPostingApi(
+        props.companyEmail,
+        location,
+        position,
+        salary,
+        props.companyName,
+        description,
+        environment,
+        contract,
+        duration,
+        type,
+        formatedDate
+      );
     }
-    console.log(props.companyEmail+"\n "+location+"\n "+position+" \n"+salary+"\n "+props.companyName+ " \n"+description+" \n"+environment+"\n "+contract+" \n"+duration+"\n "+type+"\n "+formatedDate)
-    if(props.companyEmail&&location!=""&&position!=""&&salary!=""&&props.companyName &&description!=""&&type!=""&&formatedDate!="") {
-        response = await CreateJobPostingApi(props.companyEmail,location,position,salary,props.companyName,description,environment,contract,duration,type,formatedDate)
+    if (response) {
+      setAlertType("success");
+      setOpen(true);
+      await timeout(1000);
+      props.setUpdateFlag(!props.updateFlag);
+    } else {
+      setAlertType("error");
+
+      setOpen(true);
+      await timeout(1000);
     }
 
-
-    //let response = await CreateJobPostingApi(props.companyEmail,location,position,salary,props.companyName,description,environment,contract,duration,type,formatedDate)
-    
-    if(response){
-
-        setAlertType("success")
-        setOpen(true)
-        await timeout(1000)
-        props.setUpdateFlag(!props.updateFlag)
-    }
-    else{
-        setAlertType("error")
-        setOpen(true)
-    }
-
-    props.closeDialog()
-
+    props.closeDialog();
   };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -129,8 +166,12 @@ export default function AddressForm(props) {
 
   return (
     <React.Fragment>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={alertType}
+          sx={{ width: "100%" }}
+        >
           This is a {alertType} message!
         </Alert>
       </Snackbar>
@@ -249,12 +290,12 @@ export default function AddressForm(props) {
             defaultValue={false}
           >
             <FormControlLabel
-              value={false}
+              value={true}
               control={<Radio />}
               label="Contract"
             />
             <FormControlLabel
-              value={true}
+              value={false}
               control={<Radio />}
               label="Permanent"
             />
@@ -265,7 +306,6 @@ export default function AddressForm(props) {
             <b>Duration (years)</b>
           </Typography>
           <Slider
-          disabled={contract}
             aria-label="Temperature"
             defaultValue={0}
             getAriaValueText={valuetext}
@@ -274,7 +314,7 @@ export default function AddressForm(props) {
             marks
             min={0}
             max={10}
-            onChange={handleDurationChange}  
+            onChange={handleDurationChange}
           />
         </Grid>
         <Grid item xs={12}>
@@ -293,12 +333,8 @@ export default function AddressForm(props) {
               control={<Radio />}
               label="In person"
             />
-            
-            <FormControlLabel
-              value={true}
-              control={<Radio />}
-              label="Remote"
-            />
+
+            <FormControlLabel value={true} control={<Radio />} label="Remote" />
           </RadioGroup>
         </Grid>
 

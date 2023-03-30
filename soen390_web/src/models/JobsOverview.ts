@@ -3,7 +3,7 @@ export default class JobsOverview {
   public location: String;
   public company: String;
   public contract: String;
-  public jobPosterID: number;
+  public jobPosterID: number|string;
   public salary: String;
   public description: String;
   public email: String;
@@ -16,7 +16,7 @@ export default class JobsOverview {
     location: String,
     company: String,
     contract: String,
-    jobPosterID: number,
+    jobPosterID: number |string,
     salary: string,
     description: String,
     email: String,

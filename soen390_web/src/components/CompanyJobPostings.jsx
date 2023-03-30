@@ -22,7 +22,7 @@ import Delete from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import AddressForm from "../components/JobPostingsCompanyPage";
 import JobsOverview from "../models/JobsOverview.ts";
-import { getJobPostingWithId } from "../api/JobPostingApi";
+import { getJobPostingWithId, removeJobPosting } from "../api/JobPostingApi";
 import CircularProgress from "@mui/material/CircularProgress";
 import JobPosingViewModal from "./CompanyJobPostingsViewModal";
 
@@ -50,6 +50,7 @@ export default function CompanyJobPostings(props) {
   const [viewDeadline, setViewDeadline] = useState("");
   const [viewResume, setViewResume] = useState("");
   const [viewCover, setViewCover] = useState("");
+  const [disableFlag, setDisableFlag] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -86,7 +87,6 @@ export default function CompanyJobPostings(props) {
     setJobsModalOpen(false);
   };
 
- 
   var positionsArray = [];
   const getPosting = async () => {
     //let aPosting= await getJobPostingWithId(postingId);
@@ -102,7 +102,7 @@ export default function CompanyJobPostings(props) {
             aPosting.location,
             aPosting.company,
             aPosting.contract,
-            i,
+            aPosting.postingID,
             aPosting.salary,
             aPosting.description,
             aPosting.email,
@@ -118,6 +118,19 @@ export default function CompanyJobPostings(props) {
     }
     setOpenPositions(positionsArray);
     setLoadingState(false);
+    setDisableFlag(false);
+  };
+
+  const handleRemoveJobPosting = async (postingId) => {
+    setDisableFlag(true);
+    if (window.confirm("Are you sure you want to remove this Job Posting?")) {
+      var response = await removeJobPosting(props.companyEmail, postingId);
+      if (response) {
+        props.setUpdateFlag(!props.updateFlag);
+      }
+    } else {
+      setDisableFlag(false);
+    }
   };
 
   const delayLoad = async () => {
@@ -130,6 +143,7 @@ export default function CompanyJobPostings(props) {
       getPosting();
     } else {
       delayLoad();
+      setDisableFlag(false);
     }
   }, [props.openPositions]);
 
@@ -169,13 +183,19 @@ export default function CompanyJobPostings(props) {
                               position.postingDeadline,
                               position.mandatoryCoverLetter,
                               position.mandataryResume
-                              
                             )
                           }
                         >
                           <InfoIcon />
                         </IconButton>
-                        <IconButton aria-label="comment" color="error">
+                        <IconButton
+                          aria-label="comment"
+                          color="error"
+                          onClick={() =>
+                            handleRemoveJobPosting(position.jobPosterID)
+                          }
+                          disabled={disableFlag}
+                        >
                           <Delete />
                         </IconButton>
                       </>
@@ -198,12 +218,13 @@ export default function CompanyJobPostings(props) {
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <AddressForm 
+          <AddressForm
             setUpdateFlag={props.setUpdateFlag}
             updateFlag={props.updateFlag}
             companyName={props.companyName}
             companyEmail={props.companyEmail}
-            closeDialog={handleClose}/>
+            closeDialog={handleClose}
+          />
           <Button onClick={handleClose}>{t("CancelText")}</Button>
         </DialogContent>
       </Dialog>
@@ -220,7 +241,6 @@ export default function CompanyJobPostings(props) {
             viewPostingDeadline={viewDeadline}
             viewMandatoryResume={viewResume}
             viewMandatoryCoverLetter={viewCover}
-          
           />
           <Button onClick={handleCloseJobModal}>{t("CancelText")}</Button>
         </DialogContent>

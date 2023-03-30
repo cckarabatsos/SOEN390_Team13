@@ -148,3 +148,22 @@ export async function CreateJobPostingApi(companyEmail,loc,pos,sal,companyName,d
       return false
   }
 }
+
+
+export async function removeJobPosting(companyEmail,jobPostingId) {
+  try {
+    
+    const response = await axios
+          .post(api.BACKEND_API + "/jobposting/remove/"+companyEmail, {
+              docID: jobPostingId})
+    if (response.status === 200) {
+      // wait for the data to
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false; 
+  }
+}
