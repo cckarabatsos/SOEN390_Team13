@@ -51,6 +51,7 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID }) => {
                 });
             console.log(response);
             if (response === 200) {
+                window.location.reload();
                 return true;
             } else {
                 return false;
