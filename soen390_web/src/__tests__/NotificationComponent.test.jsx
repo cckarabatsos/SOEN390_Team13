@@ -1,4 +1,7 @@
+// import dependencies
 import React from 'react';
+
+// import react-testing methods
 import { render, fireEvent } from "@testing-library/react";
 import NotificationComponent from '../components/NotificationComponent';
 
@@ -11,7 +14,8 @@ describe('NotificationComponent', () => {
       notificationId: 123,
       handleDelete: jest.fn(),
     };
-  
+
+    //tests if notification category and description are rendered properly
     it('should render the notification category and description', () => {
       const { getByText } = render(<NotificationComponent {...props} />);
       const notificationCategoryElement = getByText(props.notificationCategory);
@@ -20,6 +24,7 @@ describe('NotificationComponent', () => {
       expect(notificationDescriptionElement).toBeInTheDocument();
     });
   
+    //checks if it renders the users avatar
     it('should render the user avatar', () => {
       const { getByAltText } = render(<NotificationComponent {...props} />);
       const userAvatarElement = getByAltText(props.userName);
@@ -27,6 +32,7 @@ describe('NotificationComponent', () => {
       expect(userAvatarElement).toHaveAttribute('src', props.picture);
     });
 
+    //checks if it calls handleDelete when the button is clicked
     it("calls handleDelete function when delete button is clicked", () => {
         const handleDeleteMock = jest.fn();
         const notificationId = "123";
