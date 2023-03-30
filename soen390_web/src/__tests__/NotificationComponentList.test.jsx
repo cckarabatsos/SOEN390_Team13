@@ -21,12 +21,14 @@ jest.mock('../api/NotificationsApi', () => ({
     removeNotification: jest.fn().mockResolvedValue(true),
   }));
 
+  
   describe('NotificationComponentList', () => {
     afterEach(() => {
       jest.clearAllMocks();
     });
   
-    it('removes a notification when the "Delete" button is clicked', async () => {
+    //checks if notification is removed
+    it('removes a notification when clicked', async () => {
         GetNotification.mockResolvedValueOnce([
           {
             notificationID: 1,
@@ -46,10 +48,12 @@ jest.mock('../api/NotificationsApi', () => ({
           expect(GetNotification).toHaveBeenCalledTimes(2);
         });
       });
-
     });
 
 describe('NotificationComponentList', () => {
+
+    //checks if it renders the notificationcomponentlist with notifications and 
+    // function handleremovenotification
   it('renders the NotificationComponentList with notifications and handleRemoveNotification', async () => {
     const notifications = [
       {
@@ -82,16 +86,19 @@ describe('NotificationComponentList', () => {
 
 describe('NotificationComponentList', () => {
 
+    //checks if it displays a list of notifications
     it('displays a list of notifications', async () => {
         render(<NotificationComponentList />);
     });
     
+    //checks if it shows no new notifications when there are no new notifs
     it('should display "No New Notification!" when there are no notifications', () => {
         render(<NotificationComponentList />);
         expect(screen.getByText('No New Notification!')).toBeInTheDocument();
     });
 
-    it('should remove a notification when the "Delete" button is clicked', () => {
+    //checks if notif is removed 
+    it('should remove a notification when called upon', () => {
         jest.spyOn(JSON, 'parse').mockImplementation(() => ({ userId: 1 }));
         render(<NotificationComponentList />);
     });  
