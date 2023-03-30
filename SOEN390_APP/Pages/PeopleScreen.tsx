@@ -55,7 +55,7 @@ const PeopleScreen = ({route}:{route:any}) => {
 
   const handleGetUser = async () => {
     setRefresh(false);
-    const user = await GetUsersAPI(search)
+    const user = await GetUsersAPI(searchTerm)
     const newObjectsArray = user.map(buildObject);
     setData(newObjectsArray);
   
@@ -115,8 +115,9 @@ const PeopleScreen = ({route}:{route:any}) => {
       }, [refresh]);
 
   useEffect(() => {
-    handleSearch();
-  }, [searchTerm, allUsers]);
+    //handleSearch();
+    handleGetUser();
+  }, [searchTerm]);
 
   function isUserInContactsList(contactsList: string[],pendingInvitationsList: string[], userEmail: string, recieverEmail:string) {
     if (contactsList.includes(userEmail)) {
@@ -298,15 +299,13 @@ return(
           value={searchTerm}
           onChangeText={setSearchTerm}
         />
-        <TouchableOpacity style={styles.searchButton} onPress={()=>handleSearchUser(searchTerm)}>
-          <Text style={styles.searchButtonText}>Search</Text>
-        </TouchableOpacity>
+
       </View>
       <View style={styles.filterContainer}>
 </View>
     {modalRender(user)}
       <FlatList
-        data={filteredUsers}
+        data={allUsers}
         keyExtractor={item => item.id.toString()}
         renderItem={renderItem}
       />
