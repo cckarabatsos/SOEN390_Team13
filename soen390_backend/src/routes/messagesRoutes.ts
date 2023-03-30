@@ -130,6 +130,16 @@ messages.get("/sendMessage", async (req, res) => {
                     "Please provide a valid sender Id address, all Ids in the conversation, and a non-null message",
             });
         }
+        if (type === "document") {
+            const regex =
+                /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/soen-390-/;
+            if (!regex.test(message)) {
+                return res.status(400).json({
+                    message:
+                        "Invalid message format for document type. Please provide a valid URL starting with 'https://firebasestorage.googleapis.com/v0/b/soen-390-'",
+                });
+            }
+        }
 
         const messageConfirmation = await SendNewMessage(
             senderId,
