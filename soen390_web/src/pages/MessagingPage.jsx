@@ -29,7 +29,7 @@ import { findUserById } from "../api/UserProfileApi";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ReportModal from "../components/ReportModal";
-import AddDocumentsDialog from "../components/AddDocumentsDialog";
+import AddChatDocumentsDialog from "../components/AddChatDocumentDialog";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -186,11 +186,7 @@ function Messages(props) {
         await sendMessage(userId, props.userData.userID, message);
         setMessage("");
     };
-    const handleSendMessageDocument = async (event) => {
-        event.preventDefault();
-        await sendMessageDocument(userId, props.userData.userID, message);
-        setMessage("");
-    };
+
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -316,17 +312,11 @@ function Messages(props) {
                                 }}
                                 style={{ display: "flex", width: "100%" }}
                             >
-                                {/* <AddDocumentsDialog setFileData={setFileData} />
-                                <Button
-                                    className="button"
-                                    variant="contained"
-                                    style={{
-                                        borderRadius: 27,
-                                        backgroundColor: "#6C63FF",
-                                        width: 135,
-                                        padding: 10,
-                                    }}
-                                ></Button> */}
+                                <AddChatDocumentsDialog
+                                    reqUserID={userId}
+                                    reqSenderID={props.userData.userID}
+                                />
+
                                 <TextField
                                     id="message-input"
                                     label="Type a message"
@@ -349,7 +339,7 @@ function Messages(props) {
                                 </Button>
                             </form>
                         </Box>
-                        <Box className={classes.refreshButtonContainer}>
+                        {/* <Box className={classes.refreshButtonContainer}>
                             <Button
                                 variant="contained"
                                 color="default"
@@ -362,7 +352,7 @@ function Messages(props) {
                             >
                                 Refresh Conversations
                             </Button>
-                        </Box>
+                        </Box> */}
                     </Box>
                 ) : (
                     <Typography variant="subtitle1">
