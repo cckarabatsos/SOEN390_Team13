@@ -50,16 +50,16 @@ describe('NotificationComponent', () => {
   });
 
 
-
-
   describe('userName', () => {
+
+    //checks if username defaults to error when it is false
     it('should default to "Error" when it is falsy', () => {
       const props = {
         picture: 'https://example.com/user.jpg',
         notificationCategory: 'New notif',
         notificationDescription: 'Notif description',
 
-        // Set userName to falsy value
+        //sets the username to falsy value
         userName: null, 
         notificationId: 1234,
         handleDelete: jest.fn(),
