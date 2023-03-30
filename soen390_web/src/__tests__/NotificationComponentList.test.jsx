@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import NotificationComponentList from '../components/NotificationComponentList';
@@ -52,6 +53,7 @@ jest.mock('../api/NotificationsApi', () => ({
         });
   });
 });
+
 
 
 describe('NotificationComponentList', () => {
