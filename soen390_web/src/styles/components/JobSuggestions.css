@@ -1,0 +1,79 @@
+.job-suggestions-container {
+  position: absolute;
+  top: 15%;
+  right: 4%;
+  background-color: rgba(217, 217, 217, 0.7);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  width: 13%;
+  text-align: left;
+  max-height: 70%;
+  overflow-y: auto;
+  border-radius: 15px;
+ 
+  
+  
+}
+
+.job-suggestions-container h2 {
+  text-align: center;
+}
+
+.job-suggestions-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ 
+}
+
+.job {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.job .logoContainer {
+  margin-right: 10px;
+  height: 50px; /* Add a fixed height */
+  display: flex;
+  align-items: center;
+}
+
+.job .logoCompany {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.job p {
+  margin: 0;
+  text-align: left;
+}
+
+.job p:first-child {
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  margin-top: 27px;
+}
+
+.job p.location {
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+.show-more-button {
+  background-color: #f5f5f5;
+  border: none;
+  color: black;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px auto 0;
+  width: 250px;
+  border-radius: 15px;
+}
+
