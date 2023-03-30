@@ -2,7 +2,11 @@
  * Routes for Award entity of the database
  */
 import express, { Request, Response } from "express";
-import { deleteAward, createAward, getAwards } from "../controllers/awardControllers";
+import {
+    deleteAward,
+    createAward,
+    getAwards,
+} from "../controllers/awardControllers";
 import { Award } from "../models/Award";
 const award = express.Router();
 award.use(express.json());
@@ -16,7 +20,12 @@ award.post("/:ownerID", async (req: Request, res: Response) => {
     let description: string = req.body.description;
     let timestamp: string = req.body.timestamp;
     try {
-        const award: Award = await createAward(name, description, timestamp, ownerID);
+        const award: Award = await createAward(
+            name,
+            description,
+            timestamp,
+            ownerID
+        );
         const status: number = award[0];
         if (status == 200) {
             res.status(200);
@@ -48,7 +57,7 @@ award.post("/remove/:docID", async (req: Request, res: Response) => {
             res.status(200);
             res.json({
                 Response: "Success",
-                award
+                award,
             });
         } else if (status == 404) {
             res.sendStatus(404);
@@ -78,5 +87,4 @@ award.get("/get/:userID", async (req: Request, res: Response) => {
         res.json({ errType: err.name, errMsg: err.message });
     }
 });
-
-module.exports = award;
+export default award;
