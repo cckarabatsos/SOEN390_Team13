@@ -1,5 +1,7 @@
-
+// import dependencies
 import React from 'react';
+
+// import react-testing methods
 import { render, screen, waitFor } from '@testing-library/react';
 import NotificationComponentList from '../components/NotificationComponentList';
 import { GetNotification, removeNotification } from '../api/NotificationsApi';
