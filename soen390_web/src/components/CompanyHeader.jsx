@@ -9,7 +9,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 export default function CompanyHeader(props) {
   const { t } = useTranslation();
   const name = props.name;
-  const picture= props.picture;
+  const picture = props.picture;
 
   return (
     <div>
@@ -21,7 +21,7 @@ export default function CompanyHeader(props) {
           <div className="editButton">
             <Button variant="contained" color="white" size="medium">
               <EditIcon></EditIcon>
-              Edit
+              {t("Edit")}
             </Button>
           </div>
         </div>
@@ -33,12 +33,12 @@ export default function CompanyHeader(props) {
             <div className="field">Software</div>
             <div className="location">Montreal</div>
 
-           
+
           </div>
           <div className="editButton">
             <Button color="black" size="large">
-              <PersonAddAlt1Icon/>
-              
+              <PersonAddAlt1Icon />
+
             </Button>
           </div>
         </div>

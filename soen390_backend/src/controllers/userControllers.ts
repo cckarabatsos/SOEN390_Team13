@@ -25,7 +25,7 @@ import {
     user_filter_schema,
     user_schema,
 } from "../models/User";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 import { Request } from "express";
 import jwt from "jsonwebtoken";
 const { sign } = jwt;

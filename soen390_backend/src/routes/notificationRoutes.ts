@@ -4,7 +4,7 @@
 import express, { Request, Response } from "express";
 import {
     deleteNotification,
-    getNotifications
+    getNotifications,
 } from "../controllers/notificationControllers";
 import { Notification } from "../models/Notification";
 const notification = express.Router();
@@ -18,9 +18,7 @@ notification.get(
     async (req: Request, res: Response) => {
         let userID = req.params.userID;
         try {
-            const notification: Notification = await getNotifications(
-                userID
-            );
+            const notification: Notification = await getNotifications(userID);
             const status: number = notification[0];
             if (status == 200) {
                 res.status(200);
@@ -42,13 +40,15 @@ notification.get(
 notification.post("/remove/:docID", async (req: Request, res: Response) => {
     let notificationID = req.params.docID;
     try {
-        const notification: Notification = await deleteNotification(notificationID);
+        const notification: Notification = await deleteNotification(
+            notificationID
+        );
         const status: number = notification[0];
         if (status == 200) {
             res.status(200);
             res.json({
                 Response: "Success",
-                notification
+                notification,
             });
         } else if (status == 404) {
             res.sendStatus(404);
@@ -59,4 +59,4 @@ notification.post("/remove/:docID", async (req: Request, res: Response) => {
     }
 });
 
-module.exports = notification;
+export default notification;

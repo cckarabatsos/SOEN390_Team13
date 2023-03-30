@@ -10,7 +10,7 @@ import { CompanyApi } from "../api/CompanyApi";
 
 
 export function CompanySearchBar({ setCompanies }) {
- 
+
   // initialize state vars, handle text input change
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
@@ -30,7 +30,7 @@ export function CompanySearchBar({ setCompanies }) {
   //handle job search
   const handleSearch = async () => {
     console.log("text: " + text + " category: " + category);
-    var companies = await CompanyApi(category,text,0,0);
+    var companies = await CompanyApi(category, text, 0, 0);
 
     setCompanies(companies);
   };
@@ -53,7 +53,7 @@ export function CompanySearchBar({ setCompanies }) {
           onClick={handleSearch}
           style={{
             borderRadius: 27,
-            display: "inline-block", width: "125px", 
+            display: "inline-block", width: "125px",
             border: "2px solid #006AF9",
             backgroundColor: "white",
             textTransform: "none",
@@ -63,15 +63,15 @@ export function CompanySearchBar({ setCompanies }) {
         >
           {t("SearchText")}
         </Button>
-        
+
         <select
           name="category"
           id="category"
           className="buttonfilter"
           style={{
             borderRadius: 27,
-            display: "inline-block", 
-            width: "125px", 
+            display: "inline-block",
+            width: "125px",
             height: "43px",
             marginRight: "140px",
             border: "2px solid #006AF9",
@@ -80,9 +80,9 @@ export function CompanySearchBar({ setCompanies }) {
           value={category}
           onChange={handleChange}
         >
-          
-          <option value="name">name</option>
-          <option value="email">email</option>
+
+          <option value="name">{t("NameText")}</option>
+          <option value="email">{t("ByEmailText")}</option>
 
           {/* <option value="remote">{t("RemoteText")}</option> */}
         </select>
