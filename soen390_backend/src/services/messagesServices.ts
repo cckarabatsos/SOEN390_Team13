@@ -438,5 +438,5 @@ export const findChatWithID = async (chatID: string) => {
     return snapShot.data();
 };
 export function updateChat(newChat: Chat, id: string) {
-    db.collection("chat").doc(id).update(newChat);
+    db.collection("chats").doc(id).update(newChat);
 }
