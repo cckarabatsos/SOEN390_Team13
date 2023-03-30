@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CompanySearchBar } from "../components/CompanySearchBar";
-import "../styles/components/CompanySearchPage.css";
-import Company from "../models/Company.ts";
 import CompanySearchComponent from "../components/CompanySearchComponent";
-
-import { useNavigate } from "react-router-dom";
+import Company from "../models/Company.ts";
+import "../styles/components/CompanySearchPage.css";
 
 export default function CompanySearch() {
   const { t } = useTranslation();
@@ -33,12 +31,12 @@ export default function CompanySearch() {
 
   return (
     <div>
-      <div data-testid="company-posting">
-        <div className="companySearchingText">
-          <div>{t("FindCompanyLabel")}</div>
+      <div data-testid="job-posting">
+        <div className="jobSearchingText">
+          <p>{t("FindCompanyLabel")}</p>
         </div>
-        <div className="desiredCompanyText">
-          <div>{t("DesiredCompany")}</div>
+        <div className="desiredJobText">
+          <p>{t("DesiredCompany")}</p>
         </div>
         <CompanySearchBar setCompanies={setCompanies} />
 

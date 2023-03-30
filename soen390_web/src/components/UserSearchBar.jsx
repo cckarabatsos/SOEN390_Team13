@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import "../styles/components/CompanySearchBar.css";
 import { Button } from "@material-ui/core";
-import { JobSearch } from "../api/JobPostingApi";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { CompanyApi } from "../api/CompanyApi";
-import { searchInfo, searchUsers } from "../api/userNetworkingApi";
+import { searchUsers } from "../api/userNetworkingApi";
+import "../styles/components/CompanySearchBar.css";
 
 function UserSearchBar({ setUsers }) {
   // initialize state vars, handle text input change
@@ -35,7 +32,7 @@ function UserSearchBar({ setUsers }) {
 
   // render job search bar, search button, dropdown filter to select category
   return (
-    <div className="input-box-company">
+    <div className="input-box">
       <i className="uil uil-search"></i>
       <div>
         <input
@@ -53,7 +50,7 @@ function UserSearchBar({ setUsers }) {
             borderRadius: 27,
             display: "inline-block",
             width: "125px",
-            border: "2px solid #006AF9",
+            border: "2px solid #8f8aff",
             backgroundColor: "white",
             textTransform: "none",
             fontSize: "15px",
@@ -73,7 +70,7 @@ function UserSearchBar({ setUsers }) {
             width: "125px",
             height: "43px",
             marginRight: "140px",
-            border: "2px solid #006AF9",
+            border: "2px solid #8f8aff",
             fontSize: "15px",
           }}
           value={category}
