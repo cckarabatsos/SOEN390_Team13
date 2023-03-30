@@ -1,7 +1,7 @@
 import axios from "axios";
 import api from "../config.json";
 
-export async function searchInfo(reqType, reqTerm) {
+export async function searchUsers(reqType, reqTerm) {
   try {
     const response = await axios
       .get(api.BACKEND_API + "/user/api/search", {
@@ -13,7 +13,7 @@ export async function searchInfo(reqType, reqTerm) {
       .then((res) => {
         return res;
       });
-    return response;
+    return response.data[1];
   } catch (error) {
     console.error("error from api call", error);
     throw new Error("Error searching information");

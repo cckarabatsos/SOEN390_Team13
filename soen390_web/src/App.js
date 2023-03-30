@@ -19,7 +19,7 @@ import MessagingPage from "./pages/MessagingPage";
 import NewsFeedPage from "./pages/NewsFeedPage";
 import Signup from "./pages/Signup";
 import UserConnection from "./pages/UserConnection";
-import UserNetworking from "./pages/UserNetworking";
+import UserSearch from "./pages/UserSearch";
 import UserProfile from "./pages/UserProfile";
 import ViewUserProfile from "./pages/ViewUserProfile";
 import SearchPage from "./pages/SearchPage";
@@ -74,8 +74,11 @@ const AppWrapper = () => {
               />
 
               <Route path="/Contacts" element={<Contacts />} />
-              <Route path="/JobApplication" element={<JobApplication userData={userData} />} />
-              <Route path="/UserNetworking" element={<UserNetworking />} />
+              <Route
+                path="/JobApplication"
+                element={<JobApplication userData={userData} />}
+              />
+              <Route path="/UserNetworking" element={<UserSearch />} />
               <Route path="/UserConnection" element={<UserConnection />} />
               <Route
                 path="/Messages/:userId"

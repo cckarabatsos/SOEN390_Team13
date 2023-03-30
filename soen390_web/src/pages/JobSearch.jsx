@@ -5,9 +5,8 @@ import JobSearchBar from "../components/JobSearchBar";
 import Modal from "../components/Modal";
 import JobsOverview from "../models/JobsOverview.ts";
 
-const fireBaseTime = (seconds, nanoseconds) => new Date(
- seconds * 1000 + nanoseconds / 1000000,
-);
+const fireBaseTime = (seconds, nanoseconds) =>
+  new Date(seconds * 1000 + nanoseconds / 1000000);
 
 export default function JobSearch() {
   // define state variables with useState hook
@@ -28,7 +27,6 @@ export default function JobSearch() {
 
   // useEffect to create jobDisplay array whenever jobs array changes
   useEffect(() => {
-    console.log(jobs);
     var jobArray = [];
 
     for (var i = 0; i < jobs.length; i++) {
@@ -44,11 +42,13 @@ export default function JobSearch() {
           jobs[i].email,
           jobs[i].mandatoryResume,
           jobs[i].mandatoryCoverLetter,
-          (fireBaseTime(jobs[i].postingDeadline.seconds, jobs[i].postingDeadline.nanoseconds)).toString()
+          fireBaseTime(
+            jobs[i].postingDeadline.seconds,
+            jobs[i].postingDeadline.nanoseconds
+          ).toString()
         )
       );
     }
-
 
     setJobDisplay(jobArray);
   }, [jobs]);
@@ -77,7 +77,9 @@ export default function JobSearch() {
             viewContract={jobDisplay[jobPosterID].contract}
             viewSalary={jobDisplay[jobPosterID].salary}
             viewMandatoryResume={jobDisplay[jobPosterID].mandatoryResume}
-            viewMandatoryCoverLetter={jobDisplay[jobPosterID].mandatoryCoverLetter}
+            viewMandatoryCoverLetter={
+              jobDisplay[jobPosterID].mandatoryCoverLetter
+            }
             viewPostingDeadline={jobDisplay[jobPosterID].postingDeadline}
           />
         )}
