@@ -8,10 +8,10 @@ const JobSuggestions = (userID, props) => {
     const [jobSuggestions, setJobSuggestions] = useState([]);
     const { t } = useTranslation();
 
-    const handleShowMore = () => {
-        setShowMore(!showMore);
-    };
-
+    /* const handleShowMore = () => {
+         setShowMore(!showMore);
+     };
+ */
     useEffect(() => {
         const fetchJobSuggestions = async () => {
             const data = JSON.parse(localStorage.getItem("isAuth"));

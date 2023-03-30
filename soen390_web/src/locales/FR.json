@@ -119,6 +119,8 @@
     "OpenPositions" : "Postes Ouverts",
     "RemoveContact" :"Supprimer Contact",
     "ReqDoc" : "Documents Requis",
-    "SelDoc" : "Documents Selectionnés"
+    "SelDoc" : "Documents Selectionnés",
+    "JobSuggestions" : "Suggestions d'emplois pour vous",
+    "AddSkills" : "Ajouter des compétences afin qu'on puisse etre en mesure de donner des suggestions"
 
 }
