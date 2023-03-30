@@ -15,8 +15,8 @@ export async function searchInfo(reqType, reqTerm) {
       });
     return response;
   } catch (error) {
-    console.error("error from api call");
-    return false;
+    console.error("error from api call", error);
+    throw new Error("Error searching information");
   }
 }
 export async function sendInvite(userEmail, targetEmail) {

@@ -74,7 +74,7 @@ const AppWrapper = () => {
               />
 
               <Route path="/Contacts" element={<Contacts />} />
-              <Route path="/JobApplication" element={<JobApplication />} />
+              <Route path="/JobApplication" element={<JobApplication userData={userData} />} />
               <Route path="/UserNetworking" element={<UserNetworking />} />
               <Route path="/UserConnection" element={<UserConnection />} />
               <Route

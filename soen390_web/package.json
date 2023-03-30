@@ -20,6 +20,7 @@
     "firebase": "^9.15.0",
     "gapi-script": "^1.2.0",
     "i18next": "^22.4.10",
+    "msw": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-login": "^5.2.2",

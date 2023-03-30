@@ -39,6 +39,22 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
     let attachCoverLetter: boolean = req.body.attachCoverLetter;
     let experience: string[] = req.body.experience;
     try {
+            console.log(email);
+            console.log(firstName);
+            console.log(lastName);
+            console.log(phone);
+            console.log(address);            
+            console.log(city);
+            console.log(area);
+            console.log(province);
+            console.log(school);
+            console.log("fdjf",attachResume);
+            console.log(schoolCountry);
+            console.log(schoolDegree);      
+            console.log(schoolEnd);
+            console.log(schoolMajor);     
+            console.log(attachCoverLetter);
+            console.log(experience);
         const application: Application = await createApplication(
             email,
             firstName,
