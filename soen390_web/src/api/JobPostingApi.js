@@ -136,7 +136,8 @@ export async function CreateJobPostingApi(companyEmail,loc,pos,sal,companyName,d
               type: type,
               postingDeadline: deadline
           })
-      if( response.status==200){
+      if( response.status==200 && response.data){
+        console.log(response.data);
         return true
       }
       else{

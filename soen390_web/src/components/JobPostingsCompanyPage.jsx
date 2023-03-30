@@ -15,10 +15,15 @@ import Slider from "@mui/material/Slider";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import "react-datepicker/dist/react-datepicker.css";
+import { CreateJobPostingApi } from "../api/JobPostingApi";
 
 function valuetext(value) {
   return `${value} years`;
 }
+
+function timeout(delay) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -44,6 +49,10 @@ export default function AddressForm(props) {
   const [environment, setEnvironment] = useState(false);
   const [duration, setDuration] = useState("0 years");
   const [type, setType] = useState("");
+  const [alertType, setAlertType] = useState("error")
+  const [open, setOpen] = React.useState(false);
+
+  
 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
@@ -62,7 +71,7 @@ export default function AddressForm(props) {
     //console.log(e.target.value);
   };
   const handleContractChange = (e) => {
-    setContract(e.target.value);
+    setContract(!contract);
     console.log(contract);
   };
   const handleEnvironmentChange = (e) => {
@@ -78,16 +87,37 @@ export default function AddressForm(props) {
    // console.log(e.target.value);
   };
 
-  const handlePostJobOnClick = () => {
-    setOpen(true);
-
+  const handlePostJobOnClick = async () => {
+    let response=false
+    let formatedDate= date.toISOString().substring(0,date.toISOString().indexOf("T"))
     
+    if(contract){
+        console.log("HJAHAHHAHAHAHAHAHHAHAHAHAH")
+        setDescription("none")
+    }
+    console.log(props.companyEmail+"\n "+location+"\n "+position+" \n"+salary+"\n "+props.companyName+ " \n"+description+" \n"+environment+"\n "+contract+" \n"+duration+"\n "+type+"\n "+formatedDate)
+    if(props.companyEmail&&location!=""&&position!=""&&salary!=""&&props.companyName &&description!=""&&type!=""&&formatedDate!="") {
+        response = await CreateJobPostingApi(props.companyEmail,location,position,salary,props.companyName,description,environment,contract,duration,type,formatedDate)
+    }
+
+
+    //let response = await CreateJobPostingApi(props.companyEmail,location,position,salary,props.companyName,description,environment,contract,duration,type,formatedDate)
+    
+    if(response){
+
+        setAlertType("success")
+        setOpen(true)
+        await timeout(1000)
+        props.setUpdateFlag(!props.updateFlag)
+    }
+    else{
+        setAlertType("error")
+        setOpen(true)
+    }
+
+    props.closeDialog()
+
   };
-
-
-  const [open, setOpen] = React.useState(false);
-
-  
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -100,8 +130,8 @@ export default function AddressForm(props) {
   return (
     <React.Fragment>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          This is a success message!
+        <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
+          This is a {alertType} message!
         </Alert>
       </Snackbar>
       <Typography variant="h6" gutterBottom>
@@ -211,18 +241,20 @@ export default function AddressForm(props) {
             <b>Contract Status</b>
           </Typography>
           <RadioGroup
+            required
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
             onChange={handleContractChange}
+            defaultValue={false}
           >
             <FormControlLabel
-              value={true}
+              value={false}
               control={<Radio />}
               label="Contract"
             />
             <FormControlLabel
-              value={false}
+              value={true}
               control={<Radio />}
               label="Permanent"
             />
@@ -233,6 +265,7 @@ export default function AddressForm(props) {
             <b>Duration (years)</b>
           </Typography>
           <Slider
+          disabled={contract}
             aria-label="Temperature"
             defaultValue={0}
             getAriaValueText={valuetext}
@@ -249,6 +282,7 @@ export default function AddressForm(props) {
             <b>Work Environment</b>
           </Typography>
           <RadioGroup
+            required
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"

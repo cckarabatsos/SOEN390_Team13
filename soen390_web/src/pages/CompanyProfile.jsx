@@ -19,6 +19,9 @@ export default function CompanyProfilePage(props) {
 
   const [isFollowingState, setIsFollowingState]=useState(isFollowing)
   const [jobToDisplay, setJobToDisplay] = useState({})
+  const[updateState, setUpdateState] = useState(false)
+
+
 
   const getCompanyProfile= async (companyId,userId)=>{
     let company = await findUserById(companyId)
@@ -46,19 +49,21 @@ export default function CompanyProfilePage(props) {
     } else {
       setUserData(false);
     }
+
+    console.log("about to re update company in company profile")
     getCompanyProfile(companyId,{})
 
-  }, [isFollowingState,companyId]);
+  }, [isFollowingState,companyId,updateState]);
 
-  //console.log(companyId)
-
+  console.log("before re-render company in company profile")
+  console.log(companyData.jobpostings)
   return (
     <div className="CompanyProfileContainer">
       <CompanyHeader name={companyData.name?companyData.name:name} picture={companyData.picture?companyData.picture:picture} userId={userData.userID} companyId={companyId} isFollowing={isFollowingState} setIsFollowing={setIsFollowingState} userData={userData}></CompanyHeader>
 
       <CompanyDescription description={description}></CompanyDescription>
 
-      <CompanyJobPostings openPositions={companyData.jobpostings}></CompanyJobPostings>
+      <CompanyJobPostings openPositions={companyData.jobpostings} companyName={companyData.name} companyEmail={companyData.email} setUpdateFlag={setUpdateState} updateFlag={updateState} ></CompanyJobPostings>
       
       <CompanyApplicationList></CompanyApplicationList>
     </div>

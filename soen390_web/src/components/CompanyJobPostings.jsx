@@ -86,7 +86,7 @@ export default function CompanyJobPostings(props) {
     setJobsModalOpen(false);
   };
 
-  console.log("in Jobsposting components");
+ 
   var positionsArray = [];
   const getPosting = async () => {
     //let aPosting= await getJobPostingWithId(postingId);
@@ -96,7 +96,6 @@ export default function CompanyJobPostings(props) {
       );
 
       if (aPosting) {
-        console.log(aPosting);
         positionsArray.push(
           new JobsOverview(
             aPosting.position,
@@ -118,7 +117,6 @@ export default function CompanyJobPostings(props) {
       }
     }
     setOpenPositions(positionsArray);
-    console.log(positionsArray);
     setLoadingState(false);
   };
 
@@ -200,7 +198,12 @@ export default function CompanyJobPostings(props) {
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <AddressForm />
+          <AddressForm 
+            setUpdateFlag={props.setUpdateFlag}
+            updateFlag={props.updateFlag}
+            companyName={props.companyName}
+            companyEmail={props.companyEmail}
+            closeDialog={handleClose}/>
           <Button onClick={handleClose}>{t("CancelText")}</Button>
         </DialogContent>
       </Dialog>
@@ -217,6 +220,7 @@ export default function CompanyJobPostings(props) {
             viewPostingDeadline={viewDeadline}
             viewMandatoryResume={viewResume}
             viewMandatoryCoverLetter={viewCover}
+          
           />
           <Button onClick={handleCloseJobModal}>{t("CancelText")}</Button>
         </DialogContent>
