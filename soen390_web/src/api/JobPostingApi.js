@@ -120,3 +120,30 @@ export async function getJobPostingWithId(postingId) {
     return 0;
   }
 }
+
+export async function CreateJobPostingApi(companyEmail,loc,pos,sal,companyName,desc,remote,contract,duration,type,deadline) {
+  try {
+      const response = await axios
+          .post(api.BACKEND_API + "/user/api/posting/"+companyEmail, {
+              location: loc,
+              position: pos,
+              salary:sal,
+              company: companyName,
+              description: desc,
+              remote:remote,
+              contract: contract,
+              duration: duration,
+              type: type,
+              postingDeadline: deadline
+          })
+      if( response.status==200){
+        return true
+      }
+      else{
+        return false
+      }
+          
+  } catch (err) {
+      return false
+  }
+}
