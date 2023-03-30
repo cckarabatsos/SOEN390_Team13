@@ -1,12 +1,10 @@
-import { Grid, Tab, Box, Tabs, Typography } from "@material-ui/core";
-import { color, fontSize } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import NavBar from "../components/NavBar";
-import "../styles/pages/SearchPage.css";
-import JobSearch from "./JobSearch";
-import UserNetworking from "./UserNetworking";
-import CompanySearch from "./CompanySearch";
+import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import "../styles/pages/SearchPage.css";
+import CompanySearch from "./CompanySearch";
+import JobSearch from "./JobSearch";
+import UserNetworking from "./UserSearch";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,10 +44,10 @@ export default function SearchPage() {
     setValue(newValue);
     switch (newValue) {
       case 0:
-        setColor("#006AF9");
+        setColor("#8f8aff");
         break;
       case 1:
-        setColor("#5319FB");
+        setColor("#8f8aff");
         break;
       case 2:
         setColor("#8f8aff");
@@ -58,55 +56,48 @@ export default function SearchPage() {
   };
 
   return (
-    <div style={{minHeight: "100vh"}}>
-
-<div className="tabsContainer">
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, color: color }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            ria-label="basic tabs example"
-            centered
-            TabIndicatorProps={{
-              style: {
-                backgroundColor: color,
-                height: 4,
-              },
-            }}
-          >
-            <Tab
-              label={<span className="tabsLabel">{t("CompanyTab")}</span>}
-              {...a11yProps(0)}
-            />
-            <Tab
-              label={<span className="tabsLabel">{t("UserTab")}</span>}
-              {...a11yProps(1)}
-            />
-            <Tab
-              label={<span className="tabsLabel">{t("JobTab")}</span>}
-              {...a11yProps(2)}
-            />
-          </Tabs>
+    <div style={{ minHeight: "100vh" }}>
+      <div className="tabsContainer">
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ borderBottom: 1, color: color }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              ria-label="basic tabs example"
+              centered
+              TabIndicatorProps={{
+                style: {
+                  backgroundColor: color,
+                  height: 4,
+                },
+              }}
+            >
+              <Tab
+                label={<span className="tabsLabel">{t("CompanyTab")}</span>}
+                {...a11yProps(0)}
+              />
+              <Tab
+                label={<span className="tabsLabel">{t("UserTab")}</span>}
+                {...a11yProps(1)}
+              />
+              <Tab
+                label={<span className="tabsLabel">{t("JobTab")}</span>}
+                {...a11yProps(2)}
+              />
+            </Tabs>
+          </Box>
+          <hr className="tabsSeparator"></hr>
+          <TabPanel value={value} index={0}>
+            <CompanySearch />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <UserNetworking />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <JobSearch />
+          </TabPanel>
         </Box>
-        <hr className="tabsSeparator"></hr>
-        <TabPanel value={value} index={0}>
-            <CompanySearch/>
-          
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <UserNetworking/>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-        <JobSearch/>
-        </TabPanel>
-      </Box>
-      
+      </div>
     </div>
-
-
-
-    </div>
-    
   );
 }
