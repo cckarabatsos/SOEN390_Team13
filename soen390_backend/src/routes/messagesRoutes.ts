@@ -112,6 +112,10 @@ messages.get("/sendMessage", async (req, res) => {
         const senderId = req.query.senderId as string;
         const Ids: string[] = JSON.parse(req.query.Ids as string);
         const message = req.query.message as string;
+        let type: string = "text";
+        if (req.query.type) {
+            type = req.query.type as string;
+        }
         console.log(message);
         // Error detection for missing or invalid inputs
         if (
@@ -130,7 +134,8 @@ messages.get("/sendMessage", async (req, res) => {
         const messageConfirmation = await SendNewMessage(
             senderId,
             Ids,
-            message
+            message,
+            type
         );
         return res.status(200).json({
             message: "Message sent successfully",

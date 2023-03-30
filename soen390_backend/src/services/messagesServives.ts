@@ -148,7 +148,8 @@ export async function initiateConversation(userIds: string[]) {
 export async function sendMessage(
     senderId: string,
     userIds: string[],
-    message: string
+    message: string,
+    type: string
 ) {
     try {
         userIds = orderIds(userIds);
@@ -190,7 +191,7 @@ export async function sendMessage(
             isRead: false,
             senderId: senderId as string,
             timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-            type: "text",
+            type: type,
         };
 
         var document = await db.collection("chats").add(chat);

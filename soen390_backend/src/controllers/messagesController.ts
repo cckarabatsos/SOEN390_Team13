@@ -27,14 +27,16 @@ export async function createNewConversationController(usersIds: string[]) {
 export async function SendNewMessage(
     senderId: string,
     usersIds: string[],
-    content: string
+    content: string,
+    type: string
 ) {
     let confirmation = false;
     try {
         confirmation = (await sendMessage(
             senderId,
             usersIds,
-            content
+            content,
+            type
         )) as boolean;
     } catch (error) {
         console.log((error as Error).message);
