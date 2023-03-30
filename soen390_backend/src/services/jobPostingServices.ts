@@ -27,11 +27,11 @@ export const findJobpostingWithID = async (postingID: string) => {
  * @param newJobPosting
  * @returns document.id
  */
-export const storeJobPosting = async (newJobPosting: Jobposting) => {
+export const storeJobPosting = async (
+    newJobPosting: Jobposting,
+    postingDeadline: string
+) => {
     try {
-        const date = new Date();
-        date.setMonth(date.getMonth() + 2);
-        var postingDeadline = firebase.firestore.Timestamp.fromDate(date);
         let user = await findUserWithID(newJobPosting.jobPosterID);
         let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({

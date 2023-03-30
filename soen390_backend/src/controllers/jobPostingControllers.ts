@@ -39,12 +39,20 @@ export async function createJobPosting(
     contract: boolean,
     duration: any,
     type: any,
+    postingDeadline: any,
     jobPosterID: string
 ) {
     try {
-        const date = new Date();
-        date.setMonth(date.getMonth() + 2);
-        var postingDeadline = firebase.firestore.Timestamp.fromDate(date);
+        console.log(postingDeadline);
+        console.log("HELlo");
+        if (!postingDeadline) {
+            const date = new Date();
+            date.setMonth(date.getMonth() + 2);
+            postingDeadline = firebase.firestore.Timestamp.fromDate(date);
+        } else {
+            const date = new Date(postingDeadline);
+            postingDeadline = firebase.firestore.Timestamp.fromDate(date);
+        }
         let newJobPosting: Jobposting = jobposting_schema.validateSync({
             email,
             location,
@@ -57,10 +65,9 @@ export async function createJobPosting(
             duration,
             type,
             jobPosterID,
-            postingDeadline,
         });
         console.log(newJobPosting);
-        let postingID = await storeJobPosting(newJobPosting);
+        let postingID = await storeJobPosting(newJobPosting, postingDeadline);
         updateCompanyPostings(postingID, jobPosterID);
         if (postingID) {
             return [200, postingID];
