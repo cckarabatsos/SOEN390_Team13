@@ -4,7 +4,8 @@ import {
     sendMessage,
     getUpdatedMessages,
     getActiveConversations,
-} from "../services/messagesServives";
+    storeChatFile,
+} from "../services/messagesServices";
 import {
     messagesListElement,
     conversationListElement,
@@ -30,14 +31,16 @@ export async function SendNewMessage(
     content: string,
     type: string
 ) {
-    let confirmation = false;
+    let confirmation = "";
     try {
+        if ((type = "document")) {
+        }
         confirmation = (await sendMessage(
             senderId,
             usersIds,
             content,
             type
-        )) as boolean;
+        )) as string;
     } catch (error) {
         console.log((error as Error).message);
         throw new Error((error as Error).message);
@@ -82,4 +85,20 @@ export async function GetActiveConversations(
     }
 
     return convoList;
+}
+
+export async function uploadChatFile(
+    senderID: string,
+    Ids: string[],
+    message: string,
+    type: string,
+    file: any
+) {
+    let url = await storeChatFile(senderID, Ids, message, type, file);
+    console.log("File upload finished.");
+    if (url === null) {
+        return [404, { msg: "File storage failed." }];
+    } else {
+        return [200, url];
+    }
 }

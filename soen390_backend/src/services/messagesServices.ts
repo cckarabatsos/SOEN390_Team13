@@ -1,12 +1,13 @@
 import firebase from "firebase";
 import "firebase/storage";
+import { Chat } from "../models/Chat";
 import {
     chatMessage,
     messagesListElement,
     conversationListElement,
 } from "../models/Messages";
 const db = firebase.firestore();
-//const ref = firebase.storage().ref();
+const ref = firebase.storage().ref();
 
 //dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
@@ -209,7 +210,7 @@ export async function sendMessage(
                 ),
             });
 
-        return true;
+        return document.id;
     } catch (error) {
         console.error(`Error occurred in sendMessage: ${error}`);
         throw new Error(`Error occurred in sendMessage: ${error}`);
@@ -386,4 +387,56 @@ export async function getActiveConversations(
             `Error occurred in GetActiveConversation list: ${error}`
         );
     }
+}
+export const storeChatFile = async (
+    senderID: string,
+    IDs: string[],
+    message: string,
+    type: string,
+    file: any
+) => {
+    try {
+        const chatID: string = await sendMessage(senderID, IDs, message, type);
+        let chat = await findChatWithID(chatID);
+        if (chat === undefined) {
+            return null;
+        }
+        if (chat) {
+            let casted_chat: any = chat;
+            const buffer = Buffer.from(file.buffer);
+            const metadata = {
+                contentType: file.mimetype,
+            };
+
+            const folder: string = "Messages/";
+
+            console.log();
+            const uploadTask = await ref
+                .child(folder + chatID + " - " + file.originalname)
+                .put(buffer, metadata);
+            const downloadURL = await uploadTask.ref.getDownloadURL();
+            if (downloadURL) {
+                casted_chat.content = downloadURL;
+                updateChat(casted_chat, chatID);
+                return downloadURL;
+            }
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
+};
+export const findChatWithID = async (chatID: string) => {
+    try {
+        var snapShot = await db.collection("chats").doc(chatID).get();
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return snapShot.data();
+};
+export function updateChat(newChat: Chat, id: string) {
+    db.collection("chat").doc(id).update(newChat);
 }

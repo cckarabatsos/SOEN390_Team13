@@ -6,10 +6,14 @@ import {
     SendNewMessage,
     GetUpdatedMessages,
     GetActiveConversations,
+    uploadChatFile,
 } from "../controllers/messagesController";
+import multer from "multer";
+import { hasFile } from "../controllers/userControllers";
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
+var upload = multer({ storage: multer.memoryStorage() });
 
 // This route will be used to create a new conversation between 2 or more users
 // receives an array of user email addresses
@@ -185,6 +189,27 @@ messages.get("/getActiveConversation", async (req, res) => {
         return res.status(500).json({
             message: (error as Error).message,
         });
+    }
+});
+messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
+    const senderID = req.query.senderId as string;
+    const IDs: string[] = JSON.parse(req.query.Ids as string);
+    const message = "";
+    const type = "document";
+    try {
+        let status, data: any;
+        if (hasFile(req)) {
+            data = await uploadChatFile(senderID, IDs, message, type, req.file);
+        }
+        status = data[0];
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
     }
 });
 export default messages;

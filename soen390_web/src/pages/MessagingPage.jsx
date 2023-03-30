@@ -23,12 +23,13 @@ import {
     getActiveConvos,
     getAllMessages,
     sendMessage,
+    sendMessageDocument,
 } from "../api/messagesApi";
 import { findUserById } from "../api/UserProfileApi";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ReportModal from "../components/ReportModal";
-
+import AddDocumentsDialog from "../components/AddDocumentsDialog";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -117,7 +118,6 @@ function Messages(props) {
     const [showReportModal, setShowReportModal] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
     const { userId } = useParams();
     useEffect(() => {
         setIsLoading(true);
@@ -186,7 +186,11 @@ function Messages(props) {
         await sendMessage(userId, props.userData.userID, message);
         setMessage("");
     };
-
+    const handleSendMessageDocument = async (event) => {
+        event.preventDefault();
+        await sendMessageDocument(userId, props.userData.userID, message);
+        setMessage("");
+    };
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -312,6 +316,17 @@ function Messages(props) {
                                 }}
                                 style={{ display: "flex", width: "100%" }}
                             >
+                                {/* <AddDocumentsDialog setFileData={setFileData} />
+                                <Button
+                                    className="button"
+                                    variant="contained"
+                                    style={{
+                                        borderRadius: 27,
+                                        backgroundColor: "#6C63FF",
+                                        width: 135,
+                                        padding: 10,
+                                    }}
+                                ></Button> */}
                                 <TextField
                                     id="message-input"
                                     label="Type a message"

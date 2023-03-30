@@ -33,6 +33,20 @@ export async function sendMessage(reqUserID, reqSenderID, reqMessage) {
         return false;
     }
 }
+export async function sendMessageDocument(reqUserID, reqSenderID, reqMessage) {
+    try {
+        const Ids = JSON.stringify([reqUserID, reqSenderID]);
+        const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}&type=document`;
+
+        const response = await axios.get(
+            api.BACKEND_API + "/messages/sendMessage?" + queryString
+        );
+        return response;
+    } catch (error) {
+        console.error("error", error);
+        return false;
+    }
+}
 
 export async function getActiveConvos(reqID) {
     try {
