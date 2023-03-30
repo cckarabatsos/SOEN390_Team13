@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import NotificationComponent from '../components/NotificationComponent';
 
 describe('NotificationComponent', () => {
@@ -26,6 +26,21 @@ describe('NotificationComponent', () => {
       expect(userAvatarElement).toBeInTheDocument();
       expect(userAvatarElement).toHaveAttribute('src', props.picture);
     });
+
+    it("calls handleDelete function when delete button is clicked", () => {
+        const handleDeleteMock = jest.fn();
+        const notificationId = "123";
+        const props = {
+          handleDelete: handleDeleteMock,
+          notificationId,
+        };
+    
+        const { getByRole } = render(<NotificationComponent {...props} />);
+        const deleteButton = getByRole("button", { name: "" });
+        fireEvent.click(deleteButton);
+    
+        expect(handleDeleteMock).toHaveBeenCalledWith(notificationId);
+      });
   });
 
 
