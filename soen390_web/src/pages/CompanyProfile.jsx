@@ -18,9 +18,11 @@ export default function CompanyProfilePage(props) {
   const [companyData, setCompanyData]=useState({})
 
   const [isFollowingState, setIsFollowingState]=useState(isFollowing)
+  const [jobToDisplay, setJobToDisplay] = useState({})
 
   const getCompanyProfile= async (companyId,userId)=>{
     let company = await findUserById(companyId)
+    console.log(company.data)
     if(company.data){
 
       setCompanyData(company.data)
@@ -38,14 +40,17 @@ export default function CompanyProfilePage(props) {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
       setUserData(JSON.parse(localStorage.getItem("isAuth")));
-      getCompanyProfile(companyId,data.userID)
+      
 
      
     } else {
       setUserData(false);
     }
+    getCompanyProfile(companyId,{})
 
-  }, [isFollowingState]);
+  }, [isFollowingState,companyId]);
+
+  //console.log(companyId)
 
   return (
     <div className="CompanyProfileContainer">
