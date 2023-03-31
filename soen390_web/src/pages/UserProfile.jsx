@@ -1,12 +1,10 @@
 import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import profilepicture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
-import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
-import Concordia from "../assets/UserProfileImages/Concordia.png";
 import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
 import AddSkillDialog from "../components/AddSkillDialog";
@@ -15,7 +13,6 @@ import SubFooter from "../components/SubFooter";
 import "../styles/components/UserProfile.css";
 import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
-import ExperienceItem from "../components/ExperienceItem";
 import ExperienceList from "../components/ExperienceList";
 
 import { GetFile } from "../api/UserStorageApi";
@@ -24,6 +21,7 @@ import {
   getSkills,
   addSkill,
   removeSkill,
+  uploadPicture,
 } from "../api/UserProfileApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 import { useTranslation } from "react-i18next";
@@ -33,12 +31,14 @@ function UserProfile(props) {
   const [userData, setUserData] = React.useState({});
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
-  const [picture, setpicture] = React.useState();
+  const [picture, setPicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
   const [workExperience, setWorkExperience] = React.useState([]);
   const [educationExperience, setEducationExperience] = React.useState([]);
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
+  const [isPictureChanged, setIsPictureChanged] = React.useState(true);
+  const inputFile = useRef(null);
 
   const [skills, setSkills] = React.useState([]);
 
@@ -82,7 +82,6 @@ function UserProfile(props) {
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
       });
-      console.log(coverletterFilename);
     }
 
     let UserResume = "";
@@ -98,11 +97,22 @@ function UserProfile(props) {
         setResumeFilename(
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
-        console.log(
-          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-        );
       });
     }
+
+    // if (isPictureChanged) {
+    let UserPicture = null;
+    const getPicture = async () => {
+      console.log("getting user picture");
+      UserPicture = await GetFile(userData.userID, "picture");
+      console.log(UserPicture);
+      return UserPicture;
+    };
+    getPicture().then((picture) => {
+      console.log(picture);
+      setPicture(picture);
+    });
+    // }
   };
 
   const getSkillList = async (userID) => {
@@ -116,6 +126,10 @@ function UserProfile(props) {
     setSkills(skillArray);
   };
 
+  const onProfileClick = () => {
+    inputFile.current.click();
+  };
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
@@ -126,6 +140,8 @@ function UserProfile(props) {
     getUserExperience();
     setFileData();
     getSkillList(userData.userID);
+    // getProfilePicture();
+    setIsPictureChanged(false);
   }, [navigate, userData.userID]);
 
   useEffect(() => {
@@ -142,12 +158,41 @@ function UserProfile(props) {
     }
   };
 
+  // const getProfilePicture = () => {
+  //   if (isPictureChanged) {
+  //     let UserPicture = null;
+  //     const getPicture = async () => {
+  //       console.log("getting user picture");
+  //       UserPicture = await GetFile(userData.userID, "picture");
+  //       console.log(UserPicture);
+  //       return UserPicture;
+  //     };
+  //     getPicture().then((picture) => {
+  //       console.log(picture);
+  //       setPicture(picture);
+  //     });
+  //   }
+  // };
+
+  const changeProfilePicture = async (pictureEvent) => {
+    setIsPictureChanged(true);
+    var response = await uploadPicture(userData.userID, pictureEvent);
+    if (response) {
+      await setFileData();
+    }
+  };
+
   const handleRemoveSkillOnClick = async (id) => {
     var response = await removeSkill(id);
     if (response) {
       await getSkillList(userData.userID);
     }
   };
+
+  // useEffect(() => {
+  //   if(isPictureChanged) getProfilePicture();
+  //   setIsPictureChanged(false);
+  // }, [picture]);
 
   useEffect(() => {
     addNewSkill(userData.userID);
@@ -166,11 +211,20 @@ function UserProfile(props) {
             <div
               className="pfp-wrap"
               style={{ marginLeft: "auto", marginRight: "auto" }}
+              onClick={onProfileClick}
             >
+              <input
+                hidden
+                accept="image/png, image/jpeg, .pdf"
+                multiple
+                type="file"
+                ref={inputFile}
+                onChange={(e) => changeProfilePicture(e.target.files[0])}
+              />
               <img
                 className="profile-pic"
                 alt="profile-pic"
-                src={profilepicture}
+                src={`${userData.picture}||${profilepicture}`}
               ></img>
             </div>
 

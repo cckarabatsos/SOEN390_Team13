@@ -119,3 +119,35 @@ export async function removeSkill(skillId) {
     return false; 
   }
 }
+
+export async function uploadPicture(userID, picture){
+  // upload file
+  const formData = new FormData();
+  formData.append("file", picture);
+  console.log(picture);
+  // calling the backend
+  try {
+    const response = await axios
+      .post(
+        `${api.BACKEND_API}/user/uploadAccountFile/${userID}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          params: {
+            type: "picture",
+          },
+        }
+      )
+      .then((res) => {
+        return res.data;
+      });
+    console.log(response);
+    if (response === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
