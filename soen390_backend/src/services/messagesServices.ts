@@ -6,6 +6,7 @@ import {
     messagesListElement,
     conversationListElement,
 } from "../models/Messages";
+import crypto from "crypto";
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 
@@ -66,8 +67,7 @@ async function createConversation(
     userIds: string[]
 ): Promise<firebase.firestore.DocumentData> {
     try {
-        //check if user exist in the database first
-
+        // Check if user exist in the database first
         for (var i = 0; i < userIds.length; i++) {
             var doc = await db.collection("users").doc(userIds[i]).get();
             if (!doc.data()) {
@@ -77,10 +77,15 @@ async function createConversation(
             }
         }
 
+        // Generate a random key for the conversation
+        const key = crypto.randomBytes(16).toString("hex");
+
         const conversationData = await db.collection("conversations").add({
             messages: [],
             userArray: userIds,
+            key: key,
         });
+
         await conversationData.update({ conversationID: conversationData.id });
 
         if (!conversationData) {
@@ -393,7 +398,8 @@ export const storeChatFile = async (
     IDs: string[],
     message: string,
     type: string,
-    file: any
+    file: any,
+    key: string // secret key for encryption
 ) => {
     try {
         const chatID: string = await sendMessage(senderID, IDs, message, type);
@@ -403,17 +409,25 @@ export const storeChatFile = async (
         }
         if (chat) {
             let casted_chat: any = chat;
-            const buffer = Buffer.from(file.buffer);
+
+            // Encrypt the file with AES-256-CBC
+            const iv = crypto.randomBytes(16);
+            const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+            const encrypted = Buffer.concat([
+                cipher.update(file.buffer),
+                cipher.final(),
+            ]);
+            const encryptedFile = Buffer.concat([iv, encrypted]);
+
             const metadata = {
                 contentType: file.mimetype,
             };
 
             const folder: string = "Messages/";
 
-            console.log();
             const uploadTask = await ref
                 .child(folder + chatID + " - " + file.originalname)
-                .put(buffer, metadata);
+                .put(encryptedFile, metadata);
             const downloadURL = await uploadTask.ref.getDownloadURL();
             if (downloadURL) {
                 casted_chat.content = downloadURL;
@@ -440,3 +454,18 @@ export const findChatWithID = async (chatID: string) => {
 export function updateChat(newChat: Chat, id: string) {
     db.collection("chats").doc(id).update(newChat);
 }
+const decryptFile = (encryptedFile: Buffer, key: string): Buffer => {
+    // Extract the IV from the encrypted file
+    const iv = encryptedFile.slice(0, 16);
+
+    // Create a decipher object with the same key and algorithm
+    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+
+    // Decrypt the file
+    const decrypted = Buffer.concat([
+        decipher.update(encryptedFile.slice(16)),
+        decipher.final(),
+    ]);
+
+    return decrypted;
+};

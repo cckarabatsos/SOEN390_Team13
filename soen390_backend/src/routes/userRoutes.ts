@@ -31,7 +31,8 @@ import dotenv from "dotenv";
 import { User } from "../models/User";
 import { compare } from "bcryptjs";
 import multer from "multer";
-// import firebase from "firebase";
+import firebase from "firebase";
+import crypto from "crypto";
 
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
@@ -461,37 +462,37 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 });
 
 // Route used to update all fields this is not to be used in final versions
-// user.get("/updateFields", (_: Request, res: Response) => {
-//     const db = firebase.firestore();
-//     const batch = db.batch();
-//     const jobPostingsRef = db.collection("jobpostings");
+user.get("/updateFields", (_: Request, res: Response) => {
+    const db = firebase.firestore();
+    const batch = db.batch();
+    const conversationsRef = db.collection("conversations");
 
-//     jobPostingsRef
-//         .get()
-//         .then((querySnapshot) => {
-//             querySnapshot.forEach((doc) => {
-//                 batch.set(
-//                     doc.ref,
-//                     {
-//                         mandatoryResume: true,
-//                         mandatoryCoverLetter: false,
-//                     },
-//                     { merge: true }
-//                 );
-//             });
+    conversationsRef
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const key = crypto.randomBytes(16).toString("hex");
+                batch.set(
+                    doc.ref,
+                    {
+                        key: key,
+                    },
+                    { merge: true }
+                );
+            });
 
-//             return batch.commit();
-//         })
-//         .then(() => {
-//             res.status(200).send(
-//                 "postingDeadline, mandatoryResume, and mandatoryCoverLetter fields added to all job posting documents"
-//             );
-//         })
-//         .catch((error) => {
-//             console.error("Error adding fields:", error);
-//             res.status(500).send("Error adding fields");
-//         });
-// });
+            return batch.commit();
+        })
+        .then(() => {
+            res.status(200).send(
+                "Key field added to all conversation documents"
+            );
+        })
+        .catch((error) => {
+            console.error("Error adding fields:", error);
+            res.status(500).send("Error adding fields");
+        });
+});
 
 // Exporting the user as a module
 export default user;

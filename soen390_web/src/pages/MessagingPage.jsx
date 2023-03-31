@@ -23,10 +23,9 @@ import {
     getActiveConvos,
     getAllMessages,
     sendMessage,
-    sendMessageDocument,
 } from "../api/messagesApi";
 import { findUserById } from "../api/UserProfileApi";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ReportModal from "../components/ReportModal";
 import AddChatDocumentsDialog from "../components/AddChatDocumentDialog";

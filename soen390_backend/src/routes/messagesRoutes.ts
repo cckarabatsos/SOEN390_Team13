@@ -167,7 +167,6 @@ messages.get("/getActiveConversation", async (req, res) => {
     try {
         const id = req.query.id as string;
         const returnEmail = req.query.returnEmail as string;
-
         if (!id) {
             return res.status(400).json({
                 message: "Please provide an email address",
@@ -196,10 +195,18 @@ messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
     const IDs: string[] = JSON.parse(req.query.Ids as string);
     const message = "";
     const type = "document";
+    const key = req.query.key as string;
     try {
         let status, data: any;
         if (hasFile(req)) {
-            data = await uploadChatFile(senderID, IDs, message, type, req.file);
+            data = await uploadChatFile(
+                senderID,
+                IDs,
+                message,
+                type,
+                req.file,
+                key
+            );
         }
         status = data[0];
         if (status == 200) {
