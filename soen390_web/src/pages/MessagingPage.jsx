@@ -314,6 +314,7 @@ function Messages(props) {
                                 <AddChatDocumentsDialog
                                     reqUserID={userId}
                                     reqSenderID={props.userData.userID}
+                                    conversationID={conversationID}
                                 />
 
                                 <TextField

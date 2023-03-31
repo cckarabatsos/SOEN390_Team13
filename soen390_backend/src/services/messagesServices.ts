@@ -1,6 +1,6 @@
 import firebase from "firebase";
 import "firebase/storage";
-import { Chat } from "../models/Chat";
+
 import {
     chatMessage,
     messagesListElement,
@@ -396,76 +396,68 @@ export async function getActiveConversations(
 export const storeChatFile = async (
     senderID: string,
     IDs: string[],
-    message: string,
     type: string,
     file: any,
-    key: string // secret key for encryption
+    conversationID: string
 ) => {
     try {
-        const chatID: string = await sendMessage(senderID, IDs, message, type);
-        let chat = await findChatWithID(chatID);
-        if (chat === undefined) {
-            return null;
+        const db = firebase.firestore();
+        const conversationRef = db
+            .collection("conversations")
+            .doc(conversationID);
+        const conversation = await conversationRef.get();
+        if (!conversation.exists) {
+            throw new Error(`Conversation ${conversationID} does not exist`);
         }
-        if (chat) {
-            let casted_chat: any = chat;
+        const key = conversation.get("key");
 
-            // Encrypt the file with AES-256-CBC
-            const iv = crypto.randomBytes(16);
-            const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
-            const encrypted = Buffer.concat([
-                cipher.update(file.buffer),
-                cipher.final(),
-            ]);
-            const encryptedFile = Buffer.concat([iv, encrypted]);
+        // Encrypt the file with AES-256-CBC
+        const iv = crypto.randomBytes(16);
+        const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+        const encrypted = Buffer.concat([
+            cipher.update(file.buffer),
+            cipher.final(),
+        ]);
+        const encryptedFile = Buffer.concat([iv, encrypted]);
 
-            const metadata = {
-                contentType: file.mimetype,
-            };
+        const metadata = {
+            contentType: file.mimetype,
+        };
 
-            const folder: string = "Messages/";
+        const folder: string = "Messages/";
+        const filename = `${folder}${conversationID}-${
+            conversation.get("messages").length + 1
+        }-${file.originalname}`;
 
-            const uploadTask = await ref
-                .child(folder + chatID + " - " + file.originalname)
-                .put(encryptedFile, metadata);
-            const downloadURL = await uploadTask.ref.getDownloadURL();
-            if (downloadURL) {
-                casted_chat.content = downloadURL;
-                updateChat(casted_chat, chatID);
-                return downloadURL;
-            }
-            return null;
-        }
+        const uploadTask = await ref
+            .child(filename)
+            .put(encryptedFile, metadata);
+        const downloadURL = await uploadTask.ref.getDownloadURL();
+        const chatID: string = await sendMessage(
+            senderID,
+            IDs,
+            downloadURL,
+            type
+        );
+        return chatID;
     } catch (error) {
-        console.log(error);
+        console.error(error);
         throw error;
     }
-    return null;
 };
-export const findChatWithID = async (chatID: string) => {
-    try {
-        var snapShot = await db.collection("chats").doc(chatID).get();
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-    return snapShot.data();
-};
-export function updateChat(newChat: Chat, id: string) {
-    db.collection("chats").doc(id).update(newChat);
-}
-const decryptFile = (encryptedFile: Buffer, key: string): Buffer => {
-    // Extract the IV from the encrypted file
-    const iv = encryptedFile.slice(0, 16);
 
-    // Create a decipher object with the same key and algorithm
-    const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+// const decryptFile = (encryptedFile: Buffer, key: string): Buffer => {
+//     // Extract the IV from the encrypted file
+//     const iv = encryptedFile.slice(0, 16);
 
-    // Decrypt the file
-    const decrypted = Buffer.concat([
-        decipher.update(encryptedFile.slice(16)),
-        decipher.final(),
-    ]);
+//     // Create a decipher object with the same key and algorithm
+//     const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
 
-    return decrypted;
-};
+//     // Decrypt the file
+//     const decrypted = Buffer.concat([
+//         decipher.update(encryptedFile.slice(16)),
+//         decipher.final(),
+//     ]);
+
+//     return decrypted;
+// };

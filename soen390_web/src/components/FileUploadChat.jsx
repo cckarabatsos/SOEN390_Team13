@@ -4,7 +4,7 @@ import { Button, Typography } from "@mui/material";
 import "../styles/components/FileUpload.css";
 import api from "../config.json";
 import { useTranslation } from "react-i18next";
-const FileUploadChat = ({ files, reqUserID, reqSenderID }) => {
+const FileUploadChat = ({ files, reqUserID, reqSenderID, conversationID }) => {
     const [userData, setUserData] = React.useState({});
     const { t } = useTranslation();
 
@@ -29,16 +29,16 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID }) => {
 
         // calling the backend
         try {
-            //http://localhost:7000/messages/uploadChatFile?senderId=rgwu3p8IKmp0H3yYPdNO&Ids=["3Ri6yXlYSo7rCQk4t4ks","rgwu3p8IKmp0H3yYPdNO"]
+            // http://localhost:7000/messages/uploadChatFile?senderId=rgwu3p8IKmp0H3yYPdNO&Ids=["3Ri6yXlYSo7rCQk4t4ks","rgwu3p8IKmp0H3yYPdNO"]&conversationID=UCoA5lmz3FGIBjlRhuyG
             console.log(userData.senderID);
             console.log(Ids);
             console.log(file);
             console.log(
-                `${api.BACKEND_API}/messages/uploadChatFile?senderId=${reqSenderID}&Ids=${Ids}`
+                `${api.BACKEND_API}/messages/uploadChatFile?senderId=${reqSenderID}&Ids=${Ids}&conversationID=${conversationID}`
             );
             const response = await axios
                 .post(
-                    `${api.BACKEND_API}/messages/uploadChatFile?senderId=${reqSenderID}&Ids=${Ids}`,
+                    `${api.BACKEND_API}/messages/uploadChatFile?senderId=${reqSenderID}&Ids=${Ids}&conversationID=${conversationID}`,
                     formData,
                     {
                         headers: { "Content-Type": "multipart/form-data" },
@@ -51,7 +51,6 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID }) => {
                 });
             console.log(response);
             if (response === 200) {
-                window.location.reload();
                 return true;
             } else {
                 return false;

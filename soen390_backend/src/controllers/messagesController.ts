@@ -90,12 +90,11 @@ export async function GetActiveConversations(
 export async function uploadChatFile(
     senderID: string,
     IDs: string[],
-    message: string,
     type: string,
     file: any,
-    key: string
+    conversationID: string
 ) {
-    let url = await storeChatFile(senderID, IDs, message, type, file, key);
+    let url = await storeChatFile(senderID, IDs, type, file, conversationID);
     console.log("File upload finished.");
     if (url === null) {
         return [404, { msg: "File storage failed." }];

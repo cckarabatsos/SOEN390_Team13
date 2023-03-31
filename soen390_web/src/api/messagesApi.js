@@ -63,6 +63,7 @@ export async function getActiveConvos(reqID) {
         for (let i = 0; i < activeConvos.length; i++) {
             const activeUserIds = activeConvos[i].ActiveUser;
             const otherUserId = activeUserIds.find((id) => id !== reqID);
+            console.log(otherUserId);
             const userDataResponse = await findUserById(otherUserId);
             const userData = userDataResponse.data;
 

@@ -12,7 +12,7 @@ import FileUploadChat from "./FileUploadChat";
 import FileList from "./FileList";
 import { useTranslation } from "react-i18next";
 
-function AddChatDocumentsDialog({ reqUserID, reqSenderID }) {
+function AddChatDocumentsDialog({ reqUserID, reqSenderID, conversationID }) {
     const [open, setOpen] = React.useState(false);
     const { t } = useTranslation();
     const handleClickOpen = () => {
@@ -52,6 +52,7 @@ function AddChatDocumentsDialog({ reqUserID, reqSenderID }) {
                         <FileUploadChat
                             reqUserID={reqUserID}
                             reqSenderID={reqSenderID}
+                            conversationID={conversationID}
                         />
                         <FileList files={files} removeFile={removeFile} />
                     </div>

@@ -193,19 +193,17 @@ messages.get("/getActiveConversation", async (req, res) => {
 messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
     const senderID = req.query.senderId as string;
     const IDs: string[] = JSON.parse(req.query.Ids as string);
-    const message = "";
     const type = "document";
-    const key = req.query.key as string;
+    const conversationID = req.query.conversationID as string;
     try {
         let status, data: any;
         if (hasFile(req)) {
             data = await uploadChatFile(
                 senderID,
                 IDs,
-                message,
                 type,
                 req.file,
-                key
+                conversationID
             );
         }
         status = data[0];
