@@ -120,7 +120,7 @@ export async function removeSkill(skillId) {
   }
 }
 
-export async function uploadPicture(userID, picture){
+export async function uploadPicture(userID, picture, setIsPictureChanged){
   // upload file
   const formData = new FormData();
   formData.append("file", picture);
@@ -143,6 +143,7 @@ export async function uploadPicture(userID, picture){
       });
     console.log(response);
     if (response === 200) {
+      setIsPictureChanged(true);
       return true;
     } else {
       return false;
