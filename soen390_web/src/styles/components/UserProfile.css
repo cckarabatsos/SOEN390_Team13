@@ -27,7 +27,7 @@
 
 .profile-pic{
     width: 10em;
-    height: auto;
+    height: 10em;
     border-radius: 100px;
     transition: .5s ease;
     backface-visibility: hidden;

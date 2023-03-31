@@ -142,6 +142,7 @@ function UserProfile(props) {
     getSkillList(userData.userID);
     // getProfilePicture();
     setIsPictureChanged(false);
+    console.log(userData.picture);
   }, [navigate, userData.userID]);
 
   useEffect(() => {
@@ -215,7 +216,7 @@ function UserProfile(props) {
             >
               <input
                 hidden
-                accept="image/png, image/jpeg, .pdf"
+                accept="image/png, image/jpeg"
                 multiple
                 type="file"
                 ref={inputFile}
@@ -224,7 +225,7 @@ function UserProfile(props) {
               <img
                 className="profile-pic"
                 alt="profile-pic"
-                src={`${userData.picture}||${profilepicture}`}
+                src={`${userData.picture} || ${profilepicture}`}
               ></img>
             </div>
 
