@@ -78,7 +78,7 @@ async function createConversation(
         }
 
         // Generate a random key for the conversation
-        const key = crypto.randomBytes(16).toString("hex");
+        const key = crypto.randomBytes(32).toString("hex");
 
         const conversationData = await db.collection("conversations").add({
             messages: [],
@@ -155,7 +155,8 @@ export async function sendMessage(
     senderId: string,
     userIds: string[],
     message: string,
-    type: string
+    type: string,
+    iv: Buffer
 ) {
     try {
         userIds = orderIds(userIds);
@@ -191,13 +192,14 @@ export async function sendMessage(
         if (!doc.data()) {
             throw new Error("The senderId are not registered in the database!");
         }
-
+        console.log(iv);
         let chat: chatMessage = {
             content: message,
             isRead: false,
             senderId: senderId as string,
             timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
             type: type,
+            iv: iv.toString("base64"),
         };
 
         var document = await db.collection("chats").add(chat);
@@ -396,7 +398,6 @@ export async function getActiveConversations(
 export const storeChatFile = async (
     senderID: string,
     IDs: string[],
-    type: string,
     file: any,
     conversationID: string
 ) => {
@@ -410,10 +411,13 @@ export const storeChatFile = async (
             throw new Error(`Conversation ${conversationID} does not exist`);
         }
         const key = conversation.get("key");
-
+        const keyBuffer = Buffer.from(key, "hex");
         // Encrypt the file with AES-256-CBC
         const iv = crypto.randomBytes(16);
-        const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+        console.log(keyBuffer);
+        const cipher = crypto
+            .createCipheriv("aes-256-cbc", keyBuffer, iv)
+            .setAutoPadding(true);
         const encrypted = Buffer.concat([
             cipher.update(file.buffer),
             cipher.final(),
@@ -433,11 +437,15 @@ export const storeChatFile = async (
             .child(filename)
             .put(encryptedFile, metadata);
         const downloadURL = await uploadTask.ref.getDownloadURL();
+        const type = "document";
+        console.log(iv);
+        console.log(key);
         const chatID: string = await sendMessage(
             senderID,
             IDs,
             downloadURL,
-            type
+            type,
+            iv
         );
         return chatID;
     } catch (error) {
@@ -445,7 +453,18 @@ export const storeChatFile = async (
         throw error;
     }
 };
-
+export const findConversationWithID = async (conversationID: string) => {
+    try {
+        var snapShot = await db
+            .collection("conversations")
+            .doc(conversationID)
+            .get();
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return snapShot.data();
+};
 // const decryptFile = (encryptedFile: Buffer, key: string): Buffer => {
 //     // Extract the IV from the encrypted file
 //     const iv = encryptedFile.slice(0, 16);

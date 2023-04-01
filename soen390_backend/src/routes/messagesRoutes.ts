@@ -7,9 +7,13 @@ import {
     GetUpdatedMessages,
     GetActiveConversations,
     uploadChatFile,
+    getConversationWithID,
 } from "../controllers/messagesController";
 import multer from "multer";
 import { hasFile } from "../controllers/userControllers";
+import { findConversationWithID } from "../services/messagesServices";
+import * as crypto from "crypto";
+import https from "https";
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
@@ -40,6 +44,17 @@ messages.get("/createConversation", async (req, res) => {
         return res.status(500).json({
             message: "Internal server error: " + (error as Error).message,
         });
+    }
+});
+messages.get("/id/:conversationID", async (req, res) => {
+    let conversationID = req.params.conversationID;
+    try {
+        let data: any = await getConversationWithID(conversationID);
+        res.status(data[0]);
+        res.json(data[1]).end();
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
     }
 });
 
@@ -148,8 +163,7 @@ messages.get("/sendMessage", async (req, res) => {
         const messageConfirmation = await SendNewMessage(
             senderId,
             Ids,
-            message,
-            type
+            message
         );
         return res.status(200).json({
             message: "Message sent successfully",
@@ -193,7 +207,6 @@ messages.get("/getActiveConversation", async (req, res) => {
 messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
     const senderID = req.query.senderId as string;
     const IDs: string[] = JSON.parse(req.query.Ids as string);
-    const type = "document";
     const conversationID = req.query.conversationID as string;
     try {
         let status, data: any;
@@ -201,7 +214,6 @@ messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
             data = await uploadChatFile(
                 senderID,
                 IDs,
-                type,
                 req.file,
                 conversationID
             );
@@ -217,4 +229,79 @@ messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+messages.get("/downloadDocument", async (req, res) => {
+    const encryptedUrl = req.query.encryptedUrl; // retrieve the encrypted file's URL from the query parameters
+    const conversationID = req.query.conversationID; // retrieve the decryption key from the query parameters
+    console.log(conversationID);
+    console.log(encryptedUrl);
+    const ivBase64 = req.query.iv?.toString();
+    if (!ivBase64) {
+        res.status(400).send("Missing iv parameter");
+        return;
+    }
+    const decodedIv = decodeURIComponent(ivBase64);
+    console.log(decodedIv);
+    const decryptedBuffer = await decryptDocument(
+        encryptedUrl,
+        conversationID,
+        decodedIv
+    ); // call your decryption function to get a buffer of the decrypted file
+    const filename = "decrypted-file.pdf"; // set the filename for the decrypted file
+
+    // set the headers for the response to indicate that it is a downloadable file
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+
+    res.send(decryptedBuffer); // send the decrypted file buffer as the response
+});
+
+const decryptDocument = async (
+    downloadURL: any,
+    conversationID: any,
+    ivBase64: any
+) => {
+    try {
+        const response: any = await new Promise((resolve, reject) => {
+            https.get(downloadURL, resolve).on("error", reject);
+        });
+
+        const chunks: any = [];
+        response.on("data", (chunk: any) => {
+            chunks.push(chunk);
+        });
+        await new Promise((resolve, reject) => {
+            response.on("end", resolve);
+            response.on("error", reject);
+        });
+
+        const data = Buffer.concat(chunks);
+        // const ivAndEncryptedData = Buffer.from(data.slice(16));
+        const iv = Buffer.from(decodeURIComponent(ivBase64), "base64");
+
+        const conversation = await findConversationWithID(conversationID);
+
+        if (!conversation) {
+            throw new Error("Conversation not found");
+        }
+
+        const key = conversation.key;
+        const keyBuffer = Buffer.from(key, "hex");
+        console.log(keyBuffer);
+        console.log(iv);
+        const decipher = crypto
+            .createDecipheriv("aes-256-cbc", keyBuffer, iv.slice(0, 16))
+            .setAutoPadding(true); // enable auto padding
+
+        const decrypted = Buffer.concat([
+            decipher.update(data),
+            decipher.final(),
+        ]);
+
+        return decrypted;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 export default messages;

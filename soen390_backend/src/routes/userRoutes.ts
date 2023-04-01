@@ -465,17 +465,17 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 user.get("/updateFields", (_: Request, res: Response) => {
     const db = firebase.firestore();
     const batch = db.batch();
-    const conversationsRef = db.collection("conversations");
+    const chatsRef = db.collection("conversations");
 
-    conversationsRef
+    chatsRef
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                const key = crypto.randomBytes(16).toString("hex");
+                const iv = crypto.randomBytes(32).toString("hex");
                 batch.set(
                     doc.ref,
                     {
-                        key: key,
+                        key: iv,
                     },
                     { merge: true }
                 );
@@ -484,9 +484,7 @@ user.get("/updateFields", (_: Request, res: Response) => {
             return batch.commit();
         })
         .then(() => {
-            res.status(200).send(
-                "Key field added to all conversation documents"
-            );
+            res.status(200).send("IV field added to all chat documents");
         })
         .catch((error) => {
             console.error("Error adding fields:", error);

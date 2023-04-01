@@ -77,3 +77,25 @@ export async function getActiveConvos(reqID) {
         return false;
     }
 }
+export async function handleDocumentDecrypt(downloadURL, conversationID, iv) {
+    try {
+        const response = await axios.get(
+            api.BACKEND_API +
+                `/downloadDocument?encryptedURL=${downloadURL}&conversationID=${conversationID}iv=${iv}`
+        );
+        const decrypted = response.data;
+        const blob = new Blob([decrypted], {
+            type: "application/octet-stream",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "decrypted_document.txt");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error);
+    }
+}

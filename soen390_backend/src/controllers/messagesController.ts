@@ -5,12 +5,14 @@ import {
     getUpdatedMessages,
     getActiveConversations,
     storeChatFile,
+    findConversationWithID,
 } from "../services/messagesServices";
 import {
     messagesListElement,
     conversationListElement,
 } from "../models/Messages";
-
+import { conversationSchema } from "../models/conversation";
+import * as crypto from "crypto";
 dotenv.config();
 
 export async function createNewConversationController(usersIds: string[]) {
@@ -28,18 +30,18 @@ export async function createNewConversationController(usersIds: string[]) {
 export async function SendNewMessage(
     senderId: string,
     usersIds: string[],
-    content: string,
-    type: string
+    content: string
 ) {
     let confirmation = "";
+    const type = "text";
+    const iv = crypto.randomBytes(16);
     try {
-        if ((type = "document")) {
-        }
         confirmation = (await sendMessage(
             senderId,
             usersIds,
             content,
-            type
+            type,
+            iv
         )) as string;
     } catch (error) {
         console.log((error as Error).message);
@@ -90,15 +92,24 @@ export async function GetActiveConversations(
 export async function uploadChatFile(
     senderID: string,
     IDs: string[],
-    type: string,
     file: any,
     conversationID: string
 ) {
-    let url = await storeChatFile(senderID, IDs, type, file, conversationID);
+    let url = await storeChatFile(senderID, IDs, file, conversationID);
     console.log("File upload finished.");
     if (url === null) {
         return [404, { msg: "File storage failed." }];
     } else {
         return [200, url];
+    }
+}
+export async function getConversationWithID(conversationID: string) {
+    let conversation = await findConversationWithID(conversationID);
+    let casted_conversation = await conversationSchema.cast(conversation);
+    // console.log(casted_user);
+    if (conversation) {
+        return [200, casted_conversation];
+    } else {
+        return [404, { msg: "User not found" }];
     }
 }

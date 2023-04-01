@@ -23,6 +23,7 @@ import {
     getActiveConvos,
     getAllMessages,
     sendMessage,
+    handleDocumentDecrypt,
 } from "../api/messagesApi";
 import { findUserById } from "../api/UserProfileApi";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -179,7 +180,6 @@ function Messages(props) {
             }
         } catch (error) {}
     };
-
     const handleSendMessage = async (event) => {
         event.preventDefault();
         await sendMessage(userId, props.userData.userID, message);
@@ -202,6 +202,39 @@ function Messages(props) {
 
     const handleReportModalClose = () => {
         setShowReportModal(false);
+    };
+    const handleDocumentDownload = async (decryptedContent, filename) => {
+        try {
+            const blob = new Blob([decryptedContent], {
+                type: "application/octet-stream",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error while downloading file: ", error);
+        }
+    };
+
+    const handleDocumentDecryptButton = async (
+        content,
+        conversationID,
+        filename
+    ) => {
+        try {
+            const decryptedBuffer = await handleDocumentDecrypt(
+                content,
+                conversationID
+            );
+            handleDocumentDownload(decryptedBuffer, filename);
+        } catch (error) {
+            console.error("Error while decrypting file: ", error);
+        }
     };
 
     return (
@@ -285,9 +318,45 @@ function Messages(props) {
                                                 : classes.message
                                         }`}
                                     >
-                                        <Typography>
-                                            {message.content}
-                                        </Typography>
+                                        {message.type === "text" ? (
+                                            <Typography>
+                                                {message.content}
+                                            </Typography>
+                                        ) : message.type === "document" ? (
+                                            <Box
+                                                className={
+                                                    classes.documentContainer
+                                                }
+                                            >
+                                                <a
+                                                    href={message.content}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={
+                                                        classes.documentLink
+                                                    }
+                                                >
+                                                    Download Document
+                                                </a>
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() =>
+                                                        handleDocumentDecryptButton(
+                                                            message.content,
+                                                            conversationID,
+                                                            message.filename,
+                                                            message.iv
+                                                        )
+                                                    }
+                                                    className={
+                                                        classes.documentDecryptButton
+                                                    }
+                                                >
+                                                    Decrypt Document
+                                                </Button>
+                                            </Box>
+                                        ) : null}
                                         <Typography variant="caption">
                                             {new Date(
                                                 message.timestamp
