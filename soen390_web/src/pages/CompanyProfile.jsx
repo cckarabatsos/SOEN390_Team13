@@ -19,10 +19,9 @@ export default function CompanyProfilePage(props) {
   const [jobToDisplay, setJobToDisplay] = useState({});
   const [updateState, setUpdateState] = useState(false);
 
-  const [isCompanyOwner,setIsCompanyOwnner] = useState(false);
-  const [isUser,setIsUser] = useState(false);
-  const [iscompany,setIsCompany] = useState(false);
-
+  const [isCompanyOwner, setIsCompanyOwnner] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+  const [iscompany, setIsCompany] = useState(false);
 
   const getCompanyProfile = async (companyId, user) => {
     let company = await findUserById(companyId);
@@ -33,30 +32,21 @@ export default function CompanyProfilePage(props) {
       } else {
         setIsFollowingState(false);
       }
-    if(userData){
-
-      console.log(user.userID)
-      console.log(user.isCompany)
-      if(user.userID==company.data.userID){
-        console.log("hello1")
-        setIsCompanyOwnner(true)
-        setIsCompany(true)
-        setIsUser(false)
+      if (userData) {
+        if (user.userID == company.data.userID) {
+          setIsCompanyOwnner(true);
+          setIsCompany(true);
+          setIsUser(false);
+        } else if (user.isCompany) {
+          setIsCompany(true);
+          setIsCompanyOwnner(false);
+          setIsUser(false);
+        } else {
+          setIsUser(true);
+          setIsCompany(false);
+          setIsCompanyOwnner(false);
+        }
       }
-      else if(user.isCompany){
-        console.log("hello2")
-        setIsCompany(true)
-        setIsCompanyOwnner(false)
-        setIsUser(false)
-
-      }
-      else{
-        console.log("hello3")
-        setIsUser(true)
-        setIsCompany(false)
-        setIsCompanyOwnner(false)
-      }
-    }
     }
   };
 
@@ -104,21 +94,16 @@ export default function CompanyProfilePage(props) {
         updateFlag={updateState}
         companyOwner={isCompanyOwner}
       ></CompanyJobPostings>
-      {isCompanyOwner &&
-
-<CompanyApplicationList
-openPositions={companyData.jobpostings}
-companyName={companyData.name}
-companyEmail={companyData.email}
-setUpdateFlag={setUpdateState}
-updateFlag={updateState}
-userData={companyData}
-></CompanyApplicationList>
-
-
-
-      }
-      
+      {isCompanyOwner && (
+        <CompanyApplicationList
+          openPositions={companyData.jobpostings}
+          companyName={companyData.name}
+          companyEmail={companyData.email}
+          setUpdateFlag={setUpdateState}
+          updateFlag={updateState}
+          userData={companyData}
+        ></CompanyApplicationList>
+      )}
     </div>
   );
 }
