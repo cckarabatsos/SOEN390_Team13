@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import {
     deleteJobPosting,
     getFilteredJobPostings,
+    getJobPostingWithID,
     getJobSuggestions,
 } from "../controllers/jobPostingControllers";
 import { Jobposting } from "../models/jobPosting";
@@ -74,5 +75,21 @@ jobposting.get(
         }
     }
 );
-
+jobposting.get("/id/:JobPostingID", async (req: Request, res: Response) => {
+    let postingID = req.params.JobPostingID;
+    try {
+        const jobPosting: Jobposting = await getJobPostingWithID(postingID);
+        const status: number = jobPosting[0];
+        if (status == 200) {
+            res.status(200);
+            res.json(jobPosting[1]);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
 export default jobposting;

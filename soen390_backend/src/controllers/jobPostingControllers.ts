@@ -8,6 +8,7 @@ import {
 import {
     deleteJobPostingWithId,
     filterJobPostings,
+    findJobpostingWithID,
     retrieveJobSuggestions,
     storeJobPosting,
 } from "../services/jobPostingServices";
@@ -38,12 +39,20 @@ export async function createJobPosting(
     contract: boolean,
     duration: any,
     type: any,
+    postingDeadline: any,
     jobPosterID: string
 ) {
     try {
-        const date = new Date();
-        date.setMonth(date.getMonth() + 2);
-        var postingDeadline = firebase.firestore.Timestamp.fromDate(date);
+        console.log(postingDeadline);
+        console.log("HELlo");
+        if (!postingDeadline) {
+            const date = new Date();
+            date.setMonth(date.getMonth() + 2);
+            postingDeadline = firebase.firestore.Timestamp.fromDate(date);
+        } else {
+            const date = new Date(postingDeadline);
+            postingDeadline = firebase.firestore.Timestamp.fromDate(date);
+        }
         let newJobPosting: Jobposting = jobposting_schema.validateSync({
             email,
             location,
@@ -56,10 +65,9 @@ export async function createJobPosting(
             duration,
             type,
             jobPosterID,
-            postingDeadline,
         });
         console.log(newJobPosting);
-        let postingID = await storeJobPosting(newJobPosting);
+        let postingID = await storeJobPosting(newJobPosting, postingDeadline);
         updateCompanyPostings(postingID, jobPosterID);
         if (postingID) {
             return [200, postingID];
@@ -124,7 +132,7 @@ function validateFilterData(filter: Filter) {
 }
 
 /**
- * Tries to retrieve all job posting suggestions for the specified user 
+ * Tries to retrieve all job posting suggestions for the specified user
  *
  * @param userID
  * @returns status and res message
@@ -136,5 +144,20 @@ export async function getJobSuggestions(userID: string) {
         return [200, jobpostings];
     } else {
         return [404, { msg: "Job suggestions not found" }];
+    }
+}
+/**
+ * Get jobPostingWithID
+ * @param userID
+ * @returns
+ */
+export async function getJobPostingWithID(postingID: string) {
+    let user = await findJobpostingWithID(postingID);
+    let casted_user = await jobposting_schema.cast(user);
+    // console.log(casted_user);
+    if (user) {
+        return [200, casted_user];
+    } else {
+        return [404, { msg: "User not found" }];
     }
 }

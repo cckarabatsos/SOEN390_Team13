@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { Button, Dialog, DialogContent, Grid, TextField, Typography, FormControlLabel, Checkbox } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  Grid,
+  TextField,
+  Typography,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import "../styles/components/CompanyJobPostings.css";
 import List from "@mui/material/List";
@@ -10,13 +19,39 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InfoIcon from "@mui/icons-material/Info";
 import Delete from "@mui/icons-material/Delete";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 import AddressForm from "../components/JobPostingsCompanyPage";
+import JobsOverview from "../models/JobsOverview.ts";
+import { getJobPostingWithId, removeJobPosting } from "../api/JobPostingApi";
+import CircularProgress from "@mui/material/CircularProgress";
+import JobPosingViewModal from "./CompanyJobPostingsViewModal";
+
+const fireBaseTime = (seconds, nanoseconds) =>
+  new Date(seconds * 1000 + nanoseconds / 1000000);
+
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
 
 export default function CompanyJobPostings(props) {
-  const [showForm, setShowForm] = useState(false);
   const [open, setOpen] = useState(false);
+  const [jobsModalOpen, setJobsModalOpen] = useState(false);
+
   const { t } = useTranslation();
+  const [openPositions, setOpenPositions] = useState([]);
+  const [loadingState, setLoadingState] = useState(true);
+
+  const [viewPosition, setViewPosition] = useState("");
+  const [viewCompany, setViewCompany] = useState("");
+  const [viewDesc, setViewDesc] = useState("");
+  const [viewLocation, setViewLocation] = useState("");
+  const [viewSalary, setViewSalary] = useState("");
+  const [viewEmail, setViewEmail] = useState("");
+  const [viewDeadline, setViewDeadline] = useState("");
+  const [viewResume, setViewResume] = useState("");
+  const [viewCover, setViewCover] = useState("");
+  const [disableFlag, setDisableFlag] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,45 +60,197 @@ export default function CompanyJobPostings(props) {
     setOpen(false);
   };
 
+  const handleOpenJobModal = (
+    position,
+    company,
+    desc,
+    location,
+    salary,
+    email,
+    deadline,
+    cover,
+    resume
+  ) => {
+    setViewCompany(company);
+    setViewPosition(position);
+    setViewDesc(desc);
+    setViewEmail(email);
+    setViewLocation(location);
+    setViewSalary(salary);
+    setViewDeadline(deadline);
+    setViewCover(cover);
+    setViewResume(resume);
+    setJobsModalOpen(true);
+  };
+
+  const handleCloseJobModal = () => {
+    setJobsModalOpen(false);
+  };
+
+  var positionsArray = [];
+  const getPosting = async () => {
+    //let aPosting= await getJobPostingWithId(postingId);
+    for (let i = 0; i < props.openPositions["postingids"].length; i++) {
+      let aPosting = await getJobPostingWithId(
+        props.openPositions["postingids"][i]
+      );
+
+      if (aPosting) {
+        positionsArray.push(
+          new JobsOverview(
+            aPosting.position,
+            aPosting.location,
+            aPosting.company,
+            aPosting.contract,
+            aPosting.postingID,
+            aPosting.salary,
+            aPosting.description,
+            aPosting.email,
+            aPosting.mandataryResume,
+            aPosting.madatoryCoverLetter,
+            fireBaseTime(
+              aPosting.postingDeadline.seconds,
+              aPosting.postingDeadline.nanoseconds
+            ).toString()
+          )
+        );
+      }
+    }
+    setOpenPositions(positionsArray);
+    setLoadingState(false);
+    setDisableFlag(false);
+  };
+
+  const handleRemoveJobPosting = async (postingId) => {
+    setDisableFlag(true);
+    if (window.confirm("Are you sure you want to remove this Job Posting?")) {
+      var response = await removeJobPosting(props.companyEmail, postingId);
+      if (response) {
+        props.setUpdateFlag(!props.updateFlag);
+      }
+    } else {
+      setDisableFlag(false);
+    }
+  };
+
+  const delayLoad = async () => {
+    await timeout(5000);
+    setLoadingState(false);
+  };
+
+  useEffect(() => {
+    if (props.openPositions) {
+      getPosting();
+    } else {
+      delayLoad();
+      setDisableFlag(false);
+    }
+  }, [props.openPositions]);
+
   return (
     <div className="JobsContainer">
       <div className="JobHeaderWrap">
         <div className="postings">{t("OpenPositions")}</div>
         <div className="editButtonJobs">
-          <Button onClick={handleClickOpen} data-testid="add-button">
-            <PlaylistAddIcon />
-          </Button>
+        {props.companyOwner&&
+        <Button onClick={handleClickOpen} data-testid="add-button">
+          <PlaylistAddIcon />
+        </Button>
+        }
         </div>
+        
       </div>
       <div className="postingsText">
-        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          {[1, 2, 3, 4, 5, 6, 7].map((value) => (
-            <div>
-              <ListItem
-                key={value}
-                secondaryAction={
-                  <>
-                    <IconButton aria-label="comment" color="info">
-                      <InfoIcon />
-                    </IconButton>
-                    <IconButton aria-label="comment" color="error">
-                      <Delete />
-                    </IconButton>
-                  </>
-                }
-              >
-                <ListItemText primary={`Line item ${value}`} />
-              </ListItem>
-              <Divider variant="middle" />
-            </div>
-          ))}
-        </List>
+        {loadingState && <CircularProgress color="info" />}
+
+        {!loadingState && (
+          <>
+            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+              {openPositions.map((position) => (
+                <div>
+                  <ListItem
+                    key={position.id}
+                    secondaryAction={
+                      <>
+                        <IconButton
+                          aria-label="comment"
+                          color="info"
+                          onClick={() =>
+                            handleOpenJobModal(
+                              position.position,
+                              position.company,
+                              position.description,
+                              position.location,
+                              position.salary,
+                              position.email,
+                              position.postingDeadline,
+                              position.mandatoryCoverLetter,
+                              position.mandataryResume
+                            )
+                          }
+                        >
+                          <InfoIcon />
+                        </IconButton>
+
+                        {props.companyOwner &&
+                        <IconButton
+                        aria-label="comment"
+                        color="error"
+                        onClick={() =>
+                          handleRemoveJobPosting(position.jobPosterID)
+                        }
+                        disabled={disableFlag}
+                      >
+                        <Delete />
+                      </IconButton>
+
+                        }
+                        
+                      </>
+                    }
+                  >
+                    <ListItemText primary={position.position} />
+                  </ListItem>
+                  <Divider variant="middle" />
+                </div>
+              ))}
+            </List>
+            {openPositions.length == 0 && (
+              <h2>
+                Currently, this company does not have any open positions
+                available.
+              </h2>
+            )}
+          </>
+        )}
       </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-
-          <AddressForm />
+          <AddressForm
+            setUpdateFlag={props.setUpdateFlag}
+            updateFlag={props.updateFlag}
+            companyName={props.companyName}
+            companyEmail={props.companyEmail}
+            closeDialog={handleClose}
+          />
           <Button onClick={handleClose}>{t("CancelText")}</Button>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={jobsModalOpen} onClose={handleCloseJobModal}>
+        <DialogContent>
+          <JobPosingViewModal
+            viewPosition={viewPosition}
+            viewCompany={viewCompany}
+            viewLocation={viewLocation}
+            viewEmail={viewEmail}
+            viewSalary={viewSalary}
+            viewDesc={viewDesc}
+            viewPostingDeadline={viewDeadline}
+            viewMandatoryResume={viewResume}
+            viewMandatoryCoverLetter={viewCover}
+          />
+          <Button onClick={handleCloseJobModal}>{t("CancelText")}</Button>
         </DialogContent>
       </Dialog>
     </div>
