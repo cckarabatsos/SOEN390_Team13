@@ -1,22 +1,21 @@
 import {
   AppBar,
+  Avatar,
   CssBaseline,
   Toolbar,
   useMediaQuery,
   useTheme,
-  Avatar,
 } from "@material-ui/core";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
+import Stack from "@mui/material/Stack";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/default_picture2.jpg";
-import SearchBar from "../components/SearchBar";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
 import NavLinks from "./NavLinks";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import Badge from "@mui/material/Badge";
-import Stack from "@mui/material/Stack";
 
 function Navbar(props) {
   const theme = useTheme();
@@ -49,7 +48,6 @@ function Navbar(props) {
               >
                 <img className="logo" src={navlogo} alt="LinkedOut" />
               </Link>
-              <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
               <NavLinks userData={userData} />
 
               {userData && (
