@@ -160,7 +160,6 @@ export async function sendMessage(
 ) {
     try {
         userIds = orderIds(userIds);
-        console.log(userIds);
 
         //check for duplicates:
         let findDuplicates = (arr: string[]) =>
@@ -415,35 +414,33 @@ export const storeChatFile = async (
         // Encrypt the file with AES-256-CBC
         const iv = crypto.randomBytes(16);
         console.log(keyBuffer);
-        const cipher = crypto
-            .createCipheriv("aes-256-cbc", keyBuffer, iv)
-            .setAutoPadding(true);
-        const encrypted = Buffer.concat([
-            cipher.update(file.buffer),
-            cipher.final(),
-        ]);
-        const encryptedFile = Buffer.concat([iv, encrypted]);
-
         const metadata = {
             contentType: file.mimetype,
         };
-
         const folder: string = "Messages/";
         const filename = `${folder}${conversationID}-${
             conversation.get("messages").length + 1
         }-${file.originalname}`;
 
-        const uploadTask = await ref
-            .child(filename)
-            .put(encryptedFile, metadata);
+        const buffer = Buffer.from(file.buffer);
+        const uploadTask = await ref.child(filename).put(buffer, metadata);
         const downloadURL = await uploadTask.ref.getDownloadURL();
+
+        const cipher = crypto
+            .createCipheriv("aes-128-ecb", keyBuffer, null)
+            .setAutoPadding(true);
+        const encrypted = Buffer.concat([
+            cipher.update(downloadURL),
+            cipher.final(),
+        ]);
+        const encryptedLink = Buffer.concat([iv, encrypted]);
+        console.log(encryptedLink);
         const type = "document";
-        console.log(iv);
-        console.log(key);
+
         const chatID: string = await sendMessage(
             senderID,
             IDs,
-            downloadURL,
+            encryptedLink.toString("base64"),
             type,
             iv
         );

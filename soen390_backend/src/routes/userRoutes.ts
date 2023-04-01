@@ -471,7 +471,7 @@ user.get("/updateFields", (_: Request, res: Response) => {
         .get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                const iv = crypto.randomBytes(32).toString("hex");
+                const iv = crypto.randomBytes(16).toString("hex");
                 batch.set(
                     doc.ref,
                     {

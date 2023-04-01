@@ -13,7 +13,7 @@ import multer from "multer";
 import { hasFile } from "../controllers/userControllers";
 import { findConversationWithID } from "../services/messagesServices";
 import * as crypto from "crypto";
-import https from "https";
+
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
@@ -229,55 +229,14 @@ messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-messages.get("/downloadDocument", async (req, res) => {
-    const encryptedUrl = req.query.encryptedUrl; // retrieve the encrypted file's URL from the query parameters
-    const conversationID = req.query.conversationID; // retrieve the decryption key from the query parameters
-    console.log(conversationID);
-    console.log(encryptedUrl);
-    const ivBase64 = req.query.iv?.toString();
-    if (!ivBase64) {
-        res.status(400).send("Missing iv parameter");
-        return;
-    }
-    const decodedIv = decodeURIComponent(ivBase64);
-    console.log(decodedIv);
-    const decryptedBuffer = await decryptDocument(
-        encryptedUrl,
-        conversationID,
-        decodedIv
-    ); // call your decryption function to get a buffer of the decrypted file
-    const filename = "decrypted-file.pdf"; // set the filename for the decrypted file
-
-    // set the headers for the response to indicate that it is a downloadable file
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
-
-    res.send(decryptedBuffer); // send the decrypted file buffer as the response
-});
-
 const decryptDocument = async (
-    downloadURL: any,
+    encryptedUrl: any,
     conversationID: any,
     ivBase64: any
 ) => {
     try {
-        const response: any = await new Promise((resolve, reject) => {
-            https.get(downloadURL, resolve).on("error", reject);
-        });
-
-        const chunks: any = [];
-        response.on("data", (chunk: any) => {
-            chunks.push(chunk);
-        });
-        await new Promise((resolve, reject) => {
-            response.on("end", resolve);
-            response.on("error", reject);
-        });
-
-        const data = Buffer.concat(chunks);
-        // const ivAndEncryptedData = Buffer.from(data.slice(16));
         const iv = Buffer.from(decodeURIComponent(ivBase64), "base64");
-
+        console.log(iv);
         const conversation = await findConversationWithID(conversationID);
 
         if (!conversation) {
@@ -287,21 +246,48 @@ const decryptDocument = async (
         const key = conversation.key;
         const keyBuffer = Buffer.from(key, "hex");
         console.log(keyBuffer);
-        console.log(iv);
         const decipher = crypto
-            .createDecipheriv("aes-256-cbc", keyBuffer, iv.slice(0, 16))
+            .createDecipheriv("aes-128-ecb", keyBuffer, null)
             .setAutoPadding(true); // enable auto padding
 
+        const encryptedData = Buffer.from(encryptedUrl, "base64");
+        console.log(encryptedData);
         const decrypted = Buffer.concat([
-            decipher.update(data),
+            decipher.update(encryptedData),
             decipher.final(),
         ]);
+        console.log(decrypted.toString("utf-8"));
 
-        return decrypted;
+        return decrypted.toString("utf-8");
     } catch (error) {
         console.error(error);
-        return null;
+        throw error;
     }
 };
+
+messages.get("/downloadDocument", async (req, res) => {
+    const encryptedUrl = req.query.encryptedUrl;
+    const conversationID = req.query.conversationID;
+    const ivBase64 = req.query.iv?.toString();
+
+    if (!ivBase64) {
+        res.status(400).send("Missing iv parameter");
+        return;
+    }
+
+    try {
+        const decryptedBuffer = await decryptDocument(
+            encryptedUrl,
+            conversationID,
+            ivBase64
+        );
+        const decryptedString = decryptedBuffer.toString();
+        res.setHeader("Content-Type", "text/plain");
+        res.send(decryptedString);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error decrypting file");
+    }
+});
 
 export default messages;
