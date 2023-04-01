@@ -121,7 +121,7 @@
     "ReqDoc" : "Documents Requis",
     "SelDoc" : "Documents Selectionnés",
     "JobSuggestions" : "Suggestions d'emplois pour vous",
-  "AddSkills": "Ajouter des compétences afin qu'on puisse etre en mesure de donner des suggestions",
+    "AddSkills" : "Ajouter des compétences afin qu'on puisse etre en mesure de donner des suggestions",
   "FindUsersLabel": "Trouver des utilisateurs",
   "DesiredUsers": "Parcourez les utilisateurs disponibles ci-dessous."
 }
