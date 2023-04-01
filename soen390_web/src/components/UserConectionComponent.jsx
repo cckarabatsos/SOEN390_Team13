@@ -3,15 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Person from "../assets/UserConnectionImages/image (1).jpg";
 import "../styles/components/userconnection.css";
-function handleDecline() {
-  // Do something when the decline button is clicked
-  console.log("Decline button clicked");
-}
 
-function handleConfirm() {
-  // Do something when the confirm button is clicked
-  console.log("Confirm button clicked");
-}
 
 export default function UserConnectionComponent(props) {
   const image = props.image;

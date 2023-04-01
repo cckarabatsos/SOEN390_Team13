@@ -59,11 +59,11 @@ export default function CompanyProfilePage(props) {
     <div className="CompanyProfileContainer">
       <CompanyHeader name={companyData.name?companyData.name:name} picture={companyData.picture?companyData.picture:picture} userId={userData.userID} companyId={companyId} isFollowing={isFollowingState} setIsFollowing={setIsFollowingState} userData={userData}></CompanyHeader>
 
-      <CompanyDescription description={description}></CompanyDescription>
+      <CompanyDescription description={companyData.bio} setUpdateFlag={setUpdateState} updateFlag={updateState} userData={companyData}></CompanyDescription>
 
       <CompanyJobPostings openPositions={companyData.jobpostings} companyName={companyData.name} companyEmail={companyData.email} setUpdateFlag={setUpdateState} updateFlag={updateState} ></CompanyJobPostings>
       
-      <CompanyApplicationList openPositions={companyData.jobpostings} companyName={companyData.name} companyEmail={companyData.email} setUpdateFlag={setUpdateState} updateFlag={updateState}></CompanyApplicationList>
+      <CompanyApplicationList openPositions={companyData.jobpostings} companyName={companyData.name} companyEmail={companyData.email} setUpdateFlag={setUpdateState} updateFlag={updateState} userData={companyData}></CompanyApplicationList>
       
     </div>
   );

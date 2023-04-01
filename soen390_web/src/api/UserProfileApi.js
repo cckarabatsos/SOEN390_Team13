@@ -120,3 +120,38 @@ export async function removeSkill(skillId) {
     return false; 
   }
 }
+
+
+export async function updateUserDescription(user,newDescription) {
+  try {
+    console.log({
+      user
+    })
+    const response = await axios.post(
+      api.BACKEND_API + "/user/edit/" + user.email,
+      {
+        name: user.name,
+        password: user.password,
+        email: user.email,
+        privateKey: user.privateKey,
+        publicKey: user.publicKey,
+        picture: user.picture,
+        resume: user.resume,
+        coverLetter: user.coverLetter,
+        bio: newDescription,
+        currentPosition: user.currentPosition,
+        currentCompany: user.concordiaUniversity,
+        isCompany: user.isCompany,
+      }
+    );
+    if (response.status === 200) {
+      // wait for the data to
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}

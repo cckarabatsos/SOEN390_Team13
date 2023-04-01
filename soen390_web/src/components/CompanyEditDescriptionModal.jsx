@@ -4,19 +4,35 @@ import { useTranslation } from "react-i18next";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import { updateUserDescription } from "../api/UserProfileApi";
 
 
 
-export default function CompanyEditDescriptionModal() {
+export default function CompanyEditDescriptionModal(props) {
 
-    const handleDescOnClick=()=>{
+  const [text, setText] = useState(props.descriptionText);
+    const handleDescOnClick=async ()=>{
+      console.log(text)
+      let res = await updateUserDescription(props.userData,text)
 
+      if(res){
+        props.setUpdateFlag(!props.updateFlag)
+        props.handleCloseModal()
+      }
+      else{
+        console.log("error in description")
+      }
     }
-    
+
+
+    const handleTextChange = (e) => {
+      setText(e.target.value);
+      
+    };
   return (
     <React.Fragment>
-      <Typography variant="h6" align="center" width="100%" gutterBottom>
-        Edit Company description
+      <Typography variant="h5" align="center" width="100%" gutterBottom>
+       <b>Edit Company description</b> 
       </Typography>
 
       <Grid item xs={12}>
@@ -31,6 +47,9 @@ export default function CompanyEditDescriptionModal() {
           fullWidth
           autoComplete="Job-Title"
           variant="standard"
+          defaultValue={props.descriptionText}
+          value={text}
+          onChange={handleTextChange}
         />
       </Grid>
       <br></br>

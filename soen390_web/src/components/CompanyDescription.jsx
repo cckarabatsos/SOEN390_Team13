@@ -40,7 +40,7 @@ const handleCloseDescModal = () => {
       <Dialog open={descModalOpen} onClose={handleCloseDescModal} fullWidth
   maxWidth="md">
         <DialogContent>
-          <CompanyEditDescriptionModal  handleCloseModal={handleCloseDescModal} setUpdateFlag={props.setUpdateFlag} updateFlag={props.updateFlag}></CompanyEditDescriptionModal>
+          <CompanyEditDescriptionModal  handleCloseModal={handleCloseDescModal} setUpdateFlag={props.setUpdateFlag} updateFlag={props.updateFlag} descriptionText={description} userData={props.userData}></CompanyEditDescriptionModal>
           <Button onClick={handleCloseDescModal}>{t("CancelText")}</Button>
         </DialogContent>
       </Dialog>
