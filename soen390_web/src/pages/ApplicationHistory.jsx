@@ -13,6 +13,7 @@ import TableBody from "@mui/material/TableBody";
 import ActionButton from "../components/ActionButton";
 import { useEffect, useState } from "react";
 import { getAllApplication } from "../api/ApplicationHistoryApi";
+import { useTranslation } from "react-i18next";
 
 /*
 function createData(position, location, company, contract, JobId) {
@@ -24,6 +25,7 @@ export default function BasicTable() {
 
 const [currentID, setCurrentID] = useState(""); */
   const [application, setApplication] = useState([]);
+  const { t } = useTranslation();
   var Application = [];
   /*const getApplications = async (ID) => {
     var responce = await getAllApplication(ID);
@@ -66,7 +68,7 @@ const [currentID, setCurrentID] = useState(""); */
               }}
               colSpan={6}
             >
-              My applications
+              {t("Applications")}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -74,25 +76,25 @@ const [currentID, setCurrentID] = useState(""); */
               sx={{ fontSize: "20px", paddingBottom: "16px" }}
               align="left"
             >
-              Position
+              {t("PositionText")}
             </TableCell>
             <TableCell
               sx={{ fontSize: "20px", paddingBottom: "16px" }}
               align="left"
             >
-              Location&nbsp;
+              {t("LocationText")}&nbsp;
             </TableCell>
             <TableCell
               sx={{ fontSize: "20px", paddingBottom: "16px" }}
               align="left"
             >
-              Company&nbsp;
+              {t("CompanyText")}&nbsp;
             </TableCell>
             <TableCell
               sx={{ fontSize: "20px", paddingBottom: "16px" }}
               align="left"
             >
-              Status&nbsp;
+              {t("StatusText")}&nbsp;
             </TableCell>
             <TableCell
               sx={{ fontSize: "20px", paddingBottom: "16px" }}

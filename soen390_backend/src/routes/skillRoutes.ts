@@ -2,7 +2,11 @@
  * Routes for Skill entity of the database
  */
 import express, { Request, Response } from "express";
-import { deleteSkill, createSkill, getSkills } from "../controllers/skillControllers";
+import {
+    deleteSkill,
+    createSkill,
+    getSkills,
+} from "../controllers/skillControllers";
 import { Skill } from "../models/Skill";
 const skill = express.Router();
 skill.use(express.json());
@@ -50,7 +54,7 @@ skill.post("/remove/:docID", async (req: Request, res: Response) => {
             res.status(200);
             res.json({
                 Response: "Success",
-                skill
+                skill,
             });
         } else if (status == 404) {
             res.sendStatus(404);
@@ -81,4 +85,4 @@ skill.get("/get/:userID", async (req: Request, res: Response) => {
     }
 });
 
-module.exports = skill;
+export default skill;

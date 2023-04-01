@@ -165,7 +165,7 @@ application.get(
  */
 application.post("/remove/:userID", async (req: Request, res: Response) => {
     let userID: string = req.params.userID;
-    let postingID = req.query.postingID as string
+    let postingID = req.query.postingID as string;
     try {
         const application: Application = await deleteApplication(
             userID,
@@ -188,26 +188,28 @@ application.post("/remove/:userID", async (req: Request, res: Response) => {
 /**
  * Route that updates an application's status in database
  */
-application.post("/updateStatus/:applicationID", async (req: Request, res: Response) => {
-    let applicationID: string = req.params.applicationID;
-    let newStatus = req.query.status as string;
-    try {
-        const application: Application = await editApplication(
-            applicationID,
-            newStatus
-        );
-        const status: number = application[0];
-        if (status == 200) {
-            res.status(200);
-            res.json(application[1]);
+application.post(
+    "/updateStatus/:applicationID",
+    async (req: Request, res: Response) => {
+        let applicationID: string = req.params.applicationID;
+        let newStatus = req.query.status as string;
+        try {
+            const application: Application = await editApplication(
+                applicationID,
+                newStatus
+            );
+            const status: number = application[0];
+            if (status == 200) {
+                res.status(200);
+                res.json(application[1]);
+            }
+            if (status == 404) {
+                res.sendStatus(404);
+            }
+        } catch (err: any) {
+            res.status(400);
+            res.json({ errType: err.name, errMsg: err.message });
         }
-        if (status == 404) {
-            res.sendStatus(404);
-        }
-    } catch (err: any) {
-        res.status(400);
-        res.json({ errType: err.name, errMsg: err.message });
     }
-});
-
-module.exports = application;
+);
+export default application;

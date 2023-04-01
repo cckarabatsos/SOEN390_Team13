@@ -59,9 +59,7 @@ jobposting.get(
     async (req: Request, res: Response) => {
         let userID = req.params.userID;
         try {
-            const application: Jobposting = await getJobSuggestions(
-                userID
-            );
+            const application: Jobposting = await getJobSuggestions(userID);
             const status: number = application[0];
             if (status == 200) {
                 res.status(200);
@@ -77,5 +75,4 @@ jobposting.get(
     }
 );
 
-//Exporting the job postings
-module.exports = jobposting;
+export default jobposting;

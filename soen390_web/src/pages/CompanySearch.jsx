@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CompanySearchBar } from "../components/CompanySearchBar";
-import "../styles/components/CompanySearchPage.css";
-import Company from "../models/Company.ts";
 import CompanySearchComponent from "../components/CompanySearchComponent";
-
-import { useNavigate } from "react-router-dom";
+import Company from "../models/Company.ts";
+import "../styles/components/CompanySearchPage.css";
 
 export default function CompanySearch() {
   const { t } = useTranslation();
@@ -13,7 +11,6 @@ export default function CompanySearch() {
   const [companyDisplay, setCompanyDisplay] = useState([]);
 
   useEffect(() => {
-    console.log(companies);
     var companyArray = [];
 
     for (var i = 0; i < companies.length; i++) {
@@ -29,38 +26,31 @@ export default function CompanySearch() {
         )
       );
     }
-
-    //console.log(Array);
-
     setCompanyDisplay(companyArray);
   }, [companies]);
 
-  if (companies) {
-    console.log(companyDisplay);
-  }
-
   return (
     <div>
-      <div data-testid="company-posting">
-        <div className="companySearchingText">
+      <div data-testid="job-posting">
+        <div className="jobSearchingText">
           <p>{t("FindCompanyLabel")}</p>
         </div>
-        <div className="desiredCompanyText">
+        <div className="desiredJobText">
           <p>{t("DesiredCompany")}</p>
         </div>
         <CompanySearchBar setCompanies={setCompanies} />
-      </div>
 
-      {companyDisplay.map((company) => (
-        <CompanySearchComponent
-          key={company.id}
-          name={company.companyName}
-          location="New York, NY"
-          followerCount={company.followerCount}
-          picture={company.pictureURL}
-          description={company.description}
-        ></CompanySearchComponent>
-      ))}
+        {companyDisplay.map((company) => (
+          <CompanySearchComponent
+            key={company.id}
+            name={company.companyName}
+            location="New York, NY"
+            followerCount={company.followerCount}
+            picture={company.pictureURL}
+            description={company.description}
+          ></CompanySearchComponent>
+        ))}
+      </div>
     </div>
   );
 }
