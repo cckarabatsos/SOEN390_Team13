@@ -18,15 +18,45 @@ export default function CompanyProfilePage(props) {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing);
   const [jobToDisplay, setJobToDisplay] = useState({});
   const [updateState, setUpdateState] = useState(false);
-  const getCompanyProfile = async (companyId, userId) => {
+
+  const [isCompanyOwner,setIsCompanyOwnner] = useState(false);
+  const [isUser,setIsUser] = useState(false);
+  const [iscompany,setIsCompany] = useState(false);
+
+
+  const getCompanyProfile = async (companyId, user) => {
     let company = await findUserById(companyId);
     if (company.data) {
       setCompanyData(company.data);
-      if (userData && company.data.followers.includes(userId)) {
+      if (userData && company.data.followers.includes(user.userID)) {
         setIsFollowingState(true);
       } else {
         setIsFollowingState(false);
       }
+    if(userData){
+
+      console.log(user.userID)
+      console.log(user.isCompany)
+      if(user.userID==company.data.userID){
+        console.log("hello1")
+        setIsCompanyOwnner(true)
+        setIsCompany(true)
+        setIsUser(false)
+      }
+      else if(user.isCompany){
+        console.log("hello2")
+        setIsCompany(true)
+        setIsCompanyOwnner(false)
+        setIsUser(false)
+
+      }
+      else{
+        console.log("hello3")
+        setIsUser(true)
+        setIsCompany(false)
+        setIsCompanyOwnner(false)
+      }
+    }
     }
   };
 
@@ -39,7 +69,7 @@ export default function CompanyProfilePage(props) {
     }
 
     console.log("about to re update company in company profile");
-    getCompanyProfile(companyId, {});
+    getCompanyProfile(companyId, data);
   }, [isFollowingState, companyId, updateState]);
 
   //console.log("before re-render company in company profile")
@@ -63,6 +93,7 @@ export default function CompanyProfilePage(props) {
         setUpdateFlag={setUpdateState}
         updateFlag={updateState}
         userData={companyData}
+        companyOwner={isCompanyOwner}
       ></CompanyDescription>
 
       <CompanyJobPostings
@@ -71,16 +102,23 @@ export default function CompanyProfilePage(props) {
         companyEmail={companyData.email}
         setUpdateFlag={setUpdateState}
         updateFlag={updateState}
+        companyOwner={isCompanyOwner}
       ></CompanyJobPostings>
+      {isCompanyOwner &&
 
-      <CompanyApplicationList
-        openPositions={companyData.jobpostings}
-        companyName={companyData.name}
-        companyEmail={companyData.email}
-        setUpdateFlag={setUpdateState}
-        updateFlag={updateState}
-        userData={companyData}
-      ></CompanyApplicationList>
+<CompanyApplicationList
+openPositions={companyData.jobpostings}
+companyName={companyData.name}
+companyEmail={companyData.email}
+setUpdateFlag={setUpdateState}
+updateFlag={updateState}
+userData={companyData}
+></CompanyApplicationList>
+
+
+
+      }
+      
     </div>
   );
 }

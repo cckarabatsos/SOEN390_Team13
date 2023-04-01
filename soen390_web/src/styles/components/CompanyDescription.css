@@ -23,6 +23,7 @@
 
     .descriptionHeaderWrap{
         width: 100%;
+        float: left;
     }
 
 
@@ -35,7 +36,8 @@
         font-family: "Inter-regular";
         padding: 1rem;
         width: 75%;
-        display: inline-block
+        display: inline-block;
+        
     }
 
     .editButtonDescription{

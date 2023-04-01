@@ -152,10 +152,13 @@ export default function CompanyJobPostings(props) {
       <div className="JobHeaderWrap">
         <div className="postings">{t("OpenPositions")}</div>
         <div className="editButtonJobs">
-          <Button onClick={handleClickOpen} data-testid="add-button">
-            <PlaylistAddIcon />
-          </Button>
+        {props.companyOwner&&
+        <Button onClick={handleClickOpen} data-testid="add-button">
+          <PlaylistAddIcon />
+        </Button>
+        }
         </div>
+        
       </div>
       <div className="postingsText">
         {loadingState && <CircularProgress color="info" />}
@@ -188,16 +191,21 @@ export default function CompanyJobPostings(props) {
                         >
                           <InfoIcon />
                         </IconButton>
+
+                        {props.companyOwner &&
                         <IconButton
-                          aria-label="comment"
-                          color="error"
-                          onClick={() =>
-                            handleRemoveJobPosting(position.jobPosterID)
-                          }
-                          disabled={disableFlag}
-                        >
-                          <Delete />
-                        </IconButton>
+                        aria-label="comment"
+                        color="error"
+                        onClick={() =>
+                          handleRemoveJobPosting(position.jobPosterID)
+                        }
+                        disabled={disableFlag}
+                      >
+                        <Delete />
+                      </IconButton>
+
+                        }
+                        
                       </>
                     }
                   >

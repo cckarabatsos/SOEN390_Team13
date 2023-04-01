@@ -26,10 +26,15 @@ const handleCloseDescModal = () => {
       <div className="descriptionHeaderWrap">
         <div className="description">Description</div>
         <div className="editButtonDescription">
-          <Button onClick={handleOpenDescModal}>
-            <EditIcon></EditIcon>
-          </Button>
+        {props.companyOwner &&
+        
+        <Button onClick={handleOpenDescModal}>
+          <EditIcon></EditIcon>
+        </Button>
+      
+        }
         </div>
+        
       </div>
 
       <div className="descriptionText">
