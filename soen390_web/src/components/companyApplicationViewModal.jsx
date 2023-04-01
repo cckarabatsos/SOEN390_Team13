@@ -1,0 +1,11 @@
+import React from "react";
+import "../styles/components/JobPostingComponent.css";
+import { Button } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import { Stack } from "@mui/material";

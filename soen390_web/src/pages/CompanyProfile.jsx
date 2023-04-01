@@ -65,7 +65,8 @@ export default function CompanyProfilePage(props) {
 
       <CompanyJobPostings openPositions={companyData.jobpostings} companyName={companyData.name} companyEmail={companyData.email} setUpdateFlag={setUpdateState} updateFlag={updateState} ></CompanyJobPostings>
       
-      <CompanyApplicationList></CompanyApplicationList>
+      <CompanyApplicationList openPositions={companyData.jobpostings} companyName={companyData.name} companyEmail={companyData.email} setUpdateFlag={setUpdateState} updateFlag={updateState}></CompanyApplicationList>
+      
     </div>
   );
 }
