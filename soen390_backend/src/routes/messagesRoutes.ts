@@ -229,14 +229,8 @@ messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-const decryptDocument = async (
-    encryptedUrl: any,
-    conversationID: any,
-    ivBase64: any
-) => {
+const decryptDocument = async (encryptedUrl: any, conversationID: any) => {
     try {
-        const iv = Buffer.from(decodeURIComponent(ivBase64), "base64");
-        console.log(iv);
         const conversation = await findConversationWithID(conversationID);
 
         if (!conversation) {
@@ -249,16 +243,23 @@ const decryptDocument = async (
         const decipher = crypto
             .createDecipheriv("aes-128-ecb", keyBuffer, null)
             .setAutoPadding(true); // enable auto padding
-
+        console.log(encryptedUrl);
         const encryptedData = Buffer.from(encryptedUrl, "base64");
-        console.log(encryptedData);
         const decrypted = Buffer.concat([
             decipher.update(encryptedData),
             decipher.final(),
         ]);
-        console.log(decrypted.toString("utf-8"));
+        const decryptedString = decrypted.toString("utf-8");
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const matches = decryptedString.match(urlRegex);
 
-        return decrypted.toString("utf-8");
+        if (matches) {
+            const decryptedLink = matches[0];
+            console.log(decryptedLink);
+            return decryptedLink;
+        } else {
+            throw new Error("Decrypted string does not contain a valid URL");
+        }
     } catch (error) {
         console.error(error);
         throw error;
@@ -268,18 +269,11 @@ const decryptDocument = async (
 messages.get("/downloadDocument", async (req, res) => {
     const encryptedUrl = req.query.encryptedUrl;
     const conversationID = req.query.conversationID;
-    const ivBase64 = req.query.iv?.toString();
-
-    if (!ivBase64) {
-        res.status(400).send("Missing iv parameter");
-        return;
-    }
 
     try {
         const decryptedBuffer = await decryptDocument(
             encryptedUrl,
-            conversationID,
-            ivBase64
+            conversationID
         );
         const decryptedString = decryptedBuffer.toString();
         res.setHeader("Content-Type", "text/plain");

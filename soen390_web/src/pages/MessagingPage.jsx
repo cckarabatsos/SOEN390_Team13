@@ -203,35 +203,16 @@ function Messages(props) {
     const handleReportModalClose = () => {
         setShowReportModal(false);
     };
-    const handleDocumentDownload = async (decryptedContent, filename) => {
-        try {
-            const blob = new Blob([decryptedContent], {
-                type: "application/octet-stream",
-            });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error("Error while downloading file: ", error);
-        }
-    };
 
-    const handleDocumentDecryptButton = async (
-        content,
-        conversationID,
-        filename
-    ) => {
+    const handleDocumentDecryptButton = async (content, conversationID) => {
         try {
-            const decryptedBuffer = await handleDocumentDecrypt(
+            console.log(content);
+            const decryptedUrl = await handleDocumentDecrypt(
                 content,
                 conversationID
             );
-            handleDocumentDownload(decryptedBuffer, filename);
+            console.log(decryptedUrl);
+            window.open(decryptedUrl, "_blank");
         } catch (error) {
             console.error("Error while decrypting file: ", error);
         }
@@ -328,16 +309,6 @@ function Messages(props) {
                                                     classes.documentContainer
                                                 }
                                             >
-                                                <a
-                                                    href={message.content}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className={
-                                                        classes.documentLink
-                                                    }
-                                                >
-                                                    Download Document
-                                                </a>
                                                 <Button
                                                     variant="contained"
                                                     color="primary"
