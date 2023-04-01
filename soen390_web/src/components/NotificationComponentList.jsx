@@ -18,7 +18,7 @@ export default function NotificationComponentList(props) {
     setNotifications(generatedNotification);
   };
   const handleRemoveNotification = async (notificationId) => {
-    console.log("document notification IOd: " + notificationId);
+    // console.log("document notification IOd: " + notificationId);
     var response = await removeNotification(notificationId);
     if (response) {
       getNotificationsList(userData.userId);
