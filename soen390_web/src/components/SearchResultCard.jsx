@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { Avatar, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography, Button, Avatar } from "@material-ui/core";
-import { sendInvite } from "../api/userNetworkingApi";
 import { Alert } from "@mui/material";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { sendInvite } from "../api/userNetworkingApi";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -41,6 +42,8 @@ const SearchResultCard = ({ data }) => {
     message: "",
   });
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const sendConnection = async (email) => {
     const personalData = JSON.parse(localStorage.getItem("isAuth"));
     console.log(email);
@@ -48,12 +51,12 @@ const SearchResultCard = ({ data }) => {
     const temp = await sendInvite(personalData.email, email);
     console.log(temp);
     const alertSeverity = temp ? "success" : "error";
-    
-   // ? "Connection request sent!"
-   // : "Failed to send connection request";
-   const alertMessage = temp
-   ? `${t("ConnectionRequestText")}`
-   : `${t("FailedConnectionRequestText")}`;
+
+    // ? "Connection request sent!"
+    // : "Failed to send connection request";
+    const alertMessage = temp
+      ? `${t("ConnectionRequestText")}`
+      : `${t("FailedConnectionRequestText")}`;
     setAlert({ open: true, severity: alertSeverity, message: alertMessage });
     setTimeout(() => {
       setAlert({ ...alert, open: false });
@@ -62,6 +65,14 @@ const SearchResultCard = ({ data }) => {
 
   const handleClose = () => {
     setAlert({ ...alert, open: false });
+  };
+
+  const openConnection = (id) => {
+    console.log(id);
+  };
+
+  const sendFirstMessage = (id) => {
+    navigate("/Messages/" + id);
   };
 
   return (
@@ -94,14 +105,23 @@ const SearchResultCard = ({ data }) => {
               className={classes.connectButton}
               onClick={() => sendConnection(`${data.email}`)}
             >
-             {t("ConnectText")}
+              {t("ConnectText")}
             </Button>
             <Button
               variant="outlined"
               color="primary"
               className={classes.viewProfileButton}
+              onClick={() => openConnection(data.id)}
             >
               {t("ViewProfileText")}
+            </Button>{" "}
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.viewProfileButton}
+              onClick={() => sendFirstMessage(data.id)}
+            >
+              {t("Message")}
             </Button>
             <Alert
               severity={alert.severity}

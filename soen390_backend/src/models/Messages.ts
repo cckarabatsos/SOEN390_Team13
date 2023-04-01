@@ -1,19 +1,20 @@
 import firebase from "firebase";
 // Model for the chatMessage entity
 export type chatMessage = {
-  content: string;
-  isRead: boolean;
-  senderId: string;
-  timestamp: firebase.firestore.Timestamp | Date;
-  type: string;
+    content: string;
+    isRead: boolean;
+    senderId: string;
+    timestamp: firebase.firestore.Timestamp | Date;
+    type: string;
+    iv: String;
 };
 
 export type messagesListElement = {
-  email: string;
-  message: chatMessage;
+    Id: string;
+    message: chatMessage;
 };
 
 export type conversationListElement = {
-  ActiveUser: string[];
-  message: chatMessage | null;
+    ActiveUser: string[];
+    message: chatMessage | null;
 };

@@ -1,18 +1,21 @@
 import {
   AppBar,
-  Button,
+  Avatar,
   CssBaseline,
   Toolbar,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
+import Stack from "@mui/material/Stack";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import navlogo from "../assets/default_picture2.jpg";
-import SearchBar from "../components/SearchBar";
 import "../styles/components/navbar.css";
 import DrawerComponent from "./Drawer";
+import NavLinks from "./NavLinks";
 
 function Navbar(props) {
   const theme = useTheme();
@@ -21,108 +24,46 @@ function Navbar(props) {
   const searchBarRef = useRef(null);
 
   const { t, i18n } = useTranslation();
-  const signout = () => {
-    localStorage.setItem("isAuth", null);
-    window.dispatchEvent(new Event("storage"));
-  };
 
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-  };
   const handleSearch = async () => {
     console.log("hi");
   };
 
   return (
     <div data-testid="navbar-1">
-      <AppBar position="static" style={{ background: "#ffffff" }}>
+      <AppBar
+        position="static"
+        style={{ background: "#ffffff", zIndex: 1301 }} // Add zIndex to the AppBar
+      >
         <CssBaseline />
-        <Toolbar>
+        <Toolbar className="navbar-toolbar">
           {isMobile ? (
-            <DrawerComponent />
+            <DrawerComponent userData={userData} />
           ) : (
             <>
               <Link
                 data-testid="home-1"
-                to={userData ? "/JobApplication" : "/"}
+                to={userData ? "/UserProfile" : "/"}
                 className="logo"
               >
                 <img className="logo" src={navlogo} alt="LinkedOut" />
               </Link>
-              <SearchBar ref={searchBarRef} onSearchBtnClick={handleSearch} />
-              <span className="navlinks">
-                {userData && (
-                  <Link
-                    data-testid="home-1"
-                    to="/NewsFeedPage"
-                    className="link"
-                  >
-                    {t("HomeText")}
+              <NavLinks userData={userData} />
+
+              {userData && (
+                <Stack spacing={1} direction="row">
+                  <Avatar
+                    alt="User"
+                    src={userData ? userData.picture : ""}
+                    sx={{ width: 47, height: 47 }}
+                  />
+                  <Link className="notification" to="/NotificationsPage">
+                    <Badge badgeContent={4} color="secondary">
+                      <NotificationsIcon></NotificationsIcon>
+                    </Badge>
                   </Link>
-                )}
-                <Link data-testid="job-1" to="/JobSearch" className="link">
-                  {t("jobsNavBar")}
-                </Link>
-
-                {userData && (
-                  <>
-                    <Link
-                      data-testid="job-1"
-                      to="/UserNetworking"
-                      className="link"
-                    >
-                      {t("NetworkingText")}
-                    </Link>
-                    <Link
-                      data-testid="job-1"
-                      to="/UserConnection"
-                      className="link"
-                    >
-                      {t("UserConnectionText")}
-                    </Link>
-
-                    <Link data-testid="job-1" to="/Contacts" className="link">
-                      {t("ContactsText")}
-                    </Link>
-                  </>
-                )}
-
-                {!userData ? (
-                  <>
-                    <Link
-                      data-testid="login-1"
-                      to="/UserProfile"
-                      className="link"
-                    >
-                      {t("LoginText")}
-                    </Link>
-                    <Link data-testid="signup-1" to="/Signup" className="link">
-                      {t("SignUpText")}
-                    </Link>
-                  </>
-                ) : (
-                  <Link to="/" className="link" onClick={signout}>
-                    {t("SignoutText")}
-                  </Link>
-                )}
-                {i18n.language !== "en" ? (
-                  <Button
-                    color="inherit"
-                    onClick={() => changeLanguage("en")}
-                    className="link-button"
-                  >
-                    EN
-                  </Button>
-                ) : (
-                  <Button
-                    color="inherit"
-                    onClick={() => changeLanguage("fr")}
-                    className="link-button"
-                  >
-                    FR
-                  </Button>
-                )}
-              </span>
+                </Stack>
+              )}
             </>
           )}
         </Toolbar>
@@ -130,4 +71,5 @@ function Navbar(props) {
     </div>
   );
 }
+
 export default Navbar;

@@ -1,0 +1,19 @@
+.companySearchingText{
+    font-style: "Inter-regular" !important;
+    margin-left: 20rem;
+    display: block !important;
+    font-weight: 200px !important;
+    color: #006AF9 !important;
+    font-size: 25px !important;
+    text-align: justify !important;
+  }
+
+  .desiredCompanyText{
+    font-style: "Inter-regular" !important;
+    margin-left: 20rem;
+    display: block !important;
+    font-weight: 200px !important;
+    color: #006AF9 !important;
+    font-size: 20px !important;
+    text-align: justify !important;
+  }

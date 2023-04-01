@@ -5,8 +5,10 @@ import JobSearchBar from "../components/JobSearchBar";
 import Modal from "../components/Modal";
 import JobsOverview from "../models/JobsOverview.ts";
 
-export default function JobSearch() {
+const fireBaseTime = (seconds, nanoseconds) =>
+  new Date(seconds * 1000 + nanoseconds / 1000000);
 
+export default function JobSearch() {
   // define state variables with useState hook
   const [modalOpen, setModalOpen] = useState(false);
   const [jobPosterID, setjobPosterID] = useState(false);
@@ -17,13 +19,14 @@ export default function JobSearch() {
   const [salary, setSalary] = useState(false);
   const [description, setDescription] = useState(false);
   const [email, setEmail] = useState(false);
+  const [mandatoryResume, setMandatoryResume] = useState(false);
+  const [mandatoryCoverLetter, setMandatoryCoverLetter] = useState(false);
   const [jobs, setJobs] = useState([]);
   const { t } = useTranslation();
   const [jobDisplay, setJobDisplay] = useState([]);
 
   // useEffect to create jobDisplay array whenever jobs array changes
   useEffect(() => {
-    console.log(jobs);
     var jobArray = [];
 
     for (var i = 0; i < jobs.length; i++) {
@@ -34,29 +37,33 @@ export default function JobSearch() {
           jobs[i].company,
           jobs[i].contract,
           i,
-          20,  //jobs[i].salary
+          20, //jobs[i].salary
           jobs[i].description,
-          jobs[i].email
+          jobs[i].email,
+          jobs[i].mandatoryResume,
+          jobs[i].mandatoryCoverLetter,
+          fireBaseTime(
+            jobs[i].postingDeadline.seconds,
+            jobs[i].postingDeadline.nanoseconds
+          ).toString()
         )
       );
     }
 
-    console.log(jobArray);
-
     setJobDisplay(jobArray);
   }, [jobs]);
 
-  // render JobSearch component 
+  // render JobSearch component
   // map over jobDisplay array and render JobPostingComponent for each job
-        
+
   return (
     <div>
       <div data-testid="job-posting">
         <div className="jobSearchingText">
-        <p>{t("JobSearchingJourneyText")}</p>
+          <p>{t("JobSearchingJourneyText")}</p>
         </div>
         <div className="desiredJobText">
-        <p>{t("DesiredJobText")}</p>
+          <p>{t("DesiredJobText")}</p>
         </div>
         <JobSearchBar setJobs={setJobs} />
         {modalOpen && (
@@ -69,6 +76,11 @@ export default function JobSearch() {
             viewEmail={jobDisplay[jobPosterID].email}
             viewContract={jobDisplay[jobPosterID].contract}
             viewSalary={jobDisplay[jobPosterID].salary}
+            viewMandatoryResume={jobDisplay[jobPosterID].mandatoryResume}
+            viewMandatoryCoverLetter={
+              jobDisplay[jobPosterID].mandatoryCoverLetter
+            }
+            viewPostingDeadline={jobDisplay[jobPosterID].postingDeadline}
           />
         )}
 
@@ -82,6 +94,8 @@ export default function JobSearch() {
             viewDesc={setModalOpen}
             jobPosterID={job.jobPosterID}
             setJob={setjobPosterID}
+            mandatoryResume={job.mandatoryResume}
+            mandatoryCoverLetter={job.mandatoryCoverLetter}
           ></JobPostingComponent>
         ))}
       </div>

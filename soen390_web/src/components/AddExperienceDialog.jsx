@@ -75,6 +75,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
   useEffect(() => {
     if (isExperienceAdded) {
       setIsExperienceUpdated(true);
+      setIsExperienceAdded(false);
     }
   }, [isExperienceAdded]);
 

@@ -1,67 +1,65 @@
 @font-face {
-    font-family: 'Inter-regular';
-    src: url(../../assets/Inter-Regular.ttf);
+  font-family: "Inter-regular";
+  src: url(../../assets/Inter-Regular.ttf);
 }
 
 .icon {
-    display: inline-flex;
-    vertical-align: middle;
+  display: inline-flex;
+  vertical-align: middle;
 }
 
-.navlinks {
-    margin-left: 20px;
-    display: flex;
-    position: absolute; /*or fixed*/
-    right: 20px;
+.navbar-toolbar {
+  z-index: 1;
 }
-
 
 .logo {
-    cursor: pointer;
-    height: 50px;
-    max-height: 90%;
-  }
+  cursor: pointer;
+  height: 50px;
+  max-height: 90%;
+}
 
 .link {
-    text-decoration: none;
-    color: #626262;
-    font-size: 20px;
-    margin-left: 50px;
-    font-family: 'Inter-regular';
-    font-weight: 600;
-
-    
-
+  text-decoration: none;
+  color: #626262;
+  font-size: 20px;
+  margin-left: 50px;
+  font-family: "Inter-regular";
+  font-weight: 600;
 }
 
-.link:hover{
-    color: #00ACFF;
+.link:hover {
+  color: #00acff;
 }
 
-.link:hover .icon{
-    color: #00ACFF;
-    /* border-bottom: 1px solid #660e99; */
-  }
-  .link-button {
-    color: #626262 !important;
-    font-size: 20px !important;
-    margin-left: 50px !important;
-    font-family: "Inter-regular" !important;
-    font-weight: 600 !important;
-    background-color: transparent !important;
-    border: none !important;
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    padding-top: 0px !important;
-  }
-  
-  .link-button:hover {
-    color: #00ACFF !important;
-  }
-  
-  .link-button:hover .icon {
-    color: #00ACFF !important;
-    border-bottom: 1px solid #00ACFF !important;
-  }
-  
+.link:hover .icon {
+  color: #00acff;
+  /* border-bottom: 1px solid #660e99; */
+}
+.link-button {
+  color: #626262 !important;
+  font-size: 20px !important;
+  margin-left: 50px !important;
+  font-family: "Inter-regular" !important;
+  font-weight: 600 !important;
+  background-color: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding-top: 0px !important;
+}
+
+.link-button:hover {
+  color: #00acff !important;
+}
+
+.link-button:hover .icon {
+  color: #00acff !important;
+  border-bottom: 1px solid #00acff !important;
+}
+
+.notification:hover{
+
+  color: #00acff !important;
+  transform: scale(1.2);
+}

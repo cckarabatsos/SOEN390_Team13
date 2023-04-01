@@ -36,19 +36,41 @@ describe("Test Skill Routes", function () {
         });
     });
     describe("Post skill/:userID", function () {
-        it("responds with 200 when skills for a specific user", async function () {
+        it("responds with 200 when skill stored for a specific user", async function () {
+            let skills = await retrieveSkills(userID2);
+            let skillName: string = "testSkill";
+            if (skills) {
+                if (skills.length > 0) {
+                    skills.forEach(async (skl: Skill) => {
+                        await deleteSkillWithId(skl.skillID);
+                    })
+                }
+            }
+
+            await request(url)
+                .post(`/skill/${userID2}`)
+                .send({ name: skillName })
+                .set("Content-Type", "application/json")
+                .set("Accept", "application/json")
+                .expect(200);
+        });
+        it("responds with 401 when skill that already exists stored for a specific user", async function () {
             let skills = await retrieveSkills(userID2);
             if (skills) {
                 if (skills.length == 10) {
                     await deleteSkillWithId(skills[9].skillID);
+                    await deleteSkillWithId(skills[8].skillID);
+                } else if (skills.length == 9) {
+                    await deleteSkillWithId(skills[8].skillID);
                 }
             }
+            await storeSkill(skill);
             await request(url)
                 .post(`/skill/${userID2}`)
                 .send({ name: "skill" })
                 .set("Content-Type", "application/json")
                 .set("Accept", "application/json")
-                .expect(200);
+                .expect(401);
         });
         it("responds with 400 when adding a skill to a user with max nbr of skills", async function () {
             await request(url)
@@ -75,6 +97,7 @@ describe("Test Skill Routes", function () {
                     await deleteSkillWithId(skills[9].skillID);
                 }
             }
+            skill.name = "newSkill";
             let skillID = await storeSkill(skill);
             await request(url).post(`/skill/remove/${skillID}`).expect(200);
         });

@@ -1,0 +1,45 @@
+name: CI test backend and frontend
+
+on:
+    pull_request:
+        branches:
+            - "*"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: NPM Install Dependencies
+              run: |
+                  echo Is npm installed?
+                  npm -v
+                  echo Is git installed?
+                  git --version
+                  echo Is Node installed?
+                  node -v
+                  echo Install Dependencies
+                  cd soen390_web
+                  npm install --force
+                  cd ..
+                  cd soen390_backend
+                  npm i
+                  cd ..
+
+            # - name: Build and Compile Backend
+            #   run: |
+            #       cd soen390_backend
+            #       npm run dev
+
+            # - name: Build and Compile Frontend
+            #   run: |
+            #       soen390_web
+            #       npm run build
+
+            - name: Run Tests
+              if: always()
+              run: |
+                  cd soen390_backend
+                  npm run test

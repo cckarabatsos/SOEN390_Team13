@@ -1,16 +1,13 @@
-import React from "react";
-import SubFooter from "../components/SubFooter";
-import Footer from "../components/Footer";
-import "../styles/components/userconnection.css";
 import { Grid } from "@material-ui/core";
-import UserConnectionComponent from "../components/UserConectionComponent";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  GetPendingInvitations,
   AcceptInvitations,
   DeclineInvitations,
+  GetPendingInvitations,
 } from "../api/userConectionApi";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import UserConnectionComponent from "../components/UserConectionComponent";
+import "../styles/components/userconnection.css";
 
 const UserConnection = () => {
   const [userData, setUseData] = React.useState({});
@@ -33,7 +30,7 @@ const UserConnection = () => {
     } else {
       setUseData(false);
     }
-    getInvitations(data.email);
+    getInvitations(data?.email);
   }, []);
 
   const handleAccept = async (curr, senderEmail) => {
@@ -59,7 +56,9 @@ const UserConnection = () => {
   return (
     <div data-testid="userconnection-1">
       <>
-        <h1 className="center">{t("RequestCenterText")}</h1>
+        <h1 className="center" style={{
+            fontWeight: "normal"
+        }}>{t("RequestCenterText")}</h1>
         <div className="request-section">
           <Grid container spacing={2}>
             {users.map((aUser) => (

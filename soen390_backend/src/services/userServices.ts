@@ -5,11 +5,13 @@ import { error } from "console";
 import firebase from "firebase";
 import "firebase/storage";
 import { User, user_schema, UserFilter } from "../models/User";
+import { Notification } from "../models/Notification";
 // import { database } from "firebase-admin";
 
 const db = firebase.firestore();
 const ref = firebase.storage().ref();
 import { Buffer } from "buffer";
+import { storeNotification } from "./notificationServices";
 /**
  * Query the db to get a user via their ID
  * @param userID
@@ -108,7 +110,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                            " job postings successfully deleted."
+                        " job postings successfully deleted."
                     );
                 }
             }
@@ -292,6 +294,68 @@ export function processData(snapshot: any) {
     }
 }
 /**
+ * Service that handles the removal of a user connection between two users
+ * @param receiverID
+ * @param senderID
+ */
+export async function removeUserContact(
+    senderEmail: string,
+    removedEmail: string
+) {
+    try {
+        var senderUser: any = await new Promise((resolve, _) => {
+            findUserWithEmail(senderEmail, (user) => {
+                // console.log(user);
+                if (user == null) {
+                    resolve(null);
+                } else {
+                    resolve(user);
+                }
+            });
+        });
+
+        var removedUser: any = await new Promise((resolve, _) => {
+            findUserWithEmail(removedEmail, (user) => {
+                // console.log(user);
+                if (user == null) {
+                    resolve(null);
+                } else {
+                    resolve(user);
+                }
+            });
+        });
+
+        if (!(senderUser || removedUser)) {
+            throw error(
+                "cannot find desired receiver or sender when trying to send invitation"
+            );
+        }
+        if (!(senderUser.data as User).contacts.includes(removedEmail)) {
+            throw error("error sender and receiver are not contacts");
+        } else {
+            console.log("proceed check 1");
+        }
+
+        await db
+            .collection("users")
+            .doc(senderUser.data.userID)
+            .update({
+                contacts:
+                    firebase.firestore.FieldValue.arrayRemove(removedEmail),
+            });
+        await db
+            .collection("users")
+            .doc(removedUser.data.userID)
+            .update({
+                contacts:
+                    firebase.firestore.FieldValue.arrayRemove(senderEmail),
+            });
+    } catch (error) {
+        console.log(error);
+        throw new Error("this is an invitation error");
+    }
+}
+/**
  * Send an invitation to a users
  * @param receiverEmail
  * @param senderEmail
@@ -377,6 +441,16 @@ export async function sendUserInvitation(
                 pendingInvitations:
                     firebase.firestore.FieldValue.arrayUnion(senderEmail),
             });
+        let notification: Notification = {
+            logo: (senderUser.data as User).picture,
+            message: (senderUser.data as User).name + " has sent you a friend request.",
+            timestamp: (new Date()).toLocaleString(),
+            category: "network",
+            ownerID: receiverUser.data.userID,
+            relatedEntity: senderUser.data.userID
+        };
+        console.log(receiverUser.data.userID);
+        storeNotification(notification);
     } catch (error) {
         console.log(error);
         throw new Error("this is an invitation error");
@@ -415,6 +489,15 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
                     follows:
                         firebase.firestore.FieldValue.arrayUnion(receiverID),
                 });
+            let notification: Notification = {
+                logo: senderUser.picture,
+                message: senderUser.name + " is now following you.",
+                timestamp: (new Date()).toLocaleString(),
+                category: "network",
+                ownerID: receiverID,
+                relatedEntity: senderID
+            };
+            storeNotification(notification);
         }
     } catch (error) {
         console.log(error);
@@ -525,6 +608,15 @@ export async function manageUserInvitation(
                     contacts:
                         firebase.firestore.FieldValue.arrayUnion(invitedEmail),
                 });
+            let notification: Notification = {
+                logo: invitedUser.data.picture,
+                message: invitedUser.data.name + " has accepted your friend request.",
+                timestamp: (new Date()).toLocaleString(),
+                category: "network",
+                ownerID: senderUser.data.userID,
+                relatedEntity: invitedUser.data.userID
+            };
+            storeNotification(notification);
         }
     } catch (error) {
         console.log(error);
@@ -609,7 +701,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
         userRef = userRef.where("isCompany", "==", true);
     }
     if (filter.name) {
-        const prefix = filter.name.toLowerCase();
+        const prefix = filter.name;
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         userRef = userRef
             .where("name", ">=", prefix)
@@ -617,7 +709,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
     }
 
     if (filter.email) {
-        const prefix = filter.email.toLowerCase();
+        const prefix = filter.email;
         const prefixEnd = prefix + "\uf8ff"; // Unicode character that is higher than any other character in a string
         userRef = userRef
             .where("email", ">=", prefix)

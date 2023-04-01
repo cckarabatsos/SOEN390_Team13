@@ -1,19 +1,14 @@
-import '../styles/components/JobApplication.css'
+import React from "react";
 import JobApplicationComponent from "../components/JobApplicationComponent";
-import AddDocumentsDialog from "../components/AddDocumentsDialog";
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { GetFile } from "../api/UserStorageApi";
+import "../styles/components/JobApplication.css";
 
 const JobApplication = () => {
-    
-
   return (
     <div className="jobapplication">
-    <div className="titlename">Application Form</div>
-    <JobApplicationComponent />    
+      <div className="titlename">Application Form</div>
+      <JobApplicationComponent />
     </div>
-  )
-}
+  );
+};
 
-export default JobApplication
+export default JobApplication;

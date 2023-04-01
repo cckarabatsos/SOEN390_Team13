@@ -1,0 +1,119 @@
+.companyContainer {
+    background: white;
+    border: 2px solid #006AF9;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-top: 5rem;
+    transition: all 0.3s ease 0s;
+    position: relative;
+    width: 75%;
+    
+}
+    
+.companyName{
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3E3E3E;
+    font-family: "Inter-regular";
+}
+
+.companySubName{
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-size: 1rem;
+    color: #3E3E3E;
+    font-family: "Inter-regular";
+}
+    
+.companyFollowers {
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+    font-family: "Inter-regular";
+}
+    
+.companyLocation {
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: normal !important;
+    color: #6D6D6D;
+    margin-bottom: 0.5rem;
+    font-family: "Inter-regular";
+}
+    
+.button-viewProfile {
+    font-size: 0.875rem;
+    letter-spacing: 1px;
+    background-color: white !important;
+    color: black;
+    padding: 0.6rem 2rem;
+    border-radius: 2rem;
+    border: none;
+    cursor: pointer;
+}
+    
+.button-viewProfile:hover {
+    background-color: #006AF9;
+}
+    
+.button-viewprofile-position {
+    right: 1.5rem;
+    top: 1.5rem;
+    position: absolute;
+}
+
+.innerContainerCompany{
+
+
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    
+   
+   
+}
+
+
+.logoCompany {
+    
+    width: 80px;
+    height: 80px;
+    border-radius: 10%;
+  }
+
+  .logoContainer{
+    width: 25%;
+    display: inline;
+    height: 100%;
+    float: left;
+    margin-top: auto;
+    margin-bottom: auto;
+    
+    
+    
+  
+    
+    
+    
+    
+   
+  }
+
+  .titleContainer{
+    
+    
+    width: 75%;
+    display: inline;
+    height: 100%;
+
+  }

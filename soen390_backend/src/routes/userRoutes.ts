@@ -25,11 +25,13 @@ import {
     getFilteredCompaniesController,
     followCompany,
     unFollowCompany,
+    removeContact,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
-import { compare } from "bcrypt";
-const multer = require("multer");
+import { compare } from "bcryptjs";
+import multer from "multer";
+
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
 user.use(express.json());
@@ -37,7 +39,7 @@ dotenv.config();
 //Get complete user by their id
 user.get("/id/:userID", async (req: Request, res: Response) => {
     let userID = req.params.userID;
-    console.log(userID)
+    console.log(userID);
     try {
         let data: any = await getUserWithID(userID);
         res.status(data[0]);
@@ -261,6 +263,18 @@ user.get("/api/sendInvite", async (req: Request, res: Response) => {
         res.sendStatus(404);
     }
 });
+user.get("/api/removeContact", async (req: Request, res: Response) => {
+    let senderEmail = req.query.senderEmail as string;
+    let removedEmail = req.query.removedEmail as string;
+
+    let data = await removeContact(senderEmail, removedEmail);
+    if (data[0] == 200) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
 /**
  * Route to follow a company
  */
@@ -449,26 +463,32 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 // user.get("/updateFields", (_: Request, res: Response) => {
 //     const db = firebase.firestore();
 //     const batch = db.batch();
-//     const usersRef = db.collection("users");
-//     usersRef
+//     const chatsRef = db.collection("conversations");
+
+//     chatsRef
 //         .get()
 //         .then((querySnapshot) => {
 //             querySnapshot.forEach((doc) => {
-//                 batch.update(doc.ref, { follows: [] });
+//                 const iv = crypto.randomBytes(16).toString("hex");
+//                 batch.set(
+//                     doc.ref,
+//                     {
+//                         key: iv,
+//                     },
+//                     { merge: true }
+//                 );
 //             });
 
 //             return batch.commit();
 //         })
 //         .then(() => {
-//             res.status(200).send(
-//                 "isAdmin and follows fields added to all user documents"
-//             );
+//             res.status(200).send("IV field added to all chat documents");
 //         })
 //         .catch((error) => {
-//             console.error("Error adding isAdmin and follows fields:", error);
-//             res.status(500).send("Error adding isAdmin and follows fields");
+//             console.error("Error adding fields:", error);
+//             res.status(500).send("Error adding fields");
 //         });
 // });
 
 // Exporting the user as a module
-module.exports = user;
+export default user;

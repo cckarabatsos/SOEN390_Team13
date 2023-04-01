@@ -93,5 +93,4 @@ reports.post("/verdictReport", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-
-module.exports = reports;
+export default reports;

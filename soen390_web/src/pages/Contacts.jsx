@@ -1,6 +1,8 @@
 import { Grid } from "@material-ui/core";
+import { fontFamily } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { GetContacts } from "../api/userContactsApi";
+import { removeContact } from "../api/userContactsApi";
 import ContactsComponent from "../components/ContactComponent";
 
 export default function Contacts() {
@@ -27,20 +29,35 @@ export default function Contacts() {
     getContactsList(data.email);
   }, []);
 
+  //remove contact with given email from list of contacts
+const handleRemoveContact = async (removedEmail) => {
+  if (window.confirm("Are you sure you want to remove this contact?")) {
+    var senderEmail = userData.email;
+    var response = await removeContact(senderEmail, removedEmail);
+    if (response) {
+      getContactsList(userData.email);
+    }
+  }
+};
+
   const handleLookUpProfile = () => {};
   return (
     <div>
-      <h1 className="center">Contacts List</h1>
+      <h1 className="center" style={{
+       fontWeight: "normal"
+      }}>Contacts List</h1>
       <div className="request-section">
         <Grid container spacing={2}>
           {users.map((aUser) => (
             <Grid item xs={6}>
               <ContactsComponent
-                image={aUser.image}
+                image={aUser.picture}
                 name={aUser.name}
                 job={aUser.currentPosition}
                 location={aUser.location}
                 currentEmail={currentEmail}
+                contactEmail={aUser.email}
+                handleRemoveContact={handleRemoveContact}
               ></ContactsComponent>
             </Grid>
           ))}

@@ -52,7 +52,7 @@ function ActionButton({ userID, postingID }) {
       if (!confirmed) {
         return;
       }
-  
+
       await handleWithdrawApplication(postingID);
       alert("Application withdrawn successfully!");
       window.location.reload(); // refresh the page to update the list of applications
@@ -61,7 +61,7 @@ function ActionButton({ userID, postingID }) {
       alert("Failed to withdraw application. Please try again.");
     }
   };
-  
+
 
   return (
     <>
@@ -69,13 +69,7 @@ function ActionButton({ userID, postingID }) {
         ...
       </Button>
       <Popper id={id} open={open} anchorEl={anchorEl}>
-        <Link to="/JobSearch" style={{ textDecoration: 'none' }}>
-          <Paper sx={{ width: '220px', borderRadius: '10px', border: `1px solid ${hoveredIndex === 0 ? 'primary.main' : 'transparent'}`, bgcolor: hoveredIndex === 0 ? 'primary.light' : 'background.paper' }} onMouseEnter={() => handleMouseEnter(0)} onMouseLeave={handleMouseLeave}>
-            <Box sx={{ p: 1, bgcolor: 'transparent' }}>
-              <div style={{ fontSize: '20px', color: hoveredIndex === 0 ? 'white' : 'black' }}>View application</div>
-            </Box>
-          </Paper>
-        </Link>
+
         <Paper sx={{ width: '220px', borderRadius: '10px', border: `1px solid ${hoveredIndex === 1 ? 'primary.main' : 'transparent'}`, bgcolor: hoveredIndex === 1 ? 'primary.light' : 'background.paper', cursor: 'pointer' }} onMouseEnter={() => handleMouseEnter(1)} onMouseLeave={handleMouseLeave} onClick={handleWithdraw}>
           <Box sx={{ p: 1, bgcolor: 'transparent' }}>
             <div style={{ fontSize: '20px', color: hoveredIndex === 1 ? 'white' : 'black' }}>Withdraw application</div>
@@ -86,5 +80,13 @@ function ActionButton({ userID, postingID }) {
   );
 
 }
-
+/*
+<Link to="/JobSearch" style={{ textDecoration: 'none' }}>
+          <Paper sx={{ width: '220px', borderRadius: '10px', border: `1px solid ${hoveredIndex === 0 ? 'primary.main' : 'transparent'}`, bgcolor: hoveredIndex === 0 ? 'primary.light' : 'background.paper' }} onMouseEnter={() => handleMouseEnter(0)} onMouseLeave={handleMouseLeave}>
+            <Box sx={{ p: 1, bgcolor: 'transparent' }}>
+              <div style={{ fontSize: '20px', color: hoveredIndex === 0 ? 'white' : 'black' }}>View application</div>
+            </Box>
+          </Paper>
+        </Link>
+*/
 export default ActionButton;

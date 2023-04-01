@@ -4,13 +4,13 @@
   font-weight: regular;
 }
 
-html{
+html {
   font-family: Roboto;
 }
 
 .App {
   text-align: center;
-  background-color: '#fffff';
+  background-color: "#fffff";
 }
 
 .App-logo {
@@ -46,4 +46,9 @@ html{
   to {
     transform: rotate(360deg);
   }
+}
+
+.footer-collection {
+  width: 100%;
+  margin-top: 40%;
 }

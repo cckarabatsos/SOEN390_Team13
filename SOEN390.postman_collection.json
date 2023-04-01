@@ -164,7 +164,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/searchCompanies?name=&email=&limit=10&skip=0",
+							"raw": "http://localhost:7000/user/api/searchCompanies?name=L&email=&limit=10&skip=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -178,7 +178,7 @@
 							"query": [
 								{
 									"key": "name",
-									"value": ""
+									"value": "L"
 								},
 								{
 									"key": "email",
@@ -203,7 +203,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=encryption@test.com",
+							"raw": "http://localhost:7000/user/api/sendInvite?receiverEmail=bog1@test.com&senderEmail=dzm.fiodarau@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -221,7 +221,38 @@
 								},
 								{
 									"key": "senderEmail",
-									"value": "encryption@test.com"
+									"value": "dzm.fiodarau@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeContact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/user/api/removeContact?senderEmail=Ydmi6cys2x&removedEmail=mat@gmail.ca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"removeContact"
+							],
+							"query": [
+								{
+									"key": "senderEmail",
+									"value": "Ydmi6cys2x"
+								},
+								{
+									"key": "removedEmail",
+									"value": "mat@gmail.ca"
 								}
 							]
 						}
@@ -234,7 +265,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/manageInvite?invitedEmail=Wx5hUY1FbJ&senderEmail=Qzm8c1439z&isAccept=true",
+							"raw": "http://localhost:7000/user/api/manageInvite?invitedEmail=bog1@test.com&senderEmail=dzm.fiodarau@gmail.com&isAccept=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -248,11 +279,11 @@
 							"query": [
 								{
 									"key": "invitedEmail",
-									"value": "Wx5hUY1FbJ"
+									"value": "bog1@test.com"
 								},
 								{
 									"key": "senderEmail",
-									"value": "Qzm8c1439z"
+									"value": "dzm.fiodarau@gmail.com"
 								},
 								{
 									"key": "isAccept",
@@ -269,7 +300,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/follow?senderID=v1M1tUnMZUQsFy6UUteh&receiverID=I9WE1blHEGTP0KkI4zVL",
+							"raw": "http://localhost:7000/user/api/follow?senderID=18JRHKkLE2t50nE17SHc&receiverID=i2iLvPkBHmkV43PufHVp",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -283,11 +314,11 @@
 							"query": [
 								{
 									"key": "senderID",
-									"value": "v1M1tUnMZUQsFy6UUteh"
+									"value": "18JRHKkLE2t50nE17SHc"
 								},
 								{
 									"key": "receiverID",
-									"value": "I9WE1blHEGTP0KkI4zVL"
+									"value": "i2iLvPkBHmkV43PufHVp"
 								}
 							]
 						}
@@ -490,7 +521,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"OLIOLI\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"Po\",\r\n    \"password\": \"123\",\r\n    \"email\": \"OLIMOLI\",\r\n    \"privateKey\": \"\",\r\n    \"publicKey\": \"\",\r\n    \"picture\": \"\",\r\n    \"resume\": \"\",\r\n    \"coverLetter\": \"\",\r\n    \"bio\": \"I am Liam and I want to be an engineer.\",\r\n    \"currentPosition\": \"Student\",\r\n    \"currentCompany\": \"Concordia University\",\r\n    \"isCompany\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -573,7 +604,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/jobposting/filter/products?location=mtl&company&position&type=internship&skip=0&limit=10&remote=true",
+							"raw": "http://localhost:7000/jobposting/filter/products?location=mtl&company=&position&type=internship&skip=0&limit=1&remote=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -591,7 +622,7 @@
 								},
 								{
 									"key": "company",
-									"value": null
+									"value": ""
 								},
 								{
 									"key": "position",
@@ -607,7 +638,7 @@
 								},
 								{
 									"key": "limit",
-									"value": "10"
+									"value": "1"
 								},
 								{
 									"key": "remote",
@@ -625,7 +656,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"location\": \"MTL\",\r\n    \"position\": \"intern\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\"\r\n}\r\n",
+							"raw": "{\r\n    \"location\": \"toronto\",\r\n    \"position\": \"Sw Developer\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -662,7 +693,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"docID\":\"6Vlp5h0yMG7I8CwAMoT6\"\r\n}",
+							"raw": "{\r\n    \"docID\":\"ZBKKBDXipEuE9dDpvgWG\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -690,6 +721,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Job Suggestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/jobposting/getJobSuggestions/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"jobposting",
+								"getJobSuggestions",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "fS0PjwOmmPRWbSZxzva9"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -703,7 +761,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"C#\"\r\n}",
+							"raw": "{\r\n    \"name\": \"skill2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -724,7 +782,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "0NS4CwuBHfd4rDPAIEuC"
 								}
 							]
 						}
@@ -778,7 +836,7 @@
 							"variable": [
 								{
 									"key": "userID",
-									"value": "5"
+									"value": "0NS4CwuBHfd4rDPAIEuC"
 								}
 							]
 						}
@@ -985,7 +1043,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"dzm.fiodarau@gmail.com\",\r\n    \"firstName\": \"Dzmitry\",\r\n    \"lastName\": \"Fiodarau\",\r\n    \"phone\": \"514-123-1234\",\r\n    \"address\": \"123, Nowhere St.\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Montreal\",\r\n    \"area\": \"H8J 4H1\",\r\n    \"province\": \"QC\",\r\n    \"school\": \"Concordia\",\r\n    \"schoolCountry\": \"Canada\",\r\n    \"schoolDegree\": \"Bachelor of Engineering\",\r\n    \"schoolEnd\": \"01-05-2024\",\r\n    \"schoolMajor\": \"Software Engineering\",\r\n    \"timestamp\": \"05-03-2023\",\r\n    \"postingID\": \"B9edMZe4tjUEAFcimWUu\",\r\n    \"attachResume\": false,\r\n    \"attachCoverLetter\": true,\r\n    \"experience\": [\"Ville de Montreal,Marketing Intern,May 2021,Sept 2021\",\"Nventive,Developer Intern,May 2022,Dec 2022\"]\r\n}",
+							"raw": "{\r\n    \"email\": \"dzm.fiodarau@gmail.com\",\r\n    \"firstName\": \"Dzmitry\",\r\n    \"lastName\": \"Fiodarau\",\r\n    \"phone\": \"514-123-1234\",\r\n    \"address\": \"123, Nowhere St.\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Montreal\",\r\n    \"area\": \"H8J 4H1\",\r\n    \"province\": \"QC\",\r\n    \"school\": \"Concordia\",\r\n    \"schoolCountry\": \"Canada\",\r\n    \"schoolDegree\": \"Bachelor of Engineering\",\r\n    \"schoolEnd\": \"01-05-2024\",\r\n    \"schoolMajor\": \"Software Engineering\",\r\n    \"timestamp\": \"05-03-2023\",\r\n    \"postingID\": \"felpjahjRoaRoY6Fu4Lf\",\r\n    \"attachResume\": false,\r\n    \"attachCoverLetter\": true,\r\n    \"experience\": [\"Ville de Montreal,Marketing Intern,May 2021,Sept 2021\",\"Nventive,Developer Intern,May 2022,Dec 2022\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1006,7 +1064,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "fS0PjwOmmPRWbSZxzva9"
+									"value": "18JRHKkLE2t50nE17SHc"
 								}
 							]
 						}
@@ -1040,6 +1098,39 @@
 								{
 									"key": "userID",
 									"value": "fS0PjwOmmPRWbSZxzva9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Application Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/updateStatus/:applicationID?status=approved",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"updateStatus",
+								":applicationID"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "approved"
+								}
+							],
+							"variable": [
+								{
+									"key": "applicationID",
+									"value": "wKzDjRkFJq8oFBnz75bl"
 								}
 							]
 						}
@@ -1271,7 +1362,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/createConversation?emails=[\"msg1@test.com\",\"msg3@test.com\"]",
+							"raw": "http://localhost:7000/messages/createConversation?ids=[\"6Xwu7LcLPdqkBgwJa6EM\",\"JaQGolnDcz8fm0CjEkep\"]",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1283,8 +1374,8 @@
 							],
 							"query": [
 								{
-									"key": "emails",
-									"value": "[\"msg1@test.com\",\"msg3@test.com\"]"
+									"key": "ids",
+									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"JaQGolnDcz8fm0CjEkep\"]"
 								}
 							]
 						}
@@ -1297,7 +1388,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/sendMessage?senderEmail=msg1@test.com&emails=[\"msg1@test.com\",\"msg3@test.com\"]&message=ca va?",
+							"raw": "http://localhost:7000/messages/sendMessage?senderId=3Ri6yXlYSo7rCQk4t4ks&Ids=[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]&message=Test message",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1309,16 +1400,16 @@
 							],
 							"query": [
 								{
-									"key": "senderEmail",
-									"value": "msg1@test.com"
+									"key": "senderId",
+									"value": "3Ri6yXlYSo7rCQk4t4ks"
 								},
 								{
-									"key": "emails",
-									"value": "[\"msg1@test.com\",\"msg3@test.com\"]"
+									"key": "Ids",
+									"value": "[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]"
 								},
 								{
 									"key": "message",
-									"value": "ca va?"
+									"value": "Test message"
 								}
 							]
 						}
@@ -1331,7 +1422,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/getAllMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com",
+							"raw": "http://localhost:7000/messages/getAllMessages?userIds=[\"6Xwu7LcLPdqkBgwJa6EM\",\"lZioJzyfCxPy28CTyT9E\"]&senderId=6Xwu7LcLPdqkBgwJa6EM",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1343,12 +1434,12 @@
 							],
 							"query": [
 								{
-									"key": "userEmails",
-									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
+									"key": "userIds",
+									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"lZioJzyfCxPy28CTyT9E\"]"
 								},
 								{
-									"key": "senderEmail",
-									"value": "msg1@test.com"
+									"key": "senderId",
+									"value": "6Xwu7LcLPdqkBgwJa6EM"
 								}
 							]
 						}
@@ -1361,7 +1452,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/updateMessages?userEmails=[\"msg1@test.com\",\"msg2@test.com\"]&senderEmail=msg1@test.com&messagesLength=0",
+							"raw": "http://localhost:7000/messages/updateMessages?userIds=[\"JaQGolnDcz8fm0CjEkep\",\"6Xwu7LcLPdqkBgwJa6EM\"]&senderId=JaQGolnDcz8fm0CjEkep&messagesLength=0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1373,16 +1464,108 @@
 							],
 							"query": [
 								{
-									"key": "userEmails",
-									"value": "[\"msg1@test.com\",\"msg2@test.com\"]"
+									"key": "userIds",
+									"value": "[\"JaQGolnDcz8fm0CjEkep\",\"6Xwu7LcLPdqkBgwJa6EM\"]"
 								},
 								{
-									"key": "senderEmail",
-									"value": "msg1@test.com"
+									"key": "senderId",
+									"value": "JaQGolnDcz8fm0CjEkep"
 								},
 								{
 									"key": "messagesLength",
 									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetActiveconversation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/getActiveConversation?id=3Ri6yXlYSo7rCQk4t4ks&returnEmail=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"getActiveConversation"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3Ri6yXlYSo7rCQk4t4ks"
+								},
+								{
+									"key": "returnEmail",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get Notifications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/notification/getNotifications/:userID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"notification",
+								"getNotifications",
+								":userID"
+							],
+							"variable": [
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Notification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/notification/remove?docID=s479PNVx2ga8kPfGXvAo&userID=18JRHKkLE2t50nE17SHc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"notification",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "docID",
+									"value": "s479PNVx2ga8kPfGXvAo"
+								},
+								{
+									"key": "userID",
+									"value": "18JRHKkLE2t50nE17SHc"
 								}
 							]
 						}

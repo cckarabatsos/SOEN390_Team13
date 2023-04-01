@@ -1,82 +1,115 @@
 import dotenv from "dotenv";
 import {
-  initiateConversation,
-  sendMessage,
-  getUpdatedMessages,
-  getActiveConversations,
-} from "../services/messagesServives";
+    initiateConversation,
+    sendMessage,
+    getUpdatedMessages,
+    getActiveConversations,
+    storeChatFile,
+    findConversationWithID,
+} from "../services/messagesServices";
 import {
-  messagesListElement,
-  conversationListElement,
+    messagesListElement,
+    conversationListElement,
 } from "../models/Messages";
-
+import { conversationSchema } from "../models/conversation";
+import * as crypto from "crypto";
 dotenv.config();
 
-export async function createNewConversationController(usersEmail: string[]) {
-  let success = false;
-  console.log(usersEmail);
-  try {
-    success = await initiateConversation(usersEmail);
-  } catch (error) {
-    console.log((error as Error).message);
-    throw new Error((error as Error).message);
-  }
+export async function createNewConversationController(usersIds: string[]) {
+    let success = false;
+    try {
+        success = await initiateConversation(usersIds);
+    } catch (error) {
+        console.log((error as Error).message);
+        throw new Error((error as Error).message);
+    }
 
-  return [200, success];
+    return [200, success];
 }
 
 export async function SendNewMessage(
-  senderEmail: string,
-  usersEmail: string[],
-  content: string
+    senderId: string,
+    usersIds: string[],
+    content: string
 ) {
-  let confirmation = false;
-  try {
-    confirmation = (await sendMessage(
-      senderEmail,
-      usersEmail,
-      content
-    )) as boolean;
-  } catch (error) {
-    console.log((error as Error).message);
-    throw new Error((error as Error).message);
-  }
+    let confirmation = "";
+    const type = "text";
+    const iv = crypto.randomBytes(16);
+    try {
+        confirmation = (await sendMessage(
+            senderId,
+            usersIds,
+            content,
+            type,
+            iv
+        )) as string;
+    } catch (error) {
+        console.log((error as Error).message);
+        throw new Error((error as Error).message);
+    }
 
-  return [200, confirmation];
+    return [200, confirmation];
 }
-
 
 export async function GetUpdatedMessages(
-  senderEmail: string,
-  usersEmail: string[],
-  messagesLength: number
+    senderId: string,
+    usersIds: string[],
+    messagesLength: number
 ) {
-  let messagesList: any;
-  try {
-    messagesList = (await getUpdatedMessages(
-      senderEmail,
-      usersEmail,
-      messagesLength
-    )) as messagesListElement[];
-  } catch (error) {
-    console.log((error as Error).message);
-    throw new Error((error as Error).message);
-  }
+    let messagesList: any;
+    try {
+        messagesList = (await getUpdatedMessages(
+            senderId,
+            usersIds,
+            messagesLength
+        )) as messagesListElement[];
+    } catch (error) {
+        console.log((error as Error).message);
+        throw new Error((error as Error).message);
+    }
 
-  return [200, messagesList];
+    return messagesList;
 }
 
-export async function GetActiveConversations(email: string) {
-  let messagesList: any;
-  try {
-    messagesList = (await getActiveConversations(
-      email
-    )) as conversationListElement[];
-  } catch (error) {
-    console.log((error as Error).message);
-    throw new Error((error as Error).message);
-  }
+export async function GetActiveConversations(
+    userId: string,
+    returnEmail: boolean
+) {
+    let convoList: any;
+    try {
+        convoList = (await getActiveConversations(
+            userId,
+            returnEmail
+        )) as conversationListElement[];
+    } catch (error) {
+        console.log((error as Error).message);
+        throw new Error((error as Error).message);
+    }
 
-  console.log(messagesList)
-  return [200, messagesList];
+    return convoList;
+}
+
+export async function uploadChatFile(
+    senderID: string,
+    IDs: string[],
+    file: any,
+    conversationID: string
+) {
+    let url = await storeChatFile(senderID, IDs, file, conversationID);
+    console.log("File upload finished.");
+    if (url === null) {
+        return [404, { msg: "File storage failed." }];
+    } else {
+        return [200, url];
+    }
+}
+export async function getConversationWithID(conversationID: string) {
+    let conversation = await findConversationWithID(conversationID);
+    let casted_conversation = await conversationSchema.cast(conversation);
+    // console.log(casted_user);
+    if (conversation) {
+        return [200, casted_conversation];
+    } else {
+        return [404, { msg: "User not found" }];
+    }
 }

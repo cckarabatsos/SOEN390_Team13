@@ -3,15 +3,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Person from "../assets/UserConnectionImages/image (1).jpg";
 import "../styles/components/userconnection.css";
-function handleDecline() {
-  // Do something when the decline button is clicked
-  console.log("Decline button clicked");
-}
-
-function handleConfirm() {
-  // Do something when the confirm button is clicked
-  console.log("Confirm button clicked");
-}
 
 export default function UserConnectionComponent(props) {
   const image = props.image;
@@ -43,8 +34,12 @@ export default function UserConnectionComponent(props) {
       </div>
       <div className="friend-request-actions">
         <Button
+          className="button-accept"
           style={{
-            backgroundColor: "#21b6ae",
+            borderRadius: 27,
+            border: "2px solid #8f8aff",
+            fontSize: "14px",
+            margin: "auto",
           }}
           color="success"
           onClick={() => accept(currentEmail, senderEmail)}
@@ -52,8 +47,12 @@ export default function UserConnectionComponent(props) {
           {t("AcceptText")}
         </Button>
         <Button
+          className="button-decline"
           style={{
-            backgroundColor: "#ff5252",
+            borderRadius: 27,
+            border: "2px solid #8f8aff",
+            fontSize: "14px",
+            margin: "auto",
           }}
           onClick={() => decline(currentEmail, senderEmail)}
         >
