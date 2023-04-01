@@ -7,7 +7,7 @@ const url = "http://localhost:4000";
 let server: any;
 const userID = "18JRHKkLE2t50nE17SHc";
 const companyID = "i2iLvPkBHmkV43PufHVp";
-const postingID = "B9edMZe4tjUEAFcimWUu";
+const postingID = "NAzQgPUr8iCooLCqtPUT";
 const badUserID = "5";
 const applicationID = "wk52ye8hAOx3NAB0TxIq";
 const status = "test status";

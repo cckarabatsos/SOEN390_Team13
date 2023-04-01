@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CompanySearchBar } from "../components/CompanySearchBar";
-import "../styles/components/CompanySearchPage.css";
-import Company from "../models/Company.ts";
 import CompanySearchComponent from "../components/CompanySearchComponent";
-
-import { useNavigate } from "react-router-dom";
+import Company from "../models/Company.ts";
+import "../styles/components/CompanySearchPage.css";
 
 export default function CompanySearch() {
   const { t } = useTranslation();
@@ -53,27 +51,19 @@ export default function CompanySearch() {
         )
       );
     }
-
-    //console.log(Array);
-
     setCompanyDisplay(companyArray);
   }, [companies]);
 
-  if (companies) {
-    console.log(companyDisplay);
-  }
-
   return (
     <div>
-      <div data-testid="company-posting">
-        <div className="companySearchingText">
+      <div data-testid="job-posting">
+        <div className="jobSearchingText">
           <p>{t("FindCompanyLabel")}</p>
         </div>
-        <div className="desiredCompanyText">
+        <div className="desiredJobText">
           <p>{t("DesiredCompany")}</p>
         </div>
         <CompanySearchBar setCompanies={setCompanies} />
-      </div>
 
       {companyDisplay.map((company) => (
         <CompanySearchComponent
@@ -87,6 +77,7 @@ export default function CompanySearch() {
           companyId={company.companyId}
         ></CompanySearchComponent>
       ))}
+      </div>
     </div>
   );
 }

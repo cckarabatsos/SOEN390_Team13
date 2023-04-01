@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import Person from "../assets/UserConnectionImages/image (1).jpg";
 import "../styles/components/userconnection.css";
 
-
 export default function UserConnectionComponent(props) {
   const image = props.image;
 
@@ -34,24 +33,26 @@ export default function UserConnectionComponent(props) {
         <p class="friend-request-mutual">2 mutual friends</p>
       </div>
       <div className="friend-request-actions">
-        <Button className="button-accept"
-            style={{
-              borderRadius: 27,
-              border: "2px solid #8f8aff",
-              fontSize: "14px",
-              margin: "auto"
-            }}
+        <Button
+          className="button-accept"
+          style={{
+            borderRadius: 27,
+            border: "2px solid #8f8aff",
+            fontSize: "14px",
+            margin: "auto",
+          }}
           color="success"
           onClick={() => accept(currentEmail, senderEmail)}
         >
           {t("AcceptText")}
         </Button>
-        <Button className="button-decline"
+        <Button
+          className="button-decline"
           style={{
             borderRadius: 27,
             border: "2px solid #8f8aff",
             fontSize: "14px",
-            margin: "auto"
+            margin: "auto",
           }}
           onClick={() => decline(currentEmail, senderEmail)}
         >

@@ -31,7 +31,6 @@ import dotenv from "dotenv";
 import { User } from "../models/User";
 import { compare } from "bcryptjs";
 import multer from "multer";
-// import firebase from "firebase";
 
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
@@ -470,17 +469,17 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 // user.get("/updateFields", (_: Request, res: Response) => {
 //     const db = firebase.firestore();
 //     const batch = db.batch();
-//     const jobPostingsRef = db.collection("jobpostings");
+//     const chatsRef = db.collection("conversations");
 
-//     jobPostingsRef
+//     chatsRef
 //         .get()
 //         .then((querySnapshot) => {
 //             querySnapshot.forEach((doc) => {
+//                 const iv = crypto.randomBytes(16).toString("hex");
 //                 batch.set(
 //                     doc.ref,
 //                     {
-//                         mandatoryResume: true,
-//                         mandatoryCoverLetter: false,
+//                         key: iv,
 //                     },
 //                     { merge: true }
 //                 );
@@ -489,9 +488,7 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 //             return batch.commit();
 //         })
 //         .then(() => {
-//             res.status(200).send(
-//                 "postingDeadline, mandatoryResume, and mandatoryCoverLetter fields added to all job posting documents"
-//             );
+//             res.status(200).send("IV field added to all chat documents");
 //         })
 //         .catch((error) => {
 //             console.error("Error adding fields:", error);

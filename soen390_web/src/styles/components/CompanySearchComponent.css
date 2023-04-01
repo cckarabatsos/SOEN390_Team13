@@ -21,6 +21,14 @@
     color: #3E3E3E;
     font-family: "Inter-regular";
 }
+
+.companySubName{
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-size: 1rem;
+    color: #3E3E3E;
+    font-family: "Inter-regular";
+}
     
 .companyFollowers {
     text-align: left;
