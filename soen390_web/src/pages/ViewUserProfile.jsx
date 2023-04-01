@@ -17,8 +17,6 @@ import { useTranslation } from "react-i18next";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 
-
-
 function ViewUserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUserData] = React.useState({});
@@ -27,10 +25,8 @@ function ViewUserProfile(props) {
   const [picture, setpicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
-  
-  const { t } = useTranslation();
 
-  
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 

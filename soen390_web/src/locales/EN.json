@@ -121,6 +121,8 @@
     "ReqDoc" : "Required Documents",
     "SelDoc" : "Selected Documents",
     "JobSuggestions" : "Job Suggestions for you",
-    "AddSkills" : "Add skills so that we can provide job suggestions for you"
-
+    "AddSkills" : "Add skills so that we can provide job suggestions for you",
+  "FindUsersLabel": "Find users",
+  "DesiredUsers": "Browse available users below."
 }
+  

@@ -1,12 +1,14 @@
 import firebase from "firebase";
 import "firebase/storage";
+
 import {
     chatMessage,
     messagesListElement,
     conversationListElement,
 } from "../models/Messages";
+import crypto from "crypto";
 const db = firebase.firestore();
-//const ref = firebase.storage().ref();
+const ref = firebase.storage().ref();
 
 //dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
@@ -65,8 +67,7 @@ async function createConversation(
     userIds: string[]
 ): Promise<firebase.firestore.DocumentData> {
     try {
-        //check if user exist in the database first
-
+        // Check if user exist in the database first
         for (var i = 0; i < userIds.length; i++) {
             var doc = await db.collection("users").doc(userIds[i]).get();
             if (!doc.data()) {
@@ -76,10 +77,15 @@ async function createConversation(
             }
         }
 
+        // Generate a random key for the conversation
+        const key = crypto.randomBytes(32).toString("hex");
+
         const conversationData = await db.collection("conversations").add({
             messages: [],
             userArray: userIds,
+            key: key,
         });
+
         await conversationData.update({ conversationID: conversationData.id });
 
         if (!conversationData) {
@@ -148,11 +154,12 @@ export async function initiateConversation(userIds: string[]) {
 export async function sendMessage(
     senderId: string,
     userIds: string[],
-    message: string
+    message: string,
+    type: string,
+    iv: Buffer
 ) {
     try {
         userIds = orderIds(userIds);
-        console.log(userIds);
 
         //check for duplicates:
         let findDuplicates = (arr: string[]) =>
@@ -184,13 +191,14 @@ export async function sendMessage(
         if (!doc.data()) {
             throw new Error("The senderId are not registered in the database!");
         }
-
+        console.log(iv);
         let chat: chatMessage = {
             content: message,
             isRead: false,
             senderId: senderId as string,
             timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
-            type: "text",
+            type: type,
+            iv: iv.toString("base64"),
         };
 
         var document = await db.collection("chats").add(chat);
@@ -208,7 +216,7 @@ export async function sendMessage(
                 ),
             });
 
-        return true;
+        return document.id;
     } catch (error) {
         console.error(`Error occurred in sendMessage: ${error}`);
         throw new Error(`Error occurred in sendMessage: ${error}`);
@@ -386,3 +394,110 @@ export async function getActiveConversations(
         );
     }
 }
+export const storeChatFile = async (
+    senderID: string,
+    IDs: string[],
+    file: any,
+    conversationID: string
+) => {
+    try {
+        const db = firebase.firestore();
+        const conversationRef = db
+            .collection("conversations")
+            .doc(conversationID);
+        const conversation = await conversationRef.get();
+        if (!conversation.exists) {
+            throw new Error(`Conversation ${conversationID} does not exist`);
+        }
+        const key = conversation.get("key");
+        const keyBuffer = Buffer.from(key, "hex");
+        // Encrypt the file with AES-256-CBC
+        const iv = crypto.randomBytes(16);
+        console.log(keyBuffer);
+        const metadata = {
+            contentType: file.mimetype,
+        };
+        const folder: string = "Messages/";
+        const filename = `${folder}${conversationID}-${
+            conversation.get("messages").length + 1
+        }-${file.originalname}`;
+
+        const buffer = Buffer.from(file.buffer);
+        const uploadTask = await ref.child(filename).put(buffer, metadata);
+        const downloadURL = await uploadTask.ref.getDownloadURL();
+
+        const cipher = crypto
+            .createCipheriv("aes-128-ecb", keyBuffer, null)
+            .setAutoPadding(true);
+        const encrypted = Buffer.concat([
+            cipher.update(downloadURL),
+            cipher.final(),
+        ]);
+        const encryptedLink = Buffer.concat([iv, encrypted]);
+        console.log(encryptedLink);
+        const type = "document";
+
+        const chatID: string = await sendMessage(
+            senderID,
+            IDs,
+            encryptedLink.toString("base64"),
+            type,
+            iv
+        );
+        return chatID;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+export const findConversationWithID = async (conversationID: string) => {
+    try {
+        var snapShot = await db
+            .collection("conversations")
+            .doc(conversationID)
+            .get();
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return snapShot.data();
+};
+export const decryptDocument = async (
+    encryptedUrl: any,
+    conversationID: any
+) => {
+    try {
+        const conversation = await findConversationWithID(conversationID);
+
+        if (!conversation) {
+            throw new Error("Conversation not found");
+        }
+
+        const key = conversation.key;
+        const keyBuffer = Buffer.from(key, "hex");
+        console.log(keyBuffer);
+        const decipher = crypto
+            .createDecipheriv("aes-128-ecb", keyBuffer, null)
+            .setAutoPadding(true); // enable auto padding
+        console.log(encryptedUrl);
+        const encryptedData = Buffer.from(encryptedUrl, "base64");
+        const decrypted = Buffer.concat([
+            decipher.update(encryptedData),
+            decipher.final(),
+        ]);
+        const decryptedString = decrypted.toString("utf-8");
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const matches = decryptedString.match(urlRegex);
+
+        if (matches) {
+            const decryptedLink = matches[0];
+            console.log(decryptedLink);
+            return decryptedLink;
+        } else {
+            throw new Error("Decrypted string does not contain a valid URL");
+        }
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

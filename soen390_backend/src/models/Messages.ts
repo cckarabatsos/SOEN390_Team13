@@ -6,6 +6,7 @@ export type chatMessage = {
     senderId: string;
     timestamp: firebase.firestore.Timestamp | Date;
     type: string;
+    iv: String;
 };
 
 export type messagesListElement = {
