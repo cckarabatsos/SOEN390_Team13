@@ -9,7 +9,7 @@ export async function JobSearch(text:String) {
         params: {
           category: text,
           skip: "0",
-          limit: "10",
+          limit: "50",
         },
       }
     );

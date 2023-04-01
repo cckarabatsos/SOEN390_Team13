@@ -506,8 +506,9 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                                       isVisible={modalVisible}
                                       handleCloseModal={handleCloseModal}
                                       screen={2}
-                                      email={user.email}
+                                      email={user.userID}
                                       navigation={navigation}
+                                      emailUser={user.email}
                             ></ContactModal>
                             </View>
                             <View>

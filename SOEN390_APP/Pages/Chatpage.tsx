@@ -16,6 +16,8 @@ import { GetAllMessages } from "../api/MessagesAPI";
 import { SendMessage } from "../api/MessagesAPI";
 import { GetUserInfo } from "../api/GetUsersAPI";
 import { Animated } from 'react-native';
+//import { db } from "../firebaseConfig";
+
 
 
 type MessageType = {
@@ -47,8 +49,14 @@ const ChatPage = ({ route, navigation}:any) => {
 
   const handleGetMessages = async () => {
     const message = await GetAllMessages(userID, userIDContact);
+    console.log("AAAAAAAAAAAAAAAAAAAA")
+    if(message.length!=0){
     const newObjectsArray = await Promise.all(message.listOfMessages.map(buildObject));
     setMessages(newObjectsArray);
+    }
+    else{
+      setMessages([]);
+    }
     setConversationID(message.conversationID);
     setIsLoading(false);
   }
@@ -69,11 +77,19 @@ const ChatPage = ({ route, navigation}:any) => {
         "Running subscription for conversationID: ",
         conversationID
     );
-
+/* 
+    const subscriber = db
+      .collection('conversations')
+      .doc(conversationID)
+      .onSnapshot(documentSnapshot  => {
+        handleGetMessages
+      });
+ */
     return () => {
-        console.log("Unsubbing");
+      console.log("Unsubbing");
+      //subscriber();
+  };
 
-    };
 }, [conversationID]);
 
   //const { v4: uuidv4 } = require('uuid');

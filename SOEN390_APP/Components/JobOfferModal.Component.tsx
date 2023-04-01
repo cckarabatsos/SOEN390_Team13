@@ -40,7 +40,7 @@ const AddJobOfferModal: React.FC<AddJobOfferModalProps> = ({ ownerID, postingID,
         let attachResume= false;
         let attachCoverLetter= false;
         let experience: string[]= [];
-
+        
         await PostUserApplication(
             ownerID, 
             state.email, 
@@ -343,7 +343,7 @@ const AddJobOfferModal: React.FC<AddJobOfferModalProps> = ({ ownerID, postingID,
         </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() =>{if(validateForm()){handleSubmit}}}>
+        <TouchableOpacity style={styles.button} onPress={() =>{if(validateForm()){handleSubmit()}}}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>

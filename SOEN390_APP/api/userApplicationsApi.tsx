@@ -69,6 +69,8 @@ export async function PostUserApplication(
      experience: experience,
     });
 
+    console.log(response)
+
     if (response.status == 200) {
       return true;
     } else {
