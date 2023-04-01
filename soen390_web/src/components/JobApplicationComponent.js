@@ -1,13 +1,14 @@
-import React from "react";
-import "../styles/components/JobApplication.css";
-import { Grid, Button } from "@material-ui/core";
-import { useTranslation } from "react-i18next";
+import { Button, Chip, Grid } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
-import { useEffect } from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { GetFile } from "../api/UserStorageApi";
-import AddDocumentsDialog from "../components/AddDocumentsDialog";
 import { createApplication } from "../api/JobApplicationApi";
+import "../styles/components/JobApplication.css";
 
 const JobApplicationComponent = (props) => {
   const [email, setEmail] = React.useState("");
@@ -23,17 +24,17 @@ const JobApplicationComponent = (props) => {
   const [school, setSchoolName] = React.useState("");
   const [schoolCountry, setSchoolCountry] = React.useState("");
   const [schoolDegree, setDegree] = React.useState("");
-  const [schoolEnd, setSchoolEnd] = React.useState("");
+  const [schoolEnd, setSchoolEnd] = React.useState(dayjs());
   const [schoolMajor, setMajor] = React.useState("");
   const [attachResume, setAttachResume] = React.useState(false);
   const [attachCoverLetter, setAttachCoverLetter] = React.useState(false);
-  const [experience, setExperience] = React.useState("");
+  const [experience, setExperience] = React.useState([]);
   const [Country, setCountry] = React.useState("");
   const [Company, setCompany] = React.useState("");
   const [JobTitle, setJobTitle] = React.useState("");
-  const [Start, setStart] = React.useState("");
+  const [Start, setStart] = React.useState(dayjs());
 
-  const [End, setEnd] = React.useState("");
+  const [End, setEnd] = React.useState(dayjs());
   const [error, setError] = React.useState(false);
 
   const { t } = useTranslation();
@@ -43,65 +44,22 @@ const JobApplicationComponent = (props) => {
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [ResumeFilename, setResumeFilename] = React.useState();
   const navigate = useNavigate();
+  const posting = "NAzQgPUr8iCooLCqtPUT";
 
-  //For the import of the cover letter/CV
-  /*
-    const setFileData = () => {
-        let UserCoverLetter = "";
-        const getCoverLetter = async () => {
-            UserCoverLetter = await GetFile(userData.userID, "coverletter");
-            return UserCoverLetter;
-        };
+  const [expierienceInputValue, setExpierienceInputValue] = React.useState("");
 
-        if (UserCoverLetter !== null) {
-            getCoverLetter().then((coverLetter) => {
-                setCoverletter(coverLetter);                
-                const url = coverLetter;
-                setCoverletterFilename(
-                    decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-                );
-                
-            });
-            console.log(coverletterFilename);
-        
-        }
+  const handleAddExperience = () => {
+    if (expierienceInputValue.trim()) {
+      setExperience([...experience, expierienceInputValue]);
+      setExpierienceInputValue("");
+    }
+  };
 
-        let UserResume = "";
-        const getResume = async () => {
-            UserResume = await GetFile(userData.userID, "resume");
-            return UserResume;
-        };
-
-        if (UserResume !== null) {
-            getResume().then((resume) => {
-                setResume(resume);
-                if(resume){
-                const url = resume;
-                setResumeFilename(
-                    decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-                );
-                console.log(
-                    decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-                );
-                console.log("resume:", resume);
-                }
-            });
-        }
-    };
-
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem("isAuth"));
-        if (data != null) {
-            setUserData(JSON.parse(localStorage.getItem("isAuth")));
-        } else {
-            navigate("/");
-        }
-
-        setFileData();
-    }, [navigate, userData.userID]);
-*/
-
-  //for empty fields and non empty fields when filling out form
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleAddExperience();
+    }
+  };
 
   const handleSubmit = async (e) => {
     const success = await createApplication(
@@ -122,7 +80,8 @@ const JobApplicationComponent = (props) => {
       schoolMajor,
       attachResume,
       attachCoverLetter,
-      experience
+      experience,
+      posting
     );
     e.preventDefault(success);
     if (
@@ -141,8 +100,7 @@ const JobApplicationComponent = (props) => {
       Country.length === 0 ||
       Company.length === 0 ||
       JobTitle.length === 0 ||
-      Start.length === 0 ||
-      End.length === 0 ||
+      schoolEnd.length === 0 ||
       attachResume.length === 0 ||
       attachCoverLetter.length === 0 ||
       experience.length === 0
@@ -383,21 +341,22 @@ const JobApplicationComponent = (props) => {
                 size="small"
               />
               <div className="textboxname">{t("EndDateText")}</div>
-              {error && End.length <= 0 ? (
-                <label className="label">Cannot be empty!</label>
-              ) : (
-                ""
-              )}
-              <TextField
-                onChange={(e) => setSchoolEnd(e.target.value)}
-                autoFocus
-                className="input"
-                margin="dense"
-                label={t("DegreeStatus*")}
-                type="name"
-                variant="outlined"
-                size="small"
-              />
+              {error && <label className="label">Cannot be empty!</label>}
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  onChange={(date) => setSchoolEnd(date.format("DD-MM-YYYY"))}
+                  autoFocus
+                  className="input"
+                  margin="dense"
+                  label={t("DegreeStatus*")}
+                  format="DD-MM-yyyy"
+                  inputVariant="outlined"
+                  size="small"
+                  value={schoolEnd}
+                  clearable
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
               <div className="textboxname">{t("Major*")}</div>
               {error && schoolMajor.length <= 0 ? (
                 <label className="label">Cannot be empty!</label>
@@ -414,23 +373,40 @@ const JobApplicationComponent = (props) => {
                 variant="outlined"
                 size="small"
               />
-              <div className="header">{t("Work Experience")}</div>
-              <div className="textboxname">{t("Work Experience")}</div>
-              {error && experience.length <= 0 ? (
-                <label className="label">Cannot be empty!</label>
-              ) : (
-                ""
-              )}
-              <TextField
-                onChange={(e) => setExperience(e.target.value)}
-                autoFocus
-                className="input"
-                margin="dense"
-                label={t("Work Experience")}
-                type="name"
-                variant="outlined"
-                size="small"
-              />
+              <div>
+                <div className="textboxname">{t("Work Experience")}</div>
+                {experience.length === 0 && (
+                  <label className="label">Cannot be empty!</label>
+                )}
+                <div className="experience-list">
+                  {experience.map((exp, index) => (
+                    <Chip
+                      key={index}
+                      label={exp}
+                      className="experience-circle"
+                    />
+                  ))}
+                </div>
+                <TextField
+                  onChange={(e) => setExpierienceInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  autoFocus
+                  className="input"
+                  margin="dense"
+                  label={t("Work Experience")}
+                  type="name"
+                  variant="outlined"
+                  size="small"
+                  value={expierienceInputValue}
+                />
+                <Button
+                  onClick={handleAddExperience}
+                  variant="contained"
+                  color="primary"
+                >
+                  Add Experience
+                </Button>
+              </div>
 
               <div className="buttons">
                 <Button

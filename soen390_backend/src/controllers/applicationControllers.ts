@@ -3,12 +3,12 @@
  */
 import { Application, application_schema } from "../models/Application";
 import {
-    storeApplication,
-    retrieveLastApplication,
-    retrieveApplications,
-    retrieveApplicationHistory,
-    deleteApplicationWithId,
-    updateApplication,
+  deleteApplicationWithId,
+  retrieveApplicationHistory,
+  retrieveApplications,
+  retrieveLastApplication,
+  storeApplication,
+  updateApplication,
 } from "../services/applicationServices";
 
 /**
@@ -37,66 +37,63 @@ import {
  * @returns status and res message
  */
 export async function createApplication(
-    email: string,
-    firstName: string,
-    lastName: string,
-    phone: string,
-    address: string,
-    address2: string,
-    city: string,
-    area: string,
-    province: string,
-    school: string,
-    schoolCountry: string,
-    schoolDegree: string,
-    schoolEnd: string,
-    schoolMajor: string,
-    timestamp: string,
-    postingID: string,
-    attachResume: boolean,
-    attachCoverLetter: boolean,
-    experience: string[],
-    ownerID: string
+  email: string,
+  firstName: string,
+  lastName: string,
+  phone: string,
+  address: string,
+  address2: string,
+  city: string,
+  area: string,
+  province: string,
+  school: string,
+  schoolCountry: string,
+  schoolDegree: string,
+  schoolEnd: Date,
+  schoolMajor: string,
+  timestamp: string,
+  postingID: string,
+  attachResume: boolean,
+  attachCoverLetter: boolean,
+  experience: string[],
+  ownerID: string
 ) {
-    try {
-        const status: string = "pending";
-        let newApplication: Application = application_schema.cast({
-            email,
-            firstName,
-            lastName,
-            phone,
-            address,
-            address2,
-            city,
-            area,
-            province,
-            status,
-            school,
-            schoolCountry,
-            schoolDegree,
-            schoolEnd,
-            schoolMajor,
-            timestamp,
-            postingID,
-            attachResume,
-            attachCoverLetter,
-            experience,
-            ownerID,
-        });
-        let application = await storeApplication(newApplication);
-        if (application === "alreadyApplied") {
-            return [
-                400,
-                { msg: "User has already applied to this job posting." },
-            ];
-        } else if (application !== null) {
-            return [200, application];
-        } else {
-            return [404, { msg: "Experience not stored" }];
-        }
-    } catch (err: any) {
-        throw err;
+  try {
+    const status: string = "pending";
+    let newApplication: Application = application_schema.cast({
+      email,
+      firstName,
+      lastName,
+      phone,
+      address,
+      address2,
+      city,
+      area,
+      province,
+      status,
+      school,
+      schoolCountry,
+      schoolDegree,
+      schoolEnd,
+      schoolMajor,
+      timestamp,
+      postingID,
+      attachResume,
+      attachCoverLetter,
+      experience,
+      ownerID,
+    });
+    let application = await storeApplication(newApplication);
+    if (application === "alreadyApplied") {
+      return [400, { msg: "User has already applied to this job posting." }];
+    } else if (application !== null) {
+      return [200, application];
+    } else {
+      return [404, { msg: "Experience not stored" }];
     }
+  } catch (err: any) {
+    throw err;
+  }
 }
 
 /**
@@ -106,13 +103,13 @@ export async function createApplication(
  * @returns status and res message
  */
 export async function getLastApplication(userID: string) {
-    let application: Application = await retrieveLastApplication(userID);
+  let application: Application = await retrieveLastApplication(userID);
 
-    if (application !== null) {
-        return [200, application];
-    } else {
-        return [404, { msg: "Application not found" }];
-    }
+  if (application !== null) {
+    return [200, application];
+  } else {
+    return [404, { msg: "Application not found" }];
+  }
 }
 
 /**
@@ -123,13 +120,13 @@ export async function getLastApplication(userID: string) {
  * @returns status and res message
  */
 export async function getApplications(userID: string, postingID: string) {
-    let applications = await retrieveApplications(userID, postingID);
+  let applications = await retrieveApplications(userID, postingID);
 
-    if (applications !== null) {
-        return [200, applications];
-    } else {
-        return [404, { msg: "Applications not found" }];
-    }
+  if (applications !== null) {
+    return [200, applications];
+  } else {
+    return [404, { msg: "Applications not found" }];
+  }
 }
 
 /**
@@ -139,13 +136,13 @@ export async function getApplications(userID: string, postingID: string) {
  * @returns status and res message
  */
 export async function getApplicationHistory(userID: string) {
-    let jobpostings = await retrieveApplicationHistory(userID);
+  let jobpostings = await retrieveApplicationHistory(userID);
 
-    if (jobpostings !== null) {
-        return [200, jobpostings];
-    } else {
-        return [404, { msg: "Application history not found" }];
-    }
+  if (jobpostings !== null) {
+    return [200, jobpostings];
+  } else {
+    return [404, { msg: "Application history not found" }];
+  }
 }
 
 /**
@@ -156,13 +153,13 @@ export async function getApplicationHistory(userID: string) {
  * @returns status and res message
  */
 export async function deleteApplication(userID: string, postingID: string) {
-    let msg = await deleteApplicationWithId(userID, postingID);
+  let msg = await deleteApplicationWithId(userID, postingID);
 
-    if (msg !== null) {
-        return [200, msg];
-    } else {
-        return [404, { msg: "Experience not found" }];
-    }
+  if (msg !== null) {
+    return [200, msg];
+  } else {
+    return [404, { msg: "Experience not found" }];
+  }
 }
 
 /**
@@ -172,12 +169,15 @@ export async function deleteApplication(userID: string, postingID: string) {
  * @param newStatus
  * @returns status and res message
  */
-export async function editApplication(applicationID: string, newStatus: string) {
-    let application = await updateApplication(applicationID, newStatus);
+export async function editApplication(
+  applicationID: string,
+  newStatus: string
+) {
+  let application = await updateApplication(applicationID, newStatus);
 
-    if (application !== null) {
-        return [200, application];
-    } else {
-        return [404, { msg: "Experience not found" }];
-    }
+  if (application !== null) {
+    return [200, application];
+  } else {
+    return [404, { msg: "Experience not found" }];
+  }
 }
