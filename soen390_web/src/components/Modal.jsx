@@ -14,11 +14,10 @@ function Modal({
   viewCompany,
   viewMandatoryResume,
   viewMandatoryCoverLetter,
-  viewPostingDeadline
-}) 
-
-{
-const { t } = useTranslation();
+  viewPostingDeadline,
+  postingID,
+}) {
+  const { t } = useTranslation();
 
   return (
     <div className="modalBackground">
@@ -36,38 +35,53 @@ const { t } = useTranslation();
           <h1>Position: {viewPosition}</h1>
         </div>
         <div className="body">
-          <p style={{ fontSize: "24px"}}>{viewCompany}</p>
-          <p style={{ marginBottom: "10px"}}>Location: {viewLocation}</p>
-          <p style={{borderTop: "1px solid #ccc"}}></p>
-          <p style={{marginTop: "10px",fontSize: "24px"}}>Job Description</p>
+          <p style={{ fontSize: "24px" }}>{viewCompany}</p>
+          <p style={{ marginBottom: "10px" }}>Location: {viewLocation}</p>
+          <p style={{ borderTop: "1px solid #ccc" }}></p>
+          <p style={{ marginTop: "10px", fontSize: "24px" }}>Job Description</p>
           <p>{viewDesc}</p>
           <p>{viewContract}</p>
           <p>Salary: ${viewSalary}/hr</p>
           <p>Contact: {viewEmail}</p>
-          <p>Mandatory resume: {viewMandatoryResume ? 'Yes' : 'No'}</p>
-          <p>Mandatory cover letter: {viewMandatoryCoverLetter ? 'Yes' : 'No'}</p>
-          <p style={{textDecoration: "underline"}}>Deadline to apply: {viewPostingDeadline}</p>
+          <p>Mandatory resume: {viewMandatoryResume ? "Yes" : "No"}</p>
+          <p>
+            Mandatory cover letter: {viewMandatoryCoverLetter ? "Yes" : "No"}
+          </p>
+          <p style={{ textDecoration: "underline" }}>
+            Deadline to apply: {viewPostingDeadline}
+          </p>
         </div>
         <div>
           <button
             onClick={() => {
-              
               // state of modal set to closed when cancel button is clicked
-              setOpenModal(false); 
+              setOpenModal(false);
             }}
             id="cancelBtn"
           >
-            {t("CancelText")} 
+            {t("CancelText")}
           </button>
-          
+
           <Link // Link component for the apply button
-          id="applyBtn" style={{width:"150px", height:"45px",
-        display: "inline-block", textDecoration: "none", 
-        border: "2px solid #8f8aff", color: "black", 
-        backgroundColor:"white",
-        fontWeight:"normal",
-        borderRadius: "8px", textAlign: "center", 
-        lineHeight: "39px" }}  to="/JobApplication"> {t("ApplyText")} </Link>
+            id="applyBtn"
+            style={{
+              width: "150px",
+              height: "45px",
+              display: "inline-block",
+              textDecoration: "none",
+              border: "2px solid #8f8aff",
+              color: "black",
+              backgroundColor: "white",
+              fontWeight: "normal",
+              borderRadius: "8px",
+              textAlign: "center",
+              lineHeight: "39px",
+            }}
+            to={"/JobApplication/" + postingID}
+          >
+            {" "}
+            {t("ApplyText")}{" "}
+          </Link>
         </div>
       </div>
     </div>

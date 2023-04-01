@@ -44,7 +44,9 @@ const JobApplicationComponent = (props) => {
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [ResumeFilename, setResumeFilename] = React.useState();
   const navigate = useNavigate();
-  const posting = "NAzQgPUr8iCooLCqtPUT";
+  const posting = window.location.pathname.split("/").pop();
+  console.log(posting);
+  //"NAzQgPUr8iCooLCqtPUT";
 
   const [expierienceInputValue, setExpierienceInputValue] = React.useState("");
 
