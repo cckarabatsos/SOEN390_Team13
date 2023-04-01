@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, IconButton } from "@material-ui/core";
+import { Button, IconButton, Dialog, DialogContent, } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import "../styles/components/CompanyHeader.css";
 import face from "../static/images/face1.jpg";
@@ -7,12 +7,25 @@ import EditIcon from "@mui/icons-material/Edit";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import { FollowCompany, UnfollowCompany } from "../api/CompanyApi";
+import CompanyEditHeaderModal from "./CompanyHeaderEditModal";
+
 
 export default function CompanyHeader(props) {
     const { t } = useTranslation();
     const name = props.name;
     const picture = props.picture;
     const [followState, setFollowState] = useState(props.isFollowing);
+
+    const [descModalOpen, setDescModalOpen] = useState(false)
+
+  const handleOpenDescModal = () => {
+  setDescModalOpen(true);
+};
+
+const handleCloseDescModal = () => {
+  setDescModalOpen(false);
+};
+
 
     const handleFollowButtonOnclick = async () => {
         if (!followState) {
@@ -46,6 +59,7 @@ export default function CompanyHeader(props) {
                                     variant="contained"
                                     color="white"
                                     size="medium"
+                                    onClick={handleOpenDescModal}
                                 >
                                     <EditIcon></EditIcon>
                                     Edit
@@ -75,6 +89,13 @@ export default function CompanyHeader(props) {
                     )}
                 </div>
             </div>
+            <Dialog open={descModalOpen} onClose={handleCloseDescModal} fullWidth
+  maxWidth="sm">
+        <DialogContent>
+          <CompanyEditHeaderModal  handleCloseModal={handleCloseDescModal} setUpdateFlag={props.setUpdateFlag} updateFlag={props.updateFlag} userData={props.companyData}></CompanyEditHeaderModal>
+          <Button onClick={handleCloseDescModal}>{t("CancelText")}</Button>
+        </DialogContent>
+      </Dialog>
         </div>
     );
 }

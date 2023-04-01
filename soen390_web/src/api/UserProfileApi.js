@@ -155,3 +155,48 @@ export async function updateUserDescription(user,newDescription) {
     return false;
   }
 }
+
+
+export async function updateUserProfilePicture(user,newProfile,newName) {
+  try {
+    console.log({
+      user
+    })
+    var img;
+    if(newProfile||newProfile!=null ){
+      img=newProfile
+
+    }
+    else{
+      console.log("hello")
+      
+      img=user.picture
+    }
+    const response = await axios.post(
+      api.BACKEND_API + "/user/edit/" + user.email,
+      {
+        name: newName,
+        password: user.password,
+        email: user.email,
+        privateKey: user.privateKey,
+        publicKey: user.publicKey,
+        picture: img,
+        resume: user.resume,
+        coverLetter: user.coverLetter,
+        bio: user.bio,
+        currentPosition: user.currentPosition,
+        currentCompany: user.concordiaUniversity,
+        isCompany: user.isCompany,
+      }
+    );
+    if (response.status === 200) {
+      // wait for the data to
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
