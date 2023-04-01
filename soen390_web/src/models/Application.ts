@@ -21,7 +21,9 @@ export default class Application {
     public docId:string
     public status:string
     public positionName: string
-  
+    public isCoverLetter: boolean
+    public isResume: boolean
+
     constructor(
         firstName: String,
         lastName: String,
@@ -44,7 +46,9 @@ export default class Application {
         experiences: string[],
         docId:string,
         status:string,
-        positionName:string
+        positionName:string,
+        isCoverLetter:boolean,
+        isResume:boolean
     ) {
       this.firstName = firstName;
       this.lastName = lastName;
@@ -68,6 +72,8 @@ export default class Application {
       this.docId=docId;
       this.status=status;
       this.positionName=positionName;
+      this.isCoverLetter=isCoverLetter;
+      this.isResume=isResume;
     }
   }
   

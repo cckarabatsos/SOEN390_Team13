@@ -25,7 +25,6 @@ export default function CompanyProfilePage(props) {
 
   const getCompanyProfile= async (companyId,userId)=>{
     let company = await findUserById(companyId)
-    console.log(company.data)
     if(company.data){
 
       setCompanyData(company.data)
@@ -55,8 +54,7 @@ export default function CompanyProfilePage(props) {
 
   }, [isFollowingState,companyId,updateState]);
 
-  console.log("before re-render company in company profile")
-  console.log(companyData.jobpostings)
+  //console.log("before re-render company in company profile")
   return (
     <div className="CompanyProfileContainer">
       <CompanyHeader name={companyData.name?companyData.name:name} picture={companyData.picture?companyData.picture:picture} userId={userData.userID} companyId={companyId} isFollowing={isFollowingState} setIsFollowing={setIsFollowingState} userData={userData}></CompanyHeader>

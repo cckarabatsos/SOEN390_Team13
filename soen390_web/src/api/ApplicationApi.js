@@ -16,3 +16,27 @@ export async function getApplicationWithId(applicationId) {
     return null;
   }
 }
+
+export async function updateApplicationStatus(applicationId,status) {
+  try {
+    const response = await axios.get(
+      api.BACKEND_API + "/application/updateStatus/" + applicationId,
+      {
+          params: {
+              status: status,
+          },
+      }
+    );
+    if (response.status == 200) {
+      return true
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+
+

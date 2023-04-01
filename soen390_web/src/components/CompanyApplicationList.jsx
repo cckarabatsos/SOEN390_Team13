@@ -131,11 +131,13 @@ export default function CompanyApplicationList(props) {
             app.timestamp,
             app.postingID,
             app.coverLetter,
-            app.attachResume,
+            app.resume,
             app.experience,
             app.applicationID,
             app.status,
-            posting.position
+            posting.position,
+            app.attachCoverLetter,
+            app.attachResume,
           ))
         }
 
@@ -242,7 +244,7 @@ export default function CompanyApplicationList(props) {
       </div>
       <Dialog open={appsModalOpen} onClose={handleCloseAppsModal}>
         <DialogContent>
-          <CompanyApplicationViewModal viewApplication={viewApplication}></CompanyApplicationViewModal>
+          <CompanyApplicationViewModal viewApplication={viewApplication} handleCloseModal={handleCloseAppsModal} setUpdateFlag={props.setUpdateFlag} updateFlag={props.updateFlag}></CompanyApplicationViewModal>
           <Button onClick={handleCloseAppsModal}>{t("CancelText")}</Button>
         </DialogContent>
       </Dialog>
