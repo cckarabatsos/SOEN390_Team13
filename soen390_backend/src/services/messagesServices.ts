@@ -462,18 +462,42 @@ export const findConversationWithID = async (conversationID: string) => {
     }
     return snapShot.data();
 };
-// const decryptFile = (encryptedFile: Buffer, key: string): Buffer => {
-//     // Extract the IV from the encrypted file
-//     const iv = encryptedFile.slice(0, 16);
+export const decryptDocument = async (
+    encryptedUrl: any,
+    conversationID: any
+) => {
+    try {
+        const conversation = await findConversationWithID(conversationID);
 
-//     // Create a decipher object with the same key and algorithm
-//     const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+        if (!conversation) {
+            throw new Error("Conversation not found");
+        }
 
-//     // Decrypt the file
-//     const decrypted = Buffer.concat([
-//         decipher.update(encryptedFile.slice(16)),
-//         decipher.final(),
-//     ]);
+        const key = conversation.key;
+        const keyBuffer = Buffer.from(key, "hex");
+        console.log(keyBuffer);
+        const decipher = crypto
+            .createDecipheriv("aes-128-ecb", keyBuffer, null)
+            .setAutoPadding(true); // enable auto padding
+        console.log(encryptedUrl);
+        const encryptedData = Buffer.from(encryptedUrl, "base64");
+        const decrypted = Buffer.concat([
+            decipher.update(encryptedData),
+            decipher.final(),
+        ]);
+        const decryptedString = decrypted.toString("utf-8");
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const matches = decryptedString.match(urlRegex);
 
-//     return decrypted;
-// };
+        if (matches) {
+            const decryptedLink = matches[0];
+            console.log(decryptedLink);
+            return decryptedLink;
+        } else {
+            throw new Error("Decrypted string does not contain a valid URL");
+        }
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

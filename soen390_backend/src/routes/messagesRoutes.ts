@@ -11,9 +11,8 @@ import {
 } from "../controllers/messagesController";
 import multer from "multer";
 import { hasFile } from "../controllers/userControllers";
-import { findConversationWithID } from "../services/messagesServices";
-import * as crypto from "crypto";
 
+import { decryptDocument } from "../services/messagesServices";
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
@@ -229,42 +228,6 @@ messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
-const decryptDocument = async (encryptedUrl: any, conversationID: any) => {
-    try {
-        const conversation = await findConversationWithID(conversationID);
-
-        if (!conversation) {
-            throw new Error("Conversation not found");
-        }
-
-        const key = conversation.key;
-        const keyBuffer = Buffer.from(key, "hex");
-        console.log(keyBuffer);
-        const decipher = crypto
-            .createDecipheriv("aes-128-ecb", keyBuffer, null)
-            .setAutoPadding(true); // enable auto padding
-        console.log(encryptedUrl);
-        const encryptedData = Buffer.from(encryptedUrl, "base64");
-        const decrypted = Buffer.concat([
-            decipher.update(encryptedData),
-            decipher.final(),
-        ]);
-        const decryptedString = decrypted.toString("utf-8");
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        const matches = decryptedString.match(urlRegex);
-
-        if (matches) {
-            const decryptedLink = matches[0];
-            console.log(decryptedLink);
-            return decryptedLink;
-        } else {
-            throw new Error("Decrypted string does not contain a valid URL");
-        }
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-};
 
 messages.get("/downloadDocument", async (req, res) => {
     const encryptedUrl = req.query.encryptedUrl;
