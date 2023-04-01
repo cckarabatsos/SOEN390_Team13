@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Button, Icon, IconButton } from "@material-ui/core";
+import { Button, Icon, IconButton, Dialog, DialogContent, } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 import "../styles/components/CompanyApplication.css";
 import Paper from "@mui/material/Paper";
@@ -16,6 +16,7 @@ import { getApplicationWithId } from "../api/ApplicationApi";
 import { getJobPostingWithId, removeJobPosting } from "../api/JobPostingApi";
 import Application from "../models/Application.ts";
 import CircularProgress from "@mui/material/CircularProgress";
+import CompanyApplicationViewModal from "./companyApplicationViewModal";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 150 },
@@ -31,9 +32,6 @@ const columns = [
     format: (value) => value.toLocaleString("en-US"),
   }
 ];
-
-
-
 
 function createData(name, code, population) {
   const density = population / 3;
@@ -66,6 +64,8 @@ export default function CompanyApplicationList(props) {
   const [openPositions, setOpenPositions] = useState([]);
   const [loadingState, setLoadingState] = useState(true);
   const [disableFlag, setDisableFlag] = useState(false);
+  const [viewApplication, setViewApplication]= useState({})
+  const [appsModalOpen, setAppsModalOpen] = useState(false)
   
   
   const setTableValue=(application,columnId)=>{
@@ -84,7 +84,6 @@ export default function CompanyApplicationList(props) {
     }
   }
 
-
   const delayLoad = async () => {
     await timeout(5000);
     setLoadingState(false);
@@ -92,7 +91,6 @@ export default function CompanyApplicationList(props) {
 
   useEffect(() => {
     if (props.openPositions) {
-      console.log("hellllllllllllllllo")
       getApplications();
     } else {
       delayLoad();
@@ -113,8 +111,6 @@ export default function CompanyApplicationList(props) {
 
       for(let j =0;j<applications.length;j++){
         let app = await getApplicationWithId(applications[j])
-        console.log("HAHAHAHAHAHAHAHAHHAHAHAHA")
-        console.log(app);
         
         if(app){
           appList.push(new Application(
@@ -136,7 +132,7 @@ export default function CompanyApplicationList(props) {
             app.postingID,
             app.coverLetter,
             app.attachResume,
-            app.experiences,
+            app.experience,
             app.applicationID,
             app.status,
             posting.position
@@ -156,6 +152,17 @@ export default function CompanyApplicationList(props) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleOpenAppModal = (
+      anApplication
+  ) => {
+    setViewApplication(anApplication);
+    setAppsModalOpen(true);
+  };
+
+  const handleCloseAppsModal = () => {
+    setAppsModalOpen(false);
   };
 
   return (
@@ -211,7 +218,7 @@ export default function CompanyApplicationList(props) {
                       );
                     })}
                     <IconButton>
-                      <InfoIcon color="info" />
+                      <InfoIcon color="info" onClick={()=>{handleOpenAppModal(row)}} />
 
                     </IconButton>
                   </TableRow>
@@ -231,9 +238,14 @@ export default function CompanyApplicationList(props) {
         data-testid="rows-per-page-selector"
       />
     </Paper>
-      }
-        
+      }        
       </div>
+      <Dialog open={appsModalOpen} onClose={handleCloseAppsModal}>
+        <DialogContent>
+          <CompanyApplicationViewModal viewApplication={viewApplication}></CompanyApplicationViewModal>
+          <Button onClick={handleCloseAppsModal}>{t("CancelText")}</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
