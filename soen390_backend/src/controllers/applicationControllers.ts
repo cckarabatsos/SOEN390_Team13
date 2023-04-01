@@ -9,6 +9,7 @@ import {
     retrieveApplicationHistory,
     deleteApplicationWithId,
     updateApplication,
+    findApplicationWithID,
 } from "../services/applicationServices";
 
 /**
@@ -172,12 +173,25 @@ export async function deleteApplication(userID: string, postingID: string) {
  * @param newStatus
  * @returns status and res message
  */
-export async function editApplication(applicationID: string, newStatus: string) {
+export async function editApplication(
+    applicationID: string,
+    newStatus: string
+) {
     let application = await updateApplication(applicationID, newStatus);
 
     if (application !== null) {
         return [200, application];
     } else {
         return [404, { msg: "Experience not found" }];
+    }
+}
+export async function getApplicationWithID(ApplicationID: string) {
+    let user = await findApplicationWithID(ApplicationID);
+    let casted_user = await application_schema.cast(user);
+    // console.log(casted_user);
+    if (user) {
+        return [200, casted_user];
+    } else {
+        return [404, { msg: "User not found" }];
     }
 }

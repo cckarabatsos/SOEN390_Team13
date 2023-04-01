@@ -9,6 +9,7 @@ import {
     getApplicationHistory,
     deleteApplication,
     editApplication,
+    getApplicationWithID,
 } from "../controllers/applicationControllers";
 import { Application } from "../models/Application";
 const application = express.Router();
@@ -188,11 +189,12 @@ application.post("/remove/:userID", async (req: Request, res: Response) => {
 /**
  * Route that updates an application's status in database
  */
-application.post(
+application.get(
     "/updateStatus/:applicationID",
     async (req: Request, res: Response) => {
         let applicationID: string = req.params.applicationID;
         let newStatus = req.query.status as string;
+
         try {
             const application: Application = await editApplication(
                 applicationID,
@@ -212,4 +214,23 @@ application.post(
         }
     }
 );
+application.get("/id/:ApplicationID", async (req: Request, res: Response) => {
+    let applicationID = req.params.ApplicationID;
+    try {
+        const application: Application = await getApplicationWithID(
+            applicationID
+        );
+        const status: number = application[0];
+        if (status == 200) {
+            res.status(200);
+            res.json(application[1]);
+        }
+        if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.name, errMsg: err.message });
+    }
+});
 export default application;
