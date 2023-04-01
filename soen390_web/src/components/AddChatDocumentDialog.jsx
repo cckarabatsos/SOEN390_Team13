@@ -8,11 +8,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContentText } from "@mui/material";
 import { IconButton } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
-import FileUpload from "./FileUpload";
+import FileUploadChat from "./FileUploadChat";
 import FileList from "./FileList";
 import { useTranslation } from "react-i18next";
 
-function AddDocumentsDialog({ setFileData }) {
+function AddChatDocumentsDialog({ reqUserID, reqSenderID, conversationID }) {
     const [open, setOpen] = React.useState(false);
     const { t } = useTranslation();
     const handleClickOpen = () => {
@@ -21,7 +21,7 @@ function AddDocumentsDialog({ setFileData }) {
 
     const handleClose = () => {
         setOpen(false);
-        setFileData();
+        // setFileData();
     };
 
     const [files, setFiles] = useState([]);
@@ -42,17 +42,17 @@ function AddDocumentsDialog({ setFileData }) {
                 <AddIcon className="add-icon" />
             </IconButton>
             <Dialog data-testid="dialog-box" open={open} onClose={handleClose}>
-                <DialogTitle>{t("UploadDocText")}</DialogTitle>
+                <DialogTitle>{"Send your File here"}</DialogTitle>
                 <DialogContentText style={{ marginLeft: "5%" }}>
                     {t("SentenceText")}
                 </DialogContentText>
                 <DialogContent>
                     <div className="App">
                         <div className="title">{t("UpFileText")}</div>
-                        <FileUpload
-                            files={files}
-                            setFiles={setFiles}
-                            removeFile={removeFile}
+                        <FileUploadChat
+                            reqUserID={reqUserID}
+                            reqSenderID={reqSenderID}
+                            conversationID={conversationID}
                         />
                         <FileList files={files} removeFile={removeFile} />
                     </div>
@@ -86,4 +86,4 @@ function AddDocumentsDialog({ setFileData }) {
     );
 }
 
-export default AddDocumentsDialog;
+export default AddChatDocumentsDialog;

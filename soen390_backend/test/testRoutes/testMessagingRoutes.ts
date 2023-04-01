@@ -141,4 +141,56 @@ describe("Test Messaging Routes", function () {
                 .expect(500);
         });
     });
+    describe("Get messages/id/:conversationID", function () {
+        it("responds with 200 if the conversation ID is valid", async function () {
+            // Set up test data
+            const conversationID = "0U4hqTAgYIeroLrKquHV"; // Replace with a valid conversation ID
+
+            // Make request to endpoint
+            await request(url)
+                .get(`/messages/id/${conversationID}`)
+                .expect(200);
+        });
+
+        it("responds with 400 if the conversation ID is invalid", async function () {
+            // Set up test data
+            const conversationID = "invalid_id"; // Replace with an invalid conversation ID
+
+            // Make request to endpoint
+            await request(url)
+                .get(`/messages/id/${conversationID}`)
+                .expect(404);
+        });
+    });
+    describe("Get Download Document", function () {
+        it("responds with decrypted document content if request parameters are valid", async function () {
+            await request(url)
+                .get(
+                    `/messages/downloadDocument?encryptedUrl=D8Vs4bFGQ8ILdVxCzoJsTnKh56bghPRsfPX9EEGNxr3bmGpmsMRp1yBWO0FJvsL2MmqVC4qVavc1oe9v6LOFfIuLW2jFHGA1xV%2BkBijc8Nm1YYtjR5lPVC%2FTx1%2FJMUgW%2BFM7eYmqff7xGHrh4PZ1m4WbGsxrhD5TByyETa77%2Fn3EgT%2BeK0iSssHvoD3njTGMJHsNCTv51W%2BPlio%2Bpf72ES8RFD3LKdvk8ni5a07PYhpKxfO45NLb0y936qhN5hJ4&conversationID=UCoA5lmz3FGIBjlRhuyG`
+                )
+                .expect(200)
+                .expect("Content-Type", "text/plain; charset=utf-8")
+                .expect(
+                    "https://firebasestorage.googleapis.com/v0/b/soen-390-7f4fc.appspot.com/o/Messages%2FUCoA5lmz3FGIBjlRhuyG-5-Resume.pdf?alt=media&token=291aef87-009c-4732-92bd-7f565e0a28c1"
+                );
+        });
+
+        it("responds with a 500 error if the encrypted URL is invalid", async function () {
+            await request(url)
+                .get(
+                    `/messages/downloadDocument?encryptedUrl=invalid&conversationID=UCoA5lmz3FGIBjlRhuyG`
+                )
+                .expect(500)
+                .expect("Error decrypting file");
+        });
+
+        it("responds with a 500 error if the conversation ID is invalid", async function () {
+            await request(url)
+                .get(
+                    `/messages/downloadDocument?encryptedUrl=D8Vs4bFGQ8ILdVxCzoJsTnKh56bghPRsfPX9EEGNxr3bmGpmsMRp1yBWO0FJvsL2MmqVC4qVavc1oe9v6LOFfIuLW2jFHGA1xV%2BkBijc8Nm1YYtjR5lPVC%2FTx1%2FJMUgW%2BFM7eYmqff7xGHrh4PZ1m4WbGsxrhD5TByyETa77%2Fn3EgT%2BeK0iSssHvoD3njTGMJHsNCTv51W%2BPlio%2Bpf72ES8RFD3LKdvk8ni5a07PYhpKxfO45NLb0y936qhN5hJ4&conversationID=invalid`
+                )
+                .expect(500)
+                .expect("Error decrypting file");
+        });
+    });
 });

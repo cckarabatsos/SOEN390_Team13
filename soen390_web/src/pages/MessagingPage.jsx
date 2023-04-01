@@ -23,12 +23,13 @@ import {
     getActiveConvos,
     getAllMessages,
     sendMessage,
+    handleDocumentDecrypt,
 } from "../api/messagesApi";
 import { findUserById } from "../api/UserProfileApi";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ReportModal from "../components/ReportModal";
-
+import AddChatDocumentsDialog from "../components/AddChatDocumentDialog";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -117,7 +118,6 @@ function Messages(props) {
     const [showReportModal, setShowReportModal] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
     const { userId } = useParams();
     useEffect(() => {
         setIsLoading(true);
@@ -180,7 +180,6 @@ function Messages(props) {
             }
         } catch (error) {}
     };
-
     const handleSendMessage = async (event) => {
         event.preventDefault();
         await sendMessage(userId, props.userData.userID, message);
@@ -203,6 +202,20 @@ function Messages(props) {
 
     const handleReportModalClose = () => {
         setShowReportModal(false);
+    };
+
+    const handleDocumentDecryptButton = async (content, conversationID) => {
+        try {
+            console.log(content);
+            const decryptedUrl = await handleDocumentDecrypt(
+                content,
+                conversationID
+            );
+            console.log(decryptedUrl);
+            window.open(decryptedUrl, "_blank");
+        } catch (error) {
+            console.error("Error while decrypting file: ", error);
+        }
     };
 
     return (
@@ -286,9 +299,35 @@ function Messages(props) {
                                                 : classes.message
                                         }`}
                                     >
-                                        <Typography>
-                                            {message.content}
-                                        </Typography>
+                                        {message.type === "text" ? (
+                                            <Typography>
+                                                {message.content}
+                                            </Typography>
+                                        ) : message.type === "document" ? (
+                                            <Box
+                                                className={
+                                                    classes.documentContainer
+                                                }
+                                            >
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() =>
+                                                        handleDocumentDecryptButton(
+                                                            message.content,
+                                                            conversationID,
+                                                            message.filename,
+                                                            message.iv
+                                                        )
+                                                    }
+                                                    className={
+                                                        classes.documentDecryptButton
+                                                    }
+                                                >
+                                                    Decrypt Document
+                                                </Button>
+                                            </Box>
+                                        ) : null}
                                         <Typography variant="caption">
                                             {new Date(
                                                 message.timestamp
@@ -312,6 +351,12 @@ function Messages(props) {
                                 }}
                                 style={{ display: "flex", width: "100%" }}
                             >
+                                <AddChatDocumentsDialog
+                                    reqUserID={userId}
+                                    reqSenderID={props.userData.userID}
+                                    conversationID={conversationID}
+                                />
+
                                 <TextField
                                     id="message-input"
                                     label="Type a message"
@@ -334,7 +379,7 @@ function Messages(props) {
                                 </Button>
                             </form>
                         </Box>
-                        <Box className={classes.refreshButtonContainer}>
+                        {/* <Box className={classes.refreshButtonContainer}>
                             <Button
                                 variant="contained"
                                 color="default"
@@ -347,7 +392,7 @@ function Messages(props) {
                             >
                                 Refresh Conversations
                             </Button>
-                        </Box>
+                        </Box> */}
                     </Box>
                 ) : (
                     <Typography variant="subtitle1">
