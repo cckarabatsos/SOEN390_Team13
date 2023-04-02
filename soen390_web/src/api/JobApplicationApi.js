@@ -24,7 +24,7 @@ export async function createApplication(
 ) {
   try {
     const response = await axios.post(
-      api.BACKEND_API + "/application/" + ownerID,
+      api.BACKEND_API + "/application/" + postingID,
       {
         email: email,
         firstName: firstName,

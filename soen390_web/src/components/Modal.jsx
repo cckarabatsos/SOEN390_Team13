@@ -79,8 +79,7 @@ function Modal({
             }}
             to={"/JobApplication/" + postingID}
           >
-            {" "}
-            {t("ApplyText")}{" "}
+            {t("ApplyText")}
           </Link>
         </div>
       </div>
