@@ -1,6 +1,6 @@
 .CompanyProfileContainer {
     min-height: 90vh;
-    background: url(../../static/images/background.png) no-repeat center center fixed;
-    background-size: cover
-    
+    background: url(../../static/images/background.svg) no-repeat center center
+        fixed;
+    background-size: cover;
 }

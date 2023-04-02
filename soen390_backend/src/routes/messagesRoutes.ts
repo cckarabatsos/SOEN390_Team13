@@ -6,10 +6,17 @@ import {
     SendNewMessage,
     GetUpdatedMessages,
     GetActiveConversations,
+    uploadChatFile,
+    getConversationWithID,
 } from "../controllers/messagesController";
+import multer from "multer";
+import { hasFile } from "../controllers/userControllers";
+
+import { decryptDocument } from "../services/messagesServices";
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
+var upload = multer({ storage: multer.memoryStorage() });
 
 // This route will be used to create a new conversation between 2 or more users
 // receives an array of user email addresses
@@ -36,6 +43,17 @@ messages.get("/createConversation", async (req, res) => {
         return res.status(500).json({
             message: "Internal server error: " + (error as Error).message,
         });
+    }
+});
+messages.get("/id/:conversationID", async (req, res) => {
+    let conversationID = req.params.conversationID;
+    try {
+        let data: any = await getConversationWithID(conversationID);
+        res.status(data[0]);
+        res.json(data[1]).end();
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
     }
 });
 
@@ -112,6 +130,10 @@ messages.get("/sendMessage", async (req, res) => {
         const senderId = req.query.senderId as string;
         const Ids: string[] = JSON.parse(req.query.Ids as string);
         const message = req.query.message as string;
+        let type: string = "text";
+        if (req.query.type) {
+            type = req.query.type as string;
+        }
         console.log(message);
         // Error detection for missing or invalid inputs
         if (
@@ -125,6 +147,16 @@ messages.get("/sendMessage", async (req, res) => {
                 message:
                     "Please provide a valid sender Id address, all Ids in the conversation, and a non-null message",
             });
+        }
+        if (type === "document") {
+            const regex =
+                /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/soen-390-/;
+            if (!regex.test(message)) {
+                return res.status(400).json({
+                    message:
+                        "Invalid message format for document type. Please provide a valid URL starting with 'https://firebasestorage.googleapis.com/v0/b/soen-390-'",
+                });
+            }
         }
 
         const messageConfirmation = await SendNewMessage(
@@ -148,7 +180,6 @@ messages.get("/getActiveConversation", async (req, res) => {
     try {
         const id = req.query.id as string;
         const returnEmail = req.query.returnEmail as string;
-
         if (!id) {
             return res.status(400).json({
                 message: "Please provide an email address",
@@ -172,4 +203,48 @@ messages.get("/getActiveConversation", async (req, res) => {
         });
     }
 });
+messages.post("/uploadChatFile", upload.single("file"), async (req, res) => {
+    const senderID = req.query.senderId as string;
+    const IDs: string[] = JSON.parse(req.query.Ids as string);
+    const conversationID = req.query.conversationID as string;
+    try {
+        let status, data: any;
+        if (hasFile(req)) {
+            data = await uploadChatFile(
+                senderID,
+                IDs,
+                req.file,
+                conversationID
+            );
+        }
+        status = data[0];
+        if (status == 200) {
+            res.sendStatus(200);
+        } else if (status == 404) {
+            res.sendStatus(404);
+        }
+    } catch (err: any) {
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
+
+messages.get("/downloadDocument", async (req, res) => {
+    const encryptedUrl = req.query.encryptedUrl;
+    const conversationID = req.query.conversationID;
+
+    try {
+        const decryptedBuffer = await decryptDocument(
+            encryptedUrl,
+            conversationID
+        );
+        const decryptedString = decryptedBuffer.toString();
+        res.setHeader("Content-Type", "text/plain");
+        res.send(decryptedString);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error decrypting file");
+    }
+});
+
 export default messages;

@@ -49,18 +49,33 @@ describe('JobSuggestions', () => {
                 logo: 'another.png',
             },
         ];
+        it('fetches job suggestions and sets state', async () => {
+            const userID = 'abc123';
+            const suggestions = [
+                { position: 'Software Developer', company: 'Acme Inc.', location: 'New York, NY', logo: 'acme-logo.png' },
+                { position: 'Frontend Engineer', company: 'Widgets LLC', location: 'San Francisco, CA', logo: 'widgets-logo.png' }
+            ];
+            getJobSuggestions.mockResolvedValue(suggestions);
+            localStorage.setItem('isAuth', JSON.stringify({ userID }));
 
-        it('should render job suggestions with unique keys and class name', async () => {
-            render(<JobSuggestions userID="123" jobSuggestions={mockSuggestions} />);
-            await waitFor(() => {
-                mockSuggestions.forEach((suggestion, index) => {
-                    const jobElement = screen.getByText(suggestion.position).closest('.job');
-                    expect(jobElement).toHaveClass('job');
-                    expect(jobElement).toHaveAttribute('key', index.toString());
-                });
+            await act(async () => {
+                render(<JobSuggestions />);
             });
+
+            expect(getJobSuggestions).toHaveBeenCalledWith(userID);
+            expect(screen.getByText('Software Developer')).toBeInTheDocument();
+            expect(screen.getByText('Acme Inc.')).toBeInTheDocument();
+            expect(screen.getByText('New York, NY')).toBeInTheDocument();
+            expect(screen.getByAltText('logo')).toHaveAttribute('src', 'acme-logo.png');
+
+            expect(screen.getByText('Frontend Engineer')).toBeInTheDocument();
+            expect(screen.getByText('Widgets LLC')).toBeInTheDocument();
+            expect(screen.getByText('San Francisco, CA')).toBeInTheDocument();
+            expect(screen.getByAltText('logo')).toHaveAttribute('src', 'widgets-logo.png');
         });
     });
 });
 
+
+//
 

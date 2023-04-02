@@ -7,6 +7,7 @@ import {
   deleteApplication,
   editApplication,
   getApplicationHistory,
+  getApplicationWithID,
   getApplications,
   getLastApplication,
 } from "../controllers/applicationControllers";
@@ -206,4 +207,21 @@ application.post(
     }
   }
 );
+application.get("/id/:ApplicationID", async (req: Request, res: Response) => {
+  let applicationID = req.params.ApplicationID;
+  try {
+    const application: Application = await getApplicationWithID(applicationID);
+    const status: number = application[0];
+    if (status == 200) {
+      res.status(200);
+      res.json(application[1]);
+    }
+    if (status == 404) {
+      res.sendStatus(404);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.name, errMsg: err.message });
+  }
+});
 export default application;

@@ -28,7 +28,7 @@ function Login(props) {
       console.log(userData);
 
       if(userData.isCompany){
-        navigate('/CompanyProfile', { state: { picture: userData.picture, name: userData.name, description:userData.bio}})
+        navigate('/CompanyProfile', { state: { picture: userData.picture, name: userData.name, description:userData.bio,isFollowing:false,companyId:userData.userID}})
       }
       else{
         navigate("/UserProfile");

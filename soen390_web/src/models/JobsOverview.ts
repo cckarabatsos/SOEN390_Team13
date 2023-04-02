@@ -3,10 +3,10 @@ export default class JobsOverview {
   public location: String;
   public company: String;
   public contract: String;
-  public jobPosterID: number;
   public postingID: String;
   public jobID: String;
-  public salary: number;
+  public jobPosterID: number | String;
+  public salary: String;
   public description: String;
   public email: String;
   public mandatoryResume: boolean;
@@ -18,10 +18,10 @@ export default class JobsOverview {
     location: String,
     company: String,
     contract: String,
-    jobPosterID: number,
+    jobPosterID: number | string,
     postingID: String,
     jobID: String,
-    salary: number,
+    salary: String,
     description: String,
     email: String,
     mandatoryResume: boolean,
