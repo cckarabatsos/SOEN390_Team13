@@ -78,7 +78,7 @@ async function createConversation(
         }
 
         // Generate a random key for the conversation
-        const key = crypto.randomBytes(32).toString("hex");
+        const key = crypto.randomBytes(16).toString("hex");
 
         const conversationData = await db.collection("conversations").add({
             messages: [],
