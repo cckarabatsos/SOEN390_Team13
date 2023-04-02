@@ -50,7 +50,7 @@ export async function createApplication(
   school: string,
   schoolCountry: string,
   schoolDegree: string,
-  schoolEnd: Date,
+  schoolEnd: string,
   schoolMajor: string,
   timestamp: string,
   postingID: string,
