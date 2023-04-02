@@ -5,6 +5,7 @@ export default class JobsOverview {
   public contract: String;
   public jobPosterID: number;
   public postingID: String;
+  public jobID: String;
   public salary: number;
   public description: String;
   public email: String;
@@ -19,6 +20,7 @@ export default class JobsOverview {
     contract: String,
     jobPosterID: number,
     postingID: String,
+    jobID: String,
     salary: number,
     description: String,
     email: String,
@@ -32,6 +34,7 @@ export default class JobsOverview {
     this.contract = contract;
     this.jobPosterID = jobPosterID;
     this.postingID = postingID;
+    this.jobID = jobID;
     this.salary = salary;
     this.description = description;
     this.email = email;

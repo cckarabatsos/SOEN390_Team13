@@ -38,6 +38,7 @@ export default function JobSearch() {
           jobs[i].contract,
           i,
           jobs[i].jobPosterID,
+          jobs[i].id,
           20, //jobs[i].salary
           jobs[i].description,
           jobs[i].email,
@@ -73,6 +74,7 @@ export default function JobSearch() {
               setOpenModal={setModalOpen}
               viewDesc={jobDisplay[jobPosterID].description}
               postingID={jobDisplay[jobPosterID].postingID}
+              jobID={jobDisplay[jobPosterID].jobID}
               viewPosition={jobDisplay[jobPosterID].position}
               viewLocation={jobDisplay[jobPosterID].location}
               viewCompany={jobDisplay[jobPosterID].company}

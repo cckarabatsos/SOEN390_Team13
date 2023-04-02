@@ -41,7 +41,6 @@ export const storeApplication = async (application: Application) => {
     const timestamp = application.schoolEnd.toJSON();
     let user = await findUserWithID(application.ownerID);
     let posting = await findJobpostingWithID(application.postingID);
-    console.log("b", application);
     if (user === undefined || posting === undefined) {
       console.log("User of posting not found.");
       return null;

@@ -16,6 +16,7 @@ function Modal({
   viewMandatoryCoverLetter,
   viewPostingDeadline,
   postingID,
+  jobID,
 }) {
   const { t } = useTranslation();
 
@@ -77,7 +78,7 @@ function Modal({
               textAlign: "center",
               lineHeight: "39px",
             }}
-            to={"/JobApplication/" + postingID}
+            to={"/JobApplication/" + jobID}
           >
             {t("ApplyText")}
           </Link>

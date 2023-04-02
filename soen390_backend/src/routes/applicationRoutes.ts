@@ -61,6 +61,8 @@ application.post("/:ownerID", async (req: Request, res: Response) => {
       experience,
       ownerID
     );
+    console.log(application);
+
     const status: number = application[0];
     if (status == 200) {
       res.status(200);
