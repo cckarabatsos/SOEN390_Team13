@@ -2,6 +2,7 @@ import axios from "axios";
 import api from "../config.json";
 
 export async function GetNotification(userId:string) {
+  console.log("IN NOTIFICATION")
   try {
     const response = await axios.get(api.BACKEND_API + "/notification/getNotifications/" + userId);
     return response.data;

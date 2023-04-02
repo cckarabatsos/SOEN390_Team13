@@ -59,6 +59,8 @@ const renderContacts = ({item}:any) => (
       location={item.location}
       currentEmail={currentID}
       contactEmail={item.userID}
+      currentEmail1={currentEmail}
+      contactEmail1={item.email}
       navigation={props.navigation}
       handleCloseModal={props.handleCloseModal}
       refreshContacts={getContactsList}
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
       },
+
       contactsListWrapper: {
         paddingVertical: 40,
         marginHorizontal: 10,

@@ -449,7 +449,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
       <View style={styles.container}>
         <View style={{flexDirection: 'row'}}>           
               <ImageBackground
-                source={{ uri: "https://source.unsplash.com/1600x900/?nature,water" }}
+                source={{ uri: "https://source.unsplash.com/1600x900/?nature" }}
                 style={styles.backgroundImage}
               >
               

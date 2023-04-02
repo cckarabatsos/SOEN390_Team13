@@ -25,6 +25,7 @@ import { GetNotification } from '../api/NotificationAPI';
 const ExpandableComponent = ({item, onClickFunction, email}:any) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
+  const { v4: uuidv4 } = require('uuid');
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -59,7 +60,7 @@ const ExpandableComponent = ({item, onClickFunction, email}:any) => {
         }}>
         {/*Content under the header of the Expandable List Item*/}
         {item.subcategory.map((item:any, key:any) =>(
-          <FriendRequestRow data = {item} email={email}/>
+          <FriendRequestRow key = {uuidv4()} data = {item} email={email}/>
         ))}
       </View>
     </View>
@@ -84,7 +85,7 @@ const ExpandableComponent = ({item, onClickFunction, email}:any) => {
           overflow: 'hidden',
         }}>
         {item.subcategory.map((item:any, key:any) =>(
-          <NotificationRow data = {item}/>
+          <NotificationRow key = {uuidv4()} data = {item}/>
         ))}
       </View>
     </View>
