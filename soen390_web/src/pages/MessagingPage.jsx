@@ -120,6 +120,8 @@ function Messages(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { userId } = useParams();
+  const [conversationVersion, setConversationVersion] = useState(0); // Add this state variable
+
   useEffect(() => {
     setIsLoading(true);
     fetchData();
@@ -129,40 +131,20 @@ function Messages(props) {
   useEffect(() => {
     const userId = window.location.pathname.split("/").pop();
     fetchConversation(userId);
-  }, [location.pathname]);
+  }, [location.pathname, conversationVersion]); // Use conversationVersion as a dependency
 
-  useEffect(async () => {
-    if (!conversationID) {
-      const userId = window.location.pathname.split("/").pop();
+  // ...
 
-      const newConvoStatus = await createConversation([
-        props.userData.userID,
-        userId,
-      ]);
-      console.log("Ignoring subscription");
-
-      return;
+  const handleSendMessage = async (event) => {
+    event.preventDefault();
+    await sendMessage(userId, props.userData.userID, message);
+    const conversationFetched = await fetchConversation(userId);
+    if (conversationFetched) {
+      setConversationVersion(conversationVersion + 1); // Increment conversationVersion to trigger a re-render
     }
-    console.log("Running subscription for conversationID: ", conversationID);
-    const messageRef = doc(db, "conversations", conversationID);
-    const unsub = onSnapshot(messageRef, (querySnapshot) => {
-      fetchConversation(userId);
-    });
+    setMessage("");
+  };
 
-    return () => {
-      console.log("Unsubbing");
-
-      unsub();
-    };
-  }, [conversationID]);
-  async function fetchData() {
-    const convos = await getActiveConvos(props.userData.userID);
-
-    const convUser = convos.find((user) => user.ActiveUser.userID === userId);
-
-    setSelectedUser(convUser);
-    setUsers(convos);
-  }
   const fetchConversation = async (userId) => {
     try {
       if (userId) {
@@ -179,15 +161,54 @@ function Messages(props) {
 
         setConversationID(activeMessages.data.usersChat.conversationID);
         setIsLoading(false);
+        return true; // Return true if the conversation was fetched successfully
       }
-    } catch (error) {}
-  };
-  const handleSendMessage = async (event) => {
-    event.preventDefault();
-    await sendMessage(userId, props.userData.userID, message);
-    setMessage("");
+    } catch (error) {
+      return false; // Return false if there was an error fetching the conversation
+    }
   };
 
+  // ...
+
+  useEffect(() => {
+    async function handleConversation() {
+      if (!conversationID) {
+        const userId = window.location.pathname.split("/").pop();
+
+        const newConvoStatus = await createConversation([
+          props.userData.userID,
+          userId,
+        ]);
+        await fetchData(); // Make sure fetchData is awaited
+        setIsLoading(false); // Set isLoading to false after fetchData
+        console.log("Ignoring subscription");
+
+        return;
+      }
+      console.log("Running subscription for conversationID: ", conversationID);
+      const messageRef = doc(db, "conversations", conversationID);
+      const unsub = onSnapshot(messageRef, (querySnapshot) => {
+        fetchConversation(userId);
+      });
+
+      return () => {
+        console.log("Unsubbing");
+
+        unsub();
+      };
+    }
+
+    handleConversation();
+  }, [conversationID]);
+
+  async function fetchData() {
+    const convos = await getActiveConvos(props.userData.userID);
+
+    const convUser = convos.find((user) => user.ActiveUser.userID === userId);
+
+    setSelectedUser(convUser);
+    setUsers(convos);
+  }
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -229,6 +250,9 @@ function Messages(props) {
         <List>
           {users.map((user) => (
             <ListItem
+              style={{
+                cursor: "pointer",
+              }}
               key={user.ActiveUser.userID}
               selected={user.ActiveUser.userID === userId}
               onClick={() => navigate(`/Messages/${user.ActiveUser.userID}`)}
