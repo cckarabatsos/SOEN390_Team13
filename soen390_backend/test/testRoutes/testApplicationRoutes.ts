@@ -156,14 +156,31 @@ describe("Test Application Routes", function () {
     describe("Post application/updateStatus/:applicationID", function () {
         it("responds with 200 when application status updated", async function () {
             await request(url)
-                .get(
-                    `/application/updateStatus/${applicationID}?status=${status}`
-                )
+                .get(`/application/id/${applicationID}?status=${status}`)
                 .expect(200);
         });
         it("responds with a 404 when user with passed id does not exist", async function () {
             await request(url)
                 .get(`/application/updateStatus/${badUserID}?status=${status}`)
+                .expect(404);
+        });
+    });
+    describe("Get application by id", function () {
+        it("responds with 200 if the application ID is valid", async function () {
+            // Set up test data
+            const conversationID = "ZrmVGor84emNnWYx48AF"; // Replace with a valid conversation ID
+            // Make request to endpoint
+            await request(url)
+                .get(`/application/id/${conversationID}`)
+                .expect(200);
+        });
+
+        it("responds with 400 if the conversation ID is invalid", async function () {
+            // Set up test data
+            const conversationID = "invalid_id"; // Replace with an invalid conversation ID
+            // Make request to endpoint
+            await request(url)
+                .get(`/application/id/${conversationID}`)
                 .expect(404);
         });
     });
