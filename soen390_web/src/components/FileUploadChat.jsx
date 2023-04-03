@@ -18,7 +18,7 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID, conversationID }) => {
     }, []);
 
     const uploadChatHandler = async (event, reqUserID, reqSenderID) => {
-        console.log(reqSenderID);
+        //console.log(reqSenderID);
         const Ids = JSON.stringify([reqUserID, reqSenderID]);
         const file = event.target.files[0];
         file.isUploading = true;
@@ -30,9 +30,9 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID, conversationID }) => {
         // calling the backend
         try {
             // http://localhost:7000/messages/uploadChatFile?senderId=rgwu3p8IKmp0H3yYPdNO&Ids=["3Ri6yXlYSo7rCQk4t4ks","rgwu3p8IKmp0H3yYPdNO"]&conversationID=UCoA5lmz3FGIBjlRhuyG
-            console.log(userData.senderID);
-            console.log(Ids);
-            console.log(file);
+            //console.log(userData.senderID);
+            //console.log(Ids);
+            //console.log(file);
             console.log(
                 `${api.BACKEND_API}/messages/uploadChatFile?senderId=${reqSenderID}&Ids=${Ids}&conversationID=${conversationID}`
             );
@@ -46,10 +46,10 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID, conversationID }) => {
                 )
                 .then((res) => {
                     file.isUploading = false;
-                    console.log("success");
+                    //console.log("success");
                     return res.data;
                 });
-            console.log(response);
+            //console.log(response);
             if (response === 200) {
                 return true;
             } else {
