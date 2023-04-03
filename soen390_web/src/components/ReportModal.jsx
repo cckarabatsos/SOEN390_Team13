@@ -54,7 +54,7 @@ const ReportModal = (props) => {
   const handleButtonClick = async (event) => {
     const message = event.currentTarget.innerText;
     setActiveButton(message);
-    console.log(message);
+    //console.log(message);
     const reporterID = window.location.pathname.split("/").pop();
 
     await createReport(reporterID, props.userID, message);
