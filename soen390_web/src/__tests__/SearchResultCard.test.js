@@ -1,7 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import SearchResultCard from "../components/SearchResultCard";
-import { MemoryRouter as Router } from "react-router-dom";
 
 describe("SearchResultCard", () => {
   const data = {
@@ -13,7 +12,7 @@ describe("SearchResultCard", () => {
   };
 
   test("renders user data", () => {
-    render(<Router><SearchResultCard data={data} /></Router>);
+    render(<SearchResultCard data={data} />);
 
     // Check that all data fields are displayed
     expect(screen.getByText(data.name)).toBeInTheDocument();
@@ -38,7 +37,7 @@ describe("SearchResultCard", () => {
   });
 
   test("renders default props if data is not provided", () => {
-    render(<Router><SearchResultCard /></Router>);
+    render(<SearchResultCard />);
 
     // Check that default prop values are displayed
     expect(screen.getByText("")).toBeInTheDocument(); // no name

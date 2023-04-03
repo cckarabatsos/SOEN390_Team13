@@ -18,10 +18,9 @@ export default function NotificationComponentList(props) {
     setNotifications(generatedNotification);
   };
   const handleRemoveNotification = async (notificationId) => {
-    // console.log("document notification IOd: " + notificationId);
     var response = await removeNotification(notificationId);
     if (response) {
-      getNotificationsList(userData.userId);
+      getNotificationsList(userData.userID);
     }
   };
 
@@ -34,7 +33,7 @@ export default function NotificationComponentList(props) {
     }
 
     if (userData) {
-      getNotificationsList(userData.userId);
+      getNotificationsList(data.userID);
     }
   }, []);
 

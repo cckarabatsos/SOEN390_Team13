@@ -46,10 +46,10 @@ const SearchResultCard = ({ data }) => {
 
   const sendConnection = async (email) => {
     const personalData = JSON.parse(localStorage.getItem("isAuth"));
-    //console.log(email);
-    //console.log(personalData.email);
+    console.log(email);
+    console.log(personalData.email);
     const temp = await sendInvite(personalData.email, email);
-    //console.log(temp);
+    console.log(temp);
     const alertSeverity = temp ? "success" : "error";
 
     // ? "Connection request sent!"
@@ -68,7 +68,7 @@ const SearchResultCard = ({ data }) => {
   };
 
   const openConnection = (id) => {
-    //console.log(id);
+    console.log(id);
   };
 
   const sendFirstMessage = (id) => {

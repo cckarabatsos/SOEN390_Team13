@@ -379,6 +379,11 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     if (req.body.type) {
         type = req.body.type;
     }
+    let postingDeadline: any = null;
+    if (req.body.postingDeadline) {
+        postingDeadline = req.body.postingDeadline;
+    }
+    console.log(req.body.postingDeadline);
     const userArr: User = await getUserWithEmail(email).then();
     const status = userArr[0];
     if (status == 404) {
@@ -400,6 +405,7 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
                 contract,
                 duration,
                 type,
+                postingDeadline,
                 userArr[1].data.userID
             );
 

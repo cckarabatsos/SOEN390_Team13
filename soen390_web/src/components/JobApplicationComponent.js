@@ -109,25 +109,25 @@ const JobApplicationComponent = (props) => {
     } else {
       navigate("/JobSearch");
       alert("Form was submitted");
-      // console.log(
-      //   email,
-      //   firstName,
-      //   lastName,
-      //   address,
-      //   city,
-      //   province,
-      //   area,
-      //   phone,
-      //   school,
-      //   schoolDegree,
-      //   schoolCountry,
-      //   schoolMajor,
-      //   Country,
-      //   Company,
-      //   JobTitle,
-      //   Start,
-      //   End
-      // );
+      console.log(
+        email,
+        firstName,
+        lastName,
+        address,
+        city,
+        province,
+        area,
+        phone,
+        school,
+        schoolDegree,
+        schoolCountry,
+        schoolMajor,
+        Country,
+        Company,
+        JobTitle,
+        Start,
+        End
+      );
     }
   };
 

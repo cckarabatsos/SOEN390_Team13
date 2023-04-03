@@ -17,14 +17,14 @@ function UserSearchBar({ setUsers }) {
   //handle category selection change
   const handleChange = (e) => {
     setCategory(e.target.value);
-    //console.log(e.target.value);
+    console.log(e.target.value);
   };
 
   //handle job search
   const handleSearch = async () => {
-    //console.log("text: " + text + " category: " + category);
+    console.log("text: " + text + " category: " + category);
     const temp = await searchUsers(category, text);
-    //console.log(temp);
+    console.log(temp);
     //var companies = await CompanyApi(category, text, 0, 0);
 
     setUsers(temp);

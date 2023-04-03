@@ -9,11 +9,11 @@ export default function UserSearchComponent(props) {
 
   const { t } = useTranslation();
 
-  //console.log(props);
+  console.log(props);
 
-  // const handleOnClick = () => {
-  //   navigate("/UserProfile/" + props.id);
-  // };
+  const handleOnClick = () => {
+    navigate("/UserProfile/" + props.id);
+  };
 
   return (
     <div key={props.id} className="companyContainer">
@@ -50,11 +50,9 @@ export default function UserSearchComponent(props) {
             </Button>
           </div>
           <div className="companyName">{props.name}</div>
-          {props.contact && (
           <div className="companyFollowers">
             {props.contact.length} Followers
           </div>
-          )}
           <div className="companySubName">{props.position}</div>
           <div className="companySubName">{props.company}</div>
         </div>
