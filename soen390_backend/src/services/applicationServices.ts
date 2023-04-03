@@ -38,7 +38,7 @@ export const findApplicationWithID = async (applicationID: string) => {
  */
 export const storeApplication = async (application: Application) => {
   try {
-    const timestamp = application.schoolEnd.toJSON();
+    const timestamp = application.schoolEnd.toLocaleString();
     let user = await findUserWithID(application.ownerID);
     let posting = await findJobpostingWithID(application.postingID);
     if (user === undefined || posting === undefined) {

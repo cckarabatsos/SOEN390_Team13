@@ -19,7 +19,7 @@ export const application_schema = yup
     school: yup.string().required(),
     schoolCountry: yup.string().required(),
     schoolDegree: yup.string().required(),
-    schoolEnd: yup.date().required(),
+    schoolEnd: yup.string().required(),
     schoolMajor: yup.string().required(),
     timestamp: yup.string().required(),
     ownerID: yup.string().required(),

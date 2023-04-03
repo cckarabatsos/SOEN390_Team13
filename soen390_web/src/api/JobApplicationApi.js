@@ -2,7 +2,7 @@ import axios from "axios";
 import api from "../config.json";
 
 export async function createApplication(
-  ownerID,
+  userID,
   email,
   firstName,
   lastName,
@@ -24,7 +24,7 @@ export async function createApplication(
 ) {
   try {
     const response = await axios.post(
-      api.BACKEND_API + "/application/" + ownerID,
+      api.BACKEND_API + "/application/" + userID,
       {
         email: email,
         firstName: firstName,

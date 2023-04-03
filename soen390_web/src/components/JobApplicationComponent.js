@@ -44,7 +44,9 @@ const JobApplicationComponent = (props) => {
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [ResumeFilename, setResumeFilename] = React.useState();
   const navigate = useNavigate();
-  const posting = "NAzQgPUr8iCooLCqtPUT";
+  const posting = window.location.pathname.split("/").pop();
+  console.log(posting);
+  //"NAzQgPUr8iCooLCqtPUT";
 
   const [expierienceInputValue, setExpierienceInputValue] = React.useState("");
 
@@ -100,10 +102,8 @@ const JobApplicationComponent = (props) => {
       Country.length === 0 ||
       Company.length === 0 ||
       JobTitle.length === 0 ||
-      schoolEnd.length === 0 ||
       attachResume.length === 0 ||
-      attachCoverLetter.length === 0 ||
-      experience.length === 0
+      attachCoverLetter.length === 0
     ) {
       setError(true);
     } else {
@@ -341,14 +341,13 @@ const JobApplicationComponent = (props) => {
                 size="small"
               />
               <div className="textboxname">{t("EndDateText")}</div>
-              {error && <label className="label">Cannot be empty!</label>}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  onChange={(date) => setSchoolEnd(date.format("DD-MM-YYYY"))}
+                  onChange={(date) => setSchoolEnd(dayjs(date))}
                   autoFocus
                   className="input"
                   margin="dense"
-                  label={t("DegreeStatus*")}
+                  label={""}
                   format="DD-MM-yyyy"
                   inputVariant="outlined"
                   size="small"
@@ -373,40 +372,31 @@ const JobApplicationComponent = (props) => {
                 variant="outlined"
                 size="small"
               />
-              <div>
-                <div className="textboxname">{t("Work Experience")}</div>
-                {experience.length === 0 && (
-                  <label className="label">Cannot be empty!</label>
-                )}
-                <div className="experience-list">
-                  {experience.map((exp, index) => (
-                    <Chip
-                      key={index}
-                      label={exp}
-                      className="experience-circle"
-                    />
-                  ))}
-                </div>
-                <TextField
-                  onChange={(e) => setExpierienceInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  autoFocus
-                  className="input"
-                  margin="dense"
-                  label={t("Work Experience")}
-                  type="name"
-                  variant="outlined"
-                  size="small"
-                  value={expierienceInputValue}
-                />
-                <Button
-                  onClick={handleAddExperience}
-                  variant="contained"
-                  color="primary"
-                >
-                  Add Experience
-                </Button>
+              <div className="textboxname">{t("Work Experience")}</div>
+              <div className="experience-list">
+                {experience.map((exp, index) => (
+                  <Chip key={index} label={exp} className="experience-circle" />
+                ))}
               </div>
+              <TextField
+                onChange={(e) => setExpierienceInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                autoFocus
+                className="input"
+                margin="dense"
+                label={t("Work Experience")}
+                type="name"
+                variant="outlined"
+                size="small"
+                value={expierienceInputValue}
+              />
+              <Button
+                onClick={handleAddExperience}
+                variant="contained"
+                color="primary"
+              >
+                Add Experience
+              </Button>
 
               <div className="buttons">
                 <Button
