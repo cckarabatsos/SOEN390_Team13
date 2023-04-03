@@ -183,7 +183,7 @@ application.post("/remove/:userID", async (req: Request, res: Response) => {
 /**
  * Route that updates an application's status in database
  */
-application.post(
+application.get(
   "/updateStatus/:applicationID",
   async (req: Request, res: Response) => {
     let applicationID: string = req.params.applicationID;
