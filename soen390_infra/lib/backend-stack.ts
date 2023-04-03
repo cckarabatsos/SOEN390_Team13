@@ -5,6 +5,8 @@ import * as apigateway from '@aws-cdk/aws-apigatewayv2-alpha';
 import * as integrations from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 import path = require('path');
 
+
+
 interface BackendProps extends cdk.StackProps {
     frontendUrls: string[];
 }
@@ -22,6 +24,9 @@ export class BackendStack extends cdk.Stack {
         runtime: lambda.Runtime.NODEJS_18_X,
         code: lambda.Code.fromAsset(sourcePath),
         timeout: cdk.Duration.seconds(30),
+        environment: {
+            FIREBASECONFIG: process.env.FIREBASECONFIG || '',
+        }
     });
 
     const integration = new integrations.HttpLambdaIntegration('backendIntegration', backendHandler);
