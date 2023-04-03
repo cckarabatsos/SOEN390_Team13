@@ -1,17 +1,17 @@
 import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { useEffect, useInsertionEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import profilepicture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
+import AddDocumentsDialog from "../components/AddDocumentsDialog";
 import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
 import AddSkillDialog from "../components/AddSkillDialog";
 import ExperienceList from "../components/ExperienceList";
 import "../styles/components/UserProfile.css";
 import ApplicationHistory from "./ApplicationHistory";
-import AddDocumentsDialog from "../components/AddDocumentsDialog";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -19,7 +19,6 @@ import {
   getExperience,
   getSkills,
   removeSkill,
-  uploadPicture,
 } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
@@ -29,14 +28,12 @@ function UserProfile(props) {
   const [userData, setUserData] = React.useState({});
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
-  const [picture, setPicture] = React.useState();
+  const [picture, setpicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
   const [workExperience, setWorkExperience] = React.useState([]);
   const [educationExperience, setEducationExperience] = React.useState([]);
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
-  const [isPictureChanged, setIsPictureChanged] = React.useState(false);
-  const inputFile = useRef(null);
 
   const [skills, setSkills] = React.useState([]);
 
@@ -72,7 +69,6 @@ function UserProfile(props) {
       return UserCoverLetter;
     };
 
-    // getting cover letter
     if (UserCoverLetter !== null) {
       getCoverLetter().then((coverLetter) => {
         setCoverletter(coverLetter);
@@ -81,9 +77,9 @@ function UserProfile(props) {
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
       });
+      console.log(coverletterFilename);
     }
 
-    // getting resume
     let UserResume = "";
     const getResume = async () => {
       UserResume = await GetFile(userData.userID, "resume");
@@ -97,20 +93,11 @@ function UserProfile(props) {
         setResumeFilename(
           decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
         );
+        console.log(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
       });
     }
-
-    // getting profile picture
-    let UserPicture = null;
-    const getPicture = async () => {
-      console.log("getting user picture");
-      UserPicture = await GetFile(userData.userID, "picture");
-      return UserPicture;
-    };
-    getPicture().then((picture) => {
-      setPicture(picture);
-      console.log("picture is now: " + picture);
-    });
   };
 
   const getSkillList = async (userID) => {
@@ -124,10 +111,6 @@ function UserProfile(props) {
     setSkills(skillArray);
   };
 
-  const onProfileClick = () => {
-    inputFile.current.click();
-  };
-
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
@@ -138,7 +121,6 @@ function UserProfile(props) {
     getUserExperience();
     setFileData();
     getSkillList(userData.userID);
-    console.log("userData.picture: " + userData.picture);
   }, [navigate, userData.userID]);
 
   useEffect(() => {
@@ -155,36 +137,12 @@ function UserProfile(props) {
     }
   };
 
-  const changeProfilePicture = async (pictureEvent) => {
-    console.log("uploading profile picture");
-    await uploadPicture(userData.userID, pictureEvent).then((response) => {
-      setIsPictureChanged(true);
-    });
-    // setIsPictureChanged(true)
-    // if (response) {
-    //   // console.log("response received, calling setfiledata()");
-    //   await setFileData();
-    // }
-  };
-
-  useEffect(() => {
-    if (isPictureChanged) {
-      setFileData();
-      setIsPictureChanged(false);
-    }
-  }, [isPictureChanged]);
-
   const handleRemoveSkillOnClick = async (id) => {
     var response = await removeSkill(id);
     if (response) {
       await getSkillList(userData.userID);
     }
   };
-
-  // useEffect(() => {
-  //   if(isPictureChanged) getProfilePicture();
-  //   setIsPictureChanged(false);
-  // }, [picture]);
 
   useEffect(() => {
     addNewSkill(userData.userID);
@@ -200,26 +158,11 @@ function UserProfile(props) {
           }}
         >
           <div className="foreground-colour">
-            <div
-              className="pfp-wrap"
-              style={{ marginLeft: "auto", marginRight: "auto" }}
-              onClick={onProfileClick}
-            >
-              <input
-                hidden
-                accept="image/png, image/jpeg"
-                multiple
-                type="file"
-                ref={inputFile}
-                onChange={(e) => changeProfilePicture(e.target.files[0])}
-              />
-              <img
-                className="profile-pic"
-                alt="profile-pic"
-                src={`${picture} || ${profilepicture}`}
-              ></img>
-            </div>
-
+            <img
+              className="profile-pic"
+              alt="profile-pic"
+              src={profilepicture}
+            ></img>
             <Grid container spacing={2}>
               <Grid className="name" item xs={12}>
                 {userData.name}

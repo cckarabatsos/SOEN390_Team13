@@ -3,10 +3,12 @@
     src: url(../../assets/Inter-Regular.ttf);
   }
   
+  
   .HeaderContainer {
     background: white;
     border: 2px solid rgba(0, 106, 249,0.8);
     border-radius: 20px;
+    
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2rem;
@@ -14,14 +16,18 @@
     transition: all 0.3s ease 0s;
     position: relative;
     height: 30vh;
+    
     width: 65vw;
     
     }
 
 .topHeaderDiv{
+
+
     position: relative;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
+    
     height: 50%;
     width: 100%;
     background-color:rgba(0, 106, 249,0.6) ;
@@ -175,7 +181,10 @@
             display: inline-block;
             
         }
+
+
         .editButton{
+          
           display: inline-block;
           width: 40%;
           float: left;

@@ -146,7 +146,7 @@ function Messages(props) {
         });
 
         return () => {
-            console.log("Unsubbing");
+            //console.log("Unsubbing");
 
             unsub();
         };
@@ -195,7 +195,7 @@ function Messages(props) {
     };
 
     const handleReportClick = (userID) => {
-        console.log("Report clicked for user:", userID);
+        //console.log("Report clicked for user:", userID);
         setShowReportModal(true);
         handleMenuClose();
     };
@@ -206,12 +206,12 @@ function Messages(props) {
 
     const handleDocumentDecryptButton = async (content, conversationID) => {
         try {
-            console.log(content);
+            //console.log(content);
             const decryptedUrl = await handleDocumentDecrypt(
                 content,
                 conversationID
             );
-            console.log(decryptedUrl);
+            //console.log(decryptedUrl);
             window.open(decryptedUrl, "_blank");
         } catch (error) {
             console.error("Error while decrypting file: ", error);
