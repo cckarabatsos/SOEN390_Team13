@@ -1,96 +1,189 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Messages from '../pages/MessagingPage';
-import { makeStyles } from "@material-ui/core/styles";
-import ReactDOM from 'react-dom';
+import { fireEvent, render } from "@testing-library/react";
+import React from "react";
+import {
+  getActiveConvos,
+  getAllMessages,
+  sendMessage,
+} from "../api/messagesApi";
+import { findUserById } from "../api/UserProfileApi";
+import Messages from "../pages/MessagingPage";
+import { MemoryRouter as Router } from "react-router-dom";
 
-describe('Messages', () => {
-  test('renders Messages component', () => {
-    render(<Messages />);
-    const messagesElement = screen.getByTestId('messages-component');
-    expect(messagesElement).toBeInTheDocument();
+jest.mock("../firebaseConfig");
+jest.mock("../api/messagesApi");
+jest.mock("../api/UserProfileApi");
+
+describe("Messages", () => {
+  const mockUserData = {
+    userID: "testUserID",
+    name: "Test User",
+    avatar: "test-avatar.jpg",
+    status: "Online",
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("renders the Messages component", () => {
+    const { getByText } = render(<Router><Messages userData={mockUserData} /></Router>);
+    const drawerTitle = getByText(
+      "Please select a user to start a conversation."
+    );
+    expect(drawerTitle).toBeInTheDocument();
+  });
+
+  test("fetches active conversations and messages on load", async () => {
+    getActiveConvos.mockResolvedValueOnce([
+      {
+        ActiveUser: {
+          userID: "testUserID1",
+          name: "Test User 1",
+          avatar: "test-avatar1.jpg",
+          status: "Online",
+        },
+      },
+    ]);
+    findUserById.mockResolvedValueOnce({
+      data: {
+        userID: "testUserID1",
+        name: "Test User 1",
+        avatar: "test-avatar1.jpg",
+        status: "Online",
+      },
+    });
+
+    getAllMessages.mockResolvedValueOnce({
+      data: {
+        usersChat: {
+          listOfMessages: [
+            {
+              message: {
+                content: "Hello!",
+                senderId: "testUserID1",
+                timestamp: new Date(),
+              },
+            },
+          ],
+          conversationID: "testConversationID1",
+        },
+      },
+    });
+
+    const { findByText } = render(<Router><Messages userData={mockUserData} /></Router>);
+    const userName = await findByText("Test User 1");
+    expect(userName).toBeInTheDocument();
+    expect(getActiveConvos).toHaveBeenCalledWith("testUserID");
+    expect(findUserById).toHaveBeenCalledWith("testUserID1");
+    expect(getAllMessages).toHaveBeenCalledWith("testUserID", "testUserID1");
+  });
+
+  test("sends message when send button is clicked", async () => {
+    getActiveConvos.mockResolvedValueOnce([
+      {
+        ActiveUser: {
+          userID: "testUserID1",
+          name: "Test User 1",
+          avatar: "test-avatar1.jpg",
+          status: "Online",
+        },
+      },
+    ]);
+    findUserById.mockResolvedValueOnce({
+      data: {
+        userID: "testUserID1",
+        name: "Test User 1",
+        avatar: "test-avatar1.jpg",
+        status: "Online",
+      },
+    });
+
+    getAllMessages.mockResolvedValueOnce({
+      data: {
+        usersChat: {
+          listOfMessages: [
+            {
+              message: {
+                content: "Hello!",
+                senderId: "testUserID1",
+                timestamp: new Date(),
+              },
+            },
+          ],
+          conversationID: "testConversationID1",
+        },
+      },
+    });
+
+    sendMessage.mockResolvedValueOnce();
+
+    const { findByText, getByLabelText, getByText } = render(
+      <Router><Messages userData={mockUserData} /></Router>
+    );
+    const userName = await findByText("Test User 1");
+    expect(userName).toBeInTheDocument();
+
+    const messageInput = getByLabelText("Type a message");
+    const sendButton = getByText("Send");
+    const messageValue = "Test message value";
+
+    fireEvent.change(messageInput, { target: { value: messageValue } });
+    fireEvent.click(sendButton);
+
+    expect(sendMessage).toHaveBeenCalledWith(
+      "testUserID1",
+      "testUserID",
+      messageValue
+    );
+  });
+
+  test("refreshes conversations when refresh button is clicked", async () => {
+    getActiveConvos.mockResolvedValueOnce([
+      {
+        ActiveUser: {
+          userID: "testUserID1",
+          name: "Test User 1",
+          avatar: "test-avatar1.jpg",
+          status: "Online",
+        },
+      },
+    ]);
+    findUserById.mockResolvedValueOnce({
+      data: {
+        userID: "testUserID1",
+        name: "Test User 1",
+        avatar: "test-avatar1.jpg",
+        status: "Online",
+      },
+    });
+
+    getAllMessages.mockResolvedValueOnce({
+      data: {
+        usersChat: {
+          listOfMessages: [
+            {
+              message: {
+                content: "Hello!",
+                senderId: "testUserID1",
+                timestamp: new Date(),
+              },
+            },
+          ],
+          conversationID: "testConversationID1",
+        },
+      },
+    });
+
+    const { findByText, getByText } = render(
+      <Router><Messages userData={mockUserData} /></Router>
+    );
+    const userName = await findByText("Test User 1");
+    expect(userName).toBeInTheDocument();
+
+    const refreshButton = getByText("Refresh Conversations");
+    fireEvent.click(refreshButton);
+
+    expect(findUserById).toHaveBeenCalledTimes(2);
+    expect(getAllMessages).toHaveBeenCalledTimes(2);
   });
 });
-
-describe("useStyles", () => {
-    it("should return the expected object", () => {
-      const expected = {
-        root: {
-          display: "flex",
-          marginBottom: "40%",
-        },
-        drawer: {
-          width: 240,
-          flexShrink: 0,
-        },
-        drawerPaper: {
-          width: 240,
-          borderRight: `1px solid rgba(0, 0, 0, 0.12)`,
-        },
-        toolbar: {
-          minHeight: 64,
-        },
-        content: {
-          flexGrow: 1,
-          padding: "24px",
-        },
-        listItemText: {
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        },
-        conversation: {
-          display: "flex",
-          flexDirection: "column",
-          flexGrow: 1,
-        },
-        messageContainer: {
-          display: "flex",
-          flexDirection: "column",
-          marginTop: "auto",
-          marginBottom: "8px",
-        },
-        message: {
-          maxWidth: "80%",
-          padding: "8px",
-          borderRadius: "16px",
-          backgroundColor: "#9993FF",
-          alignSelf: "flex-start",
-          marginBottom: "8px",
-          boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
-        },
-        sentMessage: {
-          alignSelf: "flex-end",
-          backgroundColor: "#EDEDED",
-          color: "black",
-          borderRadius: "16px",
-          padding: "8px",
-          maxWidth: "80%",
-          marginBottom: "8px",
-          boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
-        },
-        messagesContainer: {
-          overflowY: "auto",
-          paddingBottom: "8px",
-        },
-        refreshButton: {
-          marginTop: "8px",
-        },
-        refreshButtonContainer: {
-          marginTop: "8px",
-        },
-        messageInputContainer: {
-          display: "flex",
-          marginTop: "8px",
-        },
-        messageInput: {
-          flexGrow: 1,
-          marginRight: "8px",
-        },
-      };
-  
-      const useStylesResult = makeStyles(() => expected)();
-  
-      expect(useStylesResult).toEqual(expected);
-    });
-  });
