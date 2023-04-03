@@ -110,7 +110,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                        " job postings successfully deleted."
+                            " job postings successfully deleted."
                     );
                 }
             }
@@ -443,11 +443,13 @@ export async function sendUserInvitation(
             });
         let notification: Notification = {
             logo: (senderUser.data as User).picture,
-            message: (senderUser.data as User).name + " has sent you a friend request.",
-            timestamp: (new Date()).toLocaleString(),
+            message:
+                (senderUser.data as User).name +
+                " has sent you a friend request.",
+            timestamp: new Date().toLocaleString(),
             category: "network",
             ownerID: receiverUser.data.userID,
-            relatedEntity: senderUser.data.userID
+            relatedEntity: senderUser.data.userID,
         };
         console.log(receiverUser.data.userID);
         storeNotification(notification);
@@ -492,10 +494,10 @@ export async function followCompanyInv(senderID: string, receiverID: string) {
             let notification: Notification = {
                 logo: senderUser.picture,
                 message: senderUser.name + " is now following you.",
-                timestamp: (new Date()).toLocaleString(),
+                timestamp: new Date().toLocaleString(),
                 category: "network",
                 ownerID: receiverID,
-                relatedEntity: senderID
+                relatedEntity: senderID,
             };
             storeNotification(notification);
         }
@@ -530,13 +532,12 @@ export async function unFollowCompanyInv(senderID: string, receiverID: string) {
                             ),
                     });
             } else {
-                console.log("You dont even follow that company????");
-                throw Error;
+                throw new Error("You don't even follow that company!");
             }
         }
     } catch (error) {
         console.log(error);
-        throw new Error("this is a following error");
+        throw new Error("This is a following error");
     }
 }
 /**
@@ -610,11 +611,13 @@ export async function manageUserInvitation(
                 });
             let notification: Notification = {
                 logo: invitedUser.data.picture,
-                message: invitedUser.data.name + " has accepted your friend request.",
-                timestamp: (new Date()).toLocaleString(),
+                message:
+                    invitedUser.data.name +
+                    " has accepted your friend request.",
+                timestamp: new Date().toLocaleString(),
                 category: "network",
                 ownerID: senderUser.data.userID,
-                relatedEntity: invitedUser.data.userID
+                relatedEntity: invitedUser.data.userID,
             };
             storeNotification(notification);
         }
