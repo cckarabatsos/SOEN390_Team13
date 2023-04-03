@@ -1,13 +1,11 @@
 /**
  * Service methods for Skill entity of the database
  */
-import firebase from "firebase";
-//import { string } from "yup";
-import "firebase/storage";
+
 import { Skill /*skill_schema*/ } from "../models/Skill";
 import { findUserWithID } from "./userServices";
 
-const db = firebase.firestore();
+import { db } from "../firebaseconfig";
 
 /**
  * Finds skill with specified ID in the database
@@ -47,7 +45,7 @@ export const storeSkill = async (skill: Skill) => {
             if (skl.name == skill.name) {
                 exists = true;
             }
-        })
+        });
         if (exists) {
             return "exists";
         }
@@ -104,14 +102,13 @@ export const retrieveSkills = async (userID: string) => {
     if (user === undefined) {
         return null;
     }
-    let skillsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-        db.collection("skills");
+    let skillsRef: any = db.collection("skills");
 
     if (userID) {
         skillsRef = skillsRef.where("ownerID", "==", userID);
     }
     const snapshot = await skillsRef.get();
-    const skills = snapshot.docs.map((doc) => ({
+    const skills = snapshot.docs.map((doc: any) => ({
         ...doc.data(),
     }));
     return skills;

@@ -1,5 +1,4 @@
-import firebase from "firebase";
-import "firebase/storage";
+import firebase from "firebase-admin";
 
 import {
     chatMessage,
@@ -7,8 +6,8 @@ import {
     conversationListElement,
 } from "../models/Messages";
 import crypto from "crypto";
-const db = firebase.firestore();
-const ref = firebase.storage().ref();
+import { db } from "../firebaseconfig";
+const bucket = firebase.storage().bucket();
 
 //dateExample: firebase.firestore.Timestamp.fromDate(new Date("December 10, 1815"))
 
@@ -418,14 +417,18 @@ export const storeChatFile = async (
             contentType: file.mimetype,
         };
         const folder: string = "Messages/";
-        const filename = `${folder}${conversationID}-${
+        const fileName = `${folder}${conversationID}-${
             conversation.get("messages").length + 1
         }-${file.originalname}`;
 
         const buffer = Buffer.from(file.buffer);
-        const uploadTask = await ref.child(filename).put(buffer, metadata);
-        const downloadURL = await uploadTask.ref.getDownloadURL();
 
+        const fileRef = bucket.file(fileName);
+        await fileRef.save(buffer, {
+            metadata,
+            public: true,
+        });
+        const downloadURL = fileRef.publicUrl();
         const cipher = crypto
             .createCipheriv("aes-128-ecb", keyBuffer, null)
             .setAutoPadding(true);

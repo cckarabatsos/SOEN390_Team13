@@ -5,7 +5,7 @@
     "main": "./lib/index.js",
     "scripts": {
         "test": "set TS_NODE_COMPILER_OPTIONS={\"module\": \"commonjs\"} & nyc mocha --require ts-node/register --exit --timeout 15000 test/**/*.ts",
-        "build": "tsc --skipLibCheck",
+        "build": "tsc --skipLibCheck --noEmit && esbuild ./src/handler.ts --bundle --platform=node --target=node18 --outfile=./dist/index.js",
         "lint": "tslint -c tslint.json src/**/*.ts",
         "prepublish": "npm run build",
         "dev": "ts-node-dev src/index.ts"
@@ -59,6 +59,7 @@
         "@types/node": "^17.0.45",
         "@types/sinon": "^10.0.13",
         "@types/supertest": "^2.0.12",
+        "esbuild": "^0.17.15",
         "sinon": "^15.0.1"
     }
 }

@@ -1,13 +1,12 @@
 import { Filter, Jobposting } from "../models/jobPosting";
-import firebase from "firebase";
 import { findUserWithID } from "./userServices";
 import { user_schema } from "../models/User";
 import { Notification } from "../models/Notification";
 import { storeNotification } from "./notificationServices";
 import { retrieveSkills } from "./skillServices";
 import { Skill } from "../models/Skill";
-
-const db = firebase.firestore();
+import firebase from "firebase-admin";
+import { db } from "../firebaseconfig";
 /**
  * Find a certain jobPosting with its id
  * @param postingID
@@ -115,8 +114,7 @@ export const deleteJobPostingWithId = async (
  */
 
 export const filterJobPostings = async (filter: Filter) => {
-    let jobPostingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-        db.collection("jobpostings");
+    let jobPostingsRef: any = db.collection("jobpostings");
 
     if (filter.location) {
         const prefix = filter.location.toLowerCase();
@@ -153,7 +151,7 @@ export const filterJobPostings = async (filter: Filter) => {
         jobPostingsRef = jobPostingsRef.limit(filter.limit);
     }
     if (filter.skip > 0) {
-        const lastVisible = await jobPostingsRef.get().then((snapshot) => {
+        const lastVisible = await jobPostingsRef.get().then((snapshot: any) => {
             const lastDoc = snapshot.docs[filter.skip - 1];
             return lastDoc;
         });
@@ -162,7 +160,7 @@ export const filterJobPostings = async (filter: Filter) => {
 
     const snapshot = await jobPostingsRef.get();
 
-    const jobPostings: any = snapshot.docs.map((doc) => ({
+    const jobPostings: any = snapshot.docs.map((doc: any) => ({
         id: doc.id,
         ...doc.data(),
     }));
@@ -213,10 +211,9 @@ export const retrieveJobSuggestions = async (userID: string) => {
             }
         });
 
-        let postingsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-            db.collection("jobpostings");
+        let postingsRef: any = db.collection("jobpostings");
         const snapshot = await postingsRef.get();
-        const postings = snapshot.docs.map((doc) => ({
+        const postings = snapshot.docs.map((doc: any) => ({
             ...doc.data(),
         }));
 
@@ -249,7 +246,7 @@ export const retrieveJobSuggestions = async (userID: string) => {
                 posting.score = score;
             }
         });
-        postings.sort((a, b) =>
+        postings.sort((a: any, b: any) =>
             a.score > b.score ? -1 : b.score > a.score ? 1 : 0
         );
         for (let i = 0; i < nbrElementsToRemove; i++) {
