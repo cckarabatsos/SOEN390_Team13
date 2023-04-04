@@ -24,9 +24,9 @@ export default function JobPosingViewModal({
 }) {
   const [documents, setDocuments] = React.useState([]);
   const { t } = useTranslation();
-  const handleChange = (event) => {
-    setDocuments(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setDocuments(event.target.value);
+  // };
 
   return (
     <React.Fragment>
