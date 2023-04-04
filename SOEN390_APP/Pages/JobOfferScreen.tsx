@@ -9,6 +9,7 @@ import {
   } from "react-native-alert-notification";
   import Ionicons from "react-native-vector-icons/Ionicons";
   import { JobSearch } from '../api/JobPostingAPI';
+  import AddJobOfferModal from '../Components/JobOfferModal.Component';
 
   interface JobOffer {
     key: number;
@@ -24,6 +25,7 @@ import {
     salary: string;
     title: string;
     logo: string;
+    postingID: string;
   }
   
   
@@ -33,6 +35,7 @@ import {
     const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
     const [jobOffers, setJobOffers] = useState<JobOffer[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [isModalVisibleJobOffer, setIsModalVisibleJobOffer] = useState(false);
     const [job, setJob] = useState({});
     const [data, setData] = useState([]);
     const [allUsers, setAllUsers] = useState<JobOffer[]>([]);
@@ -40,6 +43,7 @@ import {
     const [positions, setPositions] = useState<string[]>([]);
 
     let empty = ""
+    let userID1:string = route.params.userID
 
     const handleGetUser = async () => {
       const user = await JobSearch(empty)
@@ -59,7 +63,7 @@ import {
     const { v4: uuidv4 } = require('uuid');
   
     const buildObject = (jsonObject:any) => {
-      const { type, company, contract, description, email, jobPosterID, location, position, PostingID, salary, logo } = jsonObject;
+      const { type, company, contract, description, email, jobPosterID, location, position, postingID, salary, logo } = jsonObject;
       // Check if location already exists in the allUsers array
       const locationExists = allUsers.some(user => user.loc === location);
 
@@ -87,6 +91,7 @@ import {
         salary: salary,
         title: position,
         logo: logo|| 'https://picsum.photos/id/5/200/200',
+        postingID: postingID,
           }
             // Update the locations state with the new locations array
       setLocations(prevLocations => [...prevLocations, ...newLocations.filter(loc => !prevLocations.includes(loc))]);
@@ -94,17 +99,6 @@ import {
            // Update the locations state with the new locations array
       setPositions(prevPositions => [...prevPositions, ...newPositions.filter(loc => !prevPositions.includes(position))]);
       return obj;
-    }
-
-
-
-  const sendJobOffer = (event: any) => {
-    setModalVisible(false);
-    Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "SENT",
-        textBody: "Job offer has been sent to "+ event,
-      });
     }
 
     
@@ -129,12 +123,22 @@ import {
     setJobOffers(filteredUsers);
   };
 
+
   const handleResetFilters = () => {
     setSelectedCategory('');
     setSelectedLocation('');
   };
 
-  const modalRender = (item:any) =>{
+
+
+const modalRender = (item:any) =>{
+  const handleOnPress = () => {
+    setIsModalVisibleJobOffer(true) 
+  }
+
+  const handleModalCloseJobOffer = () => {
+    setIsModalVisibleJobOffer(false) 
+  }
 return( 
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
     <View style={styles.modalContainer}>
@@ -172,15 +176,19 @@ return(
           </View>
         </View>
         <View style={styles.modalFooterButton}>
-          <TouchableOpacity
-            style={styles.buttonModal}
-            onPress={() => sendJobOffer(item.text)}
-          >
+            <TouchableOpacity style={styles.buttonModal} onPress={()=> {handleOnPress()}}> 
+    
             <Text style={styles.backTextWhite}>Send Job Offer</Text>
           </TouchableOpacity>
         </View>
       </View>
     </View>
+      <AddJobOfferModal
+        ownerID={userID1}
+        postingID={item.postingID}
+        visible={isModalVisibleJobOffer}
+        onClose={handleModalCloseJobOffer}
+      />
   </Modal>
 )
   }

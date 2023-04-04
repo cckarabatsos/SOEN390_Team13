@@ -23,6 +23,7 @@ export default function ContactModal(props: {
   screen: number;
   email: string
   navigation: any;
+  emailUser:string
 }) 
 {
 
@@ -31,6 +32,7 @@ const [userData, setUseData] = useState({});
 const [users, setUsers] = useState([]);
 
 const [currentEmail, setCurrentEmail] = useState("");
+const [currentID, setCurrentID] = useState("");
 
 const getContactsList = async (email:string) => {
   var responce = await GetContacts(email);
@@ -38,13 +40,14 @@ const getContactsList = async (email:string) => {
 };
 
 useEffect(() => {
-    if (props.email != null) {
-        setCurrentEmail(props.email);
-        getContactsList(props.email);
+    if (props.emailUser != null) {
+        setCurrentEmail(props.emailUser);
+        setCurrentID(props.email)
+        getContactsList(props.emailUser);
       } else {
         setUseData(false);
       }
-    }, [props.email]);
+    }, [props.emailUser]);
 
 const handleLookUpProfile = () => {};
 
@@ -54,10 +57,13 @@ const renderContacts = ({item}:any) => (
       name={item.name}
       job={item.currentPosition}
       location={item.location}
-      currentEmail={currentEmail}
-      contactEmail={item.email}
+      currentEmail={currentID}
+      contactEmail={item.userID}
+      currentEmail1={currentEmail}
+      contactEmail1={item.email}
       navigation={props.navigation}
       handleCloseModal={props.handleCloseModal}
+      refreshContacts={getContactsList}
     />
   );
 
@@ -133,6 +139,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
       },
+
       contactsListWrapper: {
         paddingVertical: 40,
         marginHorizontal: 10,

@@ -145,9 +145,17 @@ export default function Files({ data }) {
       style={styles.rowFront}
       underlayColor={"#AAA"}
     >
-      <View>
-        <Text style={styles.textBold}>{input1}</Text>
-        <Ionicons size={25} name="document-outline" />
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Ionicons size={25} name="document-outline" />
+          <Text style={styles.textBold}>{input1}</Text>
+        </View>
       </View>
     </TouchableHighlight>
   );
@@ -158,13 +166,13 @@ export default function Files({ data }) {
         style={[styles.backRightBtn, styles.backRightBtnLeft]}
         onPress={() => uploadFile(rowMap, data.item.key)}
       >
-        <Text style={styles.backTextWhite}>Upload</Text>
+        <Ionicons size={30} name="cloud-upload-outline" color={"white"} />
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         onPress={() => downloadFile(input)}
       >
-        <Text style={styles.backTextWhite}>Download</Text>
+        <Ionicons size={30} name="download-outline" color={"white"} />
       </TouchableOpacity>
 
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
@@ -205,7 +213,7 @@ export default function Files({ data }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-150}
+        rightOpenValue={-105}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
@@ -217,38 +225,51 @@ export default function Files({ data }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-  },
-  backTextWhite: {
-    color: "#FFF",
+    flex: 1,
+    backgroundColor: "#F5F5F5",
   },
   rowFront: {
     backgroundColor: "white",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    justifyContent: "center",
-    height: 50,
-    paddingStart: 20,
-    alignContent: "center",
-    alignItems: "center",
-    flex: 1,
-    flexDirection: "row",
+    borderRadius: 20,
+    marginVertical: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.6,
+    shadowRadius: 1,
+    elevation: 3,
+    height: 60,
+    marginHorizontal: 20,
   },
   rowBack: {
     alignItems: "center",
-    backgroundColor: "#DDD",
-    flex: 1,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    height: 50,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 15,
+    paddingHorizontal: 15,
+    marginBottom: 2,
+  },
+  backText: {
+    color: "#FFF",
+    fontSize: 16,
+  },
+  text: {
+    color: "#333",
+    fontSize: 18,
+    fontWeight: "500",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
   backRightBtn: {
     alignItems: "center",
     bottom: 0,
     justifyContent: "center",
     position: "absolute",
-    top: 0,
-    width: 75,
+    top: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 25,
   },
   backRightBtnLeft: {
     backgroundColor: "orange",
@@ -262,7 +283,7 @@ const styles = StyleSheet.create({
   },
   backRightBtnRight: {
     backgroundColor: "blue",
-    right: 0,
+    right: 25,
   },
   modalContainer: {
     flex: 1,
@@ -297,7 +318,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   textBold: {
-    fontWeight: "bold",
+    color: "#333",
     fontSize: 18,
+    fontWeight: "500",
   },
 });

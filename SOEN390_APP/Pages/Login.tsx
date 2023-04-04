@@ -71,12 +71,12 @@ export default function Login({ navigation }: { navigation: any }) {
     let aUser = new LoginUserModel(email, password);
 
     const userProfile = await UserLogin(aUser);
-
+    
     if (userProfile) {
       
       navigation.navigate({
         name: "Home",
-        params:{username : userProfile.name, user_email: userProfile.email, user_password:userProfile.password, userID:userProfile.userID},
+        params:{username : userProfile.name, user_email: userProfile.email, user_password:userProfile.password, userID:userProfile.userID, pendingInvitations: userProfile.pendingInvitations},
         merge: true,
       });
       

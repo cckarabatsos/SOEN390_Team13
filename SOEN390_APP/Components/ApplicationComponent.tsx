@@ -16,28 +16,45 @@ import { ScrollView } from "react-native-gesture-handler";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RemoveApplication } from '../api/userApplicationsApi';
 
-export default function ApplicationsComponent(item:any) {
+
+interface ApplicationComponentProps {
+  company: string;
+  type: string;
+  description: string;
+  location: string;
+  duration: string;
+  salary: string;
+  currentEmail: string;
+  companyEmail: string;
+  postingID: string;
+  jobPosterID: string;
+  userID: string;
+  refreshContacts: (userID: string) => Promise<void>;
+}
+
+
+export default function ApplicationsComponent(props: ApplicationComponentProps) {
 
 
 
-  const company= item.company
-  const type=item.type
-  const description=item.description
-  const location=item.location
-  const duration=item.duration
-  const salary=item.salary
-  const currentEmail = item.currentEmail
-  const companyEmail=item.email
-  const postingID=item.postingID
-  const jobPosterID=item.jobPosterID
-  const userID=item.userID
+  const company= props.company
+  const type=props.type
+  const description=props.description
+  const location=props.location
+  const duration=props.duration
+  const salary=props.salary
+  const currentEmail = props.currentEmail
+  const companyEmail=props.companyEmail
+  const postingID=props.postingID
+  const jobPosterID=props.jobPosterID
+  const userID=props.userID
   //console.log(image);
 
 
 
   const removeApplication = async (userID:string, postingID:string) => {
     await RemoveApplication(userID, postingID);
-    item.refreshContacts();
+    props.refreshContacts(userID);
   };
   
 

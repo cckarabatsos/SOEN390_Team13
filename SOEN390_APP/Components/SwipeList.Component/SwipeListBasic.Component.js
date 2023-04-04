@@ -110,10 +110,10 @@ export default function Basic({ data }) {
       style={styles.rowFront}
       underlayColor={"#AAA"}
     >
-      <View>
-        <Text>
-          {input1}: {name}
-        </Text>
+      <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Text style={styles.text}>{input1}</Text>
+        </View>
       </View>
     </TouchableHighlight>
   );
@@ -124,33 +124,29 @@ export default function Basic({ data }) {
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         onPress={() => editRow(rowMap, data.item.key)}
       >
-        <Text style={styles.backTextWhite}>Edit</Text>
+        <Ionicons size={25} name="create-outline" color={"white"} />
       </TouchableOpacity>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <View>
-              <TouchableOpacity
-                style={styles.buttonModalClose}
-                onPress={() => setModalVisible(false)}
-              >
-                <Ionicons size={30} name="close-outline" color={"red"} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.buttonModalClose}
+              onPress={() => setModalVisible(false)}
+            >
+              <Ionicons size={30} name="close-outline" color={"red"} />
+            </TouchableOpacity>
             <Text style={styles.textBold}>{input1}</Text>
             <TextInput
               style={styles.input}
               placeholder={"Enter new " + input1}
               onChangeText={handleNameChange}
             />
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleSubmit()}
-              >
-                <Text style={styles.backTextWhite}>Submit</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleSubmit()}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -164,7 +160,7 @@ export default function Basic({ data }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-75}
+        rightOpenValue={-50}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
@@ -176,38 +172,53 @@ export default function Basic({ data }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-  },
-  backTextWhite: {
-    color: "#FFF",
+    flex: 1,
+    backgroundColor: "#F5F5F5",
   },
   rowFront: {
     backgroundColor: "white",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    justifyContent: "center",
+    borderRadius: 20,
+    marginVertical: 5,
+    shadowColor: "#000",
     height: 50,
-    paddingStart: 20,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.6,
+    shadowRadius: 1,
+    elevation: 3,
+    marginHorizontal: 20,
   },
   rowBack: {
     alignItems: "center",
-    backgroundColor: "#DDD",
-    flex: 1,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    height: 50,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingLeft: 15,
+    paddingHorizontal: 15,
+    marginBottom: 2,
+  },
+  backText: {
+    color: "#FFF",
+    fontSize: 16,
+  },
+  text: {
+    color: "#333",
+    fontSize: 18,
+    fontWeight: "500",
   },
   backRightBtn: {
     alignItems: "center",
     bottom: 0,
     justifyContent: "center",
     position: "absolute",
-    top: 0,
-    width: 75,
+    top: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 25,
   },
   backRightBtnLeft: {
     backgroundColor: "blue",
-    right: 75,
+    right: 50,
   },
   buttonModalClose: {
     position: "absolute",
@@ -217,42 +228,53 @@ const styles = StyleSheet.create({
   },
   backRightBtnRight: {
     backgroundColor: "blue",
-    right: 0,
+    right: 20,
   },
   modalContainer: {
     flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     backgroundColor: "white",
     padding: 20,
-    width: "80%",
-    height: "40%",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    width: "90%",
+    maxWidth: 400,
   },
-  button: {
-    margin: 9,
-    marginLeft: 20,
-    backgroundColor: "#0077B5",
-    padding: 12,
-    alignItems: "center",
-    marginTop: 16,
-    width: 200,
-    height: 50,
-    borderRadius: 120,
+  buttonModalClose: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+  },
+  textBold: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 10,
+    color: "#333",
   },
   input: {
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "gray",
     padding: 10,
-    margin: 10,
+    marginVertical: 10,
+    borderRadius: 5,
+    width: "100%",
   },
-  textBold: {
-    fontWeight: "bold",
-    fontSize: 17,
+  button: {
+    backgroundColor: "#0077B5",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "500",
   },
 });

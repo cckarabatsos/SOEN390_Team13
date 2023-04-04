@@ -14,16 +14,18 @@ import {
 import React from 'react'
 import { useEffect, useState } from "react";
 import FriendRequestRow from '../Components/SwipeList.Component/SwipeListFriendRequests.Component';
-import JobRequestRow from '../Components/SwipeList.Component/SwipeListJobRequests.Component';
+import NotificationRow from '../Components/SwipeList.Component/SwipeListSwipeListNotificationRow.Component'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LogBox } from 'react-native';
 import { UserRequest } from '../api/UserRequestAPI';
+import { GetNotification } from '../api/NotificationAPI';
 
 
 const ExpandableComponent = ({item, onClickFunction, email}:any) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
+  const { v4: uuidv4 } = require('uuid');
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -58,14 +60,14 @@ const ExpandableComponent = ({item, onClickFunction, email}:any) => {
         }}>
         {/*Content under the header of the Expandable List Item*/}
         {item.subcategory.map((item:any, key:any) =>(
-          <FriendRequestRow data = {item} email={email}/>
+          <FriendRequestRow key = {uuidv4()} data = {item} email={email}/>
         ))}
       </View>
     </View>
   );
         }
-        else{
-           /* return (
+        else  if(item.category_name == "Notifications" ){
+            return (
       <View>
       <TouchableOpacity
         activeOpacity={0.8}
@@ -83,16 +85,22 @@ const ExpandableComponent = ({item, onClickFunction, email}:any) => {
           overflow: 'hidden',
         }}>
         {item.subcategory.map((item:any, key:any) =>(
-          <JobRequestRow data = {item}/>
+          <NotificationRow key = {uuidv4()} data = {item}/>
         ))}
       </View>
     </View>
-  ); */
+  ); 
+        }
+        else{
+          return(
+            <View>Error</View>
+          )
         }
 };
 
 const Inbox = ({route}:{route:any}) => {
   const [data, setData] = useState([]);
+  const [dataNotification, setDataNotification] = useState([]);
 
   let name = route.params.username
   let password = route.params.password
@@ -100,7 +108,7 @@ const Inbox = ({route}:{route:any}) => {
     password="<EMPTY>"
   let email = route.params.email
   let image = require("../Components/Images/google-icon.png")
-  let userID = 1234
+  let userID = route.params.userID
   let text = "Work here now! A robot is a machine—especially one programmable by a computer—capable of carrying out a complex series of actions automatically.[2] A robot can be guided by an external control device, or the control may be embedded within. Robots may be constructed to evoke human form, but most robots are task-performing machines, designed with an emphasis on stark functionality, rather than expressive aesthetics. Robots can be autonomous or semi-autonomous and range from humanoids such as Honda's Advanced Step in Innovative Mobility (ASIMO) and TOSY's TOSY Ping Pong Playing Robot (TOPIO) to industrial robots, medical operating robots, patient assist robots, dog therapy robots, collectively programmed swarm robots, UAV drones such as General Atomics MQ-1 Predator, and even microscopic nano robots. By mimicking a lifelike appearance or automating movements, a robot may convey a sense of intelligence or thought of its own. Autonomous things are expected to proliferate in the future, with home robotics and the autonomous car as some of the main drivers.[3]"
 
   const handleGetUser = async () => { 
@@ -114,20 +122,49 @@ const Inbox = ({route}:{route:any}) => {
 
 useEffect(() => {
   handleGetUser();
+  handleGetNotifications();
 }, []);
+
+const { v4: uuidv4 } = require('uuid');
 
 const buildObject = (jsonObject:any) => {
   const { name, email, userID, currentCompany, picture } = jsonObject;
   const obj = {
-    key: 1,
+    key: uuidv4(),
     text: name,
-    image: picture,
+    image: picture || 'https://picsum.photos/id/5/200/200',
     userID: userID,
     job: email,
     loc: currentCompany
   }
   return obj;
 }
+
+const handleGetNotifications = async () => { 
+  const notif = await GetNotification(userID);
+  const newObjectsArrayNotif = notif.map(buildObjectNotification);
+  setDataNotification(newObjectsArrayNotif);
+  const updatedContent = [...CONTENT];
+  updatedContent[1].subcategory = newObjectsArrayNotif;
+  setListDataSource(updatedContent);   
+}
+const buildObjectNotification = (jsonObject:any) => {
+  const { category, logo, message, notificationID, ownerID, relatedEntity, timestamp } = jsonObject;
+  const objNotif = {
+    key: uuidv4(),
+    category: category,
+    logo: logo || 'https://picsum.photos/id/5/200/200',
+    message: message,
+    notificationID: notificationID,
+    ownerID: ownerID,
+    relatedEntity: relatedEntity,
+    timestamp:timestamp
+  }
+  return objNotif;
+}
+/* {key: 1, text: "Amazon.co", image: image, userID: userID, message: text, loc: "MTL", email: "LinkedOutInc@gmail.com"
+        , contract: "4 years", category: "Big Boss", position: "CEO", salary: "200k/yr"},
+ */
 
   const CONTENT = [
     {
@@ -137,13 +174,8 @@ const buildObject = (jsonObject:any) => {
       },
     {
       isExpanded: false,
-      category_name: 'Job Requests',
-      subcategory: [
-        {key: 1, text: "Amazon.co", image: image, userID: userID, message: text, loc: "MTL", email: "LinkedOutInc@gmail.com"
-        , contract: "4 years", category: "Big Boss", position: "CEO", salary: "200k/yr"},
-        {key: 2, text: "Microsoft.co", image: image, userID: userID, message: text,loc: "QC", email: "LinkedInInc@gmail.com"
-        , contract: "1 years", category: "Small Boss", position: "CEO", salary: "300k/yr"},
-      ],
+      category_name: 'Notifications',
+      subcategory: []
     },
   ];
   
@@ -168,7 +200,8 @@ const buildObject = (jsonObject:any) => {
       <View style={styles.container}>
         <View style={{flexDirection: 'column'}}>
           <View style={styles.inboxContainer}>
-            <Text style={styles.inboxText}> Notification Inbox </Text></View>
+            <Ionicons size={30} name="folder"/>
+            <Text style={styles.inboxText}> Inbox </Text></View>
         </View>
         <View style={{flexDirection: 'row'}}>
           <ScrollView style={{flex: 1}}>
@@ -202,6 +235,7 @@ inboxContainer: {
   height:50,
   justifyContent: 'center',
   alignItems: 'center',
+  flexDirection:"row",
 },
 requestText:{
   fontSize: 20,
@@ -235,8 +269,11 @@ switch: {
     padding: 20,
     flexDirection: 'row-reverse',
     borderBottomColor: "black",
-    borderBottomWidth: 1,
+    borderWidth: 1,
     alignItems: 'center',
+    borderRadius: 20,
+    marginHorizontal: 5,
+    marginVertical: 5,
   },
   headerText: {
     textAlign: 'left',

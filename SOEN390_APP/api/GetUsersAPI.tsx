@@ -5,7 +5,7 @@ export async function GetUsersAPI(data:any) {
   try {
     const response = await axios.get(api.BACKEND_API + "/user/api/search", {
       params: {
-        filter: data
+        name: data
       },
     });
     return response.data[1];

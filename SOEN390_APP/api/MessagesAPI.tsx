@@ -3,13 +3,10 @@ import api from "../config.json";
 
 
 export async function CreateConversation(emailUser:string, emailContact:string) {
-    //console.log("INSIDE create convo" )
-    //console.log(emailUser, emailContact)
-    //console.log(JSON.stringify([emailUser, emailContact]))
     try {
       const response = await axios.get(api.BACKEND_API + "/messages/createConversation/", {
         params: {
-            emails: JSON.stringify([emailUser, emailContact]),
+          ids: JSON.stringify([emailUser, emailContact]),
         },
       });
       if (response.status == 200) {
@@ -24,34 +21,30 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
   }
 
   export async function GetAllMessages(emailUser:string, emailContact:string) {
-    //console.log("INSIDE messages" )
-    //console.log(emailUser, emailContact)
-    //console.log(JSON.stringify([emailUser, emailContact]))
+
     try {
-      const response = await axios.get(api.BACKEND_API + "/messages/getAllMessages/", {
-        params: {
-            userEmails: JSON.stringify([emailUser, emailContact]),
-            senderEmail: emailUser
-        },
-      });
-      if (response.status == 200) {
-        return response.data.usersChat[1];
-      } else {
-        return response.data.usersChat[1];
-      }
-    } catch (error) {
-      console.error("error Remove Application", error);
-    }
+      const response = await axios.get(
+          api.BACKEND_API + "/messages/getAllMessages",
+          {
+              params: {
+                  userIds: [emailUser, emailContact],
+                  senderId: emailUser,
+              },
+          }
+      );
+      return response.data.usersChat;
+  } catch (error) {
+      console.error("error", error);
+      return false;
+  }
   }
 
   export async function SendMessage(emailUser:string, emailContact:string, message:string) {
-    //console.log("Message sent" )
-    //console.log(emailUser, emailContact)
     try {
       const response = await axios.get(api.BACKEND_API + "/messages/sendMessage/", {
         params: {
-            emails: JSON.stringify([emailUser, emailContact]),
-            senderEmail: emailUser,
+            Ids: JSON.stringify([emailUser, emailContact]),
+            senderId: emailUser,
             message: message
         },
       });
@@ -73,17 +66,14 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
     try {
       const response = await axios.get(api.BACKEND_API + "/messages/getActiveConversation/", {
         params: {
-            email: emailUser
+          id: emailUser,
+          returnEmail: false
         },
       });
-      console.log("------------------------" )
-      console.log(response.data.activeConvos)
-      console.log(response.data.activeConvos[1])
-      console.log("------------------------" )
       if (response.status == 200) {
-        return response.data.activeConvos[1];
+        return response.data.activeConvos;
       } else {
-        return response.data.activeConvos[1];
+        return response.data.activeConvos;
       }
     } catch (error) {
       console.error("error Remove Application", error);

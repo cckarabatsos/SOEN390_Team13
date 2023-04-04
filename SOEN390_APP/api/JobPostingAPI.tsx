@@ -1,7 +1,5 @@
 import axios from "axios";
-import { signInWithPopup } from "firebase/auth";
 import api from "../config.json";
-import { auth, provider } from "../firebaseConfig";
 
 export async function JobSearch(text:String) {
   try {
@@ -11,7 +9,7 @@ export async function JobSearch(text:String) {
         params: {
           category: text,
           skip: "0",
-          limit: "10",
+          limit: "50",
         },
       }
     );

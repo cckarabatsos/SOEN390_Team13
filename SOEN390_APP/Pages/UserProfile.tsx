@@ -10,7 +10,9 @@ import {
     TouchableOpacity,
     Platform,
     Image,
-    Modal
+    Modal,
+    ActivityIndicator,
+    ImageBackground
 } from 'react-native';
 import React from 'react'
 import { useEffect, useState } from "react";
@@ -28,6 +30,11 @@ import { GetUserSkills } from '../api/UserSkillsAPI';
 import ContactModal from '../Components/contacts.Component'
 import ApplicationModal from '../Components/application.Component';
 import { GetFile } from '../api/UserFileAPI';
+import { Flex } from '@react-native-material/core';
+import { PostUserExperience } from '../api/UserExperienceAPI';
+import { PostUserSkills } from '../api/UserSkillsAPI';
+import AddExperienceModal from '../Components/ExperienceModal.Component';
+import AddSkillsModal from '../Components/SkillsModal.Component';
 
 interface User {
   id: number;
@@ -40,70 +47,133 @@ interface User {
   userID: String
 }
 
-const ExpandableComponent = ({item, onClickFunction}:any) => {
-    //Custom Component for the Expandable List
-    const [layoutHeight, setLayoutHeight] = useState(0);
-  
-    useEffect(() => {
-      LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  }, [])
 
-    useEffect(() => {
-      if (item.isExpanded) {
-        setLayoutHeight(null);
-      } else {
-        setLayoutHeight(0);
-      }
-    }, [item.isExpanded]);
+  const ExpandableComponent = ({item, onClickFunction, userID}:any) => {
+      //Custom Component for the Expandable List
+      const [layoutHeight, setLayoutHeight] = useState(0);
+
+      
+  const handleAddExperience = () =>{
+    //await PostUserExperience(ownerID, type, atPresent,startDate,endDate,company,position)
+  }
+  const [isModalVisibleExperience, setIsModalVisibleExperience] = useState<boolean>(false);
+  const [isModalVisibleEducation, setIsModalVisibleEducation] = useState<boolean>(false);
+  const [isModalVisibleSkills, setIsModalVisibleSkills] = useState<boolean>(false);
   
-    if(item.category_name == "Profile"){
-    return (
-      <View style={{
-        marginTop:10,
-        borderColor: "rgb(145, 140, 224)",
-        borderTopWidth: 1,
-      }}>
-        {/*Header of the Expandable List Item*/}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onClickFunction}
-          style={styles.header}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={styles.headerText}>
-              {item.category_name}
-            </Text>
-            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+  const handleAddEducation = async (ownerID:string) =>{
+  }
+  const handleModalCloseExperience = async () =>{
+    setIsModalVisibleExperience(false);
+  }
+  
+  const handleModalCloseEducation = async () =>{
+    setIsModalVisibleEducation(false);
+  }
+  
+  const handleModalCloseSkills = async () =>{
+    setIsModalVisibleSkills(false);
+  }
+  
+  const handleAddSkills = async (ownerID:string) =>{
+    console.log("Skills")
+    console.log(ownerID)
+    let name = "React Native"
+    await PostUserSkills(ownerID, name)
+  }
+  
+    
+      useEffect(() => {
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    }, [])
+  
+      useEffect(() => {
+        if (item.isExpanded) {
+          setLayoutHeight(null);
+        } else {
+          setLayoutHeight(0);
+        }
+      }, [item.isExpanded]);
+    
+      if(item.category_name == "Profile"){
+      return (
+        <View style={{
+          marginTop:10,
+          borderColor: "rgb(145, 140, 224)",
+          borderTopWidth: 1,
+        }}>
+          {/*Header of the Expandable List Item*/}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onClickFunction}
+            style={styles.header}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Text style={styles.headerText}>
+                {item.category_name}
+              </Text>
+              <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+            </View>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: layoutHeight,
+              overflow: 'hidden',
+            }}>
+            {/*Content under the header of the Expandable List Item*/}
+            {item.subcategory.map((item:any, key:any) =>(
+              <Basic data = {item}/>
+            ))}
           </View>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: layoutHeight,
-            overflow: 'hidden',
-          }}>
-          {/*Content under the header of the Expandable List Item*/}
-          {item.subcategory.map((item:any, key:any) =>(
-            <Basic data = {item}/>
-          ))}
         </View>
-      </View>
-    );
-          }
-          else if (item.category_name == "Experience"){
-             return (
-      <View>
-        {/*Header of the Expandable List Item*/}
+      );
+            }
+            else if (item.category_name == "Experience"){
+               return (
+        <View>
+          {/*Header of the Expandable List Item*/}
+           {/*Header of the Expandable List Item*/}
+           <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onClickFunction}
+            style={styles.header}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Text style={styles.headerText}>
+                {item.category_name}
+              </Text>
+              <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+            </View>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: layoutHeight,
+              overflow: 'hidden',
+            }}>
+            {/*Content under the header of the Expandable List Item*/}
+            {item.subcategory.map((item:any, key:any) =>(
+              <StandaloneRowExperience data = {item}/>
+            ))}
+            <TouchableOpacity style={styles.innerHeader} onPress={()=> setIsModalVisibleExperience(true)}> 
+                    <Ionicons size={25} name="add-outline" />
+                    <AddExperienceModal ownerID={userID} type={"Work"} visible={isModalVisibleExperience} onClose={handleModalCloseExperience} />
+                </TouchableOpacity>
+          </View>
+        </View>
+      );
+            }
+      else if (item.category_name == "Education"){
+              return (
+        <View>
          {/*Header of the Expandable List Item*/}
          <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onClickFunction}
-          style={styles.header}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={styles.headerText}>
-              {item.category_name}
-            </Text>
-            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
-          </View>
-        </TouchableOpacity>
+            activeOpacity={0.8}
+            onPress={onClickFunction}
+            style={styles.header}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Text style={styles.headerText}>
+                {item.category_name}
+              </Text>
+              <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
+            </View>
+          </TouchableOpacity>
         <View
           style={{
             height: layoutHeight,
@@ -111,104 +181,88 @@ const ExpandableComponent = ({item, onClickFunction}:any) => {
           }}>
           {/*Content under the header of the Expandable List Item*/}
           {item.subcategory.map((item:any, key:any) =>(
-            <StandaloneRowExperience data = {item}/>
+            <StandaloneRowEducation data = {item}/>
           ))}
+            <TouchableOpacity style={styles.innerHeader} onPress={()=> setIsModalVisibleEducation(true)}> 
+                    <Ionicons size={25} name="add-outline" />
+                    <AddExperienceModal ownerID={userID} type={"Education"} visible={isModalVisibleEducation} onClose={handleModalCloseEducation} />
+                </TouchableOpacity>
         </View>
-      </View>
-    );
-          }
-    else if (item.category_name == "Education"){
-            return (
-      <View>
-       {/*Header of the Expandable List Item*/}
-       <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onClickFunction}
-          style={styles.header}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={styles.headerText}>
-              {item.category_name}
-            </Text>
-            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
-          </View>
-        </TouchableOpacity>
-      <View
-        style={{
-          height: layoutHeight,
-          overflow: 'hidden',
-        }}>
-        {/*Content under the header of the Expandable List Item*/}
-        {item.subcategory.map((item:any, key:any) =>(
-          <StandaloneRowEducation data = {item}/>
-        ))}
-      </View>
-      </View>
-      );
-                }
-      else if (item.category_name == "Skills"){
-                  return (
-            <View>
-             {/*Header of the Expandable List Item*/}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onClickFunction}
-          style={styles.header}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={styles.headerText}>
-              {item.category_name}
-            </Text>
-            <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
-          </View>
-        </TouchableOpacity>
-            <View
-              style={{
-                height: layoutHeight,
-                overflow: 'hidden',
-              }}>
-              {/*Content under the header of the Expandable List Item*/}
-              {item.subcategory.map((item:any, key:any) =>(
-                <StandaloneRowSkills data = {item}/>
-              ))}
+        </View>
+        );
+                  }
+        else if (item.category_name == "Skills"){
+                    return (
+              <View>
+               {/*Header of the Expandable List Item*/}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onClickFunction}
+            style={styles.header}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Text style={styles.headerText}>
+                {item.category_name}
+              </Text>
+              <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
             </View>
-            </View>
-            );
-                      }
-                      else if (item.category_name == "Files"){
-                        return (
-                  <View>
-                   {/*Header of the Expandable List Item*/}
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={onClickFunction}
-                style={styles.header}>
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                  <Text style={styles.headerText}>
-                    {item.category_name}
-                  </Text>
-                  <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
-                </View>
-              </TouchableOpacity>
-                  <View
-                    style={{
-                      height: layoutHeight,
-                      overflow: 'hidden',
-                    }}>
-                    {/*Content under the header of the Expandable List Item*/}
-                    {item.subcategory.map((item:any, key:any) =>(
-                      <Files data = {item}/>
-                    ))}
+          </TouchableOpacity>
+              <View
+                style={{
+                  height: layoutHeight,
+                  overflow: 'hidden',
+                }}>
+                {/*Content under the header of the Expandable List Item*/}
+                {item.subcategory.map((item:any, key:any) =>(
+                  <StandaloneRowSkills data = {item}/>
+                ))}
+              <TouchableOpacity style={styles.innerHeader} onPress={()=> setIsModalVisibleSkills(true)}> 
+                    <Ionicons size={25} name="add-outline" />
+                    <AddSkillsModal ownerID={userID} visible={isModalVisibleSkills} onClose={handleModalCloseSkills} />
+                </TouchableOpacity>
+              </View>
+              </View>
+              );
+                        }
+                        else if (item.category_name == "Files"){
+                          return (
+                    <View>
+                     {/*Header of the Expandable List Item*/}
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={onClickFunction}
+                  style={styles.header}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Text style={styles.headerText}>
+                      {item.category_name}
+                    </Text>
+                    <Ionicons size={25} name="list-outline" style={{marginLeft: 10}}/>
                   </View>
-                  </View>
-                  );
-                            }
-        };
-        
+                </TouchableOpacity>
+                    <View
+                      style={{
+                        height: layoutHeight,
+                        overflow: 'hidden',
+                      }}>
+                      {/*Content under the header of the Expandable List Item*/}
+                      {item.subcategory.map((item:any, key:any) =>(
+                        <Files data = {item}/>
+                      ))}
+                    </View>
+                    </View>
+                    );
+                              }
+          };
+          
+
+
+
 
 const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleApplication, setModalVisibleApplication] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   let name = route.params.username
   let password = route.params.password
@@ -220,6 +274,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   const handleGetUser = async () => {
     const user = await GetUserInfo(userID)
     setUser(user);
+    setIsLoading(false);
   }
 
 
@@ -378,22 +433,39 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
     setModalVisible(false);
     setModalVisibleApplication(false);
   }; 
+
   
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+  else
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-            <View style={{backgroundColor: "rgb(145, 140, 224)", width: '100%', paddingTop:10}}>
-                <View style={styles.logoContainer}>
-                  <Image
-                  style={styles.logo}
-                  source={{ uri: image }}
-                  />
-                  
-                </View>
-                <View style={styles.textContainer}>
-                <Text style={styles.titleText}> {user.name} </Text>
-                </View>
+        <View style={{flexDirection: 'row'}}>           
+              <ImageBackground
+                source={{ uri: "https://source.unsplash.com/1600x900/?nature" }}
+                style={styles.backgroundImage}
+              >
+              
+                
+                    <View style={styles.logoContainer}>
+                      <Image
+                      style={styles.logo}
+                      source={{ uri: image }}
+                      />
+                      
+                    </View>
+
+                    <View style={styles.textContainer}>
+                    <Text style={styles.titleText}> {user.name} </Text>
+                    </View>
+
                 <View style={{backgroundColor: "rgb(249, 248, 250)", width: '100%',padding: 10, marginTop:10}}>
                   <View style={{flexDirection:'row'}}>
                       <View>                          
@@ -434,8 +506,9 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                                       isVisible={modalVisible}
                                       handleCloseModal={handleCloseModal}
                                       screen={2}
-                                      email={user.email}
+                                      email={user.userID}
                                       navigation={navigation}
+                                      emailUser={user.email}
                             ></ContactModal>
                             </View>
                             <View>
@@ -455,10 +528,10 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                                       userID={user.userID}
                             ></ApplicationModal>
                             </View>
-                        </View>
-                    </View>
+                        </View>                    
+                    </View>                    
                   </View>
-                  </View>
+                  </ImageBackground>
             </View>
               <ScrollView>
                 {listDataSource.map((item, key) => (
@@ -468,6 +541,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                       updateLayout(key);
                     }}
                     item={item}
+                    userID={userID}
                   />
                 ))}
               </ScrollView>
@@ -483,6 +557,17 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
+    },
+    subContainer:{
+      marginTop:10,
+      borderColor: "rgb(145, 140, 224)",
+      borderTopWidth: 1,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
     },
     switchContainer: {
         flexDirection: 'row',
@@ -506,7 +591,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         padding: 20,
         borderColor: "rgb(145, 140, 224)",
-        borderBottomWidth: 1,
+        borderWidth:1,
+        borderRadius: 30,
+        marginHorizontal: 10,
+        marginVertical:10,
+      },
+      innerHeader: {
+        backgroundColor: '#39f152',
+        borderColor: "rgb(0, 0, 0)",
+        borderWidth:1,
+        borderRadius: 100,
+        marginVertical:5,
+        alignSelf:"flex-end",
+        justifyContent:"center",
+        marginRight: 25,
       },
       headerText: {
         paddingRight: 20,
@@ -555,6 +653,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center',
+      },
+      backgroundImage: {
+        flex: 1,
+        width: "100%",
+        height: "100%",
       },
       logo: {
         width: 120,

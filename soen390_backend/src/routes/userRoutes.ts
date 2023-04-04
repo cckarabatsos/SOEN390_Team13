@@ -253,9 +253,9 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
  */
 //***********User invitation routes section***********************
 user.get("/api/sendInvite", async (req: Request, res: Response) => {
+
     let receiverEmail = req.query.receiverEmail as string;
     let senderEmail = req.query.senderEmail as string;
-
     let data = await sendInvite(receiverEmail, senderEmail);
     if (data[0] == 200) {
         res.sendStatus(200);
@@ -268,6 +268,7 @@ user.get("/api/removeContact", async (req: Request, res: Response) => {
     let removedEmail = req.query.removedEmail as string;
 
     let data = await removeContact(senderEmail, removedEmail);
+
     if (data[0] == 200) {
         res.sendStatus(200);
     } else {

@@ -101,7 +101,7 @@ function BottomNav({route}:{route:any}){
     }
     })}>
       
-        <Tab.Screen name="HomeScreen" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password, userID: route.params.userID}} component={HomeScreen} options={{
+        <Tab.Screen name="HomeScreen" initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password, userID: route.params.userID, pendingInvitations: route.params.pendingInvitations}} component={HomeScreen} options={{
             title:"Home"
           }}/>
         <Tab.Screen name="Messages" component={Messages}  initialParams={{username: route.params.username, email:route.params.user_email, password:route.params.user_password, userID: route.params.userID}} options={{ title: 'Messages', tabBarBadge: messagesCount } }/>

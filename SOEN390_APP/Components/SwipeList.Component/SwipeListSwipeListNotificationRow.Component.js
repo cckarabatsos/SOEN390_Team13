@@ -22,19 +22,23 @@ import {
   AlertNotificationRoot,
   Toast,
 } from "react-native-alert-notification";
-import {
-  AcceptInvitations,
-  DeclineInvitations,
-} from "../../api/UserRequestAPI";
+import { ScrollView } from "react-native-gesture-handler";
+import { removeNotification } from "../../api/NotificationAPI";
 
 //import { auth } from '../firebaseConfig'
 
-export default function Basic({ data, email }) {
-  //console.log(data);
-  //console.log(email);
-  const { key, text, image, userID, job, loc } = data;
-  const [name, setName] = useState(text);
-  const [modalVisible, setModalVisible] = useState(false);
+export default function Basic({ data }) {
+  const {
+    key,
+    category,
+    logo,
+    message,
+    notificationID,
+    ownerID,
+    relatedEntity,
+    timestamp,
+  } = data;
+  const [name, setName] = useState(category);
   const [listData, setListData] = useState(
     Array(1)
       .fill("")
@@ -50,46 +54,44 @@ export default function Basic({ data, email }) {
     }
   };
 
-  const acceptRequest = (rowMap, rowKey, user_email, email) => {
-    let responce = AcceptInvitations(email, user_email);
-    if (responce)
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "ACCEPTED",
-        textBody: "Friend request accetped",
-      });
+  const acceptRequest = (rowMap, rowKey) => {
+    Toast.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: "ACCEPTED",
+      textBody: "Job request accetped, sending notification to recruiter",
+    });
     //ACCEPT IN BACKEND
 
-    closeRow(rowMap, rowKey, user_email, email);
+    closeRow(rowMap, rowKey);
     const newData = [...listData];
     const prevIndex = listData.findIndex((item) => item.key === rowKey);
     newData.splice(prevIndex, 1);
     setListData(newData);
   };
 
-  const denyRequest = (rowMap, rowKey, user_email, email) => {
-    let responce = DeclineInvitations(email, user_email);
-    if (responce)
+  const denyRequest = async (rowMap, rowKey, notificationID1) => {
+    console.log(notificationID1);
+    let responce = await removeNotification(notificationID1);
+    if (responce) {
       Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: "REFUSED",
-        textBody: "Friend request not accetped",
+        textBody: "Job request not accetped",
       });
-    //ACCEPT IN BACKEND
 
-    closeRow(rowMap, rowKey, user_email, email);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
-  };
-
-  const onRowDidOpen = (rowKey) => {
-    //console.log("This row opened", rowKey);
+      closeRow(rowMap, rowKey);
+      const newData = [...listData];
+      const prevIndex = listData.findIndex((item) => item.key === rowKey);
+      newData.splice(prevIndex, 1);
+      setListData(newData);
+    }
   };
 
   const copyToClipBoard = () => {
-    //setModalVisible(true);
+    //Clipboard.setString(text)
+  };
+
+  const messageRecruiter = () => {
     //Clipboard.setString(text)
   };
 
@@ -100,11 +102,17 @@ export default function Basic({ data, email }) {
       underlayColor={"#AAA"}
     >
       <View style={{ flexDirection: "row" }}>
-        <Image style={styles.logo} source={{ uri: image }} />
+        <Image style={styles.logo} source={logo} />
         <View>
-          <Text style={styles.titleText}>{name}</Text>
-          <Text style={styles.smallText}>{job}</Text>
-          <Text style={styles.smallText}>{loc}</Text>
+          <Text style={styles.titleText}>{category}</Text>
+          <Text
+            style={[styles.textSmall, styles.messageText]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {message.length > 50 ? message.substr(0, 50) + "..." : message}
+          </Text>
+          <Text>{timestamp}</Text>
         </View>
       </View>
     </TouchableHighlight>
@@ -113,39 +121,15 @@ export default function Basic({ data, email }) {
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
-        style={[styles.backRightBtn, styles.backRightBtnLeft]}
-        onPress={() => acceptRequest(rowMap, data.item.key, email, job)}
-      >
-        <Ionicons size={30} name="person-add-sharp" color={"green"} />
-      </TouchableOpacity>
-      <TouchableOpacity
         style={[styles.backRightBtn, styles.backRightBtnRight]}
         title={"toast notification"}
-        onPress={() => denyRequest(rowMap, data.item.key, email, job)}
+        onPress={() => denyRequest(rowMap, data.item.key, notificationID)}
       >
-        <Ionicons size={30} name="md-person-remove-sharp" color={"red"} />
+        <Ionicons size={30} name="trash-outline" color={"red"} />
       </TouchableOpacity>
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <TextInput
-              style={styles.input}
-              placeholder={"Enter new " + text}
-              onChangeText={handleNameChange}
-            />
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={styles.buttonModal}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={styles.backTextWhite}>Submit</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
+
   return (
     <View style={styles.container}>
       <SwipeListView
@@ -153,11 +137,10 @@ export default function Basic({ data, email }) {
         renderItem={renderItem}
         renderHiddenItem={renderHiddenItem}
         leftOpenValue={0}
-        rightOpenValue={-150}
+        rightOpenValue={-75}
         previewRowKey={"0"}
         previewOpenValue={-40}
         previewOpenDelay={3000}
-        onRowDidOpen={onRowDidOpen}
       />
     </View>
   );
@@ -202,16 +185,16 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   backRightBtnLeft: {
-    backgroundColor: "#fff",
+    //backgroundColor: "#fff",
     right: 75,
-    borderColor: "green",
-    borderWidth: 2,
+    //borderColor: "green",
+    //borderWidth: 2,
   },
   backRightBtnRight: {
     backgroundColor: "#fff",
     right: 0,
-    borderColor: "red",
-    borderWidth: 2,
+    //borderColor: "red",
+    //borderWidth: 2,
   },
   modalContainer: {
     flex: 1,

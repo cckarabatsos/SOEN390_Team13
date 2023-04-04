@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+
 // import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -12,6 +13,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyAKE7H7FT_UPAzne8zWBDVGQyUmsRB2GS4",
   authDomain: "soen-390-7f4fc.firebaseapp.com",
+  databaseURL: "https://soen-390-7f4fc-default-rtdb.firebaseio.com",
   projectId: "soen-390-7f4fc",
   storageBucket: "soen-390-7f4fc.appspot.com",
   messagingSenderId: "821988806720",
