@@ -82,7 +82,7 @@ function AddEducationDialog({ userID, setIsExperienceUpdated }) {
     <span data-testid="education-1">
       <>
         <IconButton onClick={handleClickOpen}>
-          <AddIcon className="add-icon" />
+          <AddIcon data-testid="add-icon" className="add-icon" />
         </IconButton>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{t("AddEducationText")}</DialogTitle>
@@ -91,6 +91,7 @@ function AddEducationDialog({ userID, setIsExperienceUpdated }) {
           </DialogContentText>
           <DialogContent>
             <TextField
+              data-testid="school-text-field"
               autoFocus
               className="inputRounded"
               margin="dense"
@@ -106,6 +107,7 @@ function AddEducationDialog({ userID, setIsExperienceUpdated }) {
           </DialogContentText>
           <DialogContent>
             <TextField
+              data-testid="program-text-field"
               autoFocus
               className="inputRounded"
               margin="dense"
@@ -120,13 +122,17 @@ function AddEducationDialog({ userID, setIsExperienceUpdated }) {
             <DialogContentText>
               I am currently attending this institute
             </DialogContentText>
-            <Checkbox onChange={(e) => setAtPresent(e.target.checked)} />
+            <Checkbox
+              data-testid="checkbox"
+              onChange={(e) => setAtPresent(e.target.checked)}
+            />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
             {t("StartDateText")}
           </DialogContentText>
           <DialogContent>
             <Select
+              data-testid="start-month"
               value={startMonth}
               onChange={(e) => setStartMonth(e.target.value)}
             >
@@ -167,6 +173,7 @@ function AddEducationDialog({ userID, setIsExperienceUpdated }) {
               </DialogContentText>
               <DialogContent>
                 <Select
+                  data-testid="end-month"
                   value={endMonth}
                   onChange={(e) => setEndMonth(e.target.value)}
                 >
@@ -224,6 +231,7 @@ function AddEducationDialog({ userID, setIsExperienceUpdated }) {
               {t("CancelText")}
             </Button>
             <Button
+              data-testid="save-button"
               className="button"
               variant="contained"
               style={{

@@ -82,7 +82,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
   return (
     <span data-testid="experience-1">
       <>
-        <IconButton onClick={handleClickOpen}>
+        <IconButton data-testid="add-icon" onClick={handleClickOpen}>
           <AddIcon className="add-icon" />
         </IconButton>
         <Dialog open={open} onClose={handleClose}>
@@ -93,10 +93,11 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
           <DialogContent>
             <TextField
               autoFocus
+              data-testid="position-text-field"
               className="inputRounded"
               margin="dense"
               label={t("PositionText")}
-              type="position"
+              type="text"
               variant="outlined"
               size="small"
               onChange={(e) => setPosition(e.target.value)}
@@ -107,6 +108,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
           </DialogContentText>
           <DialogContent>
             <TextField
+              data-testid="company-text-field"
               autoFocus
               className="inputRounded"
               margin="dense"
@@ -121,21 +123,25 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
             <DialogContentText>
               I am currently working for this position
             </DialogContentText>
-            <Checkbox onChange={(e) => setAtPresent(e.target.checked)} />
+            <Checkbox
+              data-testid="checkbox"
+              onChange={(e) => setAtPresent(e.target.checked)}
+            />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
             {t("StartDateText")}
           </DialogContentText>
           <DialogContent>
             <Select
-              value={startMonth}
+              data-testid="start-month"
+              defaultValue={startMonth}
               onChange={(e) => setStartMonth(e.target.value)}
             >
-              <MenuItem value={t("JanuaryText")}> {t("JanuaryText")}</MenuItem>
-              <MenuItem value={t("FebruaryText")}>
-                {" "}
-                {t("FebruaryText")}
+              <MenuItem data-testid="january" value={t("JanuaryText")}>
+                {/* {t("JanuaryText")} */}
+                January
               </MenuItem>
+              <MenuItem value={t("FebruaryText")}>{t("FebruaryText")}</MenuItem>
               <MenuItem value={t("MarchText")}>{t("MarchText")}</MenuItem>
               <MenuItem value={t("AprilText")}>{t("AprilText")}</MenuItem>
               <MenuItem value={t("MayText")}>{t("MayText")}</MenuItem>
@@ -168,6 +174,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
               </DialogContentText>
               <DialogContent>
                 <Select
+                  data-testid="end-month"
                   value={endMonth}
                   onChange={(e) => setEndMonth(e.target.value)}
                 >
@@ -233,6 +240,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
                 backgroundColor: "rgba(100, 69, 227, 0.85)",
               }}
               onClick={handleCloseSave}
+              data-testid="save-button"
             >
               {t("SaveApplyText")}
             </Button>
