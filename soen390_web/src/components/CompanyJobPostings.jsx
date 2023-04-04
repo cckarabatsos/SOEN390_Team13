@@ -102,6 +102,8 @@ export default function CompanyJobPostings(props) {
             aPosting.location,
             aPosting.company,
             aPosting.contract,
+            aPosting.jobPosterID,
+            aPosting.postingID,
             aPosting.postingID,
             aPosting.salary,
             aPosting.description,
@@ -197,7 +199,7 @@ export default function CompanyJobPostings(props) {
                         aria-label="comment"
                         color="error"
                         onClick={() =>
-                          handleRemoveJobPosting(position.jobPosterID)
+                          handleRemoveJobPosting(position.postingID)
                         }
                         disabled={disableFlag}
                       >

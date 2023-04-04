@@ -3,7 +3,9 @@ export default class JobsOverview {
   public location: String;
   public company: String;
   public contract: String;
-  public jobPosterID: number|string;
+  public postingID: String;
+  public jobID: String;
+  public jobPosterID: number | String;
   public salary: String;
   public description: String;
   public email: String;
@@ -16,8 +18,10 @@ export default class JobsOverview {
     location: String,
     company: String,
     contract: String,
-    jobPosterID: number |string,
-    salary: string,
+    jobPosterID: number | string,
+    postingID: String,
+    jobID: String,
+    salary: String,
     description: String,
     email: String,
     mandatoryResume: boolean,
@@ -29,6 +33,8 @@ export default class JobsOverview {
     this.company = company;
     this.contract = contract;
     this.jobPosterID = jobPosterID;
+    this.postingID = postingID;
+    this.jobID = jobID;
     this.salary = salary;
     this.description = description;
     this.email = email;

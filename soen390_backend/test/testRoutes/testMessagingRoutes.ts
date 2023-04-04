@@ -166,12 +166,12 @@ describe("Test Messaging Routes", function () {
         it("responds with decrypted document content if request parameters are valid", async function () {
             await request(url)
                 .get(
-                    `/messages/downloadDocument?encryptedUrl=D8Vs4bFGQ8ILdVxCzoJsTnKh56bghPRsfPX9EEGNxr3bmGpmsMRp1yBWO0FJvsL2MmqVC4qVavc1oe9v6LOFfIuLW2jFHGA1xV%2BkBijc8Nm1YYtjR5lPVC%2FTx1%2FJMUgW%2BFM7eYmqff7xGHrh4PZ1m4WbGsxrhD5TByyETa77%2Fn3EgT%2BeK0iSssHvoD3njTGMJHsNCTv51W%2BPlio%2Bpf72ES8RFD3LKdvk8ni5a07PYhpKxfO45NLb0y936qhN5hJ4&conversationID=UCoA5lmz3FGIBjlRhuyG`
+                    `/messages/downloadDocument?encryptedUrl=Hicp2oJ5UmMw0gdTNAu%2BX6ucTmqefF%2FYFGE%2FBOB7lWHkN1GJ%2BHPhVBw2f4L4R%2FKMvr4Y9jDOG%2BtS2GpD6QciJqziC5%2FJjzmNBC588GezdxCSw6jSHAaJmUPVpJDPFt%2BjqCx249ItZUdB7Xy%2F0zR%2BFk%2FismJVp5MHMJN9JqCT4GEZXrFkl%2BpFqjyoFjYp9bmXwHX4ZglYrxf0deg%2BctH3GwIYpT6UzuS9zjDNIemH0C0xCbbfjs8aEwUXWNbJn%2FkY&conversationID=UCoA5lmz3FGIBjlRhuyG`
                 )
                 .expect(200)
                 .expect("Content-Type", "text/plain; charset=utf-8")
                 .expect(
-                    "https://firebasestorage.googleapis.com/v0/b/soen-390-7f4fc.appspot.com/o/Messages%2FUCoA5lmz3FGIBjlRhuyG-5-Resume.pdf?alt=media&token=291aef87-009c-4732-92bd-7f565e0a28c1"
+                    "https://firebasestorage.googleapis.com/v0/b/soen-390-7f4fc.appspot.com/o/Messages%2FUCoA5lmz3FGIBjlRhuyG-4-Resume.pdf?alt=media&token=a11a2959-c0df-4884-9050-a396b0391c44"
                 );
         });
 

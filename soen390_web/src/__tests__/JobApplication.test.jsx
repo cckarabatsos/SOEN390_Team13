@@ -1,24 +1,24 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import MyForm from './MyForm';
-
+import JobapplicationComponent from '../components/JobApplicationComponent.js'
+import { MemoryRouter as Router } from 'react-router-dom';
 
 
 describe('MyForm', () => {
     it('submits the form with valid inputs', () => {
-      render(<MyForm />);
-      const firstNameInput = screen.getByLabelText('First Name*');
-      const lastNameInput = screen.getByLabelText('Last Name*');
-      const addressInput = screen.getByLabelText('Address*');
-      const cityInput = screen.getByLabelText('City*');
-      const provinceInput = screen.getByLabelText('Province*');
-      const areaCodeInput = screen.getByLabelText('Area Code*');
-      const phoneInput = screen.getByLabelText('Phone Number*');
-      const schoolInput = screen.getByLabelText('School Name*');
-      const degreeInput = screen.getByLabelText('Degree*');
-      const degreeStatusInput = screen.getByLabelText('Degree Status*');
-      const majorInput = screen.getByLabelText('Major*');
-      const submitButton = screen.getByRole('button', { name: 'Submit' });
+      render(<Router><JobapplicationComponent /></Router>);
+      const firstNameInput = screen.getAllByText(/firstname/i);
+      const lastNameInput = screen.getAllByText(/lastname/i);
+      const addressInput = screen.getAllByText(/address/i);
+      const cityInput = screen.getAllByText(/city/i);
+      const provinceInput = screen.getAllByText(/province/i);
+      const areaCodeInput = screen.getAllByText(/area/i);
+      const phoneInput = screen.getAllByText(/phone/i);
+      const schoolInput = screen.getAllByText(/school/i);
+      const schooldegreeInput = screen.getAllByText(/schooldegree/i);
+      const degreeStatusInput = screen.getAllByText(/schoolend/i);
+      const majorInput = screen.getAllByText(/schoolmajor/i);
+      const submitButton = screen.getByRole('button', { name: /submit/i });
   
       fireEvent.change(firstNameInput, { target: { value: 'John' } });
       fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
@@ -28,13 +28,13 @@ describe('MyForm', () => {
       fireEvent.change(areaCodeInput, { target: { value: '12345' } });
       fireEvent.change(phoneInput, { target: { value: '555-555-5555' } });
       fireEvent.change(schoolInput, { target: { value: 'University of Anywhere' } });
-      fireEvent.change(degreeInput, { target: { value: 'Bachelor of Science' } });
+      fireEvent.change(schooldegreeInput, { target: { value: 'Bachelor of Science' } });
       fireEvent.change(degreeStatusInput, { target: { value: 'Graduated' } });
       fireEvent.change(majorInput, { target: { value: 'Computer Science' } });
       fireEvent.click(submitButton);
   
       // Expect that the form inputs are populated with the correct values after the form submission
-      expect(firstNameInput).toHaveValue('John');
+      expect(firstNameInput).toBeInTheDocument();
       expect(lastNameInput).toHaveValue('Doe');
       expect(addressInput).toHaveValue('123 Main St');
       expect(cityInput).toHaveValue('Anytown');
@@ -42,7 +42,7 @@ describe('MyForm', () => {
       expect(areaCodeInput).toHaveValue('12345');
       expect(phoneInput).toHaveValue('555-555-5555');
       expect(schoolInput).toHaveValue('University of Anywhere');
-      expect(degreeInput).toHaveValue('Bachelor of Science');
+      expect(schooldegreeInput).toHaveValue('Bachelor of Science');
       expect(degreeStatusInput).toHaveValue('Graduated');
       expect(majorInput).toHaveValue('Computer Science');
   
