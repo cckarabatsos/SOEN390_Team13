@@ -1,19 +1,71 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@mui/material";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { sendInvite } from "../api/userNetworkingApi";
 import "../styles/components/CompanySearchComponent.css";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    margin: "2%",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "left",
+    color: theme.palette.text.secondary,
+  },
+  avatar: {
+    width: theme.spacing(30),
+    height: theme.spacing(30),
+    marginRight: theme.spacing(2),
+    borderRadius: "50%",
+    border: "2px solid white",
+  },
+  connectButton: {
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(2),
+  },
+  viewProfileButton: {
+    marginTop: theme.spacing(2),
+  },
+  alert: {
+    margin: "3% 0",
+  },
+}));
 
 export default function UserSearchComponent(props) {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+  const classes = useStyles();
+  const [alert, setAlert] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
 
-  //console.log(props);
+  const handleClose = () => {
+    setAlert({ ...alert, open: false });
+  };
 
-  // const handleOnClick = () => {
-  //   navigate("/UserProfile/" + props.id);
-  // };
+  const sendConnection = async (email) => {
+    const personalData = JSON.parse(localStorage.getItem("isAuth"));
+    const temp = await sendInvite(personalData.email, email);
+    const alertSeverity = temp ? "success" : "error";
+
+    // ? "Connection request sent!"
+    // : "Failed to send connection request";
+    const alertMessage = temp
+      ? `${t("ConnectionRequestText")}`
+      : `${t("FailedConnectionRequestText")}`;
+    setAlert({ open: true, severity: alertSeverity, message: alertMessage });
+    setTimeout(() => {
+      setAlert({ ...alert, open: false });
+    }, 3000);
+  };
 
   return (
     <div key={props.id} className="companyContainer">
@@ -48,12 +100,33 @@ export default function UserSearchComponent(props) {
             >
               {t("Message")}
             </Button>
+            <Button
+              className="button-viewProfile"
+              variant="contained"
+              onClick={() => sendConnection(`${props.email}`)}
+              style={{
+                borderRadius: 27,
+                border: "2px solid #006AF9",
+                fontSize: "15px",
+              }}
+            >
+              {console.log(props)}
+              {t("Connect")}
+            </Button>
+            <Alert
+              severity={alert.severity}
+              onClose={handleClose}
+              open={alert.open}
+              className={classes.alert}
+            >
+              {alert.message}
+            </Alert>
           </div>
           <div className="companyName">{props.name}</div>
           {props.contact && (
-          <div className="companyFollowers">
-            {props.contact.length} Followers
-          </div>
+            <div className="companyFollowers">
+              {props.contact.length} Followers
+            </div>
           )}
           <div className="companySubName">{props.position}</div>
           <div className="companySubName">{props.company}</div>
