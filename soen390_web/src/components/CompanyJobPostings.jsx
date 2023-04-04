@@ -96,7 +96,9 @@ export default function CompanyJobPostings(props) {
       );
 
       if (aPosting) {
+        console.log(aPosting)
         positionsArray.push(
+          
           new JobsOverview(
             aPosting.position,
             aPosting.location,
@@ -111,8 +113,8 @@ export default function CompanyJobPostings(props) {
             aPosting.mandataryResume,
             aPosting.madatoryCoverLetter,
             fireBaseTime(
-              aPosting.postingDeadline.seconds,
-              aPosting.postingDeadline.nanoseconds
+              aPosting.postingDeadline._seconds,
+              aPosting.postingDeadline._nanoseconds
             ).toString()
           )
         );

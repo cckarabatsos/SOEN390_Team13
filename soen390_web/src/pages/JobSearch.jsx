@@ -45,8 +45,8 @@ export default function JobSearch() {
           jobs[i].mandatoryResume,
           jobs[i].mandatoryCoverLetter,
           fireBaseTime(
-            jobs[i].postingDeadline.seconds,
-            jobs[i].postingDeadline.nanoseconds
+            jobs[i].postingDeadline._seconds,
+            jobs[i].postingDeadline._nanoseconds
           ).toString()
         )
       );
