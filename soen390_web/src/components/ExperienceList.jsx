@@ -6,7 +6,7 @@ const ExperienceList = ({ experiences, enable, setIsExperienceUpdated }) => {
     experiences = [];
   }
   return (
-    <div>
+    <div data-testid="experience-item-1">
       {experiences.map((experience) => (
         <ExperienceItem
           key={experience.experienceID}

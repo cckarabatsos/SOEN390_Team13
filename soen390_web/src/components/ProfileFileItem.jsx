@@ -6,7 +6,7 @@ import "../styles/components/ProfileFileItem.css";
 const ProfileFileItem = (props) => {
   return (
     <>
-      <Typography className="file-item">
+      <Typography className="file-item" data-testid="file-link">
         <InsertDriveFileOutlinedIcon className="file-icon" />
         <a href={props.file} target="_blank" className="file-link">
           {props.filename}
