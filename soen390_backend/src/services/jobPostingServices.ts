@@ -28,9 +28,13 @@ export const findJobpostingWithID = async (postingID: string) => {
  */
 export const storeJobPosting = async (
     newJobPosting: Jobposting,
-    postingDeadline: string
+    postingDeadline: any
 ) => {
     try {
+        const postingDeadlineTimestamp = new firebase.firestore.Timestamp(
+            postingDeadline.seconds,
+            postingDeadline.nanoseconds
+        );
         let user = await findUserWithID(newJobPosting.jobPosterID);
         let casted_user = user_schema.cast(user);
         var document = await db.collection("jobpostings").add({
@@ -38,7 +42,7 @@ export const storeJobPosting = async (
         });
         await document.update({
             postingID: document.id,
-            postingDeadline: postingDeadline,
+            postingDeadline: postingDeadlineTimestamp,
             logo: casted_user.picture,
         });
         console.log("Job posting successfully stored with id: " + document.id);
