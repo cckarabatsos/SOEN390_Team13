@@ -7,8 +7,10 @@ export default class Company{
     public pictureURL: String
     public location: String;
     public id:number;
+    public followCompany:boolean
+    public companyId:string
 
-    public constructor(companyName, followerCount, email, description, pictureURL,location,id){
+    public constructor(companyName, followerCount, email, description, pictureURL,location,id, followCompany,companyId){
         this.companyName = companyName
         this.followerCount = followerCount
         this.email = email
@@ -16,5 +18,7 @@ export default class Company{
         this.pictureURL = pictureURL
         this.location = location
         this.id = id
+        this.followCompany=followCompany
+        this.companyId = companyId
     }
 }

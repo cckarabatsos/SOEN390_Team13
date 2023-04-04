@@ -47,7 +47,9 @@
 
     .applicationList{
 
-        text-align: left;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
         font-size: 1rem;
         color: #3E3E3E;
         font-family: "Inter-regular";

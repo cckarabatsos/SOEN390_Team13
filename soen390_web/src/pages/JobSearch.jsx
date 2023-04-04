@@ -28,7 +28,7 @@ export default function JobSearch() {
   // useEffect to create jobDisplay array whenever jobs array changes
   useEffect(() => {
     var jobArray = [];
-
+    console.log(jobs);
     for (var i = 0; i < jobs.length; i++) {
       jobArray.push(
         new JobsOverview(
@@ -37,6 +37,8 @@ export default function JobSearch() {
           jobs[i].company,
           jobs[i].contract,
           i,
+          jobs[i].jobPosterID,
+          jobs[i].id,
           20, //jobs[i].salary
           jobs[i].description,
           jobs[i].email,
@@ -67,21 +69,26 @@ export default function JobSearch() {
         </div>
         <JobSearchBar setJobs={setJobs} />
         {modalOpen && (
-          <Modal
-            setOpenModal={setModalOpen}
-            viewDesc={jobDisplay[jobPosterID].description}
-            viewPosition={jobDisplay[jobPosterID].position}
-            viewLocation={jobDisplay[jobPosterID].location}
-            viewCompany={jobDisplay[jobPosterID].company}
-            viewEmail={jobDisplay[jobPosterID].email}
-            viewContract={jobDisplay[jobPosterID].contract}
-            viewSalary={jobDisplay[jobPosterID].salary}
-            viewMandatoryResume={jobDisplay[jobPosterID].mandatoryResume}
-            viewMandatoryCoverLetter={
-              jobDisplay[jobPosterID].mandatoryCoverLetter
-            }
-            viewPostingDeadline={jobDisplay[jobPosterID].postingDeadline}
-          />
+          <>
+            <Modal
+              setOpenModal={setModalOpen}
+              viewDesc={jobDisplay[jobPosterID].description}
+              postingID={jobDisplay[jobPosterID].postingID}
+              jobID={jobDisplay[jobPosterID].jobID}
+              viewPosition={jobDisplay[jobPosterID].position}
+              viewLocation={jobDisplay[jobPosterID].location}
+              viewCompany={jobDisplay[jobPosterID].company}
+              viewEmail={jobDisplay[jobPosterID].email}
+              viewContract={jobDisplay[jobPosterID].contract}
+              viewSalary={jobDisplay[jobPosterID].salary}
+              viewMandatoryResume={jobDisplay[jobPosterID].mandatoryResume}
+              viewMandatoryCoverLetter={
+                jobDisplay[jobPosterID].mandatoryCoverLetter
+              }
+              viewPostingDeadline={jobDisplay[jobPosterID].postingDeadline}
+            />
+            {console.log(jobDisplay[jobPosterID])}
+          </>
         )}
 
         {jobDisplay.map((job) => (
@@ -95,6 +102,7 @@ export default function JobSearch() {
             jobPosterID={job.jobPosterID}
             setJob={setjobPosterID}
             mandatoryResume={job.mandatoryResume}
+            postingID={job.postingID}
             mandatoryCoverLetter={job.mandatoryCoverLetter}
           ></JobPostingComponent>
         ))}

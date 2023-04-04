@@ -9,7 +9,7 @@ const userID = "18JRHKkLE2t50nE17SHc";
 const companyID = "i2iLvPkBHmkV43PufHVp";
 const postingID = "NAzQgPUr8iCooLCqtPUT";
 const badUserID = "5";
-const applicationID = "wk52ye8hAOx3NAB0TxIq";
+const applicationID = "h61EzseJQtilK0BVtrcw";
 const status = "test status";
 const postApplication = {
     email: "abc@gmail.com",
@@ -156,12 +156,14 @@ describe("Test Application Routes", function () {
     describe("Post application/updateStatus/:applicationID", function () {
         it("responds with 200 when application status updated", async function () {
             await request(url)
-                .post(`/application/updateStatus/${applicationID}?status=${status}`)
+                .get(
+                    `/application/updateStatus/${applicationID}?status=${status}`
+                )
                 .expect(200);
         });
         it("responds with a 404 when user with passed id does not exist", async function () {
             await request(url)
-                .post(`/application/updateStatus/${badUserID}?status=${status}`)
+                .get(`/application/updateStatus/${badUserID}?status=${status}`)
                 .expect(404);
         });
     });
