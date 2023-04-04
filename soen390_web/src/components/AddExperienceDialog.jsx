@@ -97,7 +97,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
               className="inputRounded"
               margin="dense"
               label={t("PositionText")}
-              type="position"
+              type="text"
               variant="outlined"
               size="small"
               onChange={(e) => setPosition(e.target.value)}
@@ -123,15 +123,18 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
             <DialogContentText>
               I am currently working for this position
             </DialogContentText>
-            <Checkbox onChange={(e) => setAtPresent(e.target.checked)} />
+            <Checkbox
+              data-testid="checkbox"
+              onChange={(e) => setAtPresent(e.target.checked)}
+            />
           </DialogContent>
           <DialogContentText style={{ marginLeft: "5%" }}>
             {t("StartDateText")}
           </DialogContentText>
           <DialogContent>
             <Select
-              SelectDisplayProps={{ "data-testid": "start-month" }}
-              value={startMonth}
+              data-testid="start-month"
+              defaultValue={startMonth}
               onChange={(e) => setStartMonth(e.target.value)}
             >
               <MenuItem data-testid="january" value={t("JanuaryText")}>
@@ -171,6 +174,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
               </DialogContentText>
               <DialogContent>
                 <Select
+                  data-testid="end-month"
                   value={endMonth}
                   onChange={(e) => setEndMonth(e.target.value)}
                 >
@@ -236,6 +240,7 @@ function AddExperienceDialog({ userID, setIsExperienceUpdated }) {
                 backgroundColor: "rgba(100, 69, 227, 0.85)",
               }}
               onClick={handleCloseSave}
+              data-testid="save-button"
             >
               {t("SaveApplyText")}
             </Button>
