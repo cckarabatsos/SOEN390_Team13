@@ -3,6 +3,9 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { FrontendStack } from "../lib/frontend-stack";
 import { BackendStack } from "../lib/backend-stack";
+import {config as dotenv} from "dotenv"
+
+dotenv()
 
 const app = new cdk.App();
 
@@ -18,5 +21,5 @@ new BackendStack(app, "Soen390Backend", {
     env: {
         region: config.region,
     },
-    frontendUrls: [], // [`https://${frontend.cfDomainName}`]
+    frontendUrls:[`https://${frontend.cfDomainName}`]
 });

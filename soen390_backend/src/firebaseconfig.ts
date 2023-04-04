@@ -10,7 +10,7 @@ dotenv.config();
 //     appId: "1:821988806720:web:88e28c1df416e8a3f60fa5",
 //     measurementId: "G-870JS5PTLN",
 // };
-console.log(process.env.FIREBASECONFIG!);
+//console.log(process.env.FIREBASECONFIG!);
 const cfg = JSON.parse(process.env.FIREBASECONFIG!);
 firebase.initializeApp({
     storageBucket: "soen-390-7f4fc.appspot.com",

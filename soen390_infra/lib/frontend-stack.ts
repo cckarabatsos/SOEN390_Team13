@@ -8,12 +8,13 @@ import path = require('path');
 
 export class FrontendStack extends cdk.Stack {
     readonly cfDomainName: string;
+    public readonly frontendUrl: string;
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     const sourcePath = process.env.FT_SOURCE_PATH || path.join(__dirname, '..', '..', 'soen390_web', 'build');
 
     const bucket = new Bucket(this, 'Bucket', {
-        bucketName: 'soen390-frontend',
+        bucketName: 'soen390-website',
 
     });
 
@@ -43,5 +44,8 @@ export class FrontendStack extends cdk.Stack {
         distributionPaths: ['/index.html', '/static/*'],
     });
     this.cfDomainName = distribution.distributionDomainName;
+    this.frontendUrl = `https://${this.cfDomainName}`;
+        new cdk.CfnOutput(this, 'FrontendUrl', { value: this.frontendUrl });
   }
+
 }

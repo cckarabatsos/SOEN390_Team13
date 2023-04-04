@@ -11,6 +11,7 @@ interface BackendProps extends cdk.StackProps {
     frontendUrls: string[];
 }
 export class BackendStack extends cdk.Stack {
+    public readonly backendUrl: string;
   constructor(scope: Construct, id: string, props?: BackendProps) {
     super(scope, id, props);
     const sourcePath = process.env.BACKEND_SOURCE_PATH || path.join(__dirname, '..', '..', 'soen390_backend', 'dist');
@@ -44,6 +45,9 @@ export class BackendStack extends cdk.Stack {
             allowOrigins: allowedOrigins
         }
     });
+
+    this.backendUrl = api.url!;
+        new cdk.CfnOutput(this, 'BackendUrl', { value: this.backendUrl });
 
 
 
