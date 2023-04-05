@@ -25,6 +25,7 @@ function JobSearchBar({ setJobs }) {
     console.log("text: " + text + " category: " + category);
   
     var jobs = await JobSearch(category, text);
+    console.log("jobs: " + jobs)
   
     console.log(jobs);
     setJobs(jobs)

@@ -33,6 +33,7 @@ export default function UserSearch() {
             key={user.userID}
             id={user.userID}
             name={user.name}
+            email={user.email}
             position={user.currentPosition}
             company={user.currentCompany}
             contact={user.contacts}

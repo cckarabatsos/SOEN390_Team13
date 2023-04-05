@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { updateUserDescription } from "../api/UserProfileApi";
 
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
 
 
 export default function CompanyEditDescriptionModal(props) {
@@ -16,6 +19,7 @@ export default function CompanyEditDescriptionModal(props) {
       let res = await updateUserDescription(props.userData,text)
 
       if(res){
+        await timeout(500);
         props.setUpdateFlag(!props.updateFlag)
         props.handleCloseModal()
       }

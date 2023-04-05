@@ -1,6 +1,5 @@
-import firebase from "firebase";
 import { Report } from "../models/reports";
-const db = firebase.firestore();
+import { db } from "../firebaseconfig";
 /**
  * Function to store a newReport in the database
  * @param newReport

@@ -23,7 +23,7 @@ export async function CompanyApi(category, text, skip, limite) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
     case "email":
       try {
@@ -41,7 +41,7 @@ export async function CompanyApi(category, text, skip, limite) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
   }
 }

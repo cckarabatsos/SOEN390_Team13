@@ -2,14 +2,14 @@
  * Service methods for User entity of the database
  */
 import { error } from "console";
-import firebase from "firebase";
-import "firebase/storage";
+import firebase from "firebase-admin";
+
 import { User, user_schema, UserFilter } from "../models/User";
 import { Notification } from "../models/Notification";
 // import { database } from "firebase-admin";
 
-const db = firebase.firestore();
-const ref = firebase.storage().ref();
+import { db } from "../firebaseconfig";
+const bucket = firebase.storage().bucket();
 import { Buffer } from "buffer";
 import { storeNotification } from "./notificationServices";
 /**
@@ -64,13 +64,13 @@ export const storeUser = async (user: User) => {
             pic = user.picture;
         } else {
             if (user.isCompany) {
-                pic = await ref
-                    .child("Profile Pictures/blank_company_pic.jpg")
-                    .getDownloadURL();
+                pic = await bucket
+                    .file("Profile Pictures/blank_company_pic.jpg")
+                    .publicUrl();
             } else {
-                pic = await ref
-                    .child("Profile Pictures/blank_profile_pic.png")
-                    .getDownloadURL();
+                pic = await bucket
+                    .file("Profile Pictures/blank_profile_pic.png")
+                    .publicUrl();
             }
         }
         user.picture = pic;
@@ -172,10 +172,13 @@ export const storeAccountFile = async (
                 return null;
             }
             console.log();
-            const uploadTask = await ref
-                .child(folder + userID + " - " + file.originalname)
-                .put(buffer, metadata);
-            const downloadURL = await uploadTask.ref.getDownloadURL();
+            const fileName = folder + userID + " - " + file.originalname;
+            const fileRef = bucket.file(fileName);
+            await fileRef.save(buffer, {
+                metadata,
+                public: true,
+            });
+            const downloadURL = await fileRef.publicUrl();
             if (downloadURL) {
                 if (type.toUpperCase() == "RESUME") {
                     casted_user.resume = downloadURL;
@@ -227,7 +230,12 @@ export const deleteAccountFile = async (userID: string, type: string) => {
             } else {
                 return null;
             }
-            var fileRef = ref.storage.refFromURL(url);
+            const parsedUrl = new URL(url);
+            const filePath = decodeURIComponent(parsedUrl.pathname).replace(
+                /^\//,
+                ""
+            ); // Remove leading slash
+            const fileRef = bucket.file(filePath);
             await fileRef.delete().then(function () {
                 updateUser(casted_user, userID);
                 console.log("File successfully deleted.");
@@ -695,8 +703,7 @@ export function updateUser(newProfile: User, id: string) {
  * @returns
  */
 export async function getFilteredUsers(filter: UserFilter, company: boolean) {
-    let userRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-        db.collection("users");
+    let userRef: any = db.collection("users");
     userRef = userRef.where("isAdmin", "==", false);
     if (company === false) {
         userRef = userRef.where("isCompany", "==", false);
@@ -722,7 +729,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
         userRef = userRef.limit(filter.limit);
     }
     if (filter.skip > 0) {
-        const lastVisible = await userRef.get().then((snapshot) => {
+        const lastVisible = await userRef.get().then((snapshot: any) => {
             const lastDoc = snapshot.docs[filter.skip - 1];
             return lastDoc;
         });
@@ -731,7 +738,7 @@ export async function getFilteredUsers(filter: UserFilter, company: boolean) {
 
     const snapshot = await userRef.get();
 
-    const users = snapshot.docs.map((doc) => ({
+    const users = snapshot.docs.map((doc: any) => ({
         id: doc.id,
         ...doc.data(),
     }));

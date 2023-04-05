@@ -1,14 +1,13 @@
 /**
  * Service methods for Experience entity of the database
  */
-import firebase from "firebase";
-//import { string } from "yup";
-import "firebase/storage";
+
+import firebase from "firebase-admin";
 import { Experience /*experience_schema*/ } from "../models/Experience";
 import { findUserWithID } from "./userServices";
 
-const db = firebase.firestore();
-const ref = firebase.storage().ref();
+import { db } from "../firebaseconfig";
+const bucket = firebase.storage().bucket();
 
 /**
  * Finds experience with specified ID in the database
@@ -46,8 +45,8 @@ export const storeExperience = async (experience: Experience) => {
 
         experience.logo =
             experience.type === "Education"
-                ? await ref.child("Logos/education_logo.png").getDownloadURL()
-                : await ref.child("Logos/work_logo.png").getDownloadURL();
+                ? bucket.file("Logos/education_logo.png").publicUrl()
+                : bucket.file("Logos/work_logo.png").publicUrl();
         var document = await db.collection("experiences").add({
             atPresent: experience.atPresent,
             startDate: experience.startDate,
@@ -110,10 +109,8 @@ export const retrieveExperiences = async (userID: string, type: string) => {
     if (user === undefined || (type !== "Education" && type !== "Work")) {
         return null;
     }
-    let experiencesRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-        db.collection("experiences");
-
-    experiencesRef = experiencesRef
+    let experiencesRef = db
+        .collection("experiences")
         .where("ownerID", "==", userID)
         .where("type", "==", type);
 

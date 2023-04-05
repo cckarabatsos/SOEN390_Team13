@@ -23,7 +23,7 @@ export async function JobSearch(category, text) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
     case "company":
       try {
@@ -41,7 +41,7 @@ export async function JobSearch(category, text) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
     case "position":
       try {
@@ -59,7 +59,7 @@ export async function JobSearch(category, text) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
     case "type":
       try {
@@ -77,7 +77,7 @@ export async function JobSearch(category, text) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
     case "remote":
       try {
@@ -95,12 +95,12 @@ export async function JobSearch(category, text) {
         return response.data[1];
       } catch (error) {
         console.error("error", error);
-        return false;
+        return [];
       }
 
     default:
       console.error("Invalid category specified");
-      return false;
+      return [];
   }
 }
 

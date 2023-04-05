@@ -9,6 +9,10 @@ import "../styles/components/CompanyHeader.css";
 import { Stack } from "@mui/material";
 import { updateUserProfilePicture } from "../api/UserProfileApi";
 
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
+
 export default function CompanyEditHeaderModal(props) {
   const [text, setText] = useState(props.userData.name);
   const handleDescOnClick = async () => {
@@ -16,6 +20,7 @@ export default function CompanyEditHeaderModal(props) {
     let res = await updateUserProfilePicture(props.userData,image,text)
 
     if (res) {
+      await timeout(500);
       props.setUpdateFlag(!props.updateFlag);
       props.handleCloseModal();
     } else {

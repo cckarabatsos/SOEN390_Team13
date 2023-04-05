@@ -3,8 +3,8 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
-import { UserDB } from "./firebaseconfig";
+dotenv.config();
+import { userDB } from "./firebaseconfig";
 import jobposting from "./routes/jobPostingRoutes";
 import experience from "./routes/experienceRoutes";
 import award from "./routes/awardRoutes";
@@ -15,7 +15,6 @@ import notification from "./routes/notificationRoutes";
 import skill from "./routes/skillRoutes";
 import application from "./routes/applicationRoutes";
 // (global as any).XMLHttpRequest = require("xhr2");
-dotenv.config();
 
 const app: Application = express();
 const port: any = process.env.port || 7000;
@@ -34,7 +33,7 @@ app.use(function (_req, res, next) {
 //Example of route to test
 
 app.get("/api", async (_: Request, res: Response) => {
-    const snapshot = await UserDB.get();
+    const snapshot = await userDB.get();
     const list = snapshot.docs.map((doc: any) => ({
         id: doc.id,
         ...doc.data(),

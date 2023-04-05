@@ -1,18 +1,15 @@
 /**
  * Service methods for Award entity of the database
  */
-import firebase from "firebase";
-//import { string } from "yup";
-import "firebase/storage";
-import { Award, /*skill_schema*/ } from "../models/Award";
-import { findUserWithID } from "./userServices";
 
-const db = firebase.firestore();
+import { Award /*skill_schema*/ } from "../models/Award";
+import { findUserWithID } from "./userServices";
+import { db } from "../firebaseconfig";
 
 /**
  * Finds award with specified ID in the database
  *
- * @param awardID 
+ * @param awardID
  * @returns snapshot of the found award or undefined
  */
 export const findAwardWithID = async (awardID: string) => {
@@ -27,8 +24,8 @@ export const findAwardWithID = async (awardID: string) => {
 
 /**
  * Stores a new Award document in the database
- * 
- * @param award 
+ *
+ * @param award
  * @returns ID of the created document or null
  */
 export const storeAward = async (award: Award) => {
@@ -42,7 +39,7 @@ export const storeAward = async (award: Award) => {
             name: award.name,
             description: award.description,
             timestamp: award.timestamp,
-            ownerID: award.ownerID
+            ownerID: award.ownerID,
         });
         await document.update({ awardID: document.id });
         console.log("Award successfully stored with id: " + document.id);
@@ -55,8 +52,8 @@ export const storeAward = async (award: Award) => {
 
 /**
  * Deletes award with specified ID from the database
- * 
- * @param awardID 
+ *
+ * @param awardID
  * @returns information of the deleted award or null
  */
 export const deleteAwardWithId = async (awardID: string) => {
@@ -68,13 +65,10 @@ export const deleteAwardWithId = async (awardID: string) => {
                 .delete()
                 .then(() => {
                     console.log(
-                        "Award with ID " +
-                        awardID +
-                        " successfully deleted."
+                        "Award with ID " + awardID + " successfully deleted."
                     );
                 });
-        }
-        else {
+        } else {
             return null;
         }
     } catch (error) {
@@ -86,8 +80,8 @@ export const deleteAwardWithId = async (awardID: string) => {
 
 /**
  * Retrieves all awards that are associated with the user having the specified ID
- * 
- * @param userID 
+ *
+ * @param userID
  * @returns array of awards or null
  */
 export const retrieveAwards = async (userID: string) => {
@@ -95,19 +89,14 @@ export const retrieveAwards = async (userID: string) => {
     if (user === undefined) {
         return null;
     }
-    let awardsRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
-        db.collection("awards");
+    let awardsRef: any = db.collection("awards");
 
     if (userID) {
-        awardsRef = awardsRef.where(
-            "ownerID",
-            "==",
-            userID
-        );
+        awardsRef = awardsRef.where("ownerID", "==", userID);
     }
     const snapshot = await awardsRef.get();
-    const awards = snapshot.docs.map((doc) => ({
-        ...doc.data()
+    const awards = snapshot.docs.map((doc: any) => ({
+        ...doc.data(),
     }));
     return awards;
 };

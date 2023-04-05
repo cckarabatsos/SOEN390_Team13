@@ -32,3 +32,6 @@ yarn-error.log*
 #.nyc_output
 .nyc_output/
 /.nyc_output
+.env
+soen390_backend/.env
+soen390_backend/.env
