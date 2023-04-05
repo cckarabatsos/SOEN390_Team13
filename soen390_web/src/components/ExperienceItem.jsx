@@ -29,6 +29,7 @@ function ExperienceItem({ experience, enable, setIsExperienceUpdated }) {
         justifyContent="center"
         alignItems="center"
         style={{ margin: "1em" }}
+        data-testid="delete-button"
       >
         <Grid item xs={2}>
           <Grid style={{ height: "100%" }}>
