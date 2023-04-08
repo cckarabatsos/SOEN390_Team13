@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { sendInvite } from "../api/userNetworkingApi";
 import "../styles/components/CompanySearchComponent.css";
+import { getUserById } from '../api/MoreInfoApi';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserSearchComponent(props) {
   const navigate = useNavigate();
-
   const { t } = useTranslation();
   const classes = useStyles();
   const [alert, setAlert] = useState({
@@ -55,6 +55,7 @@ export default function UserSearchComponent(props) {
     const personalData = JSON.parse(localStorage.getItem("isAuth"));
     const temp = await sendInvite(personalData.email, email);
     const alertSeverity = temp ? "success" : "error";
+
 
     // ? "Connection request sent!"
     // : "Failed to send connection request";
@@ -79,7 +80,9 @@ export default function UserSearchComponent(props) {
             <Button
               className="button-viewProfile"
               variant="contained"
-              onClick={() => navigate("/UserProfile/" + props.id)}
+              onClick={() => navigate(`/UserProfile/${props.id}`)}
+
+
               style={{
                 borderRadius: 27,
                 border: "2px solid #006AF9",
@@ -115,7 +118,7 @@ export default function UserSearchComponent(props) {
             </Button>
             <Alert
               severity={alert.severity}
-              
+
               open={alert.open}
               className={classes.alert}
             >

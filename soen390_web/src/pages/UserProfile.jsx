@@ -12,7 +12,7 @@ import ExperienceList from "../components/ExperienceList";
 import "../styles/components/UserProfile.css";
 import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
-
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   addSkill,
@@ -37,7 +37,7 @@ function UserProfile(props) {
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
   const [isPictureChanged, setIsPictureChanged] = React.useState(false);
   const inputFile = useRef(null);
-
+  const { userId } = useParams();
   const [skills, setSkills] = React.useState([]);
 
   const [newSkill, setNewSkill] = React.useState("");
