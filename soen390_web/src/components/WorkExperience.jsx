@@ -35,7 +35,7 @@ const WorkExperience = ({
         size="small"
       />
       <Button onClick={handleAddExperience} variant="contained">
-        {t("AddExperience")}
+        {t("AddExpText")}
       </Button>
     </>
   );

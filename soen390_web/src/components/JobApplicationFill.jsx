@@ -177,7 +177,7 @@ export default function JobApplicationFill(props) {
                     padding: 10,
                   }}
                 >
-                  {t("Apply")}yo?
+                  {t("Apply")}
                 </Button>
               </div>
             </Grid>
