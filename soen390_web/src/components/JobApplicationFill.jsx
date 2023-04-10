@@ -180,6 +180,7 @@ export default function JobApplicationFill(props) {
                 handleAddExperience={handleAddExperience}
                 error={error}
                 experience={experience}
+                setExperience={setExperience}
                 lastApplication={lastApplication}
               />
               <div className="buttons">

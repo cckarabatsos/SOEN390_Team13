@@ -10,16 +10,26 @@ const WorkExperience = ({
   handleAddExperience,
   error,
   experience,
+  setExperience,
   lastApplication,
 }) => {
   const { t } = useTranslation();
 
+  const handleRemoveExperience = (indexToRemove) => {
+    setExperience(experience.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <>
-      <div className="header">{t("WorkExperience")}</div>
+      <div className="header">{t("Work Experience")}</div>
       <div className="experience-list">
         {experience.map((exp, index) => (
-          <Chip key={index} label={exp} className="experience-circle" />
+          <Chip
+            key={index}
+            label={exp}
+            className="experience-circle"
+            onClick={() => handleRemoveExperience(index)}
+          />
         ))}
       </div>
       <TextField
