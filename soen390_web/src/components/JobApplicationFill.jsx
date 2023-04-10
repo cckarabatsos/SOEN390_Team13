@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import GeneralInformation from "./GeneralInformation";
 import HigherEducation from "./HigherEducation";
 import WorkExperience from "./WorkExperience";
-import { createApplication } from "../api/JobApplicationApi";
+import {
+  createApplication,
+  getLastestApplication,
+} from "../api/JobApplicationApi";
 import { useTranslation } from "react-i18next";
+import { Alert } from "@mui/material";
 
 export default function JobApplicationFill(props) {
-  // All the state and other logic goes here
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -26,37 +29,47 @@ export default function JobApplicationFill(props) {
   const [schoolMajor, setMajor] = useState("");
   const [experience, setExperience] = useState([]);
   const [expierienceInputValue, setExpierienceInputValue] = useState("");
-  const [attachResume, setAttachResume] = React.useState(false);
-  const [attachCoverLetter, setAttachCoverLetter] = React.useState(false);
+  const [attachResume, setAttachResume] = useState(false);
+  const [attachCoverLetter, setAttachCoverLetter] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
   const navigate = useNavigate();
   const posting = window.location.pathname.split("/").pop();
   const [lastApplication, setLastApplication] = useState(null);
   const [error, setError] = useState(false);
   const { t } = useTranslation();
-  useEffect(() => {
-    getLastApplication();
-  }, []);
 
-  const getLastApplication = async () => {
-    // Fetch the last application data here (using temp data for now)
-    const tempData = {
-      email: "john.doe@example.com",
-      firstName: "John",
-      lastName: "Doe",
-      // Add more fields as needed
-    };
-
-    // If the data is empty, don't update the state
-    if (Object.keys(tempData).length === 0) {
-      return;
+  const fetchLastApplication = async () => {
+    const lastApplication = await getLastestApplication(props.userData.userID);
+    if (lastApplication[0] === 400) {
+      setAlertMessage(lastApplication[1]);
+    } else if (Object.keys(lastApplication[1]).length !== 0) {
+      console.log("clicky", lastApplication);
+      setEmail(lastApplication[1].email || "");
+      setFirstName(lastApplication[1].firstName || "");
+      setLastName(lastApplication[1].lastName || "");
+      setPhoneNumber(lastApplication[1].phone || "");
+      setAddress(lastApplication[1].address || "");
+      setAddress2(lastApplication[1].address2 || "");
+      setCity(lastApplication[1].city || "");
+      setProvince(lastApplication[1].province || "");
+      setAreaCode(lastApplication[1].area || "");
+      setSchoolName(lastApplication[1].school || "");
+      setSchoolCountry(lastApplication[1].schoolCountry || "");
+      setDegree(lastApplication[1].schoolDegree || "");
+      setSchoolEnd(lastApplication[1].schoolEnd || "");
+      setMajor(lastApplication[1].schoolMajor || "");
+      setExperience(lastApplication[1].experience || []);
+      setAttachResume(lastApplication[1].attachResume || false);
+      setAttachCoverLetter(lastApplication[1].attachCoverLetter || false);
     }
-
-    setLastApplication(tempData);
   };
+
+  useEffect(() => {
+    fetchLastApplication();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (
       email === "" ||
       firstName === "" ||
@@ -96,7 +109,9 @@ export default function JobApplicationFill(props) {
       posting
     );
     if (success) {
-      navigate("/JobSearch");
+      navigate("/Search");
+    } else {
+      setAlertMessage("An error has occured");
     }
     setError(false);
   };
@@ -111,7 +126,6 @@ export default function JobApplicationFill(props) {
   const handleAddExperience = () => {
     if (expierienceInputValue !== "") {
       setExperience((prevExp) => [...prevExp, expierienceInputValue]);
-      console.log("click");
       setExpierienceInputValue("");
     }
   };
@@ -124,26 +138,41 @@ export default function JobApplicationFill(props) {
             <Grid item xs={12} sm={4}>
               <GeneralInformation
                 setEmail={setEmail}
+                email={email}
                 setFirstName={setFirstName}
+                firstName={firstName}
                 setLastName={setLastName}
+                lastName={lastName}
                 setPhoneNumber={setPhoneNumber}
+                phoneNumber={phone}
                 setAddress={setAddress}
+                address={address}
                 setAddress2={setAddress2}
+                address2={address2}
                 setCity={setCity}
+                city={city}
                 setProvince={setProvince}
+                province={province}
                 setAreaCode={setAreaCode}
+                areaCode={area}
                 error={error}
                 lastApplication={lastApplication}
               />
               <HigherEducation
                 setSchoolName={setSchoolName}
+                schoolName={school}
                 setSchoolCountry={setSchoolCountry}
+                schoolCountry={schoolCountry}
                 setDegree={setDegree}
+                schoolDegree={schoolDegree}
                 setSchoolEnd={setSchoolEnd}
+                schoolEnd={schoolEnd}
                 setMajor={setMajor}
+                schoolMajor={schoolMajor}
                 error={error}
                 lastApplication={lastApplication}
               />
+
               <WorkExperience
                 setExpierienceInputValue={setExpierienceInputValue}
                 expierienceInputValue={expierienceInputValue}
@@ -183,6 +212,11 @@ export default function JobApplicationFill(props) {
             </Grid>
           </Grid>
         </Grid>
+        {alertMessage && (
+          <Alert severity="error" onClose={() => setAlertMessage(null)}>
+            {alertMessage}
+          </Alert>
+        )}
       </div>
     </form>
   );

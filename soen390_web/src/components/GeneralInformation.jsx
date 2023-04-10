@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Grid } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
 const GeneralInformation = ({
@@ -16,6 +16,13 @@ const GeneralInformation = ({
   address,
   setAddress2,
   address2,
+  setCity,
+  city,
+  setProvince,
+  province,
+  setAreaCode,
+  areaCode,
+  lastApplication,
 }) => {
   const { t } = useTranslation();
 
@@ -30,10 +37,10 @@ const GeneralInformation = ({
       )}
       <TextField
         onChange={(e) => setEmail(e.target.value)}
+        value={email}
         autoFocus
         className="input"
         margin="dense"
-        label={t("emailText")}
         type="name"
         variant="outlined"
         size="small"
@@ -46,10 +53,10 @@ const GeneralInformation = ({
       )}
       <TextField
         onChange={(e) => setFirstName(e.target.value)}
+        value={firstName}
         autoFocus
         className="input"
         margin="dense"
-        label={t("FirstName*")}
         type="name"
         variant="outlined"
         size="small"
@@ -62,10 +69,10 @@ const GeneralInformation = ({
       )}
       <TextField
         onChange={(e) => setLastName(e.target.value)}
+        value={lastName}
         autoFocus
         className="input"
         margin="dense"
-        label={t("LastName*")}
         type="name"
         variant="outlined"
         size="small"
@@ -78,10 +85,10 @@ const GeneralInformation = ({
       )}
       <TextField
         onChange={(e) => setPhoneNumber(e.target.value)}
+        value={phoneNumber}
         autoFocus
         className="input"
         margin="dense"
-        label={t("PhoneNumber*")}
         type="name"
         variant="outlined"
         size="small"
@@ -94,10 +101,10 @@ const GeneralInformation = ({
       )}
       <TextField
         onChange={(e) => setAddress(e.target.value)}
+        value={address}
         autoFocus
         className="input"
         margin="dense"
-        label={t("Address*")}
         type="name"
         variant="outlined"
         size="small"
@@ -110,10 +117,58 @@ const GeneralInformation = ({
       )}
       <TextField
         onChange={(e) => setAddress2(e.target.value)}
+        value={address2}
         autoFocus
         className="input"
         margin="dense"
-        label={t("Address*")}
+        type="name"
+        variant="outlined"
+        size="small"
+      />
+      <div className="textboxname">{t("City*")}</div>
+      {error && city.length <= 0 ? (
+        <label className="label">Cannot be empty!</label>
+      ) : (
+        ""
+      )}
+      <TextField
+        onChange={(e) => setCity(e.target.value)}
+        value={city}
+        autoFocus
+        className="input"
+        margin="dense"
+        type="name"
+        variant="outlined"
+        size="small"
+      />
+      <div className="textboxname">{t("Province*")}</div>
+      {error && province.length <= 0 ? (
+        <label className="label">Cannot be empty!</label>
+      ) : (
+        ""
+      )}
+      <TextField
+        onChange={(e) => setProvince(e.target.value)}
+        value={province}
+        autoFocus
+        className="input"
+        margin="dense"
+        type="name"
+        variant="outlined"
+        size="small"
+      />
+      <div className="textboxname">{t("AreaCode*")}</div>
+      {error && areaCode.length <= 0 ? (
+        <label className="label">Cannot be empty!</label>
+      ) : (
+        ""
+      )}
+      <TextField
+        onChange={(e) => setAreaCode(e.target.value)}
+        value={areaCode}
+        autoFocus
+        className="input"
+        margin="dense"
         type="name"
         variant="outlined"
         size="small"

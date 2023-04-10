@@ -32,10 +32,10 @@ const HigherEducation = ({
       )}
       <TextField
         onChange={(e) => setSchoolName(e.target.value)}
+        value={schoolName}
         autoFocus
         className="input"
         margin="dense"
-        label={t("SchoolName*")}
         type="name"
         variant="outlined"
         size="small"
@@ -48,10 +48,10 @@ const HigherEducation = ({
       )}
       <TextField
         onChange={(e) => setSchoolCountry(e.target.value)}
+        value={schoolCountry}
         autoFocus
         className="input"
         margin="dense"
-        label={t("Country*")}
         type="name"
         variant="outlined"
         size="small"
@@ -64,10 +64,10 @@ const HigherEducation = ({
       )}
       <TextField
         onChange={(e) => setDegree(e.target.value)}
+        value={schoolDegree}
         autoFocus
         className="input"
         margin="dense"
-        label={t("Degree*")}
         type="name"
         variant="outlined"
         size="small"
@@ -76,6 +76,7 @@ const HigherEducation = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           onChange={(date) => setSchoolEnd(dayjs(date))}
+          defaultValue={schoolEnd}
           autoFocus
           className="input"
           margin="dense"
@@ -96,10 +97,10 @@ const HigherEducation = ({
       )}
       <TextField
         onChange={(e) => setMajor(e.target.value)}
+        value={schoolMajor}
         autoFocus
         className="input"
         margin="dense"
-        label={t("Major*")}
         type="name"
         variant="outlined"
         size="small"
