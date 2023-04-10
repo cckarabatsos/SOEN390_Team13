@@ -27,7 +27,9 @@ export default function UserSearch() {
           <p>{t("DesiredUsers")}</p>
         </div>
         <UserSearchBar setUsers={setUsers} />
-
+        {usersDisplay.length == 0 &&
+          <div>No users found </div>
+        }
         {usersDisplay.map((user) => (
           <UserSearchComponent
             key={user.userID}
