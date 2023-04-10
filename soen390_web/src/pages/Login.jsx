@@ -1,6 +1,6 @@
 import { Button, Grid } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { SignInUser } from "../api/loginApi";
@@ -11,29 +11,52 @@ function Login(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [incorrectLogin, setIncorrectLogin] = React.useState(false);
-  console.log("hello in login page")
 
-
-  
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  function handleCallbackResponse(response) {
+    console.log(response);
+  }
+
+  useEffect(() => {
+    window.google.accounts.id.initialize({
+      client_id:
+        "821988806720-0fl7aa6ashcj52nk5du99htcp2llmg0j.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+
+    window.google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      {
+        theme: "outline",
+        size: "large",
+      }
+    );
+  });
 
   const signInUser = async () => {
     const success = await SignInUser(emailInput, passwordInput);
     console.log(success);
     setIsAuth(success.data);
-    
+
     if (success.status === 200) {
-      var userData=JSON.parse(localStorage.getItem("isAuth"))
+      var userData = JSON.parse(localStorage.getItem("isAuth"));
       console.log(userData);
 
-      if(userData.isCompany){
-        navigate('/CompanyProfile', { state: { picture: userData.picture, name: userData.name, description:userData.bio,isFollowing:false,companyId:userData.userID}})
-      }
-      else{
+      if (userData.isCompany) {
+        navigate("/CompanyProfile", {
+          state: {
+            picture: userData.picture,
+            name: userData.name,
+            description: userData.bio,
+            isFollowing: false,
+            companyId: userData.userID,
+          },
+        });
+      } else {
         navigate("/UserProfile");
       }
-      
     } else {
       setIncorrectLogin(true);
       console.log("Login Fail");
@@ -134,27 +157,9 @@ function Login(props) {
                 </div>
               </Grid>
               <Grid item xs={12}>
-                <div className="login-with-google-button">
-                  <Button
-                    className="button"
-                    variant="contained"
-                    style={{
-                      borderRadius: 27,
-                      backgroundColor: "rgba(108, 99, 255, 0.25)",
-                      border: "1px solid #6C63FF",
-                      boxShadow: "none",
-                    }}
-                  >
-                    Login with google
-                  </Button>
-                  <div className="account-text">
-                    {t("NoAccountText")}{" "}
-                    <Link to="/Signup">{t("ClickHereText")}</Link>
-                  </div>
-                </div>
+                <div id="signInDiv"></div>
               </Grid>
             </Grid>
-            {/* </Grid> */}
           </div>
         </div>
       </div>
