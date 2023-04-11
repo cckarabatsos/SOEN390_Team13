@@ -17,3 +17,9 @@
     font-size: 20px !important;
     text-align: justify !important;
   }
+
+  .noCompaniesFound {
+    padding-top: 10%;
+    font-weight: bold;
+    font-size: 20px;
+  }

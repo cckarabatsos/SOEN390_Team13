@@ -25,11 +25,14 @@ export function CompanySearchBar({ setCompanies }) {
     console.log("text: " + text + " category: " + category);
     var companies = await CompanyApi(category, text, 0, 0);
 
-    setCompanies(companies);
-
-    if (companies.length === 0) {
-      alert("No matching companies with the selected criteria were found. Please modify your search.");
+    if (companies && companies.length != 0) {
+      setCompanies(companies);
     }
+      else {
+        alert("No matching companies with the selected criteria were found. Please modify your search.");
+        console.log("no match");
+        setCompanies([]);
+      }
   };
 
   // render job search bar, search button, dropdown filter to select category
