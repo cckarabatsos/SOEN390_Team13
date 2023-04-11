@@ -1,12 +1,12 @@
 import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Concordia from "../assets/UserProfileImages/Concordia.png";
+import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
 import profilepicture from "../assets/default_picture.jpg";
 import background from "../assets/profile_background.svg";
-import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
-import Concordia from "../assets/UserProfileImages/Concordia.png";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
 import AddEducationDialog from "../components/AddEducationDialog";
 import AddExperienceDialog from "../components/AddExperienceDialog";
@@ -14,6 +14,7 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import "../styles/components/UserProfile.css";
 
 import { useTranslation } from "react-i18next";
+import { findUserById } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 
@@ -22,7 +23,6 @@ function ViewUserProfile(props) {
   const [userData, setUserData] = React.useState({});
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
-  const [picture, setpicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
 
@@ -37,8 +37,7 @@ function ViewUserProfile(props) {
   const handleDisableEdit = () => {
     setEnable(false);
   };
-
-  const setFileData = () => {
+  const setFileData = useCallback(async () => {
     let UserCoverLetter = "";
     const getCoverLetter = async () => {
       UserCoverLetter = await GetFile(userData.userID, "coverletter");
@@ -46,14 +45,12 @@ function ViewUserProfile(props) {
     };
 
     if (UserCoverLetter && UserCoverLetter !== null) {
-      getCoverLetter().then((coverLetter) => {
-        setCoverletter(coverLetter);
-        const url = coverLetter;
-        setCoverletterFilename(
-          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-        );
-      });
-      console.log(coverletterFilename);
+      const coverLetter = await getCoverLetter();
+      setCoverletter(coverLetter);
+      const url = coverLetter;
+      setCoverletterFilename(
+        decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+      );
     }
 
     let UserResume = "";
@@ -63,31 +60,33 @@ function ViewUserProfile(props) {
     };
 
     if (UserResume && UserResume !== null) {
-      getResume().then((resume) => {
-        setResume(resume);
-        const url = resume;
+      const resume = await getResume();
+      setResume(resume);
+      const url = resume;
 
-        setResumeFilename(
-          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-        );
-        console.log(
-          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
-        );
-        console.log("resume:", resume);
-      });
+      setResumeFilename(
+        decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+      );
     }
-  };
+  }, [userData.userID]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("isAuth"));
-    if (data != null) {
-      setUserData(JSON.parse(localStorage.getItem("isAuth")));
-    } else {
-      navigate("/");
-    }
+    const fetchData = async () => {
+      const data = await findUserById(
+        window.location.pathname.split("/").pop()
+      );
+      if (data != null) {
+        console.log(data.data);
+        setUserData(data.data);
+      } else {
+        navigate("/");
+      }
 
-    setFileData();
-  }, [navigate, userData.userID]);
+      setFileData();
+    };
+
+    fetchData();
+  }, [navigate, userData.userID, setFileData]);
 
   return (
     <>
