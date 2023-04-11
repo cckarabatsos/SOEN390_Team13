@@ -78,17 +78,6 @@ function ViewUserProfile(props) {
     }
   };
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("isAuth"));
-    if (data != null) {
-      setUserData(JSON.parse(localStorage.getItem("isAuth")));
-    } else {
-      navigate("/");
-    }
-
-    setFileData();
-  }, [navigate, userData.userID]);
-
   return (
     <>
       <div className="background-color">
