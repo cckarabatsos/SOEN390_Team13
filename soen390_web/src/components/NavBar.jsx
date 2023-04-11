@@ -52,11 +52,13 @@ function Navbar(props) {
 
               {userData && (
                 <Stack spacing={1} direction="row">
-                  <Avatar
-                    alt="User"
-                    src={userData ? userData.picture : ""}
-                    sx={{ width: 47, height: 47 }}
-                  />
+                  <Link to={`/UserProfile/ `} className="avatar-link">
+                    <Avatar
+                      alt="User"
+                      src={userData ? userData.picture : ""}
+                      sx={{ width: 47, height: 47 }}
+                    />
+                  </Link>
                   <Link className="notification" to="/NotificationsPage">
                     <Badge badgeContent={4} color="secondary">
                       <NotificationsIcon></NotificationsIcon>
