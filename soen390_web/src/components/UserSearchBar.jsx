@@ -8,6 +8,7 @@ function UserSearchBar({ setUsers }) {
   // initialize state vars, handle text input change
   const [category, setCategory] = useState("name");
   const [text, setText] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
   const { t } = useTranslation();
   // const navigate = useNavigate();
   const handleTextChange = (e) => {
@@ -26,13 +27,15 @@ function UserSearchBar({ setUsers }) {
     const temp = await searchUsers(category, text);
     //console.log(temp);
     //var companies = await CompanyApi(category, text, 0, 0);
-
+    if (temp && temp.length != 0) {
     setUsers(temp);
-    if (temp.length === 0) {
+  }
+    else {
       alert("No matching users with the selected criteria were found. Please modify your search.");
+      console.log("no match");
+      setUsers([]);
     }
-  };
-
+  }
   // render job search bar, search button, dropdown filter to select category
   return (
     <div className="input-box">
