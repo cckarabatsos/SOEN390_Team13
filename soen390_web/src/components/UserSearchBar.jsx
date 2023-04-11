@@ -28,13 +28,10 @@ function UserSearchBar({ setUsers }) {
     //console.log(temp);
     //var companies = await CompanyApi(category, text, 0, 0);
     if (temp && temp.length != 0) {
-
-
-      setUsers(temp);
-    }
+    setUsers(temp);
+  }
     else {
-
-
+      alert("No matching users with the selected criteria were found. Please modify your search.");
       console.log("no match");
       setUsers([]);
     }
