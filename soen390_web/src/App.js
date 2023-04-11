@@ -91,7 +91,6 @@ const AppWrapper = () => {
           )}
         </Routes>
         <div className="footer-collection">
-          <SubFooter />
           <Footer />
         </div>
       </Router>
