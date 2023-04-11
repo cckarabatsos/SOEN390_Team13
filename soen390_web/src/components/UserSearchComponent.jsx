@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserSearchComponent(props) {
   const navigate = useNavigate();
+
   const { t } = useTranslation();
   const classes = useStyles();
   const [alert, setAlert] = useState({
@@ -46,7 +47,7 @@ export default function UserSearchComponent(props) {
     severity: "",
     message: "",
   });
-
+  const userData = props.UserData;
   const handleClose = () => {
     setAlert({ ...alert, open: false });
   };
@@ -55,7 +56,6 @@ export default function UserSearchComponent(props) {
     const personalData = JSON.parse(localStorage.getItem("isAuth"));
     const temp = await sendInvite(personalData.email, email);
     const alertSeverity = temp ? "success" : "error";
-
 
     // ? "Connection request sent!"
     // : "Failed to send connection request";
@@ -80,9 +80,13 @@ export default function UserSearchComponent(props) {
             <Button
               className="button-viewProfile"
               variant="contained"
-              onClick={() => navigate(`/UserProfile/${props.id}`)}
-
-
+              onClick={() => {
+                navigate("/UserProfile/", {
+                  state: {
+                    UserData: userData
+                  }
+                });
+              }}
               style={{
                 borderRadius: 27,
                 border: "2px solid #006AF9",
@@ -135,6 +139,6 @@ export default function UserSearchComponent(props) {
           <div className="companySubName">{props.company}</div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

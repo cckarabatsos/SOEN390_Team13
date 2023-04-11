@@ -23,7 +23,7 @@ import {
 } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
-
+import { useLocation } from "react-router-dom";
 function UserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUserData] = React.useState({});
@@ -39,7 +39,7 @@ function UserProfile(props) {
   const inputFile = useRef(null);
   const { userId } = useParams();
   const [skills, setSkills] = React.useState([]);
-
+  const { state } = useLocation();
   const [newSkill, setNewSkill] = React.useState("");
   const { t } = useTranslation();
 
