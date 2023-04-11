@@ -22,13 +22,17 @@ function JobSearchBar({ setJobs }) {
 
   //handle job search
   const handleSearch = async () => {
-    console.log("text: " + text + " category: " + category);
+    // console.log("text: " + text + " category: " + category);
   
     var jobs = await JobSearch(category, text);
-    console.log("jobs: " + jobs)
+    // console.log("jobs: " + jobs)
   
-    console.log(jobs);
+    // console.log(jobs);
     setJobs(jobs)
+
+    if (jobs.length === 0) {
+      alert("No matching jobs with the selected criteria were found. Please modify your search.");
+    }
   };
 
   // render job search bar, search button, dropdown filter to select category

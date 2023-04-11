@@ -28,6 +28,9 @@ function UserSearchBar({ setUsers }) {
     //var companies = await CompanyApi(category, text, 0, 0);
 
     setUsers(temp);
+    if (temp.length === 0) {
+      alert("No matching users with the selected criteria were found. Please modify your search.");
+    }
   };
 
   // render job search bar, search button, dropdown filter to select category
