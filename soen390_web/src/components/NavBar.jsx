@@ -25,9 +25,6 @@ function Navbar(props) {
 
   const { t, i18n } = useTranslation();
 
-  const handleSearch = async () => {
-    console.log("hi");
-  };
 
   return (
     <div data-testid="navbar-1">

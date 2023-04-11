@@ -11,6 +11,7 @@ html {
 .App {
   text-align: center;
   background-color: "#fffff";
+  margin-bottom: 75px;
 }
 
 .App-logo {
@@ -49,6 +50,10 @@ html {
 }
 
 .footer-collection {
+  position: fixed;
+  left: 0;
+  bottom: 0;
   width: 100%;
-  margin-top: 40%;
+  color: white;
+  text-align: center;
 }

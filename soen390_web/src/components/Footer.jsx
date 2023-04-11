@@ -1,7 +1,6 @@
 import { AppBar, CssBaseline, Toolbar } from "@material-ui/core";
 import React from "react";
 import "../styles/components/navbar.css";
-import "../styles/components/Footer.css";
 
 const Footer = () => {
   return (
@@ -10,10 +9,11 @@ const Footer = () => {
         className="border"
         position="static"
         style={{
-          background: "#BDBABA",
+          background: "#6C63FF",
           position: "static",
           bottom: 0,
           width: "100%",
+          height:"70px",
         }}
       >
         <CssBaseline />
