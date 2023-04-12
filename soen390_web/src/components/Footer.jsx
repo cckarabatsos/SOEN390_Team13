@@ -12,7 +12,7 @@ const Footer = () => {
           position: "static",
           bottom: 0,
           width: "100%",
-          height:"70px",
+          height:"60px",
         }}
       >
         <CssBaseline />

@@ -11,7 +11,7 @@ html {
 .App {
   text-align: center;
   background-color: "#fffff";
-  margin-bottom: 75px;
+  margin-bottom: 65px;
   margin-top: 70px;
 }
 
@@ -55,6 +55,6 @@ html {
   left: 0;
   bottom: 0;
   width: 100%;
-  color: white;
+  color: #FFFFFF;
   text-align: center;
 }
