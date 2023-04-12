@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Drawer,
   IconButton,
@@ -15,7 +14,8 @@ import {
   Typography,
   CircularProgress,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import {Button} from "@mui/material";
+import { makeStyles, } from "@material-ui/core/styles";
 import { MoreVert } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -288,6 +288,7 @@ function Messages(props) {
             </ListItem>
           ))}
         </List>
+        <Button color="info"  variant="contained" style={{width:"90%", marginLeft:"auto",marginRight:"auto"}}> Create conversation </Button>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
