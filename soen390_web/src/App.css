@@ -12,6 +12,7 @@ html {
   text-align: center;
   background-color: "#fffff";
   margin-bottom: 75px;
+
 }
 
 .App-logo {
@@ -54,6 +55,6 @@ html {
   left: 0;
   bottom: 0;
   width: 100%;
-  color: white;
+  color: #FFFFFF;
   text-align: center;
 }
