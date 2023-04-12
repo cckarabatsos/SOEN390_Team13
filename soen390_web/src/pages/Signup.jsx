@@ -169,6 +169,10 @@ function SignUp(props) {
                 <></>
               )}
               <Grid className="login" item xs={12}>
+              <div class="checkbox-container">
+                <input className="checkbox" type="checkbox" id="myCheckbox" name="myCheckbox" value="checked"></input>
+                <label for="myCheckbox">Company</label>
+              </div>
                 <Button
                   className="button"
                   variant="contained"
