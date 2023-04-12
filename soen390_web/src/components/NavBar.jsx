@@ -30,7 +30,7 @@ function Navbar(props) {
     <div data-testid="navbar-1">
       <AppBar
         position="static"
-        style={{ background: "#ffffff", zIndex: 1301 }} // Add zIndex to the AppBar
+        style={{ background: "#ffffff", zIndex: 20,top:0 }} // Add zIndex to the AppBar
       >
         <CssBaseline />
         <Toolbar className="navbar-toolbar">

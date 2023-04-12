@@ -132,33 +132,30 @@
 
 
     
-    @media only screen and (max-width: 768px){
+    @media only screen and (max-width: 1000px){
 
       .HeaderContainer {
           background: white;
           border: 2px solid rgba(0, 106, 249,0.8);
           border-radius: 20px;
-          
           margin-left: auto;
           margin-right: auto;
           margin-bottom: 2rem;
           margin-top: 4rem;
           transition: all 0.3s ease 0s;
           position: relative;
-          min-height: 20vh;
-          
-          width: 95vw;
-          
+          max-height: 15vh;
+          width: 90vw;
           }
 
 
           .avatar {
             vertical-align: middle;
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             box-shadow:  0 1px 8px rgba(0,0,0,0.45);
-            margin-top: 50px;
+            margin-top: 40px;
             display: inline-block;
            
           }
@@ -171,8 +168,10 @@
 
 
           .titleContainer{
+           
             width: 70%;
             display: inline-block;
+       
             
         }
         .editButton{
@@ -182,4 +181,102 @@
           position: absolute;
           bottom: 20%;
         }
+        .company {
+          margin-bottom: 0.3rem;
+          text-align: left;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #3E3E3E;
+          font-family: "Inter-regular";
+      }
+      @media only screen and (min-height: 2000px){
+
+        .avatar {
+          vertical-align: middle;
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          box-shadow:  0 1px 8px rgba(0,0,0,0.45);
+          margin-top: 80px;
+          display: inline-block;
+         
+        }
+      
+        .avatarContainer{
+          width: 30%;
+          display: inline-block;
+          float: left;
+        }
+
+
+
+
+
+
+
+      }
+
+     
+
+  }
+
+
+  @media only screen and (max-height: 950px){
+
+    .HeaderContainer {
+        background: white;
+        border: 2px solid rgba(0, 106, 249,0.8);
+        border-radius: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2rem;
+        margin-top: 4rem;
+        transition: all 0.3s ease 0s;
+        position: relative;
+        max-height: 30vh;
+        
+        }
+
+
+        .avatar {
+          vertical-align: middle;
+          width: 100px;
+          height:100px;
+          border-radius: 50%;
+          box-shadow:  0 1px 8px rgba(0,0,0,0.45);
+          margin-top: 30px;
+          display: inline-block;
+         
+        }
+      
+        .avatarContainer{
+          width: 30%;
+          display: inline-block;
+          float: left;
+        }
+
+
+        .titleContainer{
+         
+          width: 70%;
+          display: inline-block;
+     
+          
+      }
+      .editButton{
+        display: inline-block;
+        width: 40%;
+        float: left;
+        position: absolute;
+        bottom: 20%;
+      }
+      .company {
+        margin-bottom: 0.3rem;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #3E3E3E;
+        font-family: "Inter-regular";
+    }
+
   }
