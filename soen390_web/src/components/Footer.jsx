@@ -7,7 +7,6 @@ const Footer = () => {
     <div data-testid="footer-1">
       <AppBar
         className="border"
-        position="static"
         style={{
           background: "#6C63FF",
           position: "static",
