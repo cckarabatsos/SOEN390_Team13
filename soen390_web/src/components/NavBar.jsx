@@ -29,8 +29,8 @@ function Navbar(props) {
   return (
     <div data-testid="navbar-1">
       <AppBar
-        
-        style={{ background: "#ffffff", zIndex: 20, height:"65px"}} // Add zIndex to the AppBar
+        position="static"
+        style={{ background: "#ffffff", zIndex: 20,top:0 }} // Add zIndex to the AppBar
       >
         <CssBaseline />
         <Toolbar className="navbar-toolbar">
