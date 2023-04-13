@@ -1,4 +1,4 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, Checkbox, FormControlLabel, Grid } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { GoogleLogin } from "react-google-login";
@@ -9,6 +9,10 @@ import background from "../assets/undraw_online_resume_re_ru7s.png";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
 
+
+
+
+
 function SignUp(props) {
   const [fNameInput, setfNameInput] = React.useState("");
   const [lNameInput, setlNameInput] = React.useState("");
@@ -17,6 +21,9 @@ function SignUp(props) {
   const [confirmPasswordInput, setConfirmPasswordInput] = React.useState("");
   const [registerError, setRegisterError] = React.useState(false);
   const [passwordMismatch, setPasswordMismatch] = React.useState(false);
+  const [isCompany, setIsCompany] = React.useState(false);
+  const [isCompanyName, setIsCompanyName] = React.useState("FirstNameText");
+  
 
   let navigate = useNavigate();
 
@@ -41,12 +48,23 @@ function SignUp(props) {
   const fieldsEmpty = () => {
     return (
       fNameInput.length <= 0 ||
-      lNameInput.length <= 0 ||
+      (!isCompany && lNameInput.length <= 0) ||
       emailInput.length <= 0 ||
       passwordInput.length <= 0 ||
       confirmPasswordInput.length <= 0
     );
   };
+
+  const handleCheckboxClick = (e) => {
+    setIsCompany(!isCompany); 
+    if(!isCompany){
+      setIsCompanyName("Name")
+    }  
+    else{
+      setIsCompanyName("FirstNameText")
+    } 
+    
+  }
 
   return (
     <div data-testid="signup-1">
@@ -62,14 +80,14 @@ function SignUp(props) {
             <Grid container spacing={1}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={8}>
-                  <div className="name-field">{t("FirstNameText")}</div>
-                  <div className="field-input">
+                  <label for="FirstName" className="name-field">{t(isCompanyName)}</label>
+                  <div  className="field-input">
                     <div className="margin-input">
                       <TextField
                         autoFocus
                         className="Roundedinput"
                         margin="dense"
-                        label={t("FirstNameText")}
+                        label={t(isCompanyName)}
                         type="name"
                         variant="outlined"
                         size="small"
@@ -79,9 +97,9 @@ function SignUp(props) {
                     </div>
                   </div>
                 </Grid>
-                <Grid item xs={12} sm={8}>
-                  <div className="name-field">{t("LastNameText")}</div>
-                  <div className="field-input">
+                {!isCompany?<Grid item xs={12} sm={8}>
+                  <label for="LastName" className="name-field">{t("LastNameText")}</label>                  
+                  <label for="inputbox" className="field-input">
                     <div className="margin-input">
                       <TextField
                         autoFocus
@@ -95,8 +113,8 @@ function SignUp(props) {
                         onChange={(e) => setlNameInput(e.target.value)}
                       />
                     </div>
-                  </div>
-                </Grid>
+                  </label>
+                </Grid>:<></>}
                 <Grid item xs={12} sm={8}>
                   <div className="name-field">{t("emailText")}</div>
                   <div className="field-input">
@@ -169,10 +187,12 @@ function SignUp(props) {
                 <></>
               )}
               <Grid className="login" item xs={12}>
-              <div class="checkbox-container">
-                <input className="checkbox" type="checkbox" id="myCheckbox" name="myCheckbox" value="checked"></input>
-                <label for="myCheckbox">Company</label>
-              </div>
+                <div class="checkbox-container">
+                <FormControlLabel
+                  control={<Checkbox checked={isCompany} onChange={handleCheckboxClick} label="Company" />  }
+                  label="Company"
+                />                                                       
+                  </div>
                 <Button
                   className="button"
                   variant="contained"
