@@ -11,10 +11,6 @@ function Login(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [incorrectLogin, setIncorrectLogin] = React.useState(false);
-  console.log("hello in login page")
-
-
-  
   const { t } = useTranslation();
   const navigate = useNavigate();
 
