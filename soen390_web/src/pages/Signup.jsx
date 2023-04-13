@@ -4,7 +4,7 @@ import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { CreateUser } from "../api/loginApi";
+import { CreateUser,CreateCompany } from "../api/loginApi";
 import background from "../assets/undraw_online_resume_re_ru7s.png";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
@@ -31,12 +31,25 @@ function SignUp(props) {
 
   const registerUser = async () => {
     if (confirmPasswordInput === passwordInput) {
-      const success = await CreateUser(
-        fNameInput,
-        lNameInput,
-        emailInput,
-        passwordInput
-      );
+
+      let success=-1;
+
+      if(isCompany){
+        success = await CreateCompany(
+          fNameInput,
+          emailInput,
+          passwordInput
+        );
+      }
+      else{
+        success = await CreateUser(
+          fNameInput,
+          lNameInput,
+          emailInput,
+          passwordInput
+        );
+      }
+      
       success.registeredUser[0] === 200
         ? navigate("/")
         : setRegisterError(true);
