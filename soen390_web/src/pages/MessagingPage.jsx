@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
   CircularProgress,
+  Dialog, DialogContent,
 } from "@material-ui/core";
 import {Button} from "@mui/material";
 import { makeStyles, } from "@material-ui/core/styles";
@@ -31,6 +32,9 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import ReportModal from "../components/ReportModal";
 import AddChatDocumentsDialog from "../components/AddChatDocumentDialog";
+import AddConversationModal from "../components/AddConversationModal";
+
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -121,6 +125,17 @@ function Messages(props) {
   const [isLoading, setIsLoading] = useState(true);
   const { userId } = useParams();
   const [conversationVersion, setConversationVersion] = useState(0); // Add this state variable
+  const [descModalOpen, setDescModalOpen] = useState(false)
+
+
+  const handleOpenDescModal = () => {
+    setDescModalOpen(true);
+  };
+  
+  const handleCloseDescModal = () => {
+    setDescModalOpen(false);
+  };
+  
 
   useEffect(() => {
     setIsLoading(true);
@@ -288,7 +303,7 @@ function Messages(props) {
             </ListItem>
           ))}
         </List>
-        <Button color="info"  variant="contained" style={{width:"90%", marginLeft:"auto",marginRight:"auto"}}> Create conversation </Button>
+        <Button color="info"  variant="contained" style={{width:"90%", marginLeft:"auto",marginRight:"auto"}} onClick={()=>{setDescModalOpen(true)}}> Create conversation </Button>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -401,6 +416,14 @@ function Messages(props) {
           </Typography>
         )}
       </main>
+
+      <Dialog open={descModalOpen} onClose={handleCloseDescModal} fullWidth
+  maxWidth="sm">
+        <DialogContent>
+          <AddConversationModal handleCloseModal={handleCloseDescModal} userData={props.userData} ></AddConversationModal>
+          <Button onClick={handleCloseDescModal}>{"cancel"}</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
