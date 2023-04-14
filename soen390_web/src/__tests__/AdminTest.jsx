@@ -2,6 +2,12 @@ import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Admin from '../pages/Admin';
 import { getReports, reportDecision, createReport } from "../api/reportsApi";
+import TableRow from '@mui/material/TableRow';
+import TableCell from "@mui/material";
+import Button from "@mui/material";
+import { Table } from '@mui/material';
+import axios from "axios";
+
 
 jest.mock("../api/reportsApi");
 
@@ -19,57 +25,71 @@ describe("Admin Component", () => {
         await waitFor(() => expect(getReports).toHaveBeenCalledTimes(1));
         expect(screen.getByText("Approval")).toBeInTheDocument();
     });
+    test("displays table when there are reports", async () => {
+        const reports = [{ reportID: 1, reporterID: 2, reportedID: 3, reason: "spam" }];
+        getReports.mockResolvedValueOnce(reports);
+        render(<Admin userData={userData} />);
 
-    describe('Approval component', () => {
-        const mockUserData = { userID: '123' };
-        const mockReports = [
-            {
-                reportID: '1',
-                reporterID: '456',
-                reportedID: '789',
-                reason: 'Inappropriate content',
-            },
-            {
-                reportID: '2',
-                reporterID: '456',
-                reportedID: '789',
-                reason: 'Harassment',
-            },
-        ];
+        await waitFor(() => expect(getReports).toHaveBeenCalledTimes(1));
+        expect(screen.getByText("ReportID")).toBeInTheDocument();
+        expect(screen.getByText("Reporter ID")).toBeInTheDocument();
+        expect(screen.getByText("Reported ID")).toBeInTheDocument();
+        expect(screen.getByText("Reason")).toBeInTheDocument();
+    });
+    test("displays error alert when there is an error", async () => {
+        getReports.mockRejectedValueOnce(new Error("Error fetching reports"));
+        render(<Admin userData={userData} />);
 
-        test('renders the Approval component', () => {
-            render(<Approval userData={mockUserData} />);
-            const headingElement = screen.getByText('Approval');
-            expect(headingElement).toBeInTheDocument();
-        });
+        await waitFor(() => expect(getReports).toHaveBeenCalledTimes(1));
+        expect(screen.getByRole("alert")).toBeInTheDocument();
+        expect(screen.getByText("Error fetching reports")).toBeInTheDocument();
+    });
 
-        test('renders the reports table', () => {
-            render(<Approval userData={mockUserData} />);
-            const tableElement = screen.getByRole('table');
-            expect(tableElement).toBeInTheDocument();
-        });
+    test("render buttons with appropriate functions", () => {
+        const report = {
+            reportID: 1,
+            reporterID: 2,
+            reportedID: 3,
+            reason: "Inappropriate content",
+        };
+        const handleApprove = jest.fn();
+        const handleDisapprove = jest.fn();
 
-        test('renders the correct number of rows in the table', () => {
-            render(<Approval userData={mockUserData} />);
-            const rows = screen.getAllByRole('row');
-            expect(rows.length).toBe(mockReports.length + 1); // +1 for the header row
-        });
+        render(
+            <TableRow key={report.reportID}>
+                <TableCell component="th" scope="row">
+                    {report.reportID}
+                </TableCell>
+                <TableCell>{report.reporterID}</TableCell>
+                <TableCell>{report.reportedID}</TableCell>
+                <TableCell>{report.reason}</TableCell>
+                <TableCell>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleApprove(report.reportID, report.reportedID)}
+                    >
+                        Approve
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleDisapprove(report.reportID, report.reportedID)}
+                    >
+                        Disapprove
+                    </Button>
+                </TableCell>
+            </TableRow>
+        );
 
-        test('calls handleApprove when approve button is clicked', () => {
-            const mockHandleApprove = jest.fn();
-            render(<Approval userData={mockUserData} reports={mockReports} handleApprove={mockHandleApprove} />);
-            const approveButton = screen.getAllByText('Approve')[0];
-            fireEvent.click(approveButton);
-            expect(mockHandleApprove).toHaveBeenCalledTimes(1);
-        });
+        const approveButton = screen.getByText("Approve");
+        const disapproveButton = screen.getByText("Disapprove");
 
-        test('calls handleDisapprove when disapprove button is clicked', () => {
-            const mockHandleDisapprove = jest.fn();
-            render(<Approval userData={mockUserData} reports={mockReports} handleDisapprove={mockHandleDisapprove} />);
-            const disapproveButton = screen.getAllByText('Disapprove')[0];
-            fireEvent.click(disapproveButton);
-            expect(mockHandleDisapprove).toHaveBeenCalledTimes(1);
-        });
+        fireEvent.click(approveButton);
+        fireEvent.click(disapproveButton);
+
+        expect(handleApprove).toHaveBeenCalledWith(report.reportID, report.reportedID);
+        expect(handleDisapprove).toHaveBeenCalledWith(report.reportID, report.reportedID);
     });
 
 
