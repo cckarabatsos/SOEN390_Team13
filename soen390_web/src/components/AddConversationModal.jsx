@@ -28,6 +28,7 @@ export default function AddConversationModal(props) {
   
   const [checked, setChecked] = React.useState([]);
   const [contacts, setContacts] = React.useState([])
+  const [disabled, setDisabled] = React.useState(false);
 
 
   const getContactsList = async (email) => {
@@ -67,7 +68,7 @@ getContactsList(props.userData.email);
   };
 
   const handleCreateOnclick= async () =>{
-    console.log(checked)
+    setDisabled(true)
 
     let userIds =[]
 
@@ -81,8 +82,8 @@ getContactsList(props.userData.email);
 
         if(newConvoStatus){
             
-            await timeout(2500)
-            navigate("/Messages/123");
+            await timeout(2300)
+            navigate("/Messages/12345");
            
         }
         else{
@@ -90,6 +91,7 @@ getContactsList(props.userData.email);
             
         }
     }
+    setDisabled(false)
     props.handleCloseModal()
   }
 
@@ -139,6 +141,7 @@ getContactsList(props.userData.email);
                 color="success"
                 onClick={handleCreateOnclick}
                 style={{float: 'right'}}
+                disabled={disabled}
                 >
                 Create
               </Button>

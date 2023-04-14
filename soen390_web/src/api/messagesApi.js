@@ -41,6 +41,7 @@ export async function sendMessage(reqUserID, reqSenderID, reqMessage) {
     else{
       embeddedId.push(reqUserID)
     }
+    console.log(embeddedId)
     const Ids = JSON.stringify(embeddedId);
     const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}`;
 
@@ -54,6 +55,8 @@ export async function sendMessage(reqUserID, reqSenderID, reqMessage) {
   }
 }
 export async function sendMessageDocument(reqUserID, reqSenderID, reqMessage) {
+
+
   try {
     var embeddedId = [reqSenderID]
     if(reqUserID.includes(",")){
@@ -63,7 +66,8 @@ export async function sendMessageDocument(reqUserID, reqSenderID, reqMessage) {
     else{
       embeddedId.push(reqUserID)
     }
-    const Ids = JSON.stringify([reqUserID, reqSenderID]);
+    console.log(embeddedId)
+    const Ids = JSON.stringify(embeddedId);
     const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}&type=document`;
 
     const response = await axios.get(
