@@ -1,14 +1,25 @@
 import axios from "axios";
 import api from "../config.json";
 import { findUserById } from "./UserProfileApi";
+import  UserMessage from "../models/UserMessage.ts";
 
 export async function getAllMessages(reqUserID, reqSenderID) {
   try {
+    //console.log(reqSenderID)
+    var embeddedId = [reqSenderID]
+    if(reqUserID.includes(",")){
+      let tempId= reqUserID.split(",")
+      embeddedId= embeddedId.concat(tempId)
+    }
+    else{
+      embeddedId.push(reqUserID)
+    }
+
     const response = await axios.get(
       api.BACKEND_API + "/messages/getAllMessages",
       {
         params: {
-          userIds: [reqSenderID, reqUserID],
+          userIds: embeddedId,
           senderId: reqSenderID,
         },
       }
@@ -21,7 +32,16 @@ export async function getAllMessages(reqUserID, reqSenderID) {
 }
 export async function sendMessage(reqUserID, reqSenderID, reqMessage) {
   try {
-    const Ids = JSON.stringify([reqUserID, reqSenderID]);
+
+    var embeddedId = [reqSenderID]
+    if(reqUserID.includes(",")){
+      let tempId= reqUserID.split(",")
+      embeddedId= embeddedId.concat(tempId)
+    }
+    else{
+      embeddedId.push(reqUserID)
+    }
+    const Ids = JSON.stringify(embeddedId);
     const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}`;
 
     const response = await axios.get(
@@ -35,6 +55,14 @@ export async function sendMessage(reqUserID, reqSenderID, reqMessage) {
 }
 export async function sendMessageDocument(reqUserID, reqSenderID, reqMessage) {
   try {
+    var embeddedId = [reqSenderID]
+    if(reqUserID.includes(",")){
+      let tempId= reqUserID.split(",")
+      embeddedId= embeddedId.concat(tempId)
+    }
+    else{
+      embeddedId.push(reqUserID)
+    }
     const Ids = JSON.stringify([reqUserID, reqSenderID]);
     const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}&type=document`;
 
@@ -57,17 +85,38 @@ export async function getActiveConvos(reqID) {
     );
 
     const activeConvos = response.data.activeConvos;
+    console.log(response.data)
 
     const updatedActiveConvos = [];
 
     for (let i = 0; i < activeConvos.length; i++) {
       const activeUserIds = activeConvos[i].ActiveUser;
-      const otherUserId = activeUserIds.find((id) => id !== reqID);
+      const otherUserId = activeUserIds.filter((id) => id !== reqID);
       console.log(otherUserId);
-      const userDataResponse = await findUserById(otherUserId);
-      const userData = userDataResponse.data;
+      
 
-      activeConvos[i].ActiveUser = userData;
+      let name="";
+      let avatar="";
+      let userID=[];
+      
+      for(let j=0;j<otherUserId.length;j++){
+        const userDataResponse = await findUserById(otherUserId[j]);
+        const userData = userDataResponse.data;
+
+        userID.push(userData.userID)
+
+        if(j==0){
+          avatar=userData.picture
+          name=userData.name
+        }
+        else{
+          name = name +", "+userData.name
+        }
+      }
+
+      let userTemp= new UserMessage(name,[...userID],avatar)
+
+      activeConvos[i].ActiveUser = userTemp;
 
       updatedActiveConvos.push(activeConvos[i]);
     }
@@ -91,14 +140,22 @@ export async function handleDocumentDecrypt(downloadURL, conversationID) {
     throw error;
   }
 }
+
 export async function createConversation(arrayOfIds) {
   try {
-    const idsString = encodeURIComponent(JSON.stringify(arrayOfIds));
+    const idsString = (JSON.stringify(arrayOfIds));
     const url = `${api.BACKEND_API}/messages/createConversation?ids=${idsString}`;
+    console.log(url)
     const response = await axios.get(url);
-    return response;
+    if(response.status==200){
+      console.log(response.data)
+    return response.data;
+    }
+    else{
+      return false;
+    }
   } catch (error) {
     console.error(error);
-    throw error;
+    return false
   }
 }

@@ -14,24 +14,24 @@ import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
 import { Box } from "@mui/material";
 import { GetContacts } from "../api/userContactsApi";
+import { useNavigate } from "react-router-dom";
+import {createConversation} from "../api/messagesApi";
 
 function timeout(delay) {
-  return new Promise((res) => setTimeout(res, delay));
-}
+    return new Promise((res) => setTimeout(res, delay));
+  }
 
 export default function AddConversationModal(props) {
 
-
-
+    const navigate = useNavigate();
   const [text, setText] = useState(props.descriptionText);
   
-  const [checked, setChecked] = React.useState([1]);
+  const [checked, setChecked] = React.useState([]);
   const [contacts, setContacts] = React.useState([])
 
 
   const getContactsList = async (email) => {
     var responce = await GetContacts(email);
-    console.log(responce);
     setContacts(responce);
   };
 
@@ -49,12 +49,7 @@ getContactsList(props.userData.email);
     props.handleCloseModal()
   }
 
-  const handledeclineOnClick=async ()=>{
-   
-    props.handleCloseModal()
-
-  }
-
+ 
   
 
   const handleToggle = (value) => () => {
@@ -68,7 +63,35 @@ getContactsList(props.userData.email);
     }
 
     setChecked(newChecked);
+    
   };
+
+  const handleCreateOnclick= async () =>{
+    console.log(checked)
+
+    let userIds =[]
+
+    checked.forEach(element => {
+        userIds.push(element.userID)
+        
+    });
+    if(userIds.length>0){
+        userIds.push(props.userData.userID)
+        const newConvoStatus = await createConversation(userIds)
+
+        if(newConvoStatus){
+            
+            await timeout(2500)
+            navigate("/Messages/123");
+           
+        }
+        else{
+            console.log("error when creating conversation")
+            
+        }
+    }
+    props.handleCloseModal()
+  }
 
 
   return (
@@ -90,8 +113,8 @@ getContactsList(props.userData.email);
       {contacts.map((value) => {
         const labelId = `checkbox-list-secondary-label-${value}`;
         return (
-          <ListItem
-            key={value}
+          <ListItem        
+            key={value.userID}
             secondaryAction={
               <Checkbox
                 edge="end"
@@ -114,10 +137,10 @@ getContactsList(props.userData.email);
 <Grid item xs={12}>
               <Button
                 color="success"
-                onClick={handleAcceptOnClick}
+                onClick={handleCreateOnclick}
                 style={{float: 'right'}}
                 >
-                Approve
+                Create
               </Button>
             </Grid>
            

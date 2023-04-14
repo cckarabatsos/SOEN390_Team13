@@ -33,6 +33,7 @@ import { db } from "../firebaseConfig";
 import ReportModal from "../components/ReportModal";
 import AddChatDocumentsDialog from "../components/AddChatDocumentDialog";
 import AddConversationModal from "../components/AddConversationModal";
+import Tooltip from '@mui/material/Tooltip';
 
 
 const drawerWidth = 240;
@@ -163,22 +164,28 @@ function Messages(props) {
   const fetchConversation = async (userId) => {
     try {
       if (userId) {
-        const user = await findUserById(userId);
-        const activeMessages = await getAllMessages(
-          props.userData.userID,
-          user.data.userID
+        //const user = await findUserById(userId);
+        var activeMessages = await getAllMessages(
+          userId,
+          props.userData.userID
         );
-        setConversation(
-          activeMessages.data.usersChat.listOfMessages.map(
-            (chat) => chat.message
-          )
-        );
+        console.log(activeMessages.data.usersChat)
 
-        setConversationID(activeMessages.data.usersChat.conversationID);
+        
+          setConversation(
+            activeMessages.data.usersChat.map(
+              (chat) => chat.message
+            )
+          );
+      
+        setConversationID(activeMessages.data.conversationID);
         setIsLoading(false);
         return true; // Return true if the conversation was fetched successfully
       }
     } catch (error) {
+      
+
+      console.log("error" + error.message);
       return false; // Return false if there was an error fetching the conversation
     }
   };
@@ -219,7 +226,9 @@ function Messages(props) {
   async function fetchData() {
     const convos = await getActiveConvos(props.userData.userID);
 
-    const convUser = convos.find((user) => user.ActiveUser.userID === userId);
+    console.log(convos)
+
+    const convUser = convos.find((user) => user.ActiveUser.userID == userId);
 
     setSelectedUser(convUser);
     setUsers(convos);
@@ -264,7 +273,9 @@ function Messages(props) {
         <Divider />
         <List>
           {users.map((user) => (
-            <ListItem
+             <Tooltip title={user.ActiveUser.name}>
+
+<ListItem
               style={{
                 cursor: "pointer",
               }}
@@ -273,7 +284,7 @@ function Messages(props) {
               onClick={() => navigate(`/Messages/${user.ActiveUser.userID}`)}
             >
               <ListItemAvatar>
-                <Avatar alt={user.name} src={user.avatar} />
+                <Avatar alt={user.ActiveUser.name} src={user.avatar} />
               </ListItemAvatar>
               <ListItemText
                 primary={user.ActiveUser.name}
@@ -301,6 +312,11 @@ function Messages(props) {
                 userID={user.ActiveUser.userID}
               />
             </ListItem>
+
+
+
+             </Tooltip>
+           
           ))}
         </List>
         <Button color="info"  variant="contained" style={{width:"90%", marginLeft:"auto",marginRight:"auto"}} onClick={()=>{setDescModalOpen(true)}}> Create conversation </Button>
@@ -420,7 +436,7 @@ function Messages(props) {
       <Dialog open={descModalOpen} onClose={handleCloseDescModal} fullWidth
   maxWidth="sm">
         <DialogContent>
-          <AddConversationModal handleCloseModal={handleCloseDescModal} userData={props.userData} ></AddConversationModal>
+          <AddConversationModal handleCloseModal={handleCloseDescModal} userData={props.userData} selectedUser={selectedUser} ></AddConversationModal>
           <Button onClick={handleCloseDescModal}>{"cancel"}</Button>
         </DialogContent>
       </Dialog>
