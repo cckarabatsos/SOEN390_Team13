@@ -18,8 +18,16 @@ const FileUploadChat = ({ files, reqUserID, reqSenderID, conversationID }) => {
     }, []);
 
     const uploadChatHandler = async (event, reqUserID, reqSenderID) => {
-        console.log(reqSenderID);
-        const Ids = JSON.stringify([reqUserID, reqSenderID]);
+        var embeddedId = [reqSenderID]
+        if(reqUserID.includes(",")){
+          let tempId= reqUserID.split(",")
+          embeddedId= embeddedId.concat(tempId)
+        }
+        else{
+          embeddedId.push(reqUserID)
+        }
+        console.log(embeddedId)
+        const Ids = JSON.stringify(embeddedId);
         const file = event.target.files[0];
         file.isUploading = true;
         // setFiles([...files, file]);

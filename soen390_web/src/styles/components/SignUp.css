@@ -1,15 +1,15 @@
 .signup{
   background-repeat: no-repeat;
   background-position: right;
-  height: 110vh;
+  height: 80%;
   background-color: white;    
   background-size: 55%;
-  padding-top: 1px;
+  padding: 10px;
 }
 
 .signup-color{
   background-color: #D9D9D9;
-  padding-bottom: 10%;
+ 
 
 }
 
@@ -17,6 +17,7 @@
   background: rgba(217, 217, 217, 0.965);
   border-radius: 27px;
   position: relative;
+
 }
 
 
