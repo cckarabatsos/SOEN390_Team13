@@ -57,7 +57,6 @@ user.get("/api/login", async (req: Request, res: Response) => {
         let email: string = req.query.email as string;
         let pwd: string = req.query.password as string;
         const userArr: User = await getUserWithEmail(email).then();
-
         const status = userArr[0];
 
         if (status == 404) {
