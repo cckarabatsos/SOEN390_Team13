@@ -20,24 +20,35 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
     }
   }
 
-  export async function GetAllMessages(emailUser:string, emailContact:string) {
+  export async function GetAllMessages(reqUserID:string, reqSenderID:string) {
+    try{
+      var embeddedId = [reqSenderID]
+      if(reqUserID.includes(",")){
+        let tempId= reqUserID.split(",")
+        embeddedId= embeddedId.concat(tempId)
+      }
+      else{
+        embeddedId.push(reqUserID)
+      }
 
-    try {
       const response = await axios.get(
-          api.BACKEND_API + "/messages/getAllMessages",
-          {
-              params: {
-                  userIds: [emailUser, emailContact],
-                  senderId: emailUser,
-              },
-          }
+        api.BACKEND_API + "/messages/getAllMessages",
+        {
+          params: {
+            userIds: embeddedId,
+            senderId: reqSenderID,
+          },
+        }
       );
-      return response.data.usersChat;
-  } catch (error) {
+      console.log(response)
+      return response.data;
+      } catch (error) {
       console.error("error", error);
       return false;
+      }
   }
-  }
+
+  
 
   export async function SendMessage(emailUser:string, emailContact:string, message:string) {
     try {

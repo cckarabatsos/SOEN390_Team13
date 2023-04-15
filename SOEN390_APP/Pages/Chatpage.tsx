@@ -49,9 +49,8 @@ const ChatPage = ({ route, navigation}:any) => {
 
   const handleGetMessages = async () => {
     const message = await GetAllMessages(userID, userIDContact);
-    console.log("AAAAAAAAAAAAAAAAAAAA")
     if(message.length!=0){
-    const newObjectsArray = await Promise.all(message.listOfMessages.map(buildObject));
+    const newObjectsArray = await Promise.all(message.usersChat.map(buildObject));
     setMessages(newObjectsArray);
     }
     else{
