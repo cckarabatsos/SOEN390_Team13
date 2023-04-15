@@ -46,7 +46,7 @@ export const storeExperience = async (experience: Experience) => {
         experience.logo =
             experience.type === "Education"
                 ? bucket.file("Logos/education_logo.png").publicUrl()
-                : bucket.file("Logos/work_logo.png").publicUrl();
+                : bucket.file("Logos/experience_logo.jpg").publicUrl();
         var document = await db.collection("experiences").add({
             atPresent: experience.atPresent,
             startDate: experience.startDate,
@@ -82,8 +82,8 @@ export const deleteExperienceWithId = async (experienceID: string) => {
                 .then(() => {
                     console.log(
                         "Experience with ID " +
-                            experienceID +
-                            " successfully deleted."
+                        experienceID +
+                        " successfully deleted."
                     );
                 });
         } else {
