@@ -49,12 +49,6 @@ const AppWrapper = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  window.addEventListener("beforeunload", (ev) => 
-{  
-    ev.preventDefault();
-    localStorage.setItem("isAuth", null);
-    return ev.returnValue = 'Are you sure you want to close?';
-});
 
   return (
     <div className="App">
