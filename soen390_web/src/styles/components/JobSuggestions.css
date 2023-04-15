@@ -1,17 +1,17 @@
 .job-suggestions-container {
   position: absolute;
-  top: 15%;
-  right: 4%;
+  top: 750px;
+ 
   background-color: rgba(217, 217, 217, 0.7);
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  width: 13%;
+  width: 50%;
   text-align: left;
   max-height: 70%;
   overflow-y: auto;
   border-radius: 15px;
- 
+  height: 50%;
   
   
 }
