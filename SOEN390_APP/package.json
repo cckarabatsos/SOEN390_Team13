@@ -42,7 +42,8 @@
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-tab-view": "^3.4.0",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "~0.18.9",
+    "webpurify": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

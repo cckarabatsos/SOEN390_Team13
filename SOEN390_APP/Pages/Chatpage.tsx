@@ -16,6 +16,7 @@ import { GetAllMessages } from "../api/MessagesAPI";
 import { SendMessage } from "../api/MessagesAPI";
 import { GetUserInfo } from "../api/GetUsersAPI";
 import { Animated } from 'react-native';
+import { filterMessage } from "../api/MessagesAPI";
 //import { db } from "../firebaseConfig";
 
 
@@ -128,12 +129,13 @@ const handleGetUserInfo = async(userID:string) =>{
 
 
 
-const handleSendMessage = async (message:string) => {
-  await SendMessage(userID,userIDContact, message)
-  handleGetMessages();
-  setInput('')
-};
- 
+  const handleSendMessage = async (message:string) => {
+    //const filteredMessage = await filterMessage(message);
+    //await SendMessage(userID, userIDContact, filteredMessage);
+    handleGetMessages();
+    setInput('')
+  };
+  
   const fileAttach = () => {
     const [text, setText] = useState('');
 

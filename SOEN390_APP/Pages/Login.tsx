@@ -119,7 +119,7 @@ export default function Login({ navigation }: { navigation: any }) {
             value={email}
             onChangeText={(text) => setEmail(text)}
             style={styles.input}
-            placeholder="useless placeholder"
+            placeholder="Enter Email"
             keyboardType="default"
           />
           <Text style={styles.label}>Password: </Text>
@@ -128,7 +128,7 @@ export default function Login({ navigation }: { navigation: any }) {
             onChangeText={(text) => setPassword(text)}
             style={styles.input}
             secureTextEntry
-            placeholder="useless placeholder"
+            placeholder="Enter Password"
             keyboardType="default"
           />
           </KeyboardAvoidingView>

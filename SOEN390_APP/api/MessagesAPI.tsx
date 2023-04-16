@@ -1,6 +1,10 @@
 import axios from "axios";
 import api from "../config.json";
 
+export async function filterMessage(message: string){
+
+};
+
 
 export async function CreateConversation(emailUser:string, emailContact:string) {
     try {
