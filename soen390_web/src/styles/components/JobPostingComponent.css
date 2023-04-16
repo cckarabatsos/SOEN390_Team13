@@ -93,3 +93,9 @@
   top: 1.5rem;
   position: absolute;
   }
+
+  .noJobsFound {
+    padding-top: 10%;
+    font-weight: bold;
+    font-size: 20px;
+  }

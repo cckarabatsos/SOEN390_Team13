@@ -113,6 +113,7 @@ export const retrieveNotifications = async (userID: string) => {
             );
         });
         await promise;
+        notifications.reverse();
         // console.log(notifications);
         return notifications;
     } catch (error) {
@@ -137,8 +138,8 @@ export const deleteNotificationWithId = async (notificationID: string) => {
                 .then(async () => {
                     console.log(
                         "Notification with ID " +
-                            notificationID +
-                            " successfully deleted."
+                        notificationID +
+                        " successfully deleted."
                     );
                     let casted_notification = notification_schema.cast(data);
                     let user = await findUserWithID(

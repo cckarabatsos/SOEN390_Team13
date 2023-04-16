@@ -1,12 +1,12 @@
 import React from "react";
-import JobApplicationComponent from "../components/JobApplicationComponent";
+import JobApplicationFill from "../components/JobApplicationFill";
 import "../styles/components/JobApplication.css";
 
 const JobApplication = (props) => {
   return (
     <div className="jobapplication">
       <div className="titlename">Application Form</div>
-      <JobApplicationComponent userData={props.userData} />
+      <JobApplicationFill userData={props.userData} />
     </div>
   );
 };

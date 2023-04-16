@@ -48,6 +48,11 @@ function NavLinks(props) {
               {t("ContactsText")}
             </Link>
           </Grid>
+          <Grid item>
+            <Link data-testid="job-1" to="/Messages/123" className="link">
+              Messaging
+            </Link>
+          </Grid>
         </>
       )}
       {userData && userData.isAdmin && (

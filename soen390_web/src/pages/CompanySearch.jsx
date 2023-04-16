@@ -65,6 +65,10 @@ export default function CompanySearch() {
         </div>
         <CompanySearchBar setCompanies={setCompanies} />
 
+        {companyDisplay.length == 0 &&
+          <div className="noCompaniesFound">No companies found</div>
+        }
+        
       {companyDisplay.map((company) => (
         <CompanySearchComponent
           key={company.id}

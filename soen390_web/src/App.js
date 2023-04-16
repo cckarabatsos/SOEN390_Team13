@@ -49,30 +49,21 @@ const AppWrapper = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
+
   return (
     <div className="App">
       <Router>
         <Navbar userData={userData}></Navbar>
         <Routes>
-          <Route
-            path="/"
-            element={userData ? <Navigate to="/UserLogin" /> : <Login />}
-          />
-          <Route
-            path="/Signup"
-            element={userData ? <Navigate to="/UserLogin" /> : <Signup />}
-          />
+          <Route path="/" element={<Login />} />
+          <Route path="/Signup" element={<Signup />} />
           <Route path="/Search" element={<SearchPage />} />
           <Route path="/UserLogin" element={<Login />} />
           <Route path="/CompanyProfile" element={<CompanyProfilePage />} />
+          <Route path="/UserProfile" element={<UserProfile />} />
+          <Route path="/UserProfile/:userId" element={<ViewUserProfile />} />
           {userData && (
             <>
-              <Route path="/UserProfile" element={<UserProfile />} />
-              <Route
-                path="/UserProfile/:userId"
-                element={<ViewUserProfile />}
-              />
-
               <Route path="/Contacts" element={<Contacts />} />
               <Route
                 path="/JobApplication/:postId"
@@ -94,7 +85,6 @@ const AppWrapper = () => {
           )}
         </Routes>
         <div className="footer-collection">
-          <SubFooter />
           <Footer />
         </div>
       </Router>

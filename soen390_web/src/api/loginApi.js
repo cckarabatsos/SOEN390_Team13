@@ -53,3 +53,29 @@ export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
         console.error("yo", err);
     }
 }
+
+export async function CreateCompany(nameIn, emailIn, passwordIn) {
+    try {
+        const response = await axios
+            .post(api.BACKEND_API + "/user/api/register", {
+                name: nameIn,
+                password: passwordIn,
+                email: emailIn,
+                privateKey: "",
+                publicKey: "",
+                picture: "",
+                resume: "",
+                coverLetter: "",
+                bio: "Initial description text",
+                currentPosition: "Recruiter",
+                currentCompany: nameIn,
+                isCompany: true
+            })
+            .then((res) => {
+                return res.data;
+            });
+        return response;
+    } catch (err) {
+        console.error("yo", err);
+    }
+}

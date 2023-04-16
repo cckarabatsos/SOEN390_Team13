@@ -59,7 +59,7 @@
         padding-bottom: 1rem;
     }
 
-    @media only screen and (max-width: 768px){
+    @media only screen and (max-width: 1000px){
 
         .ApplicationContainer {
             background: white;
@@ -74,9 +74,22 @@
             position: relative;
             min-height: 20vh;
             
-            width: 95vw;
+            width: 90vw;
             
             }
+
+            .application {
+                margin-bottom: 0.3rem;
+                text-align: left;
+                font-size: 2rem;
+                font-weight: bold;
+                color: #3E3E3E;
+                font-family: "Inter-regular";
+                padding: 1rem;
+                width: 75%;
+                display: inline-block
+            }
+        
     }
 
 

@@ -76,7 +76,8 @@ messages.get("/getAllMessages", async (req, res) => {
         const usersChat = await GetUpdatedMessages(senderEmail, userIds, 0);
         return res.status(200).json({
             message: "Messages retrieved successfully",
-            usersChat,
+            usersChat:usersChat.listOfMessages,
+            conversationID: usersChat.conversationID
         });
     } catch (error) {
         console.log(error);

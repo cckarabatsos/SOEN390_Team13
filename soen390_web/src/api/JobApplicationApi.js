@@ -54,7 +54,7 @@ export async function createApplication(
   }
 }
 
-export async function getLastApplication(userID) {
+export async function getLastestApplication(userID) {
   try {
     const response = await axios.get(
       api.BACKEND_API + "/application/getLastApplication/" + userID
