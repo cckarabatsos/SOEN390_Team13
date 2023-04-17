@@ -9,6 +9,9 @@ import { findJobpostingWithID } from "./jobPostingServices";
 import { storeNotification } from "./notificationServices";
 import { findUserWithID, updateUser } from "./userServices";
 import { db } from "../firebaseconfig";
+import firebase from "firebase-admin";
+
+const bucket = firebase.storage().bucket();
 
 /**
  * Finds application with specified ID in the database
@@ -63,9 +66,13 @@ export const storeApplication = async (application: Application) => {
         }
         if (application.attachCoverLetter) {
             application.coverLetter = casted_user.coverLetter;
+        } else {
+            application.coverLetter = "";
         }
         if (application.attachResume) {
             application.resume = casted_user.resume;
+        } else {
+            application.resume = "";
         }
         var document = await db.collection("applications").add({
             ...application,
@@ -375,3 +382,112 @@ export async function updateApplication(
         throw error;
     }
 }
+
+/**
+ * Stores an aapplication file
+ *
+ * @param applicationID
+ * @param file
+ * @returns download URL of uploaded file or null
+ */
+export const storeApplicationFile = async (
+    applicationID: string,
+    type: string,
+    file: any
+) => {
+    try {
+        let application = await findApplicationWithID(applicationID);
+        if (!file || application === undefined) {
+            console.log("first check");
+            return null;
+        }
+
+        if (application) {
+            const buffer = Buffer.from(file.buffer);
+            const metadata = {
+                contentType: file.mimetype,
+            };
+            let folder: string;
+            if (Array.isArray(type)) {
+                type = type[0];
+            }
+            console.log(type);
+            if (type.toUpperCase() == "RESUME") {
+                folder = "ApplicationDocuments/Resumes/";
+            } else if (type.toUpperCase() == "COVERLETTER") {
+                folder = "ApplicationDocuments/Cover Letters/";
+            } else {
+                console.log("second check");
+                return null;
+            }
+            console.log();
+            const fileName = folder + applicationID + " - " + file.originalname;
+            const fileRef = bucket.file(fileName);
+            await fileRef.save(buffer, {
+                metadata,
+                public: true,
+            });
+            const downloadURL = await fileRef.publicUrl();
+            if (downloadURL) {
+                if (type.toUpperCase() == "RESUME") {
+                    application.resume = downloadURL;
+                } else {
+                    application.coverLetter = downloadURL;
+                }
+                db.collection("applications").doc(applicationID).update(application);
+                return downloadURL;
+            }
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
+};
+
+/**
+ * Removes specified application file
+ *
+ * @param applicationID
+ * @param type
+ * @returns "Success" or null
+ */
+export const deleteApplicationFile = async (applicationID: string, type: string) => {
+    try {
+        var application: any = await findApplicationWithID(applicationID);
+        if (application === undefined) {
+            return null;
+        }
+        if (application) {
+            let url: string;
+            if (Array.isArray(type)) {
+                type = type[0];
+            }
+            if (type.toUpperCase() == "RESUME") {
+                url = application.resume;
+                application.resume = "";
+            } else if (type.toUpperCase() == "COVERLETTER") {
+                url = application.coverLetter;
+                application.coverLetter = "";
+            } else {
+                return null;
+            }
+            const parsedUrl = new URL(url);
+            const filePath = decodeURIComponent(parsedUrl.pathname).replace(
+                /^\//,
+                ""
+            ); // Remove leading slash
+            const fileRef = bucket.file(filePath);
+            await fileRef.delete().then(function () {
+                db.collection("applications").doc(applicationID).update(application);
+                console.log("File successfully deleted.");
+            });
+            return "Success";
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    return null;
+};
