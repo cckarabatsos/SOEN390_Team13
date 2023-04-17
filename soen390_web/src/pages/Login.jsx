@@ -11,10 +11,6 @@ function Login(props) {
   const [emailInput, setEmailInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [incorrectLogin, setIncorrectLogin] = React.useState(false);
-  console.log("hello in login page")
-
-
-  
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -50,7 +46,7 @@ function Login(props) {
     <div data-testid="login-1">
       <div className="background-color">
         <div
-          className="background"
+          className = "background"
           style={{ backgroundImage: `url(${background})` }}
         >
           <h3 className="signuptitle">{t("remarkCareertext")}</h3>

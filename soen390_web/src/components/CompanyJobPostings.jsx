@@ -213,7 +213,7 @@ export default function CompanyJobPostings(props) {
                       </>
                     }
                   >
-                    <ListItemText primary={position.position} />
+                    <ListItemText  disableTypography primary={<Typography variant="h5" >{position.position}</Typography>} />
                   </ListItem>
                   <Divider variant="middle" />
                 </div>

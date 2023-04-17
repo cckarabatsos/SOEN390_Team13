@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import UserSearchBar from "../components/UserSearchBar";
 import UserSearchComponent from "../components/UserSearchComponent";
+import "../styles/pages/SearchPage.css";
 
 export default function UserSearch() {
   // define state variables with useState hook
@@ -27,7 +28,9 @@ export default function UserSearch() {
           <p>{t("DesiredUsers")}</p>
         </div>
         <UserSearchBar setUsers={setUsers} />
-
+        {usersDisplay.length == 0 &&
+          <div className="noUsersFound">No users found</div>
+        }
         {usersDisplay.map((user) => (
           <UserSearchComponent
             key={user.userID}

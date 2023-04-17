@@ -125,7 +125,7 @@ export default function UserSearchComponent(props) {
           <div className="companyName">{props.name}</div>
           {props.contact && (
             <div className="companyFollowers">
-              {props.contact.length} Followers
+              {props.contact.length} Connections
             </div>
           )}
           <div className="companySubName">{props.position}</div>

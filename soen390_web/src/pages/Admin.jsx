@@ -27,7 +27,7 @@ function Admin(props) {
   const [reports, setReports] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {

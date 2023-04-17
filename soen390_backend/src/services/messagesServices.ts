@@ -263,9 +263,6 @@ export async function getUpdatedMessages(
         console.log(conversation[0].id);
         let messagesRef = conversation[0].data["messages"];
 
-        if (messagesRef.length == messagesLength) {
-            return [];
-        }
         var listOfMessages: messagesListElement[] = [];
 
         for (var i = messagesLength; i < messagesRef.length; i++) {
@@ -293,6 +290,7 @@ export async function getUpdatedMessages(
             listOfMessages.push(messageWrapper);
         }
         const conversationID = conversation[0].id;
+        
         return { listOfMessages, conversationID };
     } catch (error) {
         console.error(`Error occurred in sendMessage: ${error}`);

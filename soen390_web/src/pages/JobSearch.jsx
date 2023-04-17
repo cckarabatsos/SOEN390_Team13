@@ -90,7 +90,9 @@ export default function JobSearch() {
             {console.log(jobDisplay[jobPosterID])}
           </>
         )}
-
+         {jobDisplay.length == 0 &&
+          <div className="noJobsFound">No Jobs found</div>
+        }
         {jobDisplay.map((job) => (
           <JobPostingComponent
             key={job.jobPosterID}
