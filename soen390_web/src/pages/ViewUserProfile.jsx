@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Typography } from "@material-ui/core";
+import { Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -66,7 +66,6 @@ function ViewUserProfile(props) {
         const education = await getExperience(userID, "Education");
         const skillList = await getSkills(userID);
 
-        console.log(data.data);
         setUserData(data.data);
         setUserSkills(skillList);
         setUserEducation(education);
