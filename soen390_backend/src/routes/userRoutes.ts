@@ -32,7 +32,6 @@ import dotenv from "dotenv";
 import { User } from "../models/User";
 import { compare } from "bcryptjs";
 import multer from "multer";
-import { db } from "../firebaseconfig";
 
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
