@@ -40,7 +40,8 @@ export async function createJobPosting(
     duration: any,
     type: any,
     postingDeadline: any,
-    jobPosterID: string
+    jobPosterID: string,
+    provenance: string
 ) {
     try {
         if (!postingDeadline) {
@@ -63,6 +64,7 @@ export async function createJobPosting(
             duration,
             type,
             jobPosterID,
+            provenance,
         });
         console.log(newJobPosting);
         let postingID = await storeJobPosting(newJobPosting, postingDeadline);
