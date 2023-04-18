@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import UserSearchBar from "../components/UserSearchBar";
 import UserSearchComponent from "../components/UserSearchComponent";
 import "../styles/pages/SearchPage.css";
+import "../styles/components/UserSearch.css";
 
 export default function UserSearch() {
   // define state variables with useState hook
@@ -21,10 +22,10 @@ export default function UserSearch() {
   return (
     <div>
       <div data-testid="job-posting">
-        <div className="jobSearchingText">
+        <div className="userSearchingText">
           <p>{t("FindUsersLabel")}</p>
         </div>
-        <div className="desiredJobText">
+        <div className="desiredUserText">
           <p>{t("DesiredUsers")}</p>
         </div>
         <UserSearchBar setUsers={setUsers} />

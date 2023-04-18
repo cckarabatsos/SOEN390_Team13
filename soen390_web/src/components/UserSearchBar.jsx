@@ -38,7 +38,7 @@ function UserSearchBar({ setUsers }) {
   }
   // render job search bar, search button, dropdown filter to select category
   return (
-    <div className="input-box">
+    <div className="input-box" style={{borderColor:"#5319FB"}}>
       <i className="uil uil-search"></i>
       <div>
         <input
@@ -56,7 +56,7 @@ function UserSearchBar({ setUsers }) {
             borderRadius: 27,
             display: "inline-block",
             width: "125px",
-            border: "2px solid #8f8aff",
+            border: "2px solid #5319FB",
             backgroundColor: "white",
             textTransform: "none",
             fontSize: "15px",
@@ -76,7 +76,7 @@ function UserSearchBar({ setUsers }) {
             width: "125px",
             height: "43px",
             marginRight: "140px",
-            border: "2px solid #8f8aff",
+            border: "2px solid #5319FB",
             fontSize: "15px",
           }}
           value={category}

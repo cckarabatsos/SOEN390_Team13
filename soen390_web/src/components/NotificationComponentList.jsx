@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import "../styles/components/NotificationComponent.css";
 
@@ -12,10 +13,13 @@ import { GetNotification, removeNotification } from "../api/NotificationsApi";
 export default function NotificationComponentList(props) {
   const [notifications, setNotifications] = useState([]);
   const [userData, setUseData] = React.useState({});
+  const [loadingState, setLoadingState] = useState(true);
 
   const getNotificationsList = async (userId) => {
     let generatedNotification = await GetNotification(userId);
     setNotifications(generatedNotification);
+    console.log("hello")
+    setLoadingState(false)
   };
   const handleRemoveNotification = async (notificationId) => {
     var response = await removeNotification(notificationId);
@@ -44,6 +48,7 @@ export default function NotificationComponentList(props) {
       </div>
 
       <div className="innerMiddleContainer">
+      {loadingState && <CircularProgress color="info" />}
         {notifications.length > 0 && (
           <List sx={{ width: "100%", bgcolor: "background.paper" }}>
             {notifications.map((aNotification) => (
@@ -61,7 +66,7 @@ export default function NotificationComponentList(props) {
             ))}
           </List>
         )}
-        {notifications.length == 0 && <h2>No New Notification!</h2>}
+        {notifications.length == 0 && !loadingState&&<h2>No New Notification!</h2>}
       </div>
     </div>
   );

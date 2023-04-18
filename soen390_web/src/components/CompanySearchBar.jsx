@@ -37,7 +37,7 @@ export function CompanySearchBar({ setCompanies }) {
 
   // render job search bar, search button, dropdown filter to select category
   return (
-    <div className="input-box">
+    <div className="input-box-company">
       <i className="uil uil-search"></i>
       <div>
         <input
@@ -55,7 +55,7 @@ export function CompanySearchBar({ setCompanies }) {
             borderRadius: 27,
             display: "inline-block",
             width: "125px",
-            border: "2px solid #8f8aff",
+            border: "2px solid #006AF9",
             backgroundColor: "white",
             textTransform: "none",
             fontSize: "15px",
@@ -75,7 +75,7 @@ export function CompanySearchBar({ setCompanies }) {
             width: "125px",
             height: "43px",
             marginRight: "140px",
-            border: "2px solid #8f8aff",
+            border: "2px solid #006AF9",
             fontSize: "15px",
           }}
           value={category}
