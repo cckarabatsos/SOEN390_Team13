@@ -13,6 +13,7 @@ import "../styles/components/UserProfile.css";
 import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
 import { useLocation } from "react-router-dom";
+import { findUserById } from "../api/UserProfileApi";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -25,6 +26,10 @@ import {
 } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
+
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
 
 function UserProfile(props) {
   // const { state } = useLocation();
@@ -39,10 +44,10 @@ function UserProfile(props) {
   const [educationExperience, setEducationExperience] = React.useState([]);
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
   const [updateState, setUpdateState] = React.useState(false);
+  const[updateImage, setUpdateImage]=React.useState(false)
+
   const inputFile = useRef(null);
-  const handlePicture = () => {
-    return require
-  }
+  
 
   const [skills, setSkills] = React.useState([]);
 
@@ -61,21 +66,38 @@ function UserProfile(props) {
 
   const [image, setImage] = React.useState(null);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
+
+    setUpdateImage(true)
+
+    console.log("in handle picture change")
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
+      const reader = await new FileReader();
+     
+       reader.onload = (event) => {
+
         setImage(event.target.result);
+        
       };
-      reader.readAsDataURL(e.target.files[0]);
+      
+      
+      console.log(e.target.files[0])
+      console.log(image)
+      
+      await reader.readAsDataURL(e.target.files[0]);
+      // console.log('in handleImageChange');
+      // await handleDescOnClick(picUrl);
     }
-    console.log('in handleImageChange');
-    handleDescOnClick();
+   
+   
   };
 
-  const handleDescOnClick = async () => {
+  const handleDescOnClick = async (url) => {
     console.log('in handleDescOnClick');
-    let res = await updateUserProfilePicture(userData,image,userData.name);
+    console.log(url)
+    let res = await updateUserProfilePicture(userData,url,userData.name);
+
+    console.log(res)
 
     if (res) {
       setUpdateState(!updateState);
@@ -83,6 +105,15 @@ function UserProfile(props) {
       console.log("error in description");
     }
   };
+
+
+  useEffect(()=>{
+
+    console.log("hello")
+    handleDescOnClick(image)
+   
+   
+  },[image])
 
   const getUserExperience = async () => {
     const workData = await getExperience(userData.userID, "Work");
@@ -147,6 +178,12 @@ function UserProfile(props) {
     inputFile.current.click();
   };
 
+  const getProfile = async (userID) => {
+
+    let user= await findUserById(userID)
+    setImage(user.data.picture)
+  }
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
@@ -157,7 +194,15 @@ function UserProfile(props) {
     getUserExperience();
     setFileData();
     getSkillList(userData.userID);
-  }, [userData.userID, updateState]);
+
+    if(!updateImage){
+      getProfile(userData.userID)
+
+
+    }
+    
+    
+  }, [userData.userID,updateState]);
 
   useEffect(() => {
     if (isExperienceUpdated == true) getUserExperience();
@@ -210,7 +255,7 @@ function UserProfile(props) {
                 ref={inputFile}
                 onChange={handleImageChange}
               />
-            <Image src={userData.picture} alt="Avatar" className="profile-pic"></Image>
+            <img src={image} alt="Avatar" className="profile-pic"></img>
             </div>
 
             <Grid container spacing={2}>
