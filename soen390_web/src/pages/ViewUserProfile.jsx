@@ -14,13 +14,16 @@ import AddSkillDialog from "../components/AddSkillDialog";
 import "../styles/components/UserProfile.css";
 
 import { useTranslation } from "react-i18next";
-import { findUserById } from "../api/UserProfileApi";
+import { findUserById, getExperience, getSkills } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 
 function ViewUserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUserData] = React.useState({});
+  const [userExperiences, setUserExperiences] = React.useState({});
+  const [userEducation, setUserEducation] = React.useState({});
+  const [userSkills, setUserSkills] = React.useState({});
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
@@ -72,12 +75,24 @@ function ViewUserProfile(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await findUserById(
-        window.location.pathname.split("/").pop()
-      );
+      const userID = window.location.pathname.split("/").pop();
+      const data = await findUserById(userID);
       if (data != null) {
-        console.log(data.data);
+        const experiences = await getExperience(userID, "Work");
+        const education = await getExperience(userID, "Education");
+        const skillList = await getSkills(userID);
+        var skillArray = [];
+
+        for (var i = 0; i < skillList.length; i++) {
+          skillArray.push([skillList[i]["name"], skillList[i]["skillID"]]);
+        }
+        console.log(skillList);
+        console.log(education);
+        console.log(experiences);
         setUserData(data.data);
+        setUserSkills(skillArray);
+        setUserEducation(education);
+        setUserExperiences(experiences);
       } else {
         navigate("/");
       }
