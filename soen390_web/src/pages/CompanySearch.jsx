@@ -57,10 +57,10 @@ export default function CompanySearch() {
   return (
     <div>
       <div data-testid="job-posting">
-        <div className="jobSearchingText">
+        <div className="companySearchingText">
           <p>{t("FindCompanyLabel")}</p>
         </div>
-        <div className="desiredJobText">
+        <div className="desiredCompanyText">
           <p>{t("DesiredCompany")}</p>
         </div>
         <CompanySearchBar setCompanies={setCompanies} />

@@ -8,11 +8,13 @@ import {
 } from "../api/userConectionApi";
 import UserConnectionComponent from "../components/UserConectionComponent";
 import "../styles/components/userconnection.css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const UserConnection = () => {
   const [userData, setUseData] = React.useState({});
 
   const [users, setUsers] = useState([]);
+  const [loadingState, setLoadingState] = useState(true);
 
   const [currentEmail, setCurrentEmail] = useState("");
   const { t } = useTranslation();
@@ -20,6 +22,7 @@ const UserConnection = () => {
     var responce = await GetPendingInvitations(email);
     console.log(responce);
     setUsers(responce);
+    setLoadingState(false)
   };
 
   useEffect(() => {
@@ -60,9 +63,12 @@ const UserConnection = () => {
             fontWeight: "normal"
         }}>{t("RequestCenterText")}</h1>
         <div className="request-section">
-          <Grid container spacing={2}>
+          <Grid container spacing={2} 
+  alignItems="center"
+  justifyContent="center">
+          {loadingState && <CircularProgress color="info" />}
             {users.map((aUser) => (
-              <Grid item xs={6}>
+              <Grid item sm={6} xs={12}>
                 <UserConnectionComponent
                   image={aUser.image}
                   name={aUser.name}
@@ -74,7 +80,9 @@ const UserConnection = () => {
                   decline={handleDecline}
                 ></UserConnectionComponent>
               </Grid>
+
             ))}
+            {users.length == 0 && !loadingState&&<h2>No connections request</h2>}
           </Grid>
         </div>
       </>

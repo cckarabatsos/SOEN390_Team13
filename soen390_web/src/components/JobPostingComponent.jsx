@@ -26,7 +26,7 @@ function JobPostingComponent(props) {
             }}
             style={{
               borderRadius: 27,
-              border: "2px solid #8f8aff",
+              border: "2px solid #9C27B0",
               fontSize: "15px",
             }}
           >

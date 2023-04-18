@@ -36,9 +36,9 @@ export default function NotificationComponent(props) {
               variant="body2"
               color="text.primary"
             >
-              {notificationCategory} from {userName}:
+              {notificationDescription}
             </Typography>
-            {" " + notificationDescription}
+           
           </React.Fragment>
         }
       />

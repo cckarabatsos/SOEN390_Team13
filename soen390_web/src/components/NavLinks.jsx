@@ -38,16 +38,21 @@ function NavLinks(props) {
               {t("NetworkingText")}
             </Link>
           </Grid> */}
-          <Grid item>
-            <Link data-testid="job-1" to="/UserConnection" className="link">
-              {t("UserConnectionText")}
-            </Link>
-          </Grid>
-          <Grid item>
-            <Link data-testid="job-1" to="/Contacts" className="link">
-              {t("ContactsText")}
-            </Link>
-          </Grid>
+          {!userData.isCompany && (
+            <>
+              <Grid item>
+                <Link data-testid="job-1" to="/UserConnection" className="link">
+                  {t("UserConnectionText")}
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link data-testid="job-1" to="/Contacts" className="link">
+                  {t("ContactsText")}
+                </Link>
+              </Grid>
+            </>
+          )}
+
           <Grid item>
             <Link data-testid="job-1" to="/Messages/123" className="link">
               Messaging
@@ -101,9 +106,6 @@ function NavLinks(props) {
             FR
           </Button>
         )}
-
-       
-       
       </Grid>
     </Grid>
   );

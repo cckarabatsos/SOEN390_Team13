@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { sendInvite } from "../api/userNetworkingApi";
-import "../styles/components/CompanySearchComponent.css";
+import "../styles/components/UserSearchComponent.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +68,7 @@ export default function UserSearchComponent(props) {
   };
 
   return (
-    <div key={props.id} className="companyContainer">
+    <div key={props.id} className="UserContainer">
       <div className="innerContainerCompany">
         <div className="logoContainer">
           <img src={props.image} alt="logo" class="logoCompany"></img>

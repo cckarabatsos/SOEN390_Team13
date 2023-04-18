@@ -35,7 +35,7 @@ function JobSearchBar({ setJobs }) {
 
   // render job search bar, search button, dropdown filter to select category
   return (
-    <div className="input-box">
+    <div className="input-box" style={{borderColor:"#9C27B0"}}>
       <i className="uil uil-search"></i>
       <div>
         <input
@@ -52,7 +52,7 @@ function JobSearchBar({ setJobs }) {
           style={{
             borderRadius: 27,
             display: "inline-block", width: "125px", 
-            border: "2px solid #8f8aff",
+            border: "2px solid #9C27B0",
             backgroundColor: "white",
             textTransform: "none",
             fontSize: "15px",
@@ -72,7 +72,7 @@ function JobSearchBar({ setJobs }) {
             width: "125px", 
             height: "43px",
             marginRight: "140px",
-            border: "2px solid #8f8aff",
+            border: "2px solid #9C27B0",
             fontSize: "15px",
           }}
           value={category}

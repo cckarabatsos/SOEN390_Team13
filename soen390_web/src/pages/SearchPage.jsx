@@ -44,13 +44,13 @@ export default function SearchPage() {
     setValue(newValue);
     switch (newValue) {
       case 0:
-        setColor("#8f8aff");
+        setColor("#006AF9");
         break;
       case 1:
-        setColor("#8f8aff");
+        setColor("#5319FB");
         break;
       case 2:
-        setColor("#8f8aff");
+        setColor("#9C27B0");
         break;
     }
   };
