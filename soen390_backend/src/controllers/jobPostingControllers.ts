@@ -43,8 +43,6 @@ export async function createJobPosting(
     jobPosterID: string
 ) {
     try {
-        console.log(postingDeadline);
-        console.log("HELlo");
         if (!postingDeadline) {
             const date = new Date();
             date.setMonth(date.getMonth() + 2);

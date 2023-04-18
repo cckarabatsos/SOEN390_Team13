@@ -375,7 +375,9 @@ export async function sendUserInvitation(
 ) {
     try {
         var senderUser: any;
-
+        if (receiverEmail === senderEmail) {
+            throw error("You cannot add yourself");
+        }
         senderUser = await new Promise((resolve, _) => {
             findUserWithEmail(senderEmail, (user) => {
                 // console.log(user);
@@ -473,9 +475,13 @@ export async function sendUserInvitation(
  * @param receiverID
  */
 export async function followCompanyInv(senderID: string, receiverID: string) {
-    const senderUser = await findUserWithID(senderID);
-    const receiverUser = await findUserWithID(receiverID);
     try {
+        if (senderID === receiverID) {
+            throw new Error("You cannot follow yourself");
+        }
+        const senderUser = await findUserWithID(senderID);
+        const receiverUser = await findUserWithID(receiverID);
+
         if (senderUser && receiverUser) {
             if (senderUser.isCompany) {
                 throw new Error("Sender is a company");
