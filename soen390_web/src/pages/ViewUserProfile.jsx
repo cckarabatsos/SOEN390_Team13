@@ -1,29 +1,20 @@
 import { Button, Grid, IconButton, Typography } from "@material-ui/core";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import React, { useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Concordia from "../assets/UserProfileImages/Concordia.png";
-import AmazonLogo from "../assets/UserProfileImages/amazon-logo-square.jpg";
-import profilepicture from "../assets/default_picture.jpg";
-import background from "../assets/profile_background.svg";
-import AddDocumentsDialog from "../components/AddDocumentsDialog";
-import AddEducationDialog from "../components/AddEducationDialog";
-import AddExperienceDialog from "../components/AddExperienceDialog";
-import AddSkillDialog from "../components/AddSkillDialog";
-import "../styles/components/UserProfile.css";
-
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { findUserById, getExperience, getSkills } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
+import background from "../assets/profile_background.svg";
 import ProfileFileItem from "../components/ProfileFileItem";
+import "../styles/components/UserProfile.css";
 
 function ViewUserProfile(props) {
   const [enable, setEnable] = React.useState(false);
   const [userData, setUserData] = React.useState({});
-  const [userExperiences, setUserExperiences] = React.useState({});
-  const [userEducation, setUserEducation] = React.useState({});
-  const [userSkills, setUserSkills] = React.useState({});
+  const [userExperiences, setUserExperiences] = React.useState([]);
+  const [userEducation, setUserEducation] = React.useState([]);
+  const [userSkills, setUserSkills] = React.useState([]);
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
@@ -33,13 +24,6 @@ function ViewUserProfile(props) {
 
   const navigate = useNavigate();
 
-  const handleClickEnableEdit = () => {
-    setEnable(true);
-  };
-
-  const handleDisableEdit = () => {
-    setEnable(false);
-  };
   const setFileData = useCallback(async () => {
     let UserCoverLetter = "";
     const getCoverLetter = async () => {
@@ -81,16 +65,10 @@ function ViewUserProfile(props) {
         const experiences = await getExperience(userID, "Work");
         const education = await getExperience(userID, "Education");
         const skillList = await getSkills(userID);
-        var skillArray = [];
 
-        for (var i = 0; i < skillList.length; i++) {
-          skillArray.push([skillList[i]["name"], skillList[i]["skillID"]]);
-        }
-        console.log(skillList);
-        console.log(education);
-        console.log(experiences);
+        console.log(data.data);
         setUserData(data.data);
-        setUserSkills(skillArray);
+        setUserSkills(skillList);
         setUserEducation(education);
         setUserExperiences(experiences);
       } else {
@@ -116,23 +94,17 @@ function ViewUserProfile(props) {
             <img
               className="profile-pic"
               alt="profile-pic"
-              src={profilepicture}
+              src={userData.picture}
             ></img>
             <Grid container spacing={2}>
               <Grid className="name" item xs={12}>
                 {userData.name}
               </Grid>
               <Grid className="bio" item xs={12}>
-                Software Engineering Student at Concordia University
+                {userData.bio}
               </Grid>
               <Grid item xs={6}>
-                <div className="header">
-                  {t("EducationText")}
-                  <AddEducationDialog />
-                  <IconButton onClick={handleClickEnableEdit}>
-                    <EditIcon className="profile-icon" />
-                  </IconButton>
-                </div>
+                <div className="header">{t("EducationText")}</div>
                 <hr className="line"></hr>
                 <Grid
                   container
@@ -142,49 +114,65 @@ function ViewUserProfile(props) {
                   alignItems="center"
                   style={{ margin: "1em" }}
                 >
-                  <Grid item xs={2}>
-                    <Grid style={{ height: "100%" }}>
-                      <img
-                        className="education-picture"
-                        src={Concordia}
-                        alt="Amazon"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      style={{
-                        textAlign: "left",
-                        fontWeight: "Bold",
-                        fontSize: "large",
-                      }}
-                    >
-                      Concordia University
-                      {enable && (
-                        <IconButton>
-                          <DeleteIcon className="profile-icon" />
-                        </IconButton>
-                      )}
-                    </Typography>
-                    <Typography style={{ textAlign: "left" }}>
-                      Bachelor of Engineering - BE, Software Engineering
-                    </Typography>
-                    <Typography
-                      style={{ textAlign: "left", fontSize: "small" }}
-                    >
-                      2020 - 2024
-                    </Typography>
-                  </Grid>
+                  {userEducation
+                    .sort((a, b) => {
+                      if (a.atPresent) return -1;
+                      if (b.atPresent) return 1;
+                      return new Date(b.endDate) - new Date(a.endDate);
+                    })
+                    .map((education) => (
+                      <React.Fragment key={education.experienceID}>
+                        <Grid
+                          container
+                          spacing={2}
+                          direction="row"
+                          justifyContent="center"
+                          alignItems="center"
+                          style={{ margin: "1em" }}
+                        >
+                          <Grid item xs={2}>
+                            <Grid style={{ height: "100%" }}>
+                              <img
+                                className="education-picture"
+                                src={education.logo}
+                                alt={education.company}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid item xs={10}>
+                            <Typography
+                              style={{
+                                textAlign: "left",
+                                fontWeight: "Bold",
+                                fontSize: "large",
+                              }}
+                            >
+                              {education.company}
+                              {enable && (
+                                <IconButton>
+                                  <DeleteIcon className="profile-icon" />
+                                </IconButton>
+                              )}
+                            </Typography>
+                            <Typography style={{ textAlign: "left" }}>
+                              {education.position}
+                            </Typography>
+                            <Typography
+                              style={{ textAlign: "left", fontSize: "small" }}
+                            >
+                              {education.startDate} -{" "}
+                              {education.atPresent
+                                ? "Present"
+                                : education.endDate}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </React.Fragment>
+                    ))}
                 </Grid>
               </Grid>
               <Grid item xs={6}>
-                <div className="header">
-                  {t("ExperienceText")}
-                  <AddExperienceDialog />
-                  <IconButton onClick={handleClickEnableEdit}>
-                    <EditIcon className="profile-icon" />
-                  </IconButton>
-                </div>
+                <div className="header">{t("ExperienceText")}</div>
                 <hr className="line"></hr>
                 <Grid
                   container
@@ -192,45 +180,63 @@ function ViewUserProfile(props) {
                   direction="row"
                   justifyContent="center"
                   alignItems="center"
-                  className="grid-container"
                   style={{ margin: "1em" }}
                 >
-                  <Grid item xs={2}>
-                    <Grid style={{ height: "100%" }}>
-                      <img
-                        className="education-picture"
-                        src={AmazonLogo}
-                        alt="Concordia"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Typography
-                      style={{
-                        textAlign: "left",
-                        fontWeight: "Bold",
-                        fontSize: "large",
-                      }}
-                    >
-                      Software Development Engineer Intern
-                      {enable && (
-                        <IconButton>
-                          <DeleteIcon className="profile-icon" />
-                        </IconButton>
-                      )}
-                    </Typography>
-                    <Typography style={{ textAlign: "left" }}>
-                      Amazon
-                    </Typography>
-                    <Typography style={{ textAlign: "left" }}>
-                      Vancouver, BC, Canada
-                    </Typography>
-                    <Typography
-                      style={{ textAlign: "left", fontSize: "small" }}
-                    >
-                      May 2022 - August 2022
-                    </Typography>
-                  </Grid>
+                  {userExperiences
+                    .sort((a, b) => {
+                      if (a.atPresent) return -1;
+                      if (b.atPresent) return 1;
+                      return new Date(b.endDate) - new Date(a.endDate);
+                    })
+                    .map((experience) => (
+                      <React.Fragment key={experience.experienceID}>
+                        <Grid
+                          container
+                          spacing={2}
+                          direction="row"
+                          justifyContent="center"
+                          alignItems="center"
+                          style={{ margin: "1em" }}
+                        >
+                          <Grid item xs={2}>
+                            <Grid style={{ height: "100%" }}>
+                              <img
+                                className="education-picture"
+                                src={experience.logo}
+                                alt={experience.company}
+                              />
+                            </Grid>
+                          </Grid>
+                          <Grid item xs={10}>
+                            <Typography
+                              style={{
+                                textAlign: "left",
+                                fontWeight: "Bold",
+                                fontSize: "large",
+                              }}
+                            >
+                              {experience.company}
+                              {enable && (
+                                <IconButton>
+                                  <DeleteIcon className="profile-icon" />
+                                </IconButton>
+                              )}
+                            </Typography>
+                            <Typography style={{ textAlign: "left" }}>
+                              {experience.position}
+                            </Typography>
+                            <Typography
+                              style={{ textAlign: "left", fontSize: "small" }}
+                            >
+                              {experience.startDate} -{" "}
+                              {experience.atPresent
+                                ? "Present"
+                                : experience.endDate}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </React.Fragment>
+                    ))}
                 </Grid>
               </Grid>
               <Grid item xs={6}>
@@ -246,58 +252,20 @@ function ViewUserProfile(props) {
                   <Grid item xs={6}>
                     <div className="header">{t("SkillsText")}</div>
                   </Grid>
-                  <Grid item xs={6}>
-                    <AddSkillDialog />
-                    <IconButton onClick={handleClickEnableEdit}>
-                      <EditIcon className="profile-icon" />
-                    </IconButton>
-                  </Grid>
                 </Grid>
                 <hr className="line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  Java
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  Python
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  JavaScript
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
-                <Typography style={{ marginLeft: "5%" }} className="skill">
-                  Software Testing
-                  {enable && (
-                    <span className="profile-item">
-                      <IconButton>
-                        <DeleteIcon className="profile-icon" />
-                      </IconButton>
-                    </span>
-                  )}
-                </Typography>
-                <hr className="sub-line"></hr>
+                {userSkills &&
+                  userSkills.map((skill) => (
+                    <React.Fragment key={skill.skillID}>
+                      <Typography
+                        style={{ marginLeft: "5%" }}
+                        className="skill"
+                      >
+                        {skill.name}
+                      </Typography>
+                      <hr className="sub-line" />
+                    </React.Fragment>
+                  ))}
               </Grid>
               <Grid item xs={6}>
                 <Grid
@@ -312,12 +280,6 @@ function ViewUserProfile(props) {
                   <Grid item xs={6}>
                     <div className="header">{t("DocumentsText")}</div>
                   </Grid>
-                  <Grid item xs={6}>
-                    <AddDocumentsDialog setFileData={setFileData} />
-                    <IconButton onClick={handleClickEnableEdit}>
-                      <EditIcon className="profile-icon" />
-                    </IconButton>
-                  </Grid>
                 </Grid>
                 <hr className="line"></hr>
                 <Grid
@@ -330,44 +292,31 @@ function ViewUserProfile(props) {
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid item xs={12}>
-                    {coverletter !== "" && (
+                    {userData.coverLetter !== "" && (
                       <>
                         <Typography className="file-type">
                           Cover Letter
                         </Typography>
                         <ProfileFileItem
-                          file={coverletter}
+                          file={userData.coverLetter}
                           filename={coverletterFilename}
                         />
                       </>
                     )}
-                    {resume !== "" && (
+                    {userData.resume !== "" && (
                       <>
                         <Typography className="file-type">Resume</Typography>
-                        <ProfileFileItem
-                          file={resume}
-                          filename={resumeFilename}
-                        />
+                        <a
+                          href={userData.resume}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ProfileFileItem file={userData.resume} />
+                        </a>
                       </>
                     )}
                   </Grid>
                 </Grid>
-              </Grid>
-
-              <Grid item xs={6}>
-                {enable && (
-                  <Button
-                    className="button"
-                    variant="contained"
-                    style={{
-                      borderRadius: 27,
-                      backgroundColor: "rgba(100, 69, 227, 0.85)",
-                    }}
-                    onClick={handleDisableEdit}
-                  >
-                    Save Changes
-                  </Button>
-                )}
               </Grid>
             </Grid>
           </div>
