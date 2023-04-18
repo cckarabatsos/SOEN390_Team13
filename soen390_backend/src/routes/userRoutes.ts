@@ -26,11 +26,13 @@ import {
     followCompany,
     unFollowCompany,
     removeContact,
+    GoogleRegistration,
 } from "../controllers/userControllers";
 import dotenv from "dotenv";
 import { User } from "../models/User";
 import { compare } from "bcryptjs";
 import multer from "multer";
+import { db } from "../firebaseconfig";
 
 var upload = multer({ storage: multer.memoryStorage() });
 const user = express.Router();
@@ -152,6 +154,27 @@ user.post("/api/register", async (req: Request, res: Response) => {
         res.json({ errType: err.Name, errMsg: err.message });
     }
 });
+user.post("/api/GoogleSignUp", async (req: Request, res: Response) => {
+    try {
+        const registeredUser: User = await GoogleRegistration(req.body);
+        const status: number = registeredUser[0];
+        if (status == 200) {
+            res.status(200);
+            res.json({
+                Response: "Success",
+                registeredUser,
+            });
+        } else if (status === 404) {
+            res.status(404).send("User name cannot be empty");
+        } else {
+            res.sendStatus(status);
+        }
+    } catch (err: any) {
+        console.log(err);
+        res.status(400);
+        res.json({ errType: err.Name, errMsg: err.message });
+    }
+});
 /**
  * Route to logout from the website
  */
@@ -253,7 +276,6 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
  */
 //***********User invitation routes section***********************
 user.get("/api/sendInvite", async (req: Request, res: Response) => {
-
     let receiverEmail = req.query.receiverEmail as string;
     let senderEmail = req.query.senderEmail as string;
     let data = await sendInvite(receiverEmail, senderEmail);
@@ -467,34 +489,28 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 });
 
 // Route used to update all fields this is not to be used in final versions
-// user.get("/updateFields", (_: Request, res: Response) => {
-//     const db = firebase.firestore();
-//     const batch = db.batch();
-//     const chatsRef = db.collection("conversations");
+// user.get("/updateFields", async (_: Request, res: Response) => {
+//     try {
+//         const batch = db.batch();
+//         const usersRef = db.collection("users");
+//         const usersQuerySnapshot = await usersRef.get();
 
-//     chatsRef
-//         .get()
-//         .then((querySnapshot) => {
-//             querySnapshot.forEach((doc) => {
-//                 const iv = crypto.randomBytes(16).toString("hex");
-//                 batch.set(
-//                     doc.ref,
-//                     {
-//                         key: iv,
-//                     },
-//                     { merge: true }
-//                 );
-//             });
-
-//             return batch.commit();
-//         })
-//         .then(() => {
-//             res.status(200).send("IV field added to all chat documents");
-//         })
-//         .catch((error) => {
-//             console.error("Error adding fields:", error);
-//             res.status(500).send("Error adding fields");
+//         usersQuerySnapshot.forEach((doc) => {
+//             batch.set(
+//                 doc.ref,
+//                 {
+//                     otherAuth: false,
+//                 },
+//                 { merge: true }
+//             );
 //         });
+
+//         await batch.commit();
+//         res.status(200).send("otherAuth field added to all users");
+//     } catch (error) {
+//         console.error("Error adding fields:", error);
+//         res.status(500).send("Error adding fields");
+//     }
 // });
 
 // Exporting the user as a module

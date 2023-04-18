@@ -4,7 +4,7 @@ import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { CreateUser, CreateCompany } from "../api/loginApi";
+import { CreateUser, CreateCompany, GoogleSignin } from "../api/loginApi";
 import background from "../assets/undraw_online_resume_re_ru7s.png";
 import "../styles/components/Login.css";
 import "../styles/components/SignUp.css";
@@ -80,8 +80,10 @@ function SignUp(props) {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
+                console.log(user.email);
+                console.log(user.displayName);
+                console.log(user.photoURL);
+                GoogleSignin(user.email, user.displayName, user.photoURL);
             })
             .catch((error) => {
                 // Handle Errors here.
