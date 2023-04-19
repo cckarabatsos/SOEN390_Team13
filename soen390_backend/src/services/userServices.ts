@@ -110,7 +110,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                            " job postings successfully deleted."
+                        " job postings successfully deleted."
                     );
                 }
             }
@@ -231,10 +231,15 @@ export const deleteAccountFile = async (userID: string, type: string) => {
                 return null;
             }
             const parsedUrl = new URL(url);
-            const filePath = decodeURIComponent(parsedUrl.pathname).replace(
-                /^\//,
+            var filePath = decodeURIComponent(parsedUrl.pathname).replace(
+                /^\/[a-]/,
                 ""
             ); // Remove leading slash
+            var temp: string[] = filePath.split("/");
+            filePath = "";
+            for (var i = 2; i < temp.length; i++) {
+                filePath = i == temp.length - 1 ? filePath + temp[i] : filePath + temp[i] + "/";
+            }
             const fileRef = bucket.file(filePath);
             await fileRef.delete().then(function () {
                 updateUser(casted_user, userID);
@@ -375,7 +380,9 @@ export async function sendUserInvitation(
 ) {
     try {
         var senderUser: any;
-
+        if (receiverEmail === senderEmail) {
+            throw error("You cannot add yourself");
+        }
         senderUser = await new Promise((resolve, _) => {
             findUserWithEmail(senderEmail, (user) => {
                 // console.log(user);
@@ -473,9 +480,13 @@ export async function sendUserInvitation(
  * @param receiverID
  */
 export async function followCompanyInv(senderID: string, receiverID: string) {
-    const senderUser = await findUserWithID(senderID);
-    const receiverUser = await findUserWithID(receiverID);
     try {
+        if (senderID === receiverID) {
+            throw new Error("You cannot follow yourself");
+        }
+        const senderUser = await findUserWithID(senderID);
+        const receiverUser = await findUserWithID(receiverID);
+
         if (senderUser && receiverUser) {
             if (senderUser.isCompany) {
                 throw new Error("Sender is a company");

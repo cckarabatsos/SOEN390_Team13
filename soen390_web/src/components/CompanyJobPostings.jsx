@@ -155,9 +155,9 @@ export default function CompanyJobPostings(props) {
     <div className="JobsContainer">
       <div className="JobHeaderWrap">
         <div className="postings">{t("OpenPositions")}</div>
-        <div className="editButtonJobs">
+        <div className="editButtonJobs" data-testid="add-button">
         {props.companyOwner&&
-        <Button onClick={handleClickOpen} data-testid="add-button">
+        <Button onClick={handleClickOpen}>
           <PlaylistAddIcon />
         </Button>
         }

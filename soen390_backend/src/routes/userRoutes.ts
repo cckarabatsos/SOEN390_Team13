@@ -405,6 +405,10 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     if (req.body.postingDeadline) {
         postingDeadline = req.body.postingDeadline;
     }
+    let provenance = "Internal";
+    if (req.body.provenance) {
+        provenance = req.body.provenance;
+    }
     console.log(req.body.postingDeadline);
     const userArr: User = await getUserWithEmail(email).then();
     const status = userArr[0];
@@ -428,7 +432,8 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
                 duration,
                 type,
                 postingDeadline,
-                userArr[1].data.userID
+                userArr[1].data.userID,
+                provenance
             );
 
             if (data[0] == 200) {
