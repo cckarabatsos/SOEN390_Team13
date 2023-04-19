@@ -240,12 +240,17 @@ export async function editAccount(
         if (currProfile.email !== newProfile.email) {
             throw new Error("Email cannot be changed.");
         }
-        if (!newProfile.password) {
-            newProfile.password = currProfile.password;
-        } else if (newProfile.password === currProfile.password) {
-            newProfile.password = currProfile.password;
-        } else {
-            newProfile.password = await hash(newProfile.password, saltRounds);
+        if (currProfile.otherAuth == false) {
+            if (!newProfile.password) {
+                newProfile.password = currProfile.password;
+            } else if (newProfile.password === currProfile.password) {
+                newProfile.password = currProfile.password;
+            } else {
+                newProfile.password = await hash(
+                    newProfile.password,
+                    saltRounds
+                );
+            }
         }
         console.log(newProfile);
         currProfile = newProfile;

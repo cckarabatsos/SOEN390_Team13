@@ -7,11 +7,6 @@ export const user_schema = yup
     .object()
     .shape({
         name: yup.string().required(),
-        password: yup.string().when("otherAuth", {
-            is: true,
-            then: yup.string().notRequired(),
-            otherwise: yup.string().required(),
-        }),
         email: yup.string().required(),
         privateKey: yup.string(),
         publicKey: yup.string(),
@@ -27,6 +22,11 @@ export const user_schema = yup
         reportingStatus: yup.string().required().default("never_reported"), // never_reported || reported_once || banned
         isAdmin: yup.boolean().required().default(false),
         otherAuth: yup.boolean().required().default(false),
+        password: yup.string().when("otherAuth", {
+            is: true,
+            then: yup.string().notRequired(),
+            otherwise: yup.string().required(),
+        }),
         currentCompany: yup.string().when("isCompany", {
             is: true,
             then: yup
