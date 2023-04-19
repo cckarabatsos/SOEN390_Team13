@@ -71,33 +71,44 @@ function SignUp(props) {
             setIsCompanyName("FirstNameText");
         }
     };
-    const handleSignInWithGoogle = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential =
-                    GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user.email);
-                console.log(user.displayName);
-                console.log(user.photoURL);
-                GoogleSignin(user.email, user.displayName, user.photoURL);
-            })
-            .catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential =
-                    GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
+    const handleSignInWithGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            console.log(user.email);
+            console.log(user.displayName);
+            console.log(user.photoURL);
+
+            const response = await GoogleSignin(
+                user.email,
+                user.displayName,
+                user.photoURL
+            );
+            console.log(response.data.registeredUser[1]);
+            setIsAuth(response.data.registeredUser[1]);
+            if (response.status === 200) {
+                var userData = JSON.parse(localStorage.getItem("isAuth"));
+                console.log(userData);
+                navigate("/UserProfile");
+            } else {
+                console.log("Login Fail");
+            }
+        } catch (error) {
+            const errorCode = error.code;
+            console.log(errorCode);
+        }
     };
 
+    const setIsAuth = (data) => {
+        console.log(data);
+        localStorage.setItem("isAuth", JSON.stringify(data));
+        window.dispatchEvent(new Event("storage"));
+    };
     return (
         <div data-testid="signup-1">
             <div>

@@ -54,12 +54,13 @@ export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
 }
 export async function GoogleSignin(emailIn, nameIn, logoIn) {
     try {
-        const response = await axios
-            .post(api.BACKEND_API + "/user/api/GoogleSignUp", {
+        const response = await axios.post(
+            api.BACKEND_API + "/user/api/GoogleSignUp",
+            {
                 isCompany: false,
                 currentCompany: "",
                 currentPosition: "",
-                bio: "I am Liam and I want to be an engineer.",
+                bio: "",
                 coverLetter: "",
                 resume: "",
                 picture: logoIn,
@@ -67,10 +68,9 @@ export async function GoogleSignin(emailIn, nameIn, logoIn) {
                 privateKey: "",
                 email: emailIn,
                 name: nameIn,
-            })
-            .then((res) => {
-                return res.data;
-            });
+            }
+        );
+        console.log(response);
         return response;
     } catch (err) {
         console.error("yo", err);

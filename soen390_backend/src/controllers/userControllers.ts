@@ -117,7 +117,6 @@ export async function GoogleRegistration(user: any) {
         casted_user = await googleSchema.cast(user, {
             stripUnknown: false,
         });
-        // console.log(casted_user);
     } catch (error) {
         console.error(error);
         return [404, { msg: "Cast error" }];
@@ -140,7 +139,13 @@ export async function GoogleRegistration(user: any) {
             return [404, { msg: "User not registered." }];
         }
     } else {
-        return [401, { msg: "Email was already found in the database" }];
+        if (user.data.otherAuth == true) {
+            console.log(user.data);
+            return [200, user.data];
+        } else {
+            console.log("salut");
+            return [401, { msg: "Email was already found in the database" }];
+        }
     }
 }
 /**
