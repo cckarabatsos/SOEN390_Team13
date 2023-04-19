@@ -53,23 +53,27 @@ export async function CreateConversation(emailUser:string, emailContact:string) 
   }
 
   
-
-  export async function SendMessage(emailUser:string, emailContact:string, message:string) {
+  export async function SendMessage(reqUserID:string, reqSenderID:string, reqMessage:string) {
     try {
-      const response = await axios.get(api.BACKEND_API + "/messages/sendMessage/", {
-        params: {
-            Ids: JSON.stringify([emailUser, emailContact]),
-            senderId: emailUser,
-            message: message
-        },
-      });
-      if (response.status == 200) {
-        return true;
-      } else {
-        return false;
+      console.log(reqMessage);
+      var embeddedId = [reqSenderID]
+      if(reqUserID.includes(",")){
+        let tempId= reqUserID.split(",")
+        embeddedId= embeddedId.concat(tempId)
       }
+      else{
+        embeddedId.push(reqUserID)
+      }
+      //console.log(embeddedId)
+      const Ids = JSON.stringify(embeddedId);
+      const queryString = `senderId=${reqSenderID}&Ids=${Ids}&message=${reqMessage}`;
+  
+      const response = await axios.get(
+        api.BACKEND_API + "/messages/sendMessage?" + queryString
+      );
+      return response;
     } catch (error) {
-      console.error("error Remove Application", error);
+      console.error("error", error);
       return false;
     }
   }

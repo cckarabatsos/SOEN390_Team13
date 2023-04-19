@@ -131,7 +131,7 @@ const handleGetUserInfo = async(userID:string) =>{
 
   const handleSendMessage = async (message:string) => {
     //const filteredMessage = await filterMessage(message);
-    //await SendMessage(userID, userIDContact, filteredMessage);
+    await SendMessage(userIDContact, userID, message);
     handleGetMessages();
     setInput('')
   };
