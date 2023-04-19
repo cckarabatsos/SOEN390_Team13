@@ -22,6 +22,7 @@ import dotenv from "dotenv";
 import {
     User,
     UserFilter,
+    googleSchema,
     user_filter_schema,
     user_schema,
 } from "../models/User";
@@ -105,6 +106,46 @@ export async function registerUser(user: any) {
         }
     } else {
         return [401, { msg: "Email was already found in the database" }];
+    }
+}
+export async function GoogleRegistration(user: any) {
+    if (user.name === "" || user.email === "") {
+        throw new Error("User name cannot be empty");
+    }
+    let casted_user: User;
+    try {
+        casted_user = await googleSchema.cast(user, {
+            stripUnknown: false,
+        });
+    } catch (error) {
+        console.error(error);
+        return [404, { msg: "Cast error" }];
+    }
+    user = await new Promise((resolve, _) => {
+        findUserWithEmail(casted_user.email, (user) => {
+            // console.log(user);
+            if (user == null) {
+                resolve(null);
+            } else {
+                resolve(user);
+            }
+        });
+    });
+    if (user === null) {
+        let registeredUser = await storeUser(casted_user);
+        if (registeredUser) {
+            return [200, registeredUser];
+        } else {
+            return [404, { msg: "User not registered." }];
+        }
+    } else {
+        if (user.data.otherAuth == true) {
+            console.log(user.data);
+            return [200, user.data];
+        } else {
+            console.log("salut");
+            return [401, { msg: "Email was already found in the database" }];
+        }
     }
 }
 /**
@@ -199,12 +240,17 @@ export async function editAccount(
         if (currProfile.email !== newProfile.email) {
             throw new Error("Email cannot be changed.");
         }
-        if (!newProfile.password) {
-            newProfile.password = currProfile.password;
-        } else if (newProfile.password === currProfile.password) {
-            newProfile.password = currProfile.password;
-        } else {
-            newProfile.password = await hash(newProfile.password, saltRounds);
+        if (currProfile.otherAuth == false) {
+            if (!newProfile.password) {
+                newProfile.password = currProfile.password;
+            } else if (newProfile.password === currProfile.password) {
+                newProfile.password = currProfile.password;
+            } else {
+                newProfile.password = await hash(
+                    newProfile.password,
+                    saltRounds
+                );
+            }
         }
         console.log(newProfile);
         currProfile = newProfile;

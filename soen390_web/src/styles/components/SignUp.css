@@ -1,154 +1,167 @@
-.signup{
-  background-repeat: no-repeat;
-  background-position: right;
-  height: 80%;
-  background-color: white;    
-  background-size: 55%;
-  padding: 10px;
+.signup {
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 80%;
+    background-color: white;
+    background-size: 55%;
+    padding: 10px;
 }
 
-.signup-color{
-  background-color: #D9D9D9;
- 
-
+.signup-color {
+    background-color: #d9d9d9;
 }
 
-.form-field{
-  background: rgba(217, 217, 217, 0.965);
-  border-radius: 27px;
-  position: relative;
-
+.form-field {
+    background: rgba(217, 217, 217, 0.965);
+    border-radius: 27px;
+    position: relative;
 }
 
+#google-sign-in-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0 16px;
+    height: 36px;
+    cursor: pointer;
+}
+
+#google-sign-in-button:hover {
+    border-color: #bcbcbc;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#google-sign-in-button img {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+}
 
 .form-group {
-  justify-content: center;  
-  background-color: #dcdcdc;
-  border-radius: 20px;
-  width: 35%;  
-  margin-right: 20px;
-  margin-left: 90px;
-  padding-top: 10px;
+    justify-content: center;
+    background-color: #dcdcdc;
+    border-radius: 20px;
+    width: 35%;
+    margin-right: 20px;
+    margin-left: 90px;
+    padding-top: 10px;
 }
 
 .Roundedinput {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 1;
-  
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .Roundedinput .MuiOutlinedInput-root {
-  background: white;
-  border-radius: 30px;  
-  width: 230%;
-  margin-left: 3%;
-  
+    background: white;
+    border-radius: 30px;
+    width: 230%;
+    margin-left: 3%;
 }
 
 .Roundedinput .MuiInputLabel-root {
-  position: absolute;  
-  transform: translate(14px, 14px) scale(1);
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.15;
-  pointer-events: none;
-  z-index: 2;
-  transition: transform 200ms, color 200ms;
+    position: absolute;
+    transform: translate(14px, 14px) scale(1);
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.15;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 200ms, color 200ms;
 }
 
 .Roundedinput .MuiInputLabel-shrink {
-  transform: translate(14px, 0) scale(0.75);
+    transform: translate(14px, 0) scale(0.75);
 }
 
-.signuptitle{
-  margin-right: 20%;
-  color: #6C63FF;
-  font-family: "roboto";
-  font-size: 30px;
+.signuptitle {
+    margin-right: 20%;
+    color: #6c63ff;
+    font-family: "roboto";
+    font-size: 30px;
 }
 
-.name-field{   
-  font-family: 'roboto';      
-  font-size: medium;
-  line-height: 30px;
-  margin-right: 210px;
-  color: #120564;
-  margin-left: auto;
+.name-field {
+    font-family: "roboto";
+    font-size: medium;
+    line-height: 30px;
+    margin-right: 210px;
+    color: #120564;
+    margin-left: auto;
 }
 
-.margin-input{
-  margin-right: 10em;
-  text-align: center;
+.margin-input {
+    margin-right: 10em;
+    text-align: center;
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .checkbox-container label {
-  margin-left: 2px;
+    margin-left: 2px;
 }
-
 
 /* Responsive Styles */
 @media only screen and (max-width: 768px) {
-  .signup {
-      background-size: 70%;
-      height: auto;
-  }
-  
-  .form-group {
-      width: 80%;
-      margin-left: 10%;
-      margin-right: 10%;
-  }
-  
-  .signuptitle {
-      margin-right: 0;
-  }
-  
-  .name-field {
-      text-align: center;
-      margin-left: 0%;
-      margin-right: auto;
-  }
-  
-  .Roundedinput .MuiOutlinedInput-root {
-      width: 100%;
-  }
+    .signup {
+        background-size: 70%;
+        height: auto;
+    }
 
-  .margin-input{
-    margin-right: 10em;
-    text-align: center;
-    width: 100%;
-  }
+    .form-group {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .signuptitle {
+        margin-right: 0;
+    }
+
+    .name-field {
+        text-align: center;
+        margin-left: 0%;
+        margin-right: auto;
+    }
+
+    .Roundedinput .MuiOutlinedInput-root {
+        width: 100%;
+    }
+
+    .margin-input {
+        margin-right: 10em;
+        text-align: center;
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 480px) {
-  .signup {
-      background-size: 100%;
-  }
-  
-  .form-group {
-      width: 90%;
-      margin-left: 5%;
-      margin-right: 5%;
-  }
-  .Roundedinput .MuiOutlinedInput-root {
-    width: 100%;
-}
-.margin-input{
-  margin-right: 10em;
-  text-align: center;
-  
-}
+    .signup {
+        background-size: 100%;
+    }
 
+    .form-group {
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    .Roundedinput .MuiOutlinedInput-root {
+        width: 100%;
+    }
+    .margin-input {
+        margin-right: 10em;
+        text-align: center;
+    }
 }
-
-  
-
-  

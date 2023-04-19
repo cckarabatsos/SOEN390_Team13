@@ -10,8 +10,8 @@ import { Skill } from "../../src/models/Skill";
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
-const userID = "18JRHKkLE2t50nE17SHc";
-const userID2 = "0NS4CwuBHfd4rDPAIEuC";
+const userID = "gvox7y6XFH0iF5sjbnRJ";
+const userID2 = "u1f1EgzrZSp9LWhtA2AR";
 const badUserID = "5";
 const skill: Skill = {
     name: "skill",
@@ -43,7 +43,7 @@ describe("Test Skill Routes", function () {
                 if (skills.length > 0) {
                     skills.forEach(async (skl: Skill) => {
                         await deleteSkillWithId(skl.skillID);
-                    })
+                    });
                 }
             }
 

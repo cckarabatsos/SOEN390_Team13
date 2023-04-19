@@ -12,6 +12,7 @@ import { db } from "../firebaseconfig";
 const bucket = firebase.storage().bucket();
 import { Buffer } from "buffer";
 import { storeNotification } from "./notificationServices";
+import { googleSchema } from "../models/User";
 /**
  * Query the db to get a user via their ID
  * @param userID
@@ -110,7 +111,7 @@ export const deleteUserWithId = async (userID: string) => {
                     await batch.commit();
                     console.log(
                         data.jobpostings.postingids.length +
-                        " job postings successfully deleted."
+                            " job postings successfully deleted."
                     );
                 }
             }
@@ -151,7 +152,12 @@ export const storeAccountFile = async (
         }
 
         if (user) {
-            let casted_user = await user_schema.cast(user);
+            let casted_user;
+            if (user.otherAuth == true) {
+                casted_user = await googleSchema.cast(user);
+            } else {
+                casted_user = await user_schema.cast(user);
+            }
             const buffer = Buffer.from(file.buffer);
             const metadata = {
                 contentType: file.mimetype,
@@ -238,7 +244,10 @@ export const deleteAccountFile = async (userID: string, type: string) => {
             var temp: string[] = filePath.split("/");
             filePath = "";
             for (var i = 2; i < temp.length; i++) {
-                filePath = i == temp.length - 1 ? filePath + temp[i] : filePath + temp[i] + "/";
+                filePath =
+                    i == temp.length - 1
+                        ? filePath + temp[i]
+                        : filePath + temp[i] + "/";
             }
             const fileRef = bucket.file(filePath);
             await fileRef.delete().then(function () {
