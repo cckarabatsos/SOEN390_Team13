@@ -474,10 +474,15 @@ export const deleteApplicationFile = async (applicationID: string, type: string)
                 return null;
             }
             const parsedUrl = new URL(url);
-            const filePath = decodeURIComponent(parsedUrl.pathname).replace(
+            var filePath = decodeURIComponent(parsedUrl.pathname).replace(
                 /^\//,
                 ""
             ); // Remove leading slash
+            var temp: string[] = filePath.split("/");
+            filePath = "";
+            for (var i = 1; i < temp.length; i++) {
+                filePath = i == temp.length - 1 ? filePath + temp[i] : filePath + temp[i] + "/";
+            }
             const fileRef = bucket.file(filePath);
             await fileRef.delete().then(function () {
                 db.collection("applications").doc(applicationID).update(application);
