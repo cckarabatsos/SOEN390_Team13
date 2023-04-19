@@ -253,7 +253,6 @@ user.post("/edit/:email", async (req: Request, res: Response) => {
  */
 //***********User invitation routes section***********************
 user.get("/api/sendInvite", async (req: Request, res: Response) => {
-
     let receiverEmail = req.query.receiverEmail as string;
     let senderEmail = req.query.senderEmail as string;
     let data = await sendInvite(receiverEmail, senderEmail);
@@ -384,6 +383,10 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
     if (req.body.postingDeadline) {
         postingDeadline = req.body.postingDeadline;
     }
+    let provenance = "Internal";
+    if (req.body.provenance) {
+        provenance = req.body.provenance;
+    }
     console.log(req.body.postingDeadline);
     const userArr: User = await getUserWithEmail(email).then();
     const status = userArr[0];
@@ -407,7 +410,8 @@ user.post("/api/posting/:email", async (req: Request, res: Response) => {
                 duration,
                 type,
                 postingDeadline,
-                userArr[1].data.userID
+                userArr[1].data.userID,
+                provenance
             );
 
             if (data[0] == 200) {
@@ -468,19 +472,17 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 
 // Route used to update all fields this is not to be used in final versions
 // user.get("/updateFields", (_: Request, res: Response) => {
-//     const db = firebase.firestore();
 //     const batch = db.batch();
-//     const chatsRef = db.collection("conversations");
+//     const jobpostingsRef = db.collection("jobpostings");
 
-//     chatsRef
+//     jobpostingsRef
 //         .get()
 //         .then((querySnapshot) => {
 //             querySnapshot.forEach((doc) => {
-//                 const iv = crypto.randomBytes(16).toString("hex");
 //                 batch.set(
 //                     doc.ref,
 //                     {
-//                         key: iv,
+//                         provenance: "Internal",
 //                     },
 //                     { merge: true }
 //                 );
@@ -489,7 +491,9 @@ user.get("/api/searchCompanies", async (req: Request, res: Response) => {
 //             return batch.commit();
 //         })
 //         .then(() => {
-//             res.status(200).send("IV field added to all chat documents");
+//             res.status(200).send(
+//                 "Provenance field added to all jobpostings documents"
+//             );
 //         })
 //         .catch((error) => {
 //             console.error("Error adding fields:", error);
