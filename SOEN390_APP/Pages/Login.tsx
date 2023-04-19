@@ -87,7 +87,7 @@ export default function Login({ navigation }: { navigation: any }) {
   };
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
       <ImageBackground
         source={background_Image}
         resizeMode="cover"
