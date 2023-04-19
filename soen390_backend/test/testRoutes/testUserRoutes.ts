@@ -6,7 +6,7 @@ import app from "../../src/index";
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
-const id = "18JRHKkLE2t50nE17SHc";
+const id = "u1f1EgzrZSp9LWhtA2AR";
 const wrongId = "5";
 
 function makeid(length: number) {
@@ -152,7 +152,7 @@ describe("Test User Routes", function () {
                 .set("Accept", "application/json")
                 .expect(404);
         });
-        const notRecruiterEmail = "dzm.fiodarau@gmail.com";
+        const notRecruiterEmail = "matthew.beaulieu631@gmail.com";
         it("responds with 400 if the user is not a company", async function () {
             await request(url)
                 .post(`/user/api/posting/${notRecruiterEmail}`)
@@ -365,9 +365,7 @@ describe("Test User Routes", function () {
     describe("Get user/api/getPendingInvitations", function () {
         it("responds with 200 when you can get the invitations", async function () {
             await request(url)
-                .get(
-                    `/user/api/getPendingInvitations?userEmail=dzm.fiodarau@gmail.com`
-                )
+                .get(`/user/api/getPendingInvitations?userEmail=bog1@test.com`)
                 .expect(200);
         });
         it("responds with 404 when the account doesnt exist", async function () {
@@ -382,7 +380,7 @@ describe("Test User Routes", function () {
     describe("Get user/api/getContacts", function () {
         it("responds with 200 when you can get the contacts", async function () {
             await request(url)
-                .get(`/user/api/getContacts?userEmail=dzm.fiodarau@gmail.com`)
+                .get(`/user/api/getContacts?userEmail=bog1@test.com`)
                 .expect(200);
         });
         it("responds with 404 when the account doesnt exist", async function () {
@@ -430,7 +428,7 @@ describe("Test User Routes", function () {
     });
     describe("Get user/api/follow", function () {
         it("responds with 200 when you can follow a company", async function () {
-            let companyID = "i2iLvPkBHmkV43PufHVp";
+            let companyID = "RecykThqGI808df8prjG";
             await request(url)
                 .get(
                     `/user/api/follow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
@@ -438,7 +436,7 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
         it("responds with 404 when you already follow a company", async function () {
-            let companyID = "i2iLvPkBHmkV43PufHVp";
+            let companyID = "RecykThqGI808df8prjG";
             await request(url)
                 .get(
                     `/user/api/follow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
@@ -448,7 +446,7 @@ describe("Test User Routes", function () {
     });
     describe("Get user/api/unFollow", function () {
         it("responds with 200 when you can unFollow a company", async function () {
-            let companyID = "i2iLvPkBHmkV43PufHVp";
+            let companyID = "RecykThqGI808df8prjG";
             await request(url)
                 .get(
                     `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
@@ -456,7 +454,7 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
         it("responds with 404 when you already unFollowed a company", async function () {
-            let companyID = "i2iLvPkBHmkV43PufHVp";
+            let companyID = "RecykThqGI808df8prjG";
             await request(url)
                 .get(
                     `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
