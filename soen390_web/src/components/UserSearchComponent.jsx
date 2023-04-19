@@ -110,12 +110,10 @@ export default function UserSearchComponent(props) {
                 fontSize: "15px",
               }}
             >
-              {console.log(props)}
               {t("Connect")}
             </Button>
             <Alert
               severity={alert.severity}
-              
               open={alert.open}
               className={classes.alert}
             >
