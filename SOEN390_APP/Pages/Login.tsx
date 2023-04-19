@@ -87,7 +87,7 @@ export default function Login({ navigation }: { navigation: any }) {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
       <ImageBackground
         source={background_Image}
         resizeMode="cover"
@@ -109,11 +109,11 @@ export default function Login({ navigation }: { navigation: any }) {
           title="Do not have an account, Create one today"
           onPress={() => navigation.navigate("Register")}
         />
-        <KeyboardAvoidingView
+        <View
           style={styles.emptyContainer}
-        ></KeyboardAvoidingView>
+        ></View>
 
-        <KeyboardAvoidingView style={styles.containerOuter}>
+        <View style={styles.containerOuter}>
           <Text style={styles.label}>Email: </Text>
           <TextInput
             value={email}
@@ -131,10 +131,10 @@ export default function Login({ navigation }: { navigation: any }) {
             placeholder="Enter Password"
             keyboardType="default"
           />
-          </KeyboardAvoidingView>
-          <KeyboardAvoidingView style={styles.containerLower}>
+          </View>
+          <View style={styles.containerLower}>
           
-        </KeyboardAvoidingView>
+        </View>
         
         <View style={styles.buttonRow}>
           <TouchableOpacity onPress={handleSignUp} style={styles.button}>
