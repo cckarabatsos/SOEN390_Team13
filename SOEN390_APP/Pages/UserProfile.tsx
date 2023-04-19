@@ -648,8 +648,8 @@ const styles = StyleSheet.create({
       logoContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 127,
-        height: 127,
+        width: Dimensions.get("window").height / 10,
+        height: Dimensions.get("window").height / 10,
         borderRadius: 70,
         borderColor: 'rgb(255, 255, 255)',
         borderWidth: 4,
@@ -666,8 +666,9 @@ const styles = StyleSheet.create({
         height: "100%",
       },
       logo: {
-        width: 120,
-        height: 120,
+        width: Dimensions.get("window").height / 6,
+        height: Dimensions.get("window").height / 6,
+        marginBottom: 30,
         borderRadius: 60,
       },
       textSmall: {

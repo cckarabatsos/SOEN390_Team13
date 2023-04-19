@@ -133,13 +133,7 @@ export default function Login({ navigation }: { navigation: any }) {
           />
           </KeyboardAvoidingView>
           <KeyboardAvoidingView style={styles.containerLower}>
-          <TouchableOpacity onPress={handleGoogleLogIn} style={styles.buttonGoogle}>
-            <Image
-                style={styles.logo}
-                source={require('../Components/Images/google-icon.png')}
-                />
-            <Text style={styles.buttonText}>  Sign up with Google</Text>
-          </TouchableOpacity>
+          
         </KeyboardAvoidingView>
         
         <View style={styles.buttonRow}>
@@ -177,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyContainer: {
-    height: Dimensions.get("window").height / 3,
+    height: Dimensions.get("window").height / 4,
   },
   image: {
     flex: 1,
