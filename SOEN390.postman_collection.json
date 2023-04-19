@@ -3,7 +3,7 @@
 		"_postman_id": "5a737e48-aff3-41cc-a5ed-d2c7fd65a7c7",
 		"name": "SOEN390",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19175436"
+		"_exporter_id": "25472351"
 	},
 	"item": [
 		{
@@ -94,7 +94,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/api/login?email=LinkedOutInc@gmail.com&password=pass123",
+							"raw": "http://localhost:7000/user/api/login?email=LinkedOutInc@gmail.com1&password=pass123!",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -108,11 +108,11 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "LinkedOutInc@gmail.com"
+									"value": "LinkedOutInc@gmail.com1"
 								},
 								{
 									"key": "password",
-									"value": "pass123"
+									"value": "pass123!"
 								}
 							]
 						}
@@ -409,7 +409,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/user/removeAccountFile/:userID?type=resume",
+							"raw": "http://localhost:7000/user/removeAccountFile/:userID?type=coverLetter",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -423,13 +423,13 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "resume"
+									"value": "coverLetter"
 								}
 							],
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "16tBPk9x7AgwCCIeVXvh"
 								}
 							]
 						}
@@ -461,6 +461,36 @@
 								"user",
 								"api",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GoogleSignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Wow Company\",\r\n    \"email\": \"wowcompany@gmail.com\",\r\n    \"picture\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7000/user/api/GoogleSignUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"user",
+								"api",
+								"GoogleSignUp"
 							]
 						}
 					},
@@ -561,12 +591,12 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "Cover Letter.pdf"
+									"src": []
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:7000/user/uploadAccountFile/:userID?type=coverLetter",
+							"raw": "http://localhost:7000/user/uploadAccountFile/:userID?type=resume",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -580,13 +610,13 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "coverLetter"
+									"value": "resume"
 								}
 							],
 							"variable": [
 								{
 									"key": "userID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "16tBPk9x7AgwCCIeVXvh"
 								}
 							]
 						}
@@ -656,7 +686,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"location\": \"toronto\",\r\n    \"position\": \"Sw Developer\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"LinkedOutInc\",\r\n    \"description\": \"Please join the good team of LinkedOutInc to manage the next biggest infrastructure when it comes to marketing\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\"\r\n}\r\n",
+							"raw": "{\r\n    \"location\": \"toronto\",\r\n    \"position\": \"intern\",\r\n    \"salary\": \"0k/yr\",\r\n    \"company\": \"Wow Company\",\r\n    \"description\": \"Please Join us in the wow company as an intern you will receive good compensation (a high five every 3 years)\",\r\n    \"remote\":true,\r\n    \"contract\":false,\r\n    \"duration\": \"4 years\",\r\n    \"type\":\"internship\",\r\n    \"postingDeadline\":\"2024-03-11\",\r\n    \"provenance\":\"External\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -679,7 +709,7 @@
 							"variable": [
 								{
 									"key": "email",
-									"value": "LinkedOutInc@gmail.com1"
+									"value": "wowcompany@gmail.com"
 								}
 							]
 						}
@@ -743,6 +773,33 @@
 								{
 									"key": "userID",
 									"value": "fS0PjwOmmPRWbSZxzva9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get jobPosting with ID ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/jobposting/id/:JobPostingID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"jobposting",
+								"id",
+								":JobPostingID"
+							],
+							"variable": [
+								{
+									"key": "JobPostingID",
+									"value": "1W15XLRGqpjmRQEFqz6k"
 								}
 							]
 						}
@@ -949,7 +1006,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Education\"\r\n}",
+							"raw": "{\r\n    \"atPresent\": false,\r\n    \"startDate\": \"01-09-2018\",\r\n    \"endDate\": \"01-06-2020\",\r\n    \"company\": \"Champlain College\",\r\n    \"position\": \"Health Science Student\",\r\n    \"type\": \"Work\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -970,7 +1027,7 @@
 							"variable": [
 								{
 									"key": "ownerID",
-									"value": "18JRHKkLE2t50nE17SHc"
+									"value": "GbOgulbNQXvnKC0MJaMf"
 								}
 							]
 						}
@@ -1107,7 +1164,7 @@
 				{
 					"name": "Update Application Status",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:7000/application/updateStatus/:applicationID?status=approved",
@@ -1130,7 +1187,7 @@
 							"variable": [
 								{
 									"key": "applicationID",
-									"value": "wKzDjRkFJq8oFBnz75bl"
+									"value": null
 								}
 							]
 						}
@@ -1218,6 +1275,109 @@
 								{
 									"key": "userID",
 									"value": "18JRHKkLE2t50nE17SHc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Application with ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/id/:ApplicationID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"id",
+								":ApplicationID"
+							],
+							"variable": [
+								{
+									"key": "ApplicationID",
+									"value": "ZrmVGor84emNnWYx48AF"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Application File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "Resume.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/application/uploadApplicationFile/:applicationID?type=resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"uploadApplicationFile",
+								":applicationID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "resume"
+								}
+							],
+							"variable": [
+								{
+									"key": "applicationID",
+									"value": "L8mQI1OmfwfUR8p77ygI"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Application File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/application/removeApplicationFile/:applicationID?type=resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"application",
+								"removeApplicationFile",
+								":applicationID"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "resume"
+								}
+							],
+							"variable": [
+								{
+									"key": "applicationID",
+									"value": "L8mQI1OmfwfUR8p77ygI"
 								}
 							]
 						}
@@ -1362,7 +1522,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/createConversation?ids=[\"6Xwu7LcLPdqkBgwJa6EM\",\"JaQGolnDcz8fm0CjEkep\"]",
+							"raw": "http://localhost:7000/messages/createConversation?ids=[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO,\",\"0NS4CwuBHfd4rDPAIEuC\"]",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1375,7 +1535,7 @@
 							"query": [
 								{
 									"key": "ids",
-									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"JaQGolnDcz8fm0CjEkep\"]"
+									"value": "[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO,\",\"0NS4CwuBHfd4rDPAIEuC\"]"
 								}
 							]
 						}
@@ -1388,7 +1548,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/sendMessage?senderId=3Ri6yXlYSo7rCQk4t4ks&Ids=[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]&message=Test message",
+							"raw": "http://localhost:7000/messages/sendMessage?senderId=0NS4CwuBHfd4rDPAIEuC&Ids=[\"0NS4CwuBHfd4rDPAIEuC,\"3Ri6yXlYSo7rCQk4t4ks\"]&message=Salut&type=document",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1401,15 +1561,19 @@
 							"query": [
 								{
 									"key": "senderId",
-									"value": "3Ri6yXlYSo7rCQk4t4ks"
+									"value": "0NS4CwuBHfd4rDPAIEuC"
 								},
 								{
 									"key": "Ids",
-									"value": "[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]"
+									"value": "[\"0NS4CwuBHfd4rDPAIEuC,\"3Ri6yXlYSo7rCQk4t4ks\"]"
 								},
 								{
 									"key": "message",
-									"value": "Test message"
+									"value": "Salut"
+								},
+								{
+									"key": "type",
+									"value": "document"
 								}
 							]
 						}
@@ -1422,7 +1586,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:7000/messages/getAllMessages?userIds=[\"6Xwu7LcLPdqkBgwJa6EM\",\"lZioJzyfCxPy28CTyT9E\"]&senderId=6Xwu7LcLPdqkBgwJa6EM",
+							"raw": "http://localhost:7000/messages/getAllMessages?userIds=[\"6Xwu7LcLPdqkBgwJa6EM\",\"CN8dUk7wAzQOAP28ROYA\"]&senderId=6Xwu7LcLPdqkBgwJa6EM",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1435,7 +1599,7 @@
 							"query": [
 								{
 									"key": "userIds",
-									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"lZioJzyfCxPy28CTyT9E\"]"
+									"value": "[\"6Xwu7LcLPdqkBgwJa6EM\",\"CN8dUk7wAzQOAP28ROYA\"]"
 								},
 								{
 									"key": "senderId",
@@ -1504,6 +1668,112 @@
 								{
 									"key": "returnEmail",
 									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get conversation by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/id/:conversationID",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"id",
+								":conversationID"
+							],
+							"variable": [
+								{
+									"key": "conversationID",
+									"value": "QenBRIYssceHL8Rs8BEg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Chat File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "lab_report_cover.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:7000/messages/uploadChatFile?senderId=rgwu3p8IKmp0H3yYPdNO&Ids=[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]&conversationID=UCoA5lmz3FGIBjlRhuyG",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"uploadChatFile"
+							],
+							"query": [
+								{
+									"key": "senderId",
+									"value": "rgwu3p8IKmp0H3yYPdNO"
+								},
+								{
+									"key": "Ids",
+									"value": "[\"3Ri6yXlYSo7rCQk4t4ks\",\"rgwu3p8IKmp0H3yYPdNO\"]"
+								},
+								{
+									"key": "conversationID",
+									"value": "UCoA5lmz3FGIBjlRhuyG"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "downloadDocument",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7000/messages/downloadDocument?encryptedUrl=Hicp2oJ5UmMw0gdTNAu%2BX6ucTmqefF%2FYFGE%2FBOB7lWHkN1GJ%2BHPhVBw2f4L4R%2FKMvr4Y9jDOG%2BtS2GpD6QciJqziC5%2FJjzmNBC588GezdxCSw6jSHAaJmUPVpJDPFt%2BjqCx249ItZUdB7Xy%2F0zR%2BFk%2FismJVp5MHMJN9JqCT4GEZXrFkl%2BpFqjyoFjYp9bmXwHX4ZglYrxf0deg%2BctH3GwIYpT6UzuS9zjDNIemH0C0xCbbfjs8aEwUXWNbJn%2FkY&conversationID=UCoA5lmz3FGIBjlRhuyG",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7000",
+							"path": [
+								"messages",
+								"downloadDocument"
+							],
+							"query": [
+								{
+									"key": "encryptedUrl",
+									"value": "Hicp2oJ5UmMw0gdTNAu%2BX6ucTmqefF%2FYFGE%2FBOB7lWHkN1GJ%2BHPhVBw2f4L4R%2FKMvr4Y9jDOG%2BtS2GpD6QciJqziC5%2FJjzmNBC588GezdxCSw6jSHAaJmUPVpJDPFt%2BjqCx249ItZUdB7Xy%2F0zR%2BFk%2FismJVp5MHMJN9JqCT4GEZXrFkl%2BpFqjyoFjYp9bmXwHX4ZglYrxf0deg%2BctH3GwIYpT6UzuS9zjDNIemH0C0xCbbfjs8aEwUXWNbJn%2FkY"
+								},
+								{
+									"key": "conversationID",
+									"value": "UCoA5lmz3FGIBjlRhuyG"
+								},
+								{
+									"key": "iv",
+									"value": "szkL4F4TlavS0T3gWIs1xQ%3D%3D",
+									"disabled": true
 								}
 							]
 						}
