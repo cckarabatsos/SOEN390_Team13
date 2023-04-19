@@ -7,7 +7,11 @@ export const user_schema = yup
     .object()
     .shape({
         name: yup.string().required(),
-        password: yup.string(),
+        password: yup.string().when("otherAuth", {
+            is: true,
+            then: yup.string().notRequired(),
+            otherwise: yup.string().required(),
+        }),
         email: yup.string().required(),
         privateKey: yup.string(),
         publicKey: yup.string(),
@@ -82,6 +86,7 @@ export const user_schema = yup
             .default([]),
     })
     .required();
+
 export const googleSchema = yup
     .object()
     .shape({
