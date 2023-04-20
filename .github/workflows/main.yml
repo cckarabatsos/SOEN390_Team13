@@ -3,9 +3,11 @@ on:
     pull_request:
         branches:
             - "*"
+
 jobs:
     build:
         runs-on: ubuntu-latest
+
         steps:
             - uses: actions/checkout@v2
 
@@ -25,10 +27,12 @@ jobs:
                   npm i
                   cd ..
 
-            - name: Set Environment Variables
+            - name: Create env file
               run: |
-                  echo FIREBASECONFIG=${{ secrets.FIREBASECONFIG }} >> .env
-                  echo TOKEN_SECRET=${{ secrets.TOKEN_SECRET }} >> .env
+                  cd soen390_backend
+                  touch .env
+                  echo FIREBASECONFIG="${{ secrets.FIREBASECONFIG }}" >> .env
+                  echo TOKEN_SECRET="${{ secrets.TOKEN_SECRET }}" >> .env
 
             - name: Install dotenv
               run: |
