@@ -27,8 +27,16 @@ jobs:
 
             - name: Set Environment Variables
               run: |
-                  echo "export FIREBASECONFIG=${{ secrets.FIREBASECONFIG }}" >> $GITHUB_ENV
-                  echo "export TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}" >> $GITHUB_ENV
+                  echo "FIREBASECONFIG=${{ secrets.FIREBASECONFIG }}" >> .env
+                  echo "TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}" >> .env
+              env:
+                  FIREBASECONFIG: ${{ secrets.FIREBASECONFIG }}
+                  TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+
+            - name: Install dotenv
+              run: |
+                  cd soen390_backend
+                  npm install dotenv --save-dev
 
             - name: Run Tests
               if: always()
