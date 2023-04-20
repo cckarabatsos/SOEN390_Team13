@@ -33,10 +33,11 @@ jobs:
                   npm install dotenv --save-dev
 
             - name: Create env file
-              uses: SpicyPizza/create-envfile@v1
+              uses: SpicyPizza/create-envfile@v1.3
               with:
-                  TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
-                  FIREBASECONFIG: ${{ secrets.FIREBASECONFIG }}
+                  envkey_TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+                  envkey_FIREBASECONFIG: ${{ secrets.FIREBASECONFIG }}
+                  directory: soen390_backend
                   file_name: .env
               run: |
                   echo "Created .env file"
