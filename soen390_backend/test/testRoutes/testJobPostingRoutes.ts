@@ -4,7 +4,7 @@ import request from "supertest";
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
-const userID = "18JRHKkLE2t50nE17SHc";
+const userID = "gvox7y6XFH0iF5sjbnRJ";
 const badUserID = "5";
 
 describe("Test Job Posting Routes", function () {

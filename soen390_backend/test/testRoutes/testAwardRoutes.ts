@@ -7,7 +7,7 @@ const it = mocha.it;
 console.log(app);
 const url = "http://localhost:4000";
 let server: any;
-const userID = "18JRHKkLE2t50nE17SHc";
+const userID = "u1f1EgzrZSp9LWhtA2AR";
 const badUserID = "5";
 const award: Award = {
     name: "award",
