@@ -36,8 +36,8 @@ jobs:
               run: |
                   cd soen390_backend
                   touch .env
-                  echo FIREBASECONFIG="${{ secrets.FIREBASECONFIG }}" >> .env
-                  echo TOKEN_SECRET="${{ secrets.TOKEN_SECRET }}" >> .env
+                  echo FIREBASECONFIG="${{ secrets.FIREBASECONFIG }}" > .env
+                  echo TOKEN_SECRET="${{ secrets.TOKEN_SECRET }}" > .env
 
             - name: Run Tests
               if: always()
