@@ -1,14 +1,11 @@
 name: CI test backend and frontend
-
 on:
     pull_request:
         branches:
             - "*"
-
 jobs:
     build:
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v2
 
@@ -28,15 +25,10 @@ jobs:
                   npm i
                   cd ..
 
-            # - name: Build and Compile Backend
-            #   run: |
-            #       cd soen390_backend
-            #       npm run dev
-
-            # - name: Build and Compile Frontend
-            #   run: |
-            #       soen390_web
-            #       npm run build
+            - name: Set Environment Variables
+              run: |
+                  echo "export FIREBASECONFIG=${{ secrets.FIREBASECONFIG }}" >> $GITHUB_ENV
+                  echo "export TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}" >> $GITHUB_ENV
 
             - name: Run Tests
               if: always()
