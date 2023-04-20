@@ -36,7 +36,8 @@ jobs:
               env:
                   ENV_FILE: ${{ secrets.ENV_FILE }}
               run: |
-                  echo "${ENV_FILE}" > .env.template
+                  echo "FIREBASECONFIG=${ENV_FILE%%:*}" > .env.template
+                  echo "TOKEN_SECRET=${ENV_FILE#*:}" >> .env.template
                   envsubst < .env.template > .env
 
             - name: Run Tests
