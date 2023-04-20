@@ -63,6 +63,35 @@ describe("Test User Routes", function () {
                 .expect(200);
         });
     });
+    describe("Get user/api/GoogleSignUp", function () {
+        const goodPayload = {
+            name: "Matthew Beaulieu",
+            email: "matthew.beaulieu631@gmail.com",
+            picture: "",
+        };
+        const badPayload = {
+            name: "Bogdan Podariu",
+            email: "bog1@test.com",
+            picture: "",
+        };
+        it("responds with 200 when the User is found and is a google auth", async function () {
+            await request(url)
+                .post("/user/api/GoogleSignUp")
+                .send(goodPayload)
+                .expect(200);
+        });
+
+        it("responds with a 401 when it is not a google auth", async function () {
+            await request(url)
+                .post("/user/api/GoogleSignUp")
+                .send(badPayload)
+                .expect(401);
+        });
+
+        it("responds with a 200 when a valid email and password are provided", async function () {
+            await request(url).post("/user/api/GoogleSignUp").expect(400);
+        });
+    });
     describe("Post user/api/logout", function () {
         it("responds with 200 and logs out user if no error", async function () {
             await request(url)
@@ -195,7 +224,7 @@ describe("Test User Routes", function () {
                 .send(jobpostingPayload)
                 .expect(200);
         });
-        it("responds with 404 when you already unFollowed a company", async function () {
+        it("responds with 404 when you already removed a job posting", async function () {
             await request(url)
                 .post(`/jobposting/remove/${goodEmail}`)
                 .send(jobpostingPayload)
@@ -445,6 +474,14 @@ describe("Test User Routes", function () {
         });
     });
     describe("Get user/api/unFollow", function () {
+        this.afterAll(async function () {
+            await request(url)
+                .post(`/user/delete/${response1.body.registeredUser[1]}`)
+                .expect(200);
+            await request(url)
+                .post(`/user/delete/${response2.body.registeredUser[1]}`)
+                .expect(200);
+        });
         it("responds with 200 when you can unFollow a company", async function () {
             let companyID = "RecykThqGI808df8prjG";
             await request(url)
@@ -460,12 +497,6 @@ describe("Test User Routes", function () {
                     `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
                 )
                 .expect(404);
-            await request(url)
-                .post(`/user/delete/${response1.body.registeredUser[1]}`)
-                .expect(200);
-            await request(url)
-                .post(`/user/delete/${response2.body.registeredUser[1]}`)
-                .expect(200);
         });
     });
 });

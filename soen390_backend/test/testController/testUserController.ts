@@ -1,7 +1,5 @@
 import * as chai from "chai";
 import * as mocha from "mocha";
-import { db } from "../../src/firebaseconfig";
-console.log(db);
 import {
     getUserWithID,
     getUserWithEmail,
