@@ -5,11 +5,11 @@ import { deleteApplicationWithId } from "../../src/services/applicationServices"
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
-const userID = "18JRHKkLE2t50nE17SHc";
-const companyID = "i2iLvPkBHmkV43PufHVp";
-const postingID = "NAzQgPUr8iCooLCqtPUT";
+const userID = "gvox7y6XFH0iF5sjbnRJ";
+const companyID = "RecykThqGI808df8prjG";
+const postingID = "95VQaEcB8zLrhY0hA9XL";
 const badUserID = "5";
-const applicationID = "h61EzseJQtilK0BVtrcw";
+const applicationID = "L8mQI1OmfwfUR8p77ygI";
 const status = "test status";
 const postApplication = {
     email: "abc@gmail.com",
@@ -167,11 +167,9 @@ describe("Test Application Routes", function () {
     });
     describe("Get application by id", function () {
         it("responds with 200 if the application ID is valid", async function () {
-            // Set up test data
-            const conversationID = "ZrmVGor84emNnWYx48AF"; // Replace with a valid conversation ID
             // Make request to endpoint
             await request(url)
-                .get(`/application/id/${conversationID}`)
+                .get(`/application/id/${applicationID}`)
                 .expect(200);
         });
 
