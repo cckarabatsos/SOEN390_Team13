@@ -1,4 +1,5 @@
 name: CI test backend and frontend
+
 on:
     pull_request:
         branches:
@@ -7,7 +8,6 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v2
 
@@ -27,10 +27,17 @@ jobs:
                   npm i
                   cd ..
 
-           
-        - name: 'Create env file'
-            run: |
-                echo "${{ secrets.ENV_FILE }}" > .env
+            - name: Install dotenv
+              run: |
+                  cd soen390_backend
+                  npm install dotenv --save-dev
+
+            - name: Create env file
+              env:
+                  ENV_FILE: ${{ secrets.ENV_FILE }}
+              run: |
+                  echo "${ENV_FILE}" > .env.template
+                  envsubst < .env.template > .env
 
             - name: Run Tests
               if: always()
