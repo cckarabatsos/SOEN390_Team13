@@ -33,12 +33,13 @@ jobs:
                   npm install dotenv --save-dev
 
             - name: Create env file
-              env:
-                  ENV_FILE: ${{ secrets.ENV_FILE }}
+              uses: SpicyPizza/create-envfile@v1
+              with:
+                  TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+                  FIREBASECONFIG: ${{ secrets.FIREBASECONFIG }}
+                  file_name: .env
               run: |
-                  echo "FIREBASECONFIG=${ENV_FILE%%:*}" > .env.template
-                  echo "TOKEN_SECRET=${ENV_FILE#*:}" >> .env.template
-                  envsubst < .env.template > .env
+                  echo "Created .env file"
 
             - name: Run Tests
               if: always()
