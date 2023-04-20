@@ -27,11 +27,8 @@ jobs:
 
             - name: Set Environment Variables
               run: |
-                  echo "FIREBASECONFIG=${{ secrets.FIREBASECONFIG }}" >> .env
-                  echo "TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}" >> .env
-              env:
-                  FIREBASECONFIG: ${{ secrets.FIREBASECONFIG }}
-                  TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+                  echo FIREBASECONFIG=${{ secrets.FIREBASECONFIG }} >> .env
+                  echo TOKEN_SECRET=${{ secrets.TOKEN_SECRET }} >> .env
 
             - name: Install dotenv
               run: |
