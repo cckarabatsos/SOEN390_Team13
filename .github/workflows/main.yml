@@ -27,17 +27,10 @@ jobs:
                   npm i
                   cd ..
 
-            - name: Install dotenv
-              run: |
-                  cd soen390_backend
-                  npm install dotenv --save-dev
-
-            - name: Create env file
-              run: |
-                  cd soen390_backend
-                  touch .env
-                  echo FIREBASECONFIG="${{ secrets.FIREBASECONFIG }}" > .env
-                  echo TOKEN_SECRET="${{ secrets.TOKEN_SECRET }}" > .env
+           
+        - name: 'Create env file'
+            run: |
+                echo "${{ secrets.ENV_FILE }}" > .env
 
             - name: Run Tests
               if: always()
