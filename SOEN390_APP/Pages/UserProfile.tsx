@@ -263,6 +263,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleApplication, setModalVisibleApplication] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   let name = route.params.username
   let password = route.params.password
@@ -283,7 +284,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
     handleGetExperience();
     handleGetEducation();
     handleGetSkills();
-  }, []);
+  }, [refresh]);
 
   const handleGetExperience = async () => {
     const user = await GetUserExperience(userID, "Work")
@@ -452,7 +453,13 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                 source={{ uri: "https://source.unsplash.com/1600x900/?nature" }}
                 style={styles.backgroundImage}
               >
-              
+                    <TouchableOpacity
+                              activeOpacity={0.8}
+                              onPress={()=>setRefresh(!refresh)}
+                              style={{alignSelf: 'flex-start'}}
+                              >
+                                <Ionicons size={45} name="refresh-circle-outline" style={styles.icon} color={'#000000'}/>
+                    </TouchableOpacity>   
                 
                     <View style={styles.logoContainer}>
                       <Image
@@ -460,8 +467,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                       source={{ uri: image }}
                       />
                       
-                    </View>
-
+                    </View> 
                     <View style={styles.textContainer}>
                     <Text style={styles.titleText}> {user.name} </Text>
                     </View>
@@ -483,7 +489,7 @@ const UserProfile = ({route,navigation}:{route:any,navigation:any}) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                               activeOpacity={0.8}
-                              //onPress={}
+                              //onPress={()=>setRefresh(!refresh)}
                               >
                                 <Ionicons size={45} name="logo-google" style={styles.icon} color={'#17b42c'}/>
                             </TouchableOpacity>                               
@@ -642,8 +648,8 @@ const styles = StyleSheet.create({
       logoContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 127,
-        height: 127,
+        width: Dimensions.get("window").height / 10,
+        height: Dimensions.get("window").height / 10,
         borderRadius: 70,
         borderColor: 'rgb(255, 255, 255)',
         borderWidth: 4,
@@ -660,8 +666,9 @@ const styles = StyleSheet.create({
         height: "100%",
       },
       logo: {
-        width: 120,
-        height: 120,
+        width: Dimensions.get("window").height / 6,
+        height: Dimensions.get("window").height / 6,
+        marginBottom: 30,
         borderRadius: 60,
       },
       textSmall: {

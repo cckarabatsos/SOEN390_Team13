@@ -55,6 +55,7 @@ export default function ContactsComponent(props: ContactsComponentProps) {
   //console.log(image);
 
   const handleSendMessageRequest = async (emailUser:string, emailContact:string)=>{
+    console.log("HELP")
     await CreateConversation(emailUser, emailContact);
     props.navigation.navigate('Messages');
     props.handleCloseModal && props.handleCloseModal(); // close the modal

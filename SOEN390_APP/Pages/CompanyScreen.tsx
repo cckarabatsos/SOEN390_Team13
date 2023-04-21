@@ -72,7 +72,7 @@ const CompanyScreen = ({route}:{route:any}) => {
   const { v4: uuidv4 } = require('uuid');
 
   const buildObject = (jsonObject:any) => {
-    const { name, currentPosition, currentCompany, email,isCompany, userID,followers } = jsonObject;
+    const { name, currentPosition, currentCompany, email,isCompany, userID,followers, bio } = jsonObject;
     const obj = {
       id: uuidv4(),
       name: name,
@@ -84,7 +84,8 @@ const CompanyScreen = ({route}:{route:any}) => {
       image: jsonObject.picture || 'https://picsum.photos/seed/picsum/200/300',
       isCompany: isCompany,
       userID: userID,
-      followerList: followers
+      followerList: followers,
+      bio: bio
     }
     console.log(obj)
     return obj;
@@ -165,7 +166,7 @@ return(
             <ScrollView style={styles.scrollview}>
               <Text style={styles.modalBodyText}>Bio: </Text>
 
-              <Text style={styles.modalBodyMessage}>{"message"}</Text>
+              <Text style={styles.modalBodyMessage}>{user.bio}</Text>
             </ScrollView>
             <View style={styles.modalFooter}>
               <View style={styles.modalFooterColumn}>

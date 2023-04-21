@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "SOEN390",
-    "slug": "SOEN390",
+    "name": "LinkedOut",
+    "slug": "LinkedOut",
+    "description": "This is a linkedIn clone for SOEN390 Concordia class",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/linkedout-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,16 +19,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.skylinep.LinkedOut"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.skylinep.LinkedOut"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "10d54633-9322-408b-a856-56a9d6d1d755"
+      }
     }
   }
 }

@@ -11,12 +11,27 @@ import {
 } from "../controllers/messagesController";
 import multer from "multer";
 import { hasFile } from "../controllers/userControllers";
+//import WebPurify from 'webpurify';
+import badWords from 'bad-words';
+
+
+
+
 
 import { decryptDocument } from "../services/messagesServices";
+
+
+
 const messages = express.Router();
 messages.use(express.json());
 dotenv.config();
 var upload = multer({ storage: multer.memoryStorage() });
+
+
+
+
+
+
 
 // This route will be used to create a new conversation between 2 or more users
 // receives an array of user email addresses
@@ -126,6 +141,14 @@ messages.get("/updateMessages", async (req, res) => {
 // This route is used to send a message within a conversation entity
 // Input: the conversation entity members' list and the sender email.
 // Output: a boolean value indicating whether the message was successfully sent or not.
+
+
+const filterMessage = (message: string) => {
+    const filter = new badWords();
+    return filter.clean(message);
+  }
+  
+
 messages.get("/sendMessage", async (req, res) => {
     try {
         const senderId = req.query.senderId as string;
@@ -135,11 +158,16 @@ messages.get("/sendMessage", async (req, res) => {
         if (req.query.type) {
             type = req.query.type as string;
         }
-        console.log(message);
+
         // Error detection for missing or invalid inputs
+
+      
+        const filteredMessage = filterMessage(message);
+
+
         if (
             !Ids ||
-            !message ||
+            !filteredMessage ||
             !senderId ||
             !Array.isArray(Ids) ||
             Ids.length < 2
@@ -152,7 +180,7 @@ messages.get("/sendMessage", async (req, res) => {
         if (type === "document") {
             const regex =
                 /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/soen-390-/;
-            if (!regex.test(message)) {
+            if (!regex.test(filteredMessage)) {
                 return res.status(400).json({
                     message:
                         "Invalid message format for document type. Please provide a valid URL starting with 'https://firebasestorage.googleapis.com/v0/b/soen-390-'",
@@ -163,7 +191,7 @@ messages.get("/sendMessage", async (req, res) => {
         const messageConfirmation = await SendNewMessage(
             senderId,
             Ids,
-            message
+            filteredMessage
         );
         return res.status(200).json({
             message: "Message sent successfully",

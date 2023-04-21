@@ -97,7 +97,7 @@ import {
       setLocations(prevLocations => [...prevLocations, ...newLocations.filter(loc => !prevLocations.includes(loc))]);
 
            // Update the locations state with the new locations array
-      setPositions(prevPositions => [...prevPositions, ...newPositions.filter(loc => !prevPositions.includes(position))]);
+      setPositions(prevPositions => [...prevPositions, ...newPositions.filter(position => !prevPositions.includes(position))]);
       return obj;
     }
 
@@ -114,10 +114,10 @@ import {
   const handleSearch = () => {
     const filteredUsers = allUsers.filter(user => {
       const name = user.text.toLowerCase();
-      const occupation = user.category.toLowerCase();
+      const position = user.position.toLowerCase();
       const location = user.loc.toLowerCase();
       return name.includes(searchTerm.toLowerCase())
-        && (!selectedCategory || occupation.includes(selectedCategory.toLowerCase()))
+        && (!selectedCategory || position.includes(selectedCategory.toLowerCase()))
         && (!selectedLocation || location.includes(selectedLocation.toLowerCase()));
     });
     setJobOffers(filteredUsers);
@@ -213,7 +213,7 @@ return(
   };
 
   const filteredUsers = jobOffers.filter(job => {
-    const occupation = job.category.toLowerCase();
+    const occupation = job.position.toLowerCase();
     const location = job.loc.toLowerCase();
     return (!selectedCategory || occupation.includes(selectedCategory.toLowerCase()))
       && (!selectedLocation || location.includes(selectedLocation.toLowerCase()));

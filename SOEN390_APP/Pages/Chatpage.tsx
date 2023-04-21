@@ -16,6 +16,7 @@ import { GetAllMessages } from "../api/MessagesAPI";
 import { SendMessage } from "../api/MessagesAPI";
 import { GetUserInfo } from "../api/GetUsersAPI";
 import { Animated } from 'react-native';
+import { filterMessage } from "../api/MessagesAPI";
 //import { db } from "../firebaseConfig";
 
 
@@ -49,9 +50,8 @@ const ChatPage = ({ route, navigation}:any) => {
 
   const handleGetMessages = async () => {
     const message = await GetAllMessages(userID, userIDContact);
-    console.log("AAAAAAAAAAAAAAAAAAAA")
     if(message.length!=0){
-    const newObjectsArray = await Promise.all(message.listOfMessages.map(buildObject));
+    const newObjectsArray = await Promise.all(message.usersChat.map(buildObject));
     setMessages(newObjectsArray);
     }
     else{
@@ -129,12 +129,13 @@ const handleGetUserInfo = async(userID:string) =>{
 
 
 
-const handleSendMessage = async (message:string) => {
-  await SendMessage(userID,userIDContact, message)
-  handleGetMessages();
-  setInput('')
-};
- 
+  const handleSendMessage = async (message:string) => {
+    //const filteredMessage = await filterMessage(message);
+    await SendMessage(userIDContact, userID, message);
+    handleGetMessages();
+    setInput('')
+  };
+  
   const fileAttach = () => {
     const [text, setText] = useState('');
 

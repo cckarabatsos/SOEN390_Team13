@@ -87,7 +87,7 @@ export default function Login({ navigation }: { navigation: any }) {
   };
 
   return (
-    <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
       <ImageBackground
         source={background_Image}
         resizeMode="cover"
@@ -109,17 +109,17 @@ export default function Login({ navigation }: { navigation: any }) {
           title="Do not have an account, Create one today"
           onPress={() => navigation.navigate("Register")}
         />
-        <KeyboardAvoidingView
+        <View
           style={styles.emptyContainer}
-        ></KeyboardAvoidingView>
+        ></View>
 
-        <KeyboardAvoidingView style={styles.containerOuter}>
+        <View style={styles.containerOuter}>
           <Text style={styles.label}>Email: </Text>
           <TextInput
             value={email}
             onChangeText={(text) => setEmail(text)}
             style={styles.input}
-            placeholder="useless placeholder"
+            placeholder="Enter Email"
             keyboardType="default"
           />
           <Text style={styles.label}>Password: </Text>
@@ -128,19 +128,13 @@ export default function Login({ navigation }: { navigation: any }) {
             onChangeText={(text) => setPassword(text)}
             style={styles.input}
             secureTextEntry
-            placeholder="useless placeholder"
+            placeholder="Enter Password"
             keyboardType="default"
           />
-          </KeyboardAvoidingView>
-          <KeyboardAvoidingView style={styles.containerLower}>
-          <TouchableOpacity onPress={handleGoogleLogIn} style={styles.buttonGoogle}>
-            <Image
-                style={styles.logo}
-                source={require('../Components/Images/google-icon.png')}
-                />
-            <Text style={styles.buttonText}>  Sign up with Google</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
+          </View>
+          <View style={styles.containerLower}>
+          
+        </View>
         
         <View style={styles.buttonRow}>
           <TouchableOpacity onPress={handleSignUp} style={styles.button}>
@@ -177,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyContainer: {
-    height: Dimensions.get("window").height / 3,
+    height: Dimensions.get("window").height / 4,
   },
   image: {
     flex: 1,
