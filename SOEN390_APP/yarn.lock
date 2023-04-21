@@ -7205,6 +7205,11 @@
   "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz"
   "version" "3.0.1"
 
+"webpurify@^2.1.0":
+  "integrity" "sha512-4N3/WDew686bB3kVvu/wi0kcbg0di9RE23/WYBKphoug5/8R7JPK5juF1EGUc3qZt9KRbRHD/qUr69ptnjipDA=="
+  "resolved" "https://registry.npmjs.org/webpurify/-/webpurify-2.1.0.tgz"
+  "version" "2.1.0"
+
 "whatwg-fetch@^3.0.0":
   "integrity" "sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA=="
   "resolved" "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-3.6.2.tgz"
