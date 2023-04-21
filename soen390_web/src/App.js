@@ -55,15 +55,17 @@ const AppWrapper = () => {
       <Router>
         <Navbar userData={userData}></Navbar>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/Search" element={<SearchPage />} />
-          <Route path="/UserLogin" element={<Login />} />
-          <Route path="/CompanyProfile" element={<CompanyProfilePage />} />
-          <Route path="/UserProfile" element={<UserProfile />} />
-          <Route path="/UserProfile/:userId" element={<ViewUserProfile />} />
-          {userData && (
+          {userData ? (
             <>
+            {console.log(userData)}
+              {userData.isCompany ? (
+                <Route path="/" element={<CompanyProfilePage />} />
+              ) : (
+                <Route path="/" element={<UserProfile />} />
+              )}
+              <Route path="/CompanyProfile" element={<CompanyProfilePage />} />
+              <Route path="/Search" element={<SearchPage />} />
+              <Route path="/UserProfile" element={<UserProfile />} />
               <Route path="/Contacts" element={<Contacts />} />
               <Route
                 path="/JobApplication/:postId"
@@ -77,10 +79,17 @@ const AppWrapper = () => {
               />
               <Route path="/NewsFeedPAge" element={<NewsFeedPage />} />
               <Route path="/NotificationsPage" element={<NotificationPage />} />
-
               {userData.isAdmin && (
                 <Route path="/Admin" element={<Admin userData={userData} />} />
               )}
+              <Route path="/UserProfile/:userId" element={<ViewUserProfile />} />
+              <Route path="/CompanyProfile/:companyID" element={<CompanyProfilePage />} />
+            </>
+          ) : (
+            <>
+              <Route path="/" element={<Login />} />
+              <Route path="/Signup" element={<Signup />} />              
+              <Route path="/UserLogin" element={<Login />} />
             </>
           )}
         </Routes>
@@ -90,6 +99,5 @@ const AppWrapper = () => {
       </Router>
     </div>
   );
-};
-
+          }
 export default AppWrapper;

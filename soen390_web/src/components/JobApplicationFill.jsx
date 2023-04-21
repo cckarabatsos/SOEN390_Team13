@@ -8,11 +8,18 @@ import WorkExperience from "./WorkExperience";
 import {
   createApplication,
   getLastestApplication,
+  uploadApplicationFile,
 } from "../api/JobApplicationApi";
 import { useTranslation } from "react-i18next";
 import { Alert } from "@mui/material";
+import { GetFile } from "../api/UserStorageApi";
+import AddDocumentsDialog from "./AddDocumentsDialog";
+import Typography from "@mui/material/Typography";
+import JobPosingViewModal from "./CompanyJobPostingsViewModal";
+import {getJobPostingWithId} from "../api/JobPostingApi";
 
 export default function JobApplicationFill(props) {
+  
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,15 +36,27 @@ export default function JobApplicationFill(props) {
   const [schoolMajor, setMajor] = useState("");
   const [experience, setExperience] = useState([]);
   const [expierienceInputValue, setExpierienceInputValue] = useState("");
-  const [attachResume, setAttachResume] = useState(false);
-  const [attachCoverLetter, setAttachCoverLetter] = useState(false);
+  const [attachResume, setAttachResume] = useState(true);
+  const [attachCoverLetter, setAttachCoverLetter] = useState(true);
+  const [resume, setResume] = useState({});
+  const [coverletter, setCoverLetter] = useState({});
   const [alertMessage, setAlertMessage] = useState(null);
   const navigate = useNavigate();
   const posting = window.location.pathname.split("/").pop();
   const [lastApplication, setLastApplication] = useState(null);
+
   const [error, setError] = useState(false);
   const { t } = useTranslation();
+  const [userData, setUserData] = React.useState({});
+  const [coverletterFilename, setCoverletterFilename] = React.useState();
+  const [ResumeFilename, setResumeFilename] = React.useState();
 
+
+  const { position } = props;
+  const [viewPosition, setViewPosition] = useState("");
+  const [jobPosting, setJobPosting] = useState("");
+
+  
   const fetchLastApplication = async () => {
     const lastApplication = await getLastestApplication(props.userData.userID);
     if (lastApplication[0] === 400) {
@@ -109,6 +128,9 @@ export default function JobApplicationFill(props) {
       posting
     );
     if (success) {
+      console.log(success);      
+      const sendApplication = await uploadApplicationFile(success.data.application[1], "resume", resume);
+      console.log(sendApplication);
       navigate("/Search");
     } else {
       setAlertMessage("An error has occured");
@@ -130,12 +152,102 @@ export default function JobApplicationFill(props) {
     }
   };
 
+  const setFileData = () => {
+    let UserCoverLetter = "";
+    const getCoverLetter = async () => {
+      UserCoverLetter = await GetFile(userData.userID, "coverletter");
+      return UserCoverLetter;
+    };
+
+    if (UserCoverLetter !== null) {
+      getCoverLetter().then((attachcoverLetter) => {
+        console.log(typeof(attachCoverLetter));
+        setCoverLetter(attachcoverLetter);
+        const url = attachcoverLetter;
+        setCoverletterFilename(
+          decodeURIComponent(url.split("/").pop().split("?")[0]).split(" - ")[1]
+        );
+      });
+      console.log(coverletterFilename);
+    }
+
+    let UserResume = "";
+    const getResume = async () => {
+      UserResume = await GetFile(userData.userID, "resume");
+      return UserResume;
+    };
+
+    if (UserResume !== null) {
+      getResume().then((attachResume) => {
+        setResume(attachResume);
+        if (attachResume) {
+          const url = attachResume;
+          setResumeFilename(
+            decodeURIComponent(url.split("/").pop().split("?")[0]).split(
+              " - "
+            )[1]
+          );
+          console.log(
+            decodeURIComponent(url.split("/").pop().split("?")[0]).split(
+              " - "
+            )[1]
+          );
+          console.log("resume:", attachResume);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("isAuth"));
+    if (data != null) {
+      setUserData(JSON.parse(localStorage.getItem("isAuth")));
+    } else {
+      navigate("/");
+    }
+
+    setFileData();
+  }, [navigate, userData.userID]);
+
+
+  
+  useEffect(()=> {
+    async function fetchJobPosting(postingId) {
+      try {
+        const jobPosting = await getJobPostingWithId(postingId);
+       if (jobPosting) { // add null check here
+        console.log(jobPosting.position);
+        setJobPosting(jobPosting); // set the jobPosting data to state
+      } else {
+        console.log('Job posting not found');
+      }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          console.log('Job posting not found');
+        } else {
+          console.error(error);
+        }
+      }
+    }
+    fetchJobPosting(posting);
+  }, []);
+  
+  console.log(jobPosting);
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="formoutline">
         <Grid container spacing={1}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={4}>            
+            <Typography  variant="h5" gutterBottom>
+              <b>Position: </b>
+              {" " + jobPosting.position}
+            </Typography> 
+            <Typography  variant="h6" gutterBottom>
+              <b>Company: </b>
+              {" " + jobPosting.company}
+            </Typography>
               <GeneralInformation
                 setEmail={setEmail}
                 email={email}
@@ -184,6 +296,7 @@ export default function JobApplicationFill(props) {
                 lastApplication={lastApplication}
               />
               <div className="buttons">
+              <AddDocumentsDialog setFileData={setFileData} />
                 <Button
                   className="button"
                   variant="contained"

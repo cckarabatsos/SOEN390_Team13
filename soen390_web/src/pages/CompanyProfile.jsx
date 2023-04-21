@@ -12,7 +12,8 @@ export default function CompanyProfilePage(props) {
   const { state } = useLocation();
 
   // might have to passs the whole user object as state easier!!
-  const { picture, name, description, isFollowing, companyId } = state; // Read values passed on state
+  const { picture, name, description, isFollowing } = state || {}; // Read values passed on state
+  const [companyId, setCompanyID] = useState("");
   const [userData, setUserData] = useState({});
   const [companyData, setCompanyData] = useState({});
   const [isFollowingState, setIsFollowingState] = useState(isFollowing);
@@ -51,6 +52,7 @@ export default function CompanyProfilePage(props) {
   };
 
   useEffect(() => {
+    
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
       setUserData(JSON.parse(localStorage.getItem("isAuth")));
@@ -59,7 +61,11 @@ export default function CompanyProfilePage(props) {
     }
 
     console.log("about to re update company in company profile");
-    getCompanyProfile(companyId, data);
+    const urlvariable = window.location.pathname.split("/").pop()
+    const companyUrlID = (urlvariable  == "CompanyProfile" || urlvariable.length == 0)? data.userID: urlvariable ;
+    console.log(urlvariable.length);
+    console.log((urlvariable  == "CompanyProfile" || urlvariable.length == 0));
+    getCompanyProfile(companyUrlID, data);
   }, [isFollowingState, companyId, updateState]);
 
   //console.log("before re-render company in company profile")
