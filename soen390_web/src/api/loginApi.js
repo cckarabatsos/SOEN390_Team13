@@ -3,16 +3,15 @@ import { signInWithPopup } from "firebase/auth";
 import api from "../config.json";
 import { auth, provider } from "../firebaseConfig";
 
-export function GoogleSignin({ setIsAuth }) {
-    signInWithPopup(auth, provider).then((result) => {
-        localStorage.setItem("isAuth", true);
-        setIsAuth(true);
-        CreateUser();
-    });
-}
+// export function GoogleSignin({ setIsAuth }) {
+//     signInWithPopup(auth, provider).then((result) => {
+//         localStorage.setItem("isAuth", true);
+//         setIsAuth(true);
+//         CreateUser();
+//     });
+// }
 
 export async function SignInUser(reqEmail, reqPassword) {
-    
     try {
         const response = await axios.get(api.BACKEND_API + "/user/api/login", {
             params: {
@@ -35,7 +34,7 @@ export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
                 isCompany: false,
                 currentCompany: "Concordia University",
                 currentPosition: "Student",
-                bio: "I am Liam and I want to be an engineer.",
+                bio: "",
                 coverLetter: "",
                 resume: "",
                 picture: "",
@@ -48,6 +47,30 @@ export async function CreateUser(firstNameIn, lastNameIn, emailIn, passwordIn) {
             .then((res) => {
                 return res.data;
             });
+        return response;
+    } catch (err) {
+        console.error("yo", err);
+    }
+}
+export async function GoogleSignin(emailIn, nameIn, logoIn) {
+    try {
+        const response = await axios.post(
+            api.BACKEND_API + "/user/api/GoogleSignUp",
+            {
+                isCompany: false,
+                currentCompany: "",
+                currentPosition: "",
+                bio: "",
+                coverLetter: "",
+                resume: "",
+                picture: logoIn,
+                publicKey: "",
+                privateKey: "",
+                email: emailIn,
+                name: nameIn,
+            }
+        );
+        console.log(response);
         return response;
     } catch (err) {
         console.error("yo", err);
@@ -69,7 +92,7 @@ export async function CreateCompany(nameIn, emailIn, passwordIn) {
                 bio: "Initial description text",
                 currentPosition: "Recruiter",
                 currentCompany: nameIn,
-                isCompany: true
+                isCompany: true,
             })
             .then((res) => {
                 return res.data;

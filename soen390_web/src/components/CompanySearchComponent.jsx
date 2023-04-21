@@ -31,7 +31,7 @@ export default function CompanySearchComponent(props) {
     console.log(props.name);
 
     const handleOnClick = () => {
-        navigate("/CompanyProfile", {
+        navigate("/CompanyProfile/" + companyId, {
             state: {
                 picture: picture,
                 name: name,

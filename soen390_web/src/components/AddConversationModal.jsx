@@ -16,6 +16,7 @@ import { Box } from "@mui/material";
 import { GetContacts } from "../api/userContactsApi";
 import { useNavigate } from "react-router-dom";
 import {createConversation} from "../api/messagesApi";
+import { searchUsers } from "../api/userNetworkingApi";
 
 function timeout(delay) {
     return new Promise((res) => setTimeout(res, delay));
@@ -32,8 +33,16 @@ export default function AddConversationModal(props) {
 
 
   const getContactsList = async (email) => {
-    var responce = await GetContacts(email);
-    setContacts(responce);
+    var response=[]
+
+    if(props.userData.isCompany){
+      response=await searchUsers("","name")
+    }
+    else{
+      response= await GetContacts(email);
+    }
+
+    setContacts(response);
   };
 
   useEffect(() => {

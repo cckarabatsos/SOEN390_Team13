@@ -190,6 +190,9 @@ export async function sendMessage(
         if (!doc.data()) {
             throw new Error("The senderId are not registered in the database!");
         }
+        const userData: any = doc.data();
+        const name = userData.name;
+        console.log(name);
         console.log(iv);
         let chat: chatMessage = {
             content: message,
@@ -198,6 +201,7 @@ export async function sendMessage(
             timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
             type: type,
             iv: iv.toString("base64"),
+            senderName: name,
         };
 
         var document = await db.collection("chats").add(chat);
@@ -290,7 +294,7 @@ export async function getUpdatedMessages(
             listOfMessages.push(messageWrapper);
         }
         const conversationID = conversation[0].id;
-        
+
         return { listOfMessages, conversationID };
     } catch (error) {
         console.error(`Error occurred in sendMessage: ${error}`);

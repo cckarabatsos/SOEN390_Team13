@@ -3,12 +3,14 @@
  */
 import { Application, application_schema } from "../models/Application";
 import {
+  deleteApplicationFile,
   deleteApplicationWithId,
   findApplicationWithID,
   retrieveApplicationHistory,
   retrieveApplications,
   retrieveLastApplication,
   storeApplication,
+  storeApplicationFile,
   updateApplication,
 } from "../services/applicationServices";
 
@@ -94,6 +96,28 @@ export async function createApplication(
     }
   } catch (err: any) {
     throw err;
+  }
+}
+
+/**
+ * Tries to upload an application file to database
+ *
+ * @param applicationID
+ * @param type
+ * @param file
+ * @returns status and response message
+ */
+export async function uploadApplicationFile(
+  userID: string,
+  type: string,
+  file: any
+) {
+  let url = await storeApplicationFile(userID, type, file);
+  console.log("File upload finished.");
+  if (url === null) {
+    return [404, { msg: "File storage failed." }];
+  } else {
+    return [200, url];
   }
 }
 
@@ -190,5 +214,21 @@ export async function getApplicationWithID(ApplicationID: string) {
     return [200, casted_user];
   } else {
     return [404, { msg: "User not found" }];
+  }
+}
+
+/**
+ * Tries to remove specified aapplication file from database
+ *
+ * @param applicationID
+ * @param type
+ * @returns status and response message
+ */
+export async function removeApplicationFile(applicationID: string, type: string) {
+  let success = await deleteApplicationFile(applicationID, type);
+  if (success === null) {
+    return [404, { msg: "File retrieval failed." }];
+  } else {
+    return [200, success];
   }
 }

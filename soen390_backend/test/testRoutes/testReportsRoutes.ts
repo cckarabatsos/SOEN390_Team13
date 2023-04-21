@@ -4,8 +4,8 @@ import request from "supertest";
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
-let adminID: string = "lZioJzyfCxPy28CTyT9E";
-let notAdminID: string = "18JRHKkLE2t50nE17SHc";
+let adminID: string = "fhQxGqeXcZ6WT2hoSsq7";
+let notAdminID: string = "gvox7y6XFH0iF5sjbnRJ";
 describe("Test Report Routes", function () {
     before(function () {
         server = app.listen(4000);
@@ -62,9 +62,9 @@ describe("Test Report Routes", function () {
     describe("VerdictReport", function () {
         it("responds with 200 and deletes a report when its ", async function () {
             const payload = {
-                reportedID: "3Ri6yXlYSo7rCQk4t4ks",
+                reportedID: "gvox7y6XFH0iF5sjbnRJ",
                 reason: "It's Inappropriate",
-                reporterID: "i2iLvPkBHmkV43PufHVp",
+                reporterID: "u1f1EgzrZSp9LWhtA2AR",
             };
             const response = await request(url)
                 .post("/reports/newReport")
@@ -73,7 +73,7 @@ describe("Test Report Routes", function () {
             ID = response.body;
             const newPayload = {
                 reportID: `${ID}`,
-                reportedID: "3Ri6yXlYSo7rCQk4t4ks",
+                reportedID: "gvox7y6XFH0iF5sjbnRJ",
                 banned: false,
             };
             await request(url)
@@ -84,7 +84,7 @@ describe("Test Report Routes", function () {
         it("responds with a 404 when there is an error", async function () {
             const payload = {
                 reportID: "EKbDtTB9c4uA6GTHXxxp",
-                reportedID: "3Ri6yXlYSo7rCQk4t4ks",
+                reportedID: "gvox7y6XFH0iF5sjbnRJ",
                 banned: false,
             };
             await request(url)

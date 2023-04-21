@@ -6,7 +6,7 @@ import { Experience } from "../../src/models/Experience";
 const it = mocha.it;
 const url = "http://localhost:4000";
 let server: any;
-const userID = "18JRHKkLE2t50nE17SHc";
+const userID = "u1f1EgzrZSp9LWhtA2AR";
 const badUserID = "5";
 const postExperience: Experience = {
     atPresent: false,

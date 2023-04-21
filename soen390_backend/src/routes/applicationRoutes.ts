@@ -10,8 +10,14 @@ import {
   getApplicationWithID,
   getApplications,
   getLastApplication,
+  removeApplicationFile,
+  uploadApplicationFile,
 } from "../controllers/applicationControllers";
 import { Application } from "../models/Application";
+import multer from "multer";
+import { hasFile } from "../controllers/userControllers";
+
+var upload = multer({ storage: multer.memoryStorage() });
 const application = express.Router();
 application.use(express.json());
 
@@ -177,6 +183,53 @@ application.post("/remove/:userID", async (req: Request, res: Response) => {
   } catch (err: any) {
     res.status(400);
     res.json({ errType: err.name, errMsg: err.message });
+  }
+});
+/**
+ * Route that stores specified type of application file to database
+ */
+application.post(
+  "/uploadApplicationFile/:applicationID",
+  upload.single("file"),
+  async (req: Request, res: Response) => {
+    let applicationID = req.params.applicationID;
+    let type: string = req.query.type as string;
+    try {
+      let status, data: any;
+      if (hasFile(req)) {
+        data = await uploadApplicationFile(applicationID, type, req.file);
+      }
+      status = data[0];
+      if (status == 200) {
+        res.sendStatus(200);
+      } else if (status == 404) {
+        res.sendStatus(404);
+      }
+    } catch (err: any) {
+      res.status(400);
+      res.json({ errType: err.Name, errMsg: err.message });
+    }
+  }
+);
+
+/**
+ * Route that removes the specified type of application file
+ */
+application.post("/removeApplicationFile/:applicationID", async (req: Request, res: Response) => {
+  let applicationID = req.params.applicationID;
+  let type: string = req.query.type as string;
+  try {
+    let success: any = await removeApplicationFile(applicationID, type);
+    let status: number = success[0];
+    if (status == 200) {
+      res.status(200);
+      res.json(success[1]);
+    } else if (status == 404) {
+      res.sendStatus(404);
+    }
+  } catch (err: any) {
+    res.status(400);
+    res.json({ errType: err.Name, errMsg: err.message });
   }
 });
 

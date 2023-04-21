@@ -1,0 +1,19 @@
+.userSearchingText{
+    font-style: "Inter-regular" !important;
+    margin-left: 20rem;
+    display: block !important;
+    font-weight: 200px !important;
+    color: #5319FB !important;
+    font-size: 25px !important;
+    text-align: justify !important;
+  }
+  
+  .desiredUserText{
+    font-style: "Inter-regular" !important;
+    margin-left: 20rem;
+    display: block !important;
+    font-weight: 200px !important;
+    color: #5319FB !important;
+    font-size: 20px !important;
+    text-align: justify !important;
+  }

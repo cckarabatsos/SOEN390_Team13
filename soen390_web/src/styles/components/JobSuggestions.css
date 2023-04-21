@@ -1,7 +1,8 @@
+@media screen and (min-width: 768px) {
 .job-suggestions-container {
-  position: absolute;
-  top: 750px;
- 
+  margin-top: 50px;
+  top: 165px;
+  right: 100px; 
   background-color: rgba(217, 217, 217, 0.7);
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -11,7 +12,7 @@
   max-height: 70%;
   overflow-y: auto;
   border-radius: 15px;
-  height: 50%;
+  
   
   
 }
@@ -35,7 +36,7 @@
 
 .job .logoContainer {
   margin-right: 10px;
-  height: 50px; /* Add a fixed height */
+  height: 50px; 
   display: flex;
   align-items: center;
 }
@@ -76,4 +77,16 @@
   width: 250px;
   border-radius: 15px;
 }
+@media screen and (max-width: 767px) {
+  .job-suggestions-container {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 100%;
+    border-radius: 0;
+  }
+}
 
+}

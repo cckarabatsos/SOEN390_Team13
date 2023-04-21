@@ -80,15 +80,19 @@ export const retrieveNotifications = async (userID: string) => {
         let userRef = db.collection("users").doc(userID);
 
         //removed unused notifications from the reffernce array
-        for (let i = 0; i < casted_user.notifications.length; i++) {
-            let notifDocRef = await casted_user.notifications[i].get();
-            if (!notifDocRef.data()) {
-                await userRef.update({
-                    notifications: firebase.firestore.FieldValue.arrayRemove(
-                        casted_user.notifications[i]
-                    ),
-                });
+        if (casted_user.notifications && casted_user.notifications.length != 0) {
+            for (let i = 0; i < casted_user.notifications.length; i++) {
+                let notifDocRef = await casted_user.notifications[i].get();
+                if (!notifDocRef.data()) {
+                    await userRef.update({
+                        notifications: firebase.firestore.FieldValue.arrayRemove(
+                            casted_user.notifications[i]
+                        ),
+                    });
+                }
             }
+        } else {
+            return [];
         }
 
         let userRefresh = await findUserWithID(userID);
@@ -113,6 +117,7 @@ export const retrieveNotifications = async (userID: string) => {
             );
         });
         await promise;
+        notifications.reverse();
         // console.log(notifications);
         return notifications;
     } catch (error) {
@@ -137,8 +142,8 @@ export const deleteNotificationWithId = async (notificationID: string) => {
                 .then(async () => {
                     console.log(
                         "Notification with ID " +
-                            notificationID +
-                            " successfully deleted."
+                        notificationID +
+                        " successfully deleted."
                     );
                     let casted_notification = notification_schema.cast(data);
                     let user = await findUserWithID(

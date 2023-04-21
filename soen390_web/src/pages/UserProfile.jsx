@@ -12,6 +12,8 @@ import ExperienceList from "../components/ExperienceList";
 import "../styles/components/UserProfile.css";
 import ApplicationHistory from "./ApplicationHistory";
 import AddDocumentsDialog from "../components/AddDocumentsDialog";
+import { useLocation } from "react-router-dom";
+import { findUserById } from "../api/UserProfileApi";
 
 import { useTranslation } from "react-i18next";
 import {
@@ -20,23 +22,32 @@ import {
   getSkills,
   removeSkill,
   uploadPicture,
+  updateUserProfilePicture
 } from "../api/UserProfileApi";
 import { GetFile } from "../api/UserStorageApi";
 import ProfileFileItem from "../components/ProfileFileItem";
 
+function timeout(delay) {
+  return new Promise((res) => setTimeout(res, delay));
+}
+
 function UserProfile(props) {
+  // const { state } = useLocation();
+  // const { picture } = state;
   const [enable, setEnable] = React.useState(false);
   const [userData, setUserData] = React.useState({});
   const [resume, setResume] = React.useState();
   const [coverletter, setCoverletter] = React.useState();
-  const [picture, setPicture] = React.useState();
   const [coverletterFilename, setCoverletterFilename] = React.useState();
   const [resumeFilename, setResumeFilename] = React.useState();
   const [workExperience, setWorkExperience] = React.useState([]);
   const [educationExperience, setEducationExperience] = React.useState([]);
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
-  const [isPictureChanged, setIsPictureChanged] = React.useState(false);
+  const [updateState, setUpdateState] = React.useState(false);
+  const[updateImage, setUpdateImage]=React.useState(false)
+
   const inputFile = useRef(null);
+  
 
   const [skills, setSkills] = React.useState([]);
 
@@ -52,6 +63,57 @@ function UserProfile(props) {
   const handleDisableEdit = () => {
     setEnable(false);
   };
+
+  const [image, setImage] = React.useState(null);
+
+  const handleImageChange = async (e) => {
+
+    setUpdateImage(true)
+
+    console.log("in handle picture change")
+    if (e.target.files && e.target.files[0]) {
+      const reader = await new FileReader();
+     
+       reader.onload = (event) => {
+
+        setImage(event.target.result);
+        
+      };
+      
+      
+      console.log(e.target.files[0])
+      console.log(image)
+      
+      await reader.readAsDataURL(e.target.files[0]);
+      // console.log('in handleImageChange');
+      // await handleDescOnClick(picUrl);
+    }
+   
+   
+  };
+
+  const handleDescOnClick = async (url) => {
+    console.log('in handleDescOnClick');
+    console.log(url)
+    let res = await updateUserProfilePicture(userData,url,userData.name);
+
+    console.log(res)
+
+    if (res) {
+      setUpdateState(!updateState);
+    } else {
+      console.log("error in description");
+    }
+  };
+
+
+  useEffect(()=>{
+
+    console.log("hello")
+    handleDescOnClick(image)
+   
+   
+  },[image])
 
   const getUserExperience = async () => {
     const workData = await getExperience(userData.userID, "Work");
@@ -99,18 +161,6 @@ function UserProfile(props) {
         );
       });
     }
-
-    // getting profile picture
-    let UserPicture = null;
-    const getPicture = async () => {
-      console.log("getting user picture");
-      UserPicture = await GetFile(userData.userID, "picture");
-      return UserPicture;
-    };
-    getPicture().then((picture) => {
-      setPicture(picture);
-      console.log("picture is now: " + picture);
-    });
   };
 
   const getSkillList = async (userID) => {
@@ -128,18 +178,31 @@ function UserProfile(props) {
     inputFile.current.click();
   };
 
+  const getProfile = async (userID) => {
+
+    let user= await findUserById(userID)
+    setImage(user.data.picture)
+  }
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("isAuth"));
     if (data != null) {
       setUserData(JSON.parse(localStorage.getItem("isAuth")));
     } else {
-      navigate("/");
+      setUserData(false);
     }
     getUserExperience();
     setFileData();
     getSkillList(userData.userID);
-    console.log("userData.picture: " + userData.picture);
-  }, [navigate, userData.userID]);
+
+    if(!updateImage){
+      getProfile(userData.userID)
+
+
+    }
+    
+    
+  }, [userData.userID,updateState]);
 
   useEffect(() => {
     if (isExperienceUpdated == true) getUserExperience();
@@ -155,24 +218,7 @@ function UserProfile(props) {
     }
   };
 
-  const changeProfilePicture = async (pictureEvent) => {
-    console.log("uploading profile picture");
-    await uploadPicture(userData.userID, pictureEvent).then((response) => {
-      setIsPictureChanged(true);
-    });
-    // setIsPictureChanged(true)
-    // if (response) {
-    //   // console.log("response received, calling setfiledata()");
-    //   await setFileData();
-    // }
-  };
 
-  useEffect(() => {
-    if (isPictureChanged) {
-      setFileData();
-      setIsPictureChanged(false);
-    }
-  }, [isPictureChanged]);
 
   const handleRemoveSkillOnClick = async (id) => {
     var response = await removeSkill(id);
@@ -181,10 +227,6 @@ function UserProfile(props) {
     }
   };
 
-  // useEffect(() => {
-  //   if(isPictureChanged) getProfilePicture();
-  //   setIsPictureChanged(false);
-  // }, [picture]);
 
   useEffect(() => {
     addNewSkill(userData.userID);
@@ -211,13 +253,9 @@ function UserProfile(props) {
                 multiple
                 type="file"
                 ref={inputFile}
-                onChange={(e) => changeProfilePicture(e.target.files[0])}
+                onChange={handleImageChange}
               />
-              <img
-                className="profile-pic"
-                alt="profile-pic"
-                src={`${picture} || ${profilepicture}`}
-              ></img>
+            <img src={image} alt="Avatar" className="profile-pic"></img>
             </div>
 
             <Grid container spacing={2}>

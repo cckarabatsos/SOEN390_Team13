@@ -65,3 +65,17 @@ export async function getLastestApplication(userID) {
     return [error.response.status, error.response.data];
   }
 }
+
+export async function uploadApplicationFile(applicationID, type, file) {
+  try{
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await axios.post(
+      api.BACKEND_API + "/application/uploadAplicationFile/" + applicationID + "?type=" + type, formData 
+    );
+    return response.data
+  } catch (error) {
+    console.error("error", error);
+    return [error.response.status, error.response.data];
+  }
+}

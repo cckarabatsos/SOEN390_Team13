@@ -3,9 +3,12 @@ import api from "../config.json";
 
 export async function GetNotification(userId) {
   try {
+    console.log("hello in api")
     const response = await axios.get(
       api.BACKEND_API + "/notification/getNotifications/" + userId
     );
+
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("error", error);
