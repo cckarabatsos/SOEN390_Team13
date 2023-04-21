@@ -175,11 +175,38 @@ describe("Test Application Routes", function () {
 
         it("responds with 400 if the conversation ID is invalid", async function () {
             // Set up test data
-            const conversationID = "invalid_id"; // Replace with an invalid conversation ID
+            const applicationID = "invalid_id";
             // Make request to endpoint
             await request(url)
-                .get(`/application/id/${conversationID}`)
+                .get(`/application/id/${applicationID}`)
                 .expect(404);
+        });
+    });
+    describe("Upload application file", function () {
+        it("responds with 500 if there is no file", async function () {
+            await request(url)
+                .post(`/application/uploadApplicationFile/${applicationID}?type=resume`)
+                .send(undefined)
+                .set("Content-Type", "multipart/form-data")
+                .set("Accept", "multipart/form-data")
+                .expect(500);
+        });
+    });
+    describe("Remove application file", function () {
+        it("responds with 404 if there is no file with specified application ID", async function () {
+            await request(url)
+                .post(`/application/removeApplicationFile/${badUserID}?type=resume`)
+                .expect(404);
+        });
+        it("responds with 404 if there is no specified type", async function () {
+            await request(url)
+                .post(`/application/removeApplicationFile/${applicationID}?type=bad_type`)
+                .expect(404);
+        });
+        it("responds with 400 if bad request to firebase", async function () {
+            await request(url)
+                .post(`/application/removeApplicationFile/${applicationID}?type=resume`)
+                .expect(400);
         });
     });
 });

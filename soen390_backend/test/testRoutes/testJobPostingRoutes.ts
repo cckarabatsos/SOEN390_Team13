@@ -6,6 +6,7 @@ const url = "http://localhost:4000";
 let server: any;
 const userID = "gvox7y6XFH0iF5sjbnRJ";
 const badUserID = "5";
+const jobPostingID = "95VQaEcB8zLrhY0hA9XL";
 
 describe("Test Job Posting Routes", function () {
     before(function () {
@@ -41,6 +42,18 @@ describe("Test Job Posting Routes", function () {
         it("responds with a 404 when user with passed id does not exist", async function () {
             await request(url)
                 .get(`/jobposting/getJobSuggestions/${badUserID}`)
+                .expect(404);
+        });
+    });
+    describe("Get jobposting/id/:JobPostingID", function () {
+        it("responds with 200 when job posting retrieved with a job posting ID", async function () {
+            await request(url)
+                .get(`/jobposting/id/${jobPostingID}`)
+                .expect(200);
+        });
+        it("responds with 404 when job posting retrieved with a job posting ID that does not exist", async function () {
+            await request(url)
+                .get(`/jobposting/id/${badUserID}`)
                 .expect(404);
         });
     });
