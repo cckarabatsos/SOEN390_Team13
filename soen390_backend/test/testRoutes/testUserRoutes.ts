@@ -473,6 +473,7 @@ describe("Test User Routes", function () {
                 .expect(404);
         });
     });
+    let ID: string;
     describe("Get user/api/unFollow", function () {
         this.afterAll(async function () {
             await request(url)
@@ -497,6 +498,44 @@ describe("Test User Routes", function () {
                     `/user/api/unFollow?senderID=${response2.body.registeredUser[1]}&receiverID=${companyID}`
                 )
                 .expect(404);
+        });
+        it("responds with 200 and deletes a report when its ", async function () {
+            const payload = {
+                reportedID: response2.body.registeredUser[1],
+                reason: "It's Inappropriate",
+                reporterID: response1.body.registeredUser[1],
+            };
+            const response = await request(url)
+                .post("/reports/newReport")
+                .send(payload)
+                .expect(200);
+            ID = response.body;
+            const newPayload = {
+                reportID: `${ID}`,
+                reportedID: response2.body.registeredUser[1],
+                banned: true,
+            };
+            await request(url)
+                .post(`/reports/verdictReport`)
+                .send(newPayload)
+                .expect(200);
+        });
+    });
+    describe("Remove account file", function () {
+        it("responds with 404 if there is no file with specified user ID", async function () {
+            await request(url)
+                .post(`/user/removeAccountFile/${wrongId}?type=resume`)
+                .expect(404);
+        });
+        it("responds with 404 if there is no specified type", async function () {
+            await request(url)
+                .post(`/user/removeAccountFile/${id}?type=bad_type`)
+                .expect(404);
+        });
+        it("responds with 400 if bad request to firebase", async function () {
+            await request(url)
+                .post(`/user/removeAccountFile/${id}?type=resume`)
+                .expect(400);
         });
     });
 });
