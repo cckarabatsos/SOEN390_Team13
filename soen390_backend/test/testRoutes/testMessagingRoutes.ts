@@ -157,17 +157,17 @@ describe("Test Messaging Routes", function () {
         });
     });
     describe("Get Download Document", function () {
-        // it("responds with decrypted document content if request parameters are valid", async function () {
-        //     await request(url)
-        //         .get(
-        //             `/messages/downloadDocument?encryptedUrl=Hicp2oJ5UmMw0gdTNAu%2BX6ucTmqefF%2FYFGE%2FBOB7lWHkN1GJ%2BHPhVBw2f4L4R%2FKMvr4Y9jDOG%2BtS2GpD6QciJqziC5%2FJjzmNBC588GezdxCSw6jSHAaJmUPVpJDPFt%2BjqCx249ItZUdB7Xy%2F0zR%2BFk%2FismJVp5MHMJN9JqCT4GEZXrFkl%2BpFqjyoFjYp9bmXwHX4ZglYrxf0deg%2BctH3GwIYpT6UzuS9zjDNIemH0C0xCbbfjs8aEwUXWNbJn%2FkY&conversationID=UCoA5lmz3FGIBjlRhuyG`
-        //         )
-        //         .expect(200)
-        //         .expect("Content-Type", "text/plain; charset=utf-8")
-        //         .expect(
-        //             "https://firebasestorage.googleapis.com/v0/b/soen-390-7f4fc.appspot.com/o/Messages%2FUCoA5lmz3FGIBjlRhuyG-4-Resume.pdf?alt=media&token=a11a2959-c0df-4884-9050-a396b0391c44"
-        //         );
-        // });
+        it("responds with decrypted document content if request parameters are valid", async function () {
+            await request(url)
+                .get(
+                    `/messages/downloadDocument?encryptedUrl=RbDgQU5rqeIyU7GXTsmqRC%2BXbkgljS0q8EsqYkV2tg7HmyXuYhQ5KV537BLgdkmsVRO8yQ4kiNMsuGxXEODVvAYzCJaSs53d8U9dIHOz%2BuWBAuyPhNHQghR42QpWkemf2QxS6HjhKveKcHC5JK%2FZVlFDFboRVKD7Yr0Cllwv9gU%3D&conversationID=ifdmvZMQrQiN51VWeELj`
+                )
+                .expect(200)
+                .expect("Content-Type", "text/plain; charset=utf-8")
+                .expect(
+                    "https://storage.googleapis.com/soen-390-7f4fc.appspot.com/Messages%2FifdmvZMQrQiN51VWeELj-4-ResumeBOG.pdf"
+                );
+        });
 
         it("responds with a 500 error if the encrypted URL is invalid", async function () {
             await request(url)
