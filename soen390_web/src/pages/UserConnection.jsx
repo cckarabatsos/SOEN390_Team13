@@ -70,7 +70,7 @@ const UserConnection = () => {
             {users.map((aUser) => (
               <Grid item sm={6} xs={12}>
                 <UserConnectionComponent
-                  image={aUser.image}
+                  image={aUser.picture}
                   name={aUser.name}
                   job={aUser.currentPosition}
                   location={aUser.location}

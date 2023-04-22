@@ -24,7 +24,7 @@ export default function UserConnectionComponent(props) {
     <div className="friend-request">
       <div className="friend-request-header">
         <img
-          src={Person}
+          src={image}
           alt="Profile Picture"
           class="friend-request-avatar"
         ></img>
