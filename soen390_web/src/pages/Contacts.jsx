@@ -64,7 +64,7 @@ export default function Contacts() {
                 location={aUser.location}
                 currentEmail={currentEmail}
                 userID={aUser.userID}
-                handleRemoveContact={handleRemoveContact}
+                handleRemoveContact={()=>handleRemoveContact(aUser.email)}
               ></ContactsComponent>
             </Grid>
           ))}
