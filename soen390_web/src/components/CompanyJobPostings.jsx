@@ -50,6 +50,7 @@ export default function CompanyJobPostings(props) {
   const [viewDeadline, setViewDeadline] = useState("");
   const [viewResume, setViewResume] = useState("");
   const [viewCover, setViewCover] = useState("");
+  const [viewProvenenace, setViewProvenance] = useState("Internal");
   const [disableFlag, setDisableFlag] = useState(false);
 
   const handleClickOpen = () => {
@@ -69,7 +70,8 @@ export default function CompanyJobPostings(props) {
     email,
     deadline,
     cover,
-    resume
+    resume,
+    provenance
   ) => {
     setViewCompany(company);
     setViewPosition(position);
@@ -81,6 +83,7 @@ export default function CompanyJobPostings(props) {
     setViewCover(cover);
     setViewResume(resume);
     setJobsModalOpen(true);
+    setViewProvenance(provenance)
   };
 
   const handleCloseJobModal = () => {
@@ -115,7 +118,8 @@ export default function CompanyJobPostings(props) {
             fireBaseTime(
               aPosting.postingDeadline._seconds,
               aPosting.postingDeadline._nanoseconds
-            ).toString()
+            ).toString(),
+            aPosting.provenance
           )
         );
       }
@@ -189,7 +193,8 @@ export default function CompanyJobPostings(props) {
                               position.email,
                               position.postingDeadline,
                               position.mandatoryCoverLetter,
-                              position.mandataryResume
+                              position.mandataryResume,
+                              position.provenance
                             )
                           }
                         >
@@ -253,6 +258,7 @@ export default function CompanyJobPostings(props) {
             viewPostingDeadline={viewDeadline}
             viewMandatoryResume={viewResume}
             viewMandatoryCoverLetter={viewCover}
+            viewPostingProvenance={viewProvenenace}
           />
           <Button onClick={handleCloseJobModal}>{t("CancelText")}</Button>
         </DialogContent>

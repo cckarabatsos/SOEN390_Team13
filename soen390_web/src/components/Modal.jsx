@@ -17,6 +17,7 @@ function Modal({
   viewPostingDeadline,
   postingID,
   jobID,
+  viewProvenance,
 }) {
   const { t } = useTranslation();
 
@@ -44,6 +45,7 @@ function Modal({
           <p>{viewContract}</p>
           <p>Salary: ${viewSalary}/hr</p>
           <p>Contact: {viewEmail}</p>
+          <p>Origin: {viewProvenance}</p>
           <p>Mandatory resume: {viewMandatoryResume ? "Yes" : "No"}</p>
           <p>
             Mandatory cover letter: {viewMandatoryCoverLetter ? "Yes" : "No"}
@@ -62,8 +64,9 @@ function Modal({
           >
             {t("CancelText")}
           </button>
-
+          
           <Link // Link component for the apply button
+          
             id="applyBtn"
             style={{
               width: "150px",
@@ -72,13 +75,14 @@ function Modal({
               textDecoration: "none",
               border: "2px solid #8f8aff",
               color: "black",
-              backgroundColor: "white",
+              backgroundColor: viewProvenance=="External"?"#fd5c63" :"white",
               fontWeight: "normal",
               borderRadius: "8px",
               textAlign: "center",
               lineHeight: "39px",
             }}
             to={"/JobApplication/" + jobID}
+            onClick={viewProvenance=="External" ? (event) => event.preventDefault():()=>{}}
           >
             {t("ApplyText")}
           </Link>

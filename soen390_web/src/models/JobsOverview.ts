@@ -12,6 +12,7 @@ export default class JobsOverview {
   public mandatoryResume: boolean;
   public mandatoryCoverLetter: boolean;
   public postingDeadline: String;
+  public provenance:String
 
   constructor(
     position: String,
@@ -26,7 +27,8 @@ export default class JobsOverview {
     email: String,
     mandatoryResume: boolean,
     mandatoryCoverLetter: boolean,
-    postingDeadline: String
+    postingDeadline: String,
+    provenance:String
   ) {
     this.position = position;
     this.location = location;
@@ -41,5 +43,6 @@ export default class JobsOverview {
     this.mandatoryResume = mandatoryResume;
     this.mandatoryCoverLetter = mandatoryCoverLetter;
     this.postingDeadline = postingDeadline;
+    this.provenance=provenance;
   }
 }

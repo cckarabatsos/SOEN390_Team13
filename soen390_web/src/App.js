@@ -55,6 +55,8 @@ const AppWrapper = () => {
       <Router>
         <Navbar userData={userData}></Navbar>
         <Routes>
+        <Route path="/Search" element={<SearchPage />} />
+        
           {userData ? (
             <>
             {console.log(userData)}
@@ -64,7 +66,7 @@ const AppWrapper = () => {
                 <Route path="/" element={<UserProfile />} />
               )}
               <Route path="/CompanyProfile" element={<CompanyProfilePage />} />
-              <Route path="/Search" element={<SearchPage />} />
+              
               <Route path="/UserProfile" element={<UserProfile />} />
               <Route path="/Contacts" element={<Contacts />} />
               <Route
@@ -90,6 +92,7 @@ const AppWrapper = () => {
               <Route path="/" element={<Login />} />
               <Route path="/Signup" element={<Signup />} />              
               <Route path="/UserLogin" element={<Login />} />
+              
             </>
           )}
         </Routes>
