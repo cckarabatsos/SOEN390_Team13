@@ -39,7 +39,7 @@ export default function JobSearch() {
           i,
           jobs[i].jobPosterID,
           jobs[i].id,
-          20, //jobs[i].salary
+          jobs[i].salary,
           jobs[i].description,
           jobs[i].email,
           jobs[i].mandatoryResume,
@@ -47,7 +47,8 @@ export default function JobSearch() {
           fireBaseTime(
             jobs[i].postingDeadline._seconds,
             jobs[i].postingDeadline._nanoseconds
-          ).toString()
+          ).toString(),
+          jobs[i].provenance
         )
       );
     }
@@ -86,6 +87,7 @@ export default function JobSearch() {
                 jobDisplay[jobPosterID].mandatoryCoverLetter
               }
               viewPostingDeadline={jobDisplay[jobPosterID].postingDeadline}
+              viewProvenance={jobDisplay[jobPosterID].provenance}
             />
             {console.log(jobDisplay[jobPosterID])}
           </>

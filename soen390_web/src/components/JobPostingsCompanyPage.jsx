@@ -16,6 +16,8 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import "react-datepicker/dist/react-datepicker.css";
 import { CreateJobPostingApi } from "../api/JobPostingApi";
+import FormGroup from '@mui/material/FormGroup';
+import Switch from '@mui/material/Switch';
 
 function valuetext(value) {
   return `${value} years`;
@@ -51,6 +53,17 @@ export default function AddressForm(props) {
   const [type, setType] = useState("");
   const [alertType, setAlertType] = useState("error");
   const [open, setOpen] = React.useState(false);
+
+  const [external, setExternal] = useState(false);
+
+
+  const externalOnChnage=(e) => {
+
+    console.log(e.target.value)
+    setExternal(!external)
+
+
+  }
 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
@@ -138,7 +151,8 @@ export default function AddressForm(props) {
         contract,
         duration,
         type,
-        formatedDate
+        formatedDate,
+        external
       );
     }
     if (response) {
@@ -336,6 +350,11 @@ export default function AddressForm(props) {
 
             <FormControlLabel value={true} control={<Radio />} label="Remote" />
           </RadioGroup>
+        </Grid>
+        <Grid item xs={12}>
+        <FormControlLabel  value={!external} onChange={externalOnChnage} control={<Switch />} label="External" />
+
+
         </Grid>
 
         <Grid item xs={12}>

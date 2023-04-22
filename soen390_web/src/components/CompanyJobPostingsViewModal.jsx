@@ -21,12 +21,15 @@ export default function JobPosingViewModal({
   viewMandatoryResume,
   viewMandatoryCoverLetter,
   viewPostingDeadline,
+  viewPostingProvenance
 }) {
   const [documents, setDocuments] = React.useState([]);
   const { t } = useTranslation();
   // const handleChange = (event) => {
   //   setDocuments(event.target.value);
   // };
+
+  console.log(viewPostingProvenance)
 
   return (
     <React.Fragment>
@@ -87,6 +90,13 @@ export default function JobPosingViewModal({
           <Typography variant="h7" color="error">
             <b>Applications Deadline</b> {" " + viewPostingDeadline}
           </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider variant="middle" />
+          <Typography variant="h6">
+            <b>Origin: {viewPostingProvenance}</b>
+          </Typography>
+
         </Grid>
 
         <Grid item xs={12}>

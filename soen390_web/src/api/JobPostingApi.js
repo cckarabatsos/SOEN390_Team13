@@ -121,7 +121,9 @@ export async function getJobPostingWithId(postingId) {
   }
 }
 
-export async function CreateJobPostingApi(companyEmail,loc,pos,sal,companyName,desc,remote,contract,duration,type,deadline) {
+export async function CreateJobPostingApi(companyEmail,loc,pos,sal,companyName,desc,remote,contract,duration,type,deadline,external) {
+  console.log("AGAHAHHAHAHAHAHAH")
+  console.log(external)
   try {
       const response = await axios
           .post(api.BACKEND_API + "/user/api/posting/"+companyEmail, {
@@ -134,7 +136,8 @@ export async function CreateJobPostingApi(companyEmail,loc,pos,sal,companyName,d
               contract: contract,
               duration: duration,
               type: type,
-              postingDeadline: deadline
+              postingDeadline: deadline,
+              provenance: external?"External":"Internal"
           })
       if( response.status==200 && response.data){
         console.log(response.data);

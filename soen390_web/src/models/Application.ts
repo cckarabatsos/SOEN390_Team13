@@ -24,6 +24,7 @@ export default class Application {
     public isCoverLetter: boolean
     public isResume: boolean
 
+
     constructor(
         firstName: String,
         lastName: String,
@@ -48,7 +49,8 @@ export default class Application {
         status:string,
         positionName:string,
         isCoverLetter:boolean,
-        isResume:boolean
+        isResume:boolean,
+       
     ) {
       this.firstName = firstName;
       this.lastName = lastName;
@@ -74,6 +76,7 @@ export default class Application {
       this.positionName=positionName;
       this.isCoverLetter=isCoverLetter;
       this.isResume=isResume;
+      
     }
   }
   
