@@ -44,7 +44,8 @@ function UserProfile(props) {
   const [educationExperience, setEducationExperience] = React.useState([]);
   const [isExperienceUpdated, setIsExperienceUpdated] = React.useState(false);
   const [updateState, setUpdateState] = React.useState(false);
-  const[updateImage, setUpdateImage]=React.useState(false)
+  const [updateImage, setUpdateImage]=React.useState(false);
+  const [updateFile, setUpdateFile] = React.useState(false);
 
   const inputFile = useRef(null);
   
@@ -128,6 +129,7 @@ function UserProfile(props) {
   };
 
   const setFileData = () => {
+    
     let UserCoverLetter = "";
     const getCoverLetter = async () => {
       UserCoverLetter = await GetFile(userData.userID, "coverletter");
@@ -197,8 +199,6 @@ function UserProfile(props) {
 
     if(!updateImage){
       getProfile(userData.userID)
-
-
     }
     
     
@@ -265,7 +265,7 @@ function UserProfile(props) {
               <Grid className="bio" item xs={12}>
                 {userData.bio}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item md={6} xs={12}>
                 <div className="header">
                   {t("EducationText")}
                   <AddEducationDialog
@@ -285,7 +285,7 @@ function UserProfile(props) {
                   />
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item md={6} xs={12}>
                 <div className="header">
                   {t("ExperienceText")}
                   <AddExperienceDialog
@@ -305,24 +305,19 @@ function UserProfile(props) {
                   />
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item md={6} xs={12}>
                 <Grid
                   container
                   spacing={2}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  className="grid-container"
                   style={{ marginLeft: "1em" }}
                 >
-                  <Grid iten xs={6}>
-                    <div className="header">{t("SkillsText")}</div>
-                  </Grid>
-                  <Grid iten xs={6}>
+                  <Grid item md={6} xs={12}>
+                    <div className="header">{t("SkillsText")}
                     <AddSkillDialog setNewSkill={setNewSkill} />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
                     </IconButton>
+                    </div>
                   </Grid>
                 </Grid>
                 <hr className="line"></hr>
@@ -344,24 +339,19 @@ function UserProfile(props) {
                   </div>
                 ))}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item md={6} xs={12}>
                 <Grid
                   container
                   spacing={2}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  className="grid-container"
                   style={{ marginLeft: "1em" }}
                 >
-                  <Grid iten xs={6}>
-                    <div className="header">{t("DocumentsText")}</div>
-                  </Grid>
-                  <Grid iten xs={6}>
+                  <Grid item md={6} xs={12}>
+                    <div className="header">{t("DocumentsText")}
                     <AddDocumentsDialog setFileData={setFileData} />
                     <IconButton onClick={handleClickEnableEdit}>
                       <EditIcon className="profile-icon" />
                     </IconButton>
+                    </div>
                   </Grid>
                 </Grid>
                 <hr className="line"></hr>
@@ -399,7 +389,7 @@ function UserProfile(props) {
                 </Grid>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item md={6} xs={12}>
                 {enable && (
                   <Button
                     className="button"
