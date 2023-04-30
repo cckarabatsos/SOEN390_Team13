@@ -242,6 +242,7 @@ function UserProfile(props) {
           }}
         >
           <div className="foreground-colour">
+            <div className="header-color">
             <div
               className="pfp-wrap"
               style={{ marginLeft: "auto", marginRight: "auto" }}
@@ -257,15 +258,17 @@ function UserProfile(props) {
               />
             <img src={image} alt="Avatar" className="profile-pic"></img>
             </div>
-
-            <Grid container spacing={2}>
-              <Grid className="name" item xs={12}>
+            <Grid className="name" item xs={12}>
                 {userData.name}
               </Grid>
+            </div>
+            <Grid container spacing={2}>
+              
               <Grid className="bio" item xs={12}>
                 {userData.bio}
               </Grid>
               <Grid item md={6} xs={12}>
+                <div className="boxgrid-components">
                 <div className="header">
                   {t("EducationText")}
                   <AddEducationDialog
@@ -284,8 +287,10 @@ function UserProfile(props) {
                     setIsExperienceUpdated={setIsExperienceUpdated}
                   />
                 )}
+                </div>
               </Grid>
               <Grid item md={6} xs={12}>
+                <div className="boxgrid-components">
                 <div className="header">
                   {t("ExperienceText")}
                   <AddExperienceDialog
@@ -304,8 +309,10 @@ function UserProfile(props) {
                     setIsExperienceUpdated={setIsExperienceUpdated}
                   />
                 )}
+                </div>
               </Grid>
               <Grid item md={6} xs={12}>
+                <div className="boxgrid-components">
                 <Grid
                   container
                   spacing={2}
@@ -338,14 +345,17 @@ function UserProfile(props) {
                     <hr className="sub-line"></hr>
                   </div>
                 ))}
+                </div>
               </Grid>
               <Grid item md={6} xs={12}>
+              <div className="boxgrid-components">
                 <Grid
                   container
                   spacing={2}
                   style={{ marginLeft: "1em" }}
                 >
                   <Grid item md={6} xs={12}>
+                    
                     <div className="header">{t("DocumentsText")}
                     <AddDocumentsDialog setFileData={setFileData} />
                     <IconButton onClick={handleClickEnableEdit}>
@@ -353,6 +363,7 @@ function UserProfile(props) {
                     </IconButton>
                     </div>
                   </Grid>
+                  
                 </Grid>
                 <hr className="line"></hr>
                 <Grid
@@ -387,6 +398,7 @@ function UserProfile(props) {
                     )}
                   </Grid>
                 </Grid>
+                </div>
               </Grid>
 
               <Grid item md={6} xs={12}>

@@ -13,16 +13,23 @@
 .foreground-colour{
     background-color: rgba(217, 217, 217, 0.7);
     height: 100%;
-    width: 80%;
+    width: 90%;
     margin: auto;
+    border-radius: 30px;
+    padding-top: 10px;
+}
+
+.background-color{
+    background-color: rgba(217, 217, 217, 0.7);
 }
 
 .background-image{
     background-repeat: no-repeat;
     background-position: center;
     height: 100%;
-    background-color: white;
-    border-radius: 229px;
+    background-color: rgba(217, 217, 217, 0.7);
+    background-size: 90%;
+    
 }
 
 .profile-pic{
@@ -73,6 +80,7 @@
 .name{
     font-family: "Inter-Regular";
     font-size: large;
+    font-weight: bold;
 }
 
 .bio{
@@ -104,3 +112,61 @@
 .profile-item{
     float: right;
 }
+
+.boxgrid-components{
+    background-color: white;
+    border-radius: 30px;
+    padding-top: 20px;
+}
+
+.header-color{
+    background-color: #6c6cffda;
+    opacity: 90%;
+    border-radius: 30px;
+}
+
+@media screen and (max-width: 980px) {
+    .foreground-colour, .background-color, .background-image {
+    width: 100%;
+    background-size: cover;
+    }
+    
+    
+    .header, .skill, .bio, .name, .education-picture {
+        font-size: 1.2em;
+    }
+    
+    .header {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+    }
+    
+    .line {
+        width: 80%;
+        margin-left: 10%;
+    }
+    
+    .sub-line {
+        width: 70%;
+        margin-left: 15%;
+    }
+    
+    .profile-pic {
+        width: 8em;
+        height: 8em;
+    }
+    
+    .pfp-wrap {
+        width: 8em;
+        height: 8em;
+    }
+    
+    .education-picture {
+        width: 5em;
+    }
+    
+    .header-color, .boxgrid-components {
+        border-radius: 20px;
+    }
+    }

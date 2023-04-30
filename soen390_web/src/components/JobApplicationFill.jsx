@@ -17,6 +17,7 @@ import AddDocumentsDialog from "./AddDocumentsDialog";
 import Typography from "@mui/material/Typography";
 import JobPosingViewModal from "./CompanyJobPostingsViewModal";
 import {getJobPostingWithId} from "../api/JobPostingApi";
+import background from "../assets/profile_background.svg";
 
 export default function JobApplicationFill(props) {
   
@@ -236,18 +237,23 @@ export default function JobApplicationFill(props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="formoutline">
-        <Grid container spacing={1}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>            
-            <Typography  variant="h5" gutterBottom>
-              <b>Position: </b>
-              {" " + jobPosting.position}
-            </Typography> 
-            <Typography  variant="h6" gutterBottom>
-              <b>Company: </b>
-              {" " + jobPosting.company}
-            </Typography>
+      <div
+        className="background-image"
+        style={{
+          backgroundImage: `url(${background})`,
+        }}  >
+        <div className="formoutline">
+          <Grid container spacing={1}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <Typography variant="h5" gutterBottom>
+                  <b>Position: </b>
+                  {" " + jobPosting.position}
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  <b>Company: </b>
+                  {" " + jobPosting.company}
+                </Typography>             
               <GeneralInformation
                 setEmail={setEmail}
                 email={email}
@@ -331,6 +337,7 @@ export default function JobApplicationFill(props) {
             {alertMessage}
           </Alert>
         )}
+        </div>
       </div>
     </form>
   );
