@@ -55,7 +55,7 @@ const [currentID, setCurrentID] = useState(""); */
   console.log(Application);
   return (
 
-    <TableContainer component={Paper} sx={{ width: "80%", margin: "0 auto", marginTop: "35px" }}>
+    <TableContainer component={Paper} sx={{ width: "90%", margin: "0 auto", marginTop: "35px" }}>
       <Table sx={{ minWidth: 650, backgroundColor: 'rgba(217, 217, 217, 0.7)' }} aria-label="simple table">
         <TableHead>
           <TableRow>
